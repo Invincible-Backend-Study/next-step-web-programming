@@ -12,5 +12,5 @@
 ### 저장소 사용법
 - 각 주차 미션마다 새로운 브랜치를 만들어서 적용
   - 직전 주차 미션 코드를 그대로 이어서 새로운 브랜치를 만든다.
-  - ex HiiWee-3 ( \\${name}-\\${chapter_number} )
+  - ex HiiWee-3 ( `${name}-${chapter_number}` )
 - 필요하다면 Gradle로 컨버팅하여 사용
