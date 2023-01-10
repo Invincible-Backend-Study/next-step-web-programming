@@ -38,13 +38,3 @@ out/
 
 ### Mac OS  ###
 .DS_Store
-
-/bin/
-/.settings/
-/target/
-/.classpath
-/.project
-/.idea
-
-/tomcat.8080
-jwp-basic.iml
