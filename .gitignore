@@ -45,3 +45,6 @@ out/
 /.classpath
 /.project
 /.idea
+
+/tomcat.8080
+jwp-basic.iml
