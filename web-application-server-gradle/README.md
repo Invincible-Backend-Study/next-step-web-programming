@@ -15,7 +15,15 @@
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+* BufferedReader
+  * .readLine() : InputStream 데이터를 라인별로 읽는다.
+  * 여기서는 HTTP 요청 정보를 읽어들임
+  * https://makemethink.tistory.com/170
+*
+          String[] tokens = lines.get(0).split(" ");
+          String url = tokens[1];
+
+          byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
