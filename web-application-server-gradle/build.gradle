@@ -4,14 +4,13 @@
 
 plugins {
     id 'java-library'
-    id 'maven-publish'
+    id 'application'
 }
 
+mainClassName = 'webserver.WebServer'
+
 repositories {
-    mavenLocal()
-    maven {
-        url = uri('https://repo.maven.apache.org/maven2/')
-    }
+    mavenCentral()
 }
 
 dependencies {
@@ -26,20 +25,6 @@ group = 'org.nhnnext'
 version = '1.0'
 description = 'web-application-server'
 java.sourceCompatibility = JavaVersion.VERSION_11
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'webserver.WebServer'
-    }
-}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
