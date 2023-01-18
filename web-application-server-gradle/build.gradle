@@ -35,6 +35,12 @@ publishing {
     }
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'webserver.WebServer'
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
