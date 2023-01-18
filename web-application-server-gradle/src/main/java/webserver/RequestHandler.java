@@ -5,14 +5,18 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.HttpRequestUtils;
 
 public class RequestHandler extends Thread {
+    private static final String RESOURCE_PATH = "./webapp";
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
     private Socket connection;
+    private final ControllerMapper controllerMapper = new ControllerMapper();
 
     public RequestHandler(Socket connectionSocket) {
         this.connection = connectionSocket;
@@ -23,8 +27,6 @@ public class RequestHandler extends Thread {
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
-
             // BufferedReader 값 읽기
             InputStreamReader reader = new InputStreamReader(in);
             BufferedReader br = new BufferedReader(reader);
@@ -32,19 +34,52 @@ public class RequestHandler extends Thread {
             List<String> lines = readHttpRequest(br);
             if (lines == null) return;
 
-            // RequestUrl
-            String[] tokens = lines.get(0).split(" ");
-            String url = tokens[1];
+            MyHttpRequest myHttpRequest = linesToMyHttpRequest(lines);
+            log.debug(RESOURCE_PATH + "   " + myHttpRequest.getRequestPath());
 
-            byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
+            String filePath = controllerMapper.mapping(myHttpRequest);
+            byte[] body = null;
+            if (filePath == null) {
+                body = Files.readAllBytes(new File(RESOURCE_PATH + myHttpRequest.getRequestPath()).toPath());
+            }
+            if (filePath != null) {
+                body = Files.readAllBytes(new File(RESOURCE_PATH + filePath).toPath());
+            }
 
             DataOutputStream dos = new DataOutputStream(out);
-            // byte[] body = "Hello World".getBytes();
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private static MyHttpRequest linesToMyHttpRequest(List<String> lines) {
+        // RequestHttp Full
+        String[] tokens = lines.get(0).split(" ");
+
+        // url 가져오기
+        String httpMethod = tokens[0];
+        String url = tokens[1];
+        String requestPath = url;
+        Map<String, String> parameters = null;
+
+        // request path & parameter 분리
+        int index = url.indexOf("?");
+        if (index != -1) {
+            requestPath = url.substring(0, index);
+            String params = url.substring(index + 1);
+
+            // parameter map으로 분리
+            parameters = HttpRequestUtils.parseQueryString(params);
+        }
+        if (index == -1) {
+            requestPath = url;
+        }
+        log.debug("url =>" + url);
+        log.debug("path =>" + requestPath);
+
+        return new MyHttpRequest(httpMethod, requestPath, parameters);
     }
 
     private static List<String> readHttpRequest(BufferedReader br) throws IOException {
@@ -53,11 +88,6 @@ public class RequestHandler extends Thread {
         while ((line = br.readLine()) != null && !"".equals(line)) {
             lines.add(line);
             log.debug("BufferedReader: " + line);
-            // line = br.readLine();
-//            if (line == null) {{
-//                log.debug("null is here");
-//                return null;
-//            }}
         }
         return lines;
     }
