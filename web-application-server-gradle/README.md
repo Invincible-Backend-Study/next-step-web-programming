@@ -15,7 +15,10 @@
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+- [x]  Request Line을 기준으로 Http Method, Request URI, 전송방식을 구분해야 한다.
+- [x]  Http Method는 상태값을 가진다.
+- [x]  Request URI를 이용해 webapp에 존재하는 index.html 정적 리소스를 요청해야 한다.
+- [x]  전송 방식은 기본이 HTTP/1.1이다.
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
