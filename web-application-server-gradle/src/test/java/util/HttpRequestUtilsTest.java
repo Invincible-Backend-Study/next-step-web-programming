@@ -1,14 +1,11 @@
-package utils;
+package util;
 
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import utils.dto.Pair;
-import utils.dto.RequestLine;
+import util.HttpRequestUtils.Pair;
 
 public class HttpRequestUtilsTest {
     @Test
@@ -70,19 +67,5 @@ public class HttpRequestUtilsTest {
         String header = "Content-Length: 59";
         Pair pair = HttpRequestUtils.parseHeader(header);
         assertThat(pair).isEqualTo(new Pair("Content-Length", "59"));
-    }
-
-    @Test
-    @DisplayName("Request Line 읽어오기 성공 테스트")
-    void parseRequestLine() {
-        // given
-        String header = "GET /index.html HTTP/1.1";
-        RequestLine expectedRequestLine = RequestLine.from(header);
-
-        // when
-        RequestLine requestLine = HttpRequestUtils.parseRequestLine(header);
-
-        // then
-        assertThat(requestLine).isEqualTo(expectedRequestLine);
     }
 }
