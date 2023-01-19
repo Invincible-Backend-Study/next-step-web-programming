@@ -1,5 +1,7 @@
 package util.enums;
 
+import java.util.Arrays;
+
 public enum HttpStatus {
     // 1xx Informational
 
@@ -100,5 +102,12 @@ public enum HttpStatus {
         this.value = value;
         this.series = series;
         this.reasonPhrase = reasonPhrase;
+    }
+
+    public static HttpStatus getStatus(final int splitHeader) {
+        return Arrays.stream(values())
+                .filter(httpStatus -> httpStatus.value == splitHeader)
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않는 Status"));
     }
 }
