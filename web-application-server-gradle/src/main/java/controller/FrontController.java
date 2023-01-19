@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class HeaderReader {
-    private static BufferedReader bufferedReader;
-
-    public HeaderReader(final InputStream in) {
+public class DispatcherController {
+    private final BufferedReader bufferedReader;
+    private String status;
+    private 
+    public DispatcherController(final InputStream in) {
         bufferedReader = new BufferedReader(new InputStreamReader(in));
     }
 
