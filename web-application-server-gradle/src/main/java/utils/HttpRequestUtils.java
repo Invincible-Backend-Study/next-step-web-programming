@@ -1,4 +1,4 @@
-package util;
+package utils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import util.dto.Pair;
-import util.dto.RequestLine;
+import utils.dto.Pair;
+import utils.dto.RequestLine;
 
 public class HttpRequestUtils {
     /**

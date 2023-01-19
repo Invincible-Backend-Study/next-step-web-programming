@@ -1,4 +1,4 @@
-package util.dto;
+package utils.dto;
 
 public class Pair {
     String key;
