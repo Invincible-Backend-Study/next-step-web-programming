@@ -10,13 +10,16 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RequestHandler extends Thread {
+    //로깅 라이브러리
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
-
+    //소켓 클래스
     private Socket connection;
 
     public RequestHandler(Socket connectionSocket) {
@@ -26,8 +29,12 @@ public class RequestHandler extends Thread {
     public void run() {
         log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
                 connection.getPort());
+
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             byte[] body = getBody(in);
+            if (body == null) {
+                return;
+            }
             DataOutputStream dos = new DataOutputStream(out);
             response200Header(dos, body.length);
             responseBody(dos, body);
@@ -43,7 +50,8 @@ public class RequestHandler extends Thread {
             return null;
         }
         String url = Arrays.asList(line.split(" ")).get(1);
-        return Files.readAllBytes(new File("./webapp" + url).toPath());
+        Path file = new File("./web-application-server-gradle/webapp").toPath();
+        return Files.readAllBytes(Paths.get(file + url));
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
