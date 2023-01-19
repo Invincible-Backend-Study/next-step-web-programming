@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.nio.file.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.HeaderReader;
+import controller.FrontController;
 import utils.HttpRequestUtils;
 import utils.dto.RequestLine;
 
@@ -30,8 +30,8 @@ public class RequestHandler extends Thread {
              OutputStream out = connection.getOutputStream()) {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
 
-            HeaderReader httpReader = new HeaderReader(in);
-            RequestLine requestLine = HttpRequestUtils.parseRequestLine(httpReader.readLine());
+            FrontController frontController = new FrontController(in);
+            RequestLine requestLine = frontController.getRequestLine();
             byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestLine.getUri()).toPath());
 
             DataOutputStream dos = new DataOutputStream(out);
