@@ -10,11 +10,13 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Map;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.HttpRequestUtils;
 
 public class RequestHandler extends Thread {
     //로깅 라이브러리
@@ -50,8 +52,15 @@ public class RequestHandler extends Thread {
             return null;
         }
         String url = Arrays.asList(line.split(" ")).get(1);
-        Path file = new File("./web-application-server-gradle/webapp").toPath();
-        return Files.readAllBytes(Paths.get(file + url));
+        if (url.startsWith("/user/create")) {
+            int index = url.indexOf("?");
+            String param = url.substring(index + 1);
+            Map<String, String> queryString = HttpRequestUtils.parseQueryString(param);
+            User user = new User(queryString.get("userId"), queryString.get("password"), queryString.get("name"),
+                    queryString.get("email"));
+            url = "/index.html";
+        }
+        return Files.readAllBytes(Paths.get(new File("./web-application-server-gradle/webapp").toPath() + url));
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
