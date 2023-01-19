@@ -1,21 +1,16 @@
 package webserver;
 
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.Files;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.HeaderReader;
-import utils.HttpRequestUtils;
-import utils.dto.RequestLine;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
-    public static final String EMPTY = "";
 
     private Socket connection;
 
@@ -27,17 +22,12 @@ public class RequestHandler extends Thread {
         log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
                 connection.getPort());
 
-        try (InputStream in = connection.getInputStream();
-             OutputStream out = connection.getOutputStream()) {
+        try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
-
-            HeaderReader httpReader = new HeaderReader(in);
-            RequestLine requestLine = HttpRequestUtils.parseRequestLine(httpReader.readLine());
-            byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestLine.getUri()).toPath());
-
             DataOutputStream dos = new DataOutputStream(out);
-            response200Header(dos, fileBytes.length);
-            responseBody(dos, fileBytes);
+            byte[] body = "Hello World".getBytes();
+            response200Header(dos, body.length);
+            responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
