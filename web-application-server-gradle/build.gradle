@@ -24,17 +24,8 @@ dependencies {
 group = 'org.nhnnext'
 version = '1.0'
 description = 'web-application-server'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-tasks.withType(Javadoc) {
-    options.encoding = 'UTF-8'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
