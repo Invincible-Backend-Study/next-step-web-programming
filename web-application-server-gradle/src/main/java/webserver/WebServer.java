@@ -10,10 +10,11 @@ public class WebServer {
     private static final int DEFAULT_PORT = 8080;
 
     public static void main(String[] args) throws Exception {
-        int port = 0;
+        Integer port = null;
         if (args == null || args.length == 0) {
             port = DEFAULT_PORT;
-        } else {
+        }
+        if (port == null) {
             port = Integer.parseInt(args[0]);
         }
 
