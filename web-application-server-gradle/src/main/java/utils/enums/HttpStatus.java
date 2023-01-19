@@ -1,6 +1,4 @@
-package util.enums;
-
-import java.util.Arrays;
+package utils.enums;
 
 public enum HttpStatus {
     // 1xx Informational
@@ -80,7 +78,6 @@ public enum HttpStatus {
 
     // --- 5xx Server Error ---
 
-
     INTERNAL_SERVER_ERROR(500, Series.SERVER_ERROR, "Internal Server Error"),
     NOT_IMPLEMENTED(501, Series.SERVER_ERROR, "Not Implemented"),
     BAD_GATEWAY(502, Series.SERVER_ERROR, "Bad Gateway"),
@@ -102,12 +99,5 @@ public enum HttpStatus {
         this.value = value;
         this.series = series;
         this.reasonPhrase = reasonPhrase;
-    }
-
-    public static HttpStatus getStatus(final int splitHeader) {
-        return Arrays.stream(values())
-                .filter(httpStatus -> httpStatus.value == splitHeader)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않는 Status"));
     }
 }
