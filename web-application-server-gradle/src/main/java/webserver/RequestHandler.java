@@ -15,7 +15,6 @@ import utils.dto.RequestLine;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
-    public static final String EMPTY = "";
 
     private Socket connection;
 
