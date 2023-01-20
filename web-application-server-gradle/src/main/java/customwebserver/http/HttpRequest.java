@@ -32,31 +32,6 @@ public class HttpRequest {
         queryStringByForm = parseQueryStringByForm();
     }
 
-        private Map<String, String> parseQueryStringByForm() throws IOException {
-        if (requestHeaderKeyValue.containsKey("Content-Length")) {
-            String formData = IOUtils.readData(httpRequest, Integer.parseInt(requestHeaderKeyValue.get("Content-Length")));
-            log.info("POST form Data={}", formData);
-            return HttpRequestUtils.parseQueryString(formData);
-        }
-        return null;
-    }
-
-    private Map<String, String> parseHttpRequestHeaderKeyValue() throws IOException {
-        String header = httpRequest.readLine();
-        List<Pair> headerPairs = new ArrayList<>();
-        while (!header.equals(EMPTY)) {
-            headerPairs.add(HttpRequestUtils.parseHeader(header));
-            header = httpRequest.readLine();
-        }
-        return headerPairs.stream()
-                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-    }
-
-    public RequestLine getRequestLine() {
-        return requestLine;
-    }
-
-
     public String getRequestUri() {
         return requestLine.getUri();
     }
@@ -74,5 +49,26 @@ public class HttpRequest {
             return urlQueryString;
         }
         return queryStringByForm.get(parameterName);
+    }
+
+    private Map<String, String> parseQueryStringByForm() throws IOException {
+        if (requestHeaderKeyValue.containsKey("Content-Length")) {
+            String formData = IOUtils.readData(httpRequest,
+                    Integer.parseInt(requestHeaderKeyValue.get("Content-Length")));
+            log.info("POST form Data={}", formData);
+            return HttpRequestUtils.parseQueryString(formData);
+        }
+        return null;
+    }
+
+    private Map<String, String> parseHttpRequestHeaderKeyValue() throws IOException {
+        String header = httpRequest.readLine();
+        List<Pair> headerPairs = new ArrayList<>();
+        while (!header.equals(EMPTY)) {
+            headerPairs.add(HttpRequestUtils.parseHeader(header));
+            header = httpRequest.readLine();
+        }
+        return headerPairs.stream()
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
     }
 }
