@@ -66,7 +66,7 @@ public class WebpageController {
     public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
         Map<String, String> requestHeaders = myHttpRequest.getHttpHeaders();
 
-        if ( requestHeaders.get("Cookie").equals("logined=true")) {
+        if (requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
 
             // 동적 페이지 생성

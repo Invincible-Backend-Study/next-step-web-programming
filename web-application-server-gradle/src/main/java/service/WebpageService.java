@@ -37,7 +37,7 @@ public class WebpageService {
         String result = "";
 
         int i = 0;
-        for(User user : users) {
+        for (User user : users) {
             i++;
             builder.append(result)
                     .append("<tr>")
