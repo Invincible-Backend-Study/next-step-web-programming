@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 public class HttpResponse {
     private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
-    private String forwardUri;
     private final Map<String, Object> cookies = new HashMap<>();
 
     public HttpResponse(final OutputStream out) {
@@ -37,7 +36,7 @@ public class HttpResponse {
         responseBody(dos, fileBytes);
     }
 
-    public void setCookie(final String cookieKey, final Object value) {
+    public void addCookie(final String cookieKey, final Object value) {
         cookies.put(cookieKey, value);
     }
 

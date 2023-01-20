@@ -25,7 +25,7 @@ public class LoginController implements Controller {
         }
         Boolean login = userService.login(userId, password);
         log.info("login result={}", login);
-        httpResponse.setCookie("logined", login);
+        httpResponse.addCookie("logined", login);
         httpResponse.sendRedirect("/index.html");
         return login;
     }
