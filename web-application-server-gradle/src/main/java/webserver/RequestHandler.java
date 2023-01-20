@@ -1,16 +1,15 @@
 package webserver;
 
+import controller.FrontController;
+import controller.http.HttpRequest;
+import controller.http.HttpResponse;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import controller.FrontController;
-import utils.HttpRequestUtils;
 import utils.dto.RequestLine;
 
 public class RequestHandler extends Thread {
@@ -30,13 +29,14 @@ public class RequestHandler extends Thread {
              OutputStream out = connection.getOutputStream()) {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
 
-            FrontController frontController = new FrontController(in);
-            RequestLine requestLine = frontController.getRequestLine();
-            byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestLine.getUri()).toPath());
-
-            DataOutputStream dos = new DataOutputStream(out);
-            response200Header(dos, fileBytes.length);
-            responseBody(dos, fileBytes);
+            HttpRequest httpRequest = new HttpRequest(in);
+            HttpResponse httpResponse = new HttpResponse(out);
+            FrontController frontController = new FrontController(httpRequest, httpResponse);
+            RequestLine requestLine = httpRequest.getRequestLine();
+//            byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestLine.getUri()).toPath());
+//            DataOutputStream dos = new DataOutputStream(out);
+//            response200Header(dos, fileBytes.length);
+//            responseBody(dos, fileBytes);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
