@@ -35,14 +35,15 @@ public class RequestHandler extends Thread {
 
             // 동작 맵핑 및 반환
             Response response = controllerMapper.mapping(myHttpRequest);
+            log.debug("Response => " + response.toString());
             String httpStatus = response.getHttpStatus();
             String resourcePath = response.getPath();
+            byte[] body = response.getBody();
 
             // 응답 작성
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + resourcePath).toPath());
 
-            if (resourcePath.contains(".css")) {
+            if (resourcePath.endsWith(".css")) {
                 responseHeaderForCss(dos, body.length);
             } else {
                 responseHeader(dos, body.length, httpStatus);

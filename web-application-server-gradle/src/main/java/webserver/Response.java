@@ -1,5 +1,7 @@
 package webserver;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 public class Response {
@@ -33,6 +35,6 @@ public class Response {
 
     @Override
     public String toString() {
-        return httpStatus + ", " + path + ", body:" + ((body!=null)?body.toString():"-");
+        return httpStatus + ", " + path + ", headers:" + ((headers!=null)?headers.toString():"-") + ", body:" + ((body!=null)?body.toString():"-");
     }
 }
