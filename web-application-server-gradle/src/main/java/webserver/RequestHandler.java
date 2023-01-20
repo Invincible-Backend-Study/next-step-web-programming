@@ -10,13 +10,16 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
+import util.IOUtils;
 
 public class RequestHandler extends Thread {
     //로깅 라이브러리
@@ -33,11 +36,23 @@ public class RequestHandler extends Thread {
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            byte[] body = getBody(in);
-            if (body == null) {
+            byte[] body = null;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            String line = reader.readLine();
+            if (line == null) {
                 return;
             }
+            String url = Arrays.asList(line.split(" ")).get(1);
             DataOutputStream dos = new DataOutputStream(out);
+            if (url.startsWith("/user/create")) {
+                int index = url.indexOf("?");
+                String param = url.substring(index + 1);
+                Map<String, String> queryString = HttpRequestUtils.parseQueryString(param);
+                User user = new User(queryString.get("userId"), queryString.get("password"), queryString.get("name"),
+                        queryString.get("email"));
+                url = "/index.html";
+            }
+            body = Files.readAllBytes(Paths.get(new File("./web-application-server-gradle/webapp").toPath() + url));
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {
@@ -45,23 +60,6 @@ public class RequestHandler extends Thread {
         }
     }
 
-    private static byte[] getBody(InputStream in) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        String line = reader.readLine();
-        if (line == null) {
-            return null;
-        }
-        String url = Arrays.asList(line.split(" ")).get(1);
-        if (url.startsWith("/user/create")) {
-            int index = url.indexOf("?");
-            String param = url.substring(index + 1);
-            Map<String, String> queryString = HttpRequestUtils.parseQueryString(param);
-            User user = new User(queryString.get("userId"), queryString.get("password"), queryString.get("name"),
-                    queryString.get("email"));
-            url = "/index.html";
-        }
-        return Files.readAllBytes(Paths.get(new File("./web-application-server-gradle/webapp").toPath() + url));
-    }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
