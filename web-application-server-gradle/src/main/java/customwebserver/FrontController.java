@@ -56,7 +56,12 @@ public class FrontController {
     }
 
     private void responseStaticUri() throws IOException {
-        httpResponse.successStaticUri(httpRequest.getRequestUri());
+        String requestUri = httpRequest.getRequestUri();
+        if (requestUri.contains("css")) {
+            httpResponse.successStaticCss(requestUri);
+            return;
+        }
+        httpResponse.successStaticUri(requestUri);
     }
 
     private void responseUriWithEmptyData(final boolean success) {

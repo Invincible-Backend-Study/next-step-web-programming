@@ -37,6 +37,12 @@ public class HttpResponse {
         responseBody(dos, fileBytes);
     }
 
+    public void successStaticCss(final String requestUri) throws IOException {
+        byte[] fileBytes = getFileBytes(requestUri);
+        response200HeaderWithCss(dos, fileBytes.length);
+        responseBody(dos, fileBytes);
+    }
+
     public void sendRedirect(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
         response302Header(dos, fileBytes.length, path);
@@ -45,6 +51,10 @@ public class HttpResponse {
 
     public void addCookie(final String cookieKey, final Object value) {
         cookies.put(cookieKey, value);
+    }
+
+    public void sendResponseBody(final String data) {
+        this.responseBodyData = data;
     }
 
     private String getAllCookieMessage() {
@@ -88,6 +98,18 @@ public class HttpResponse {
         }
     }
 
+    private void response200HeaderWithCss(final DataOutputStream dos, final int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
     private void response200HeaderWithBody(final DataOutputStream dos, final int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
@@ -112,9 +134,5 @@ public class HttpResponse {
     private static byte[] getFileBytes(final String requestUri) throws IOException {
         byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestUri).toPath());
         return fileBytes;
-    }
-
-    public void sendResponseBody(final String data) {
-        this.responseBodyData = data;
     }
 }
