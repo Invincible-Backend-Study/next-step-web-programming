@@ -33,7 +33,7 @@ public class RequestHandler extends Thread {
             MyHttpRequest myHttpRequest = httpRequestFromInputStream(in);
             log.debug("request  ===========>" + myHttpRequest.toString());
 
-            // 동작 맵핑 및 반환
+            // 컨트롤러 맵핑 및 반환
             Response response = controllerMapper.mapping(myHttpRequest);
             log.debug("Response => " + response.toString());
 
@@ -54,25 +54,17 @@ public class RequestHandler extends Thread {
         InputStreamReader reader = new InputStreamReader(in);
         BufferedReader br = new BufferedReader(reader);
 
-        List<String> lines = new ArrayList<>();
-        String line;
-        while ((line = br.readLine()) != null && !"".equals(line)) {
-            lines.add(line);
-            log.debug("BufferedReader: " + line);
-        }
+        List<String> lines = readInputStream(br);
 
-        // RequestHttp Full
+        // RequestLine 가져오기
         String[] tokens = lines.get(0).split(" ");
         lines.remove(0);
-
-        // url 가져오기
         String httpMethod = tokens[0];
         String url = tokens[1];
+
+        // request path & parameter 읽기
         String requestPath = url;
         Map<String, String> parameters = null;
-        Map<String, String> headers = new HashMap<String, String>();
-
-        // request path & parameter 분리
         int index = url.indexOf("?");
         if (index != -1) {
             requestPath = url.substring(0, index);
@@ -81,13 +73,9 @@ public class RequestHandler extends Thread {
             // parameter map으로 분리
             parameters = HttpRequestUtils.parseQueryString(params);
         }
-        if (index == -1) {
-            requestPath = url;
-        }
-        log.debug("url =>" + url);
-        log.debug("path =>" + requestPath);
 
         // header 읽기
+        Map<String, String> headers = new HashMap<String, String>();
         for (String l : lines) {
             if ("".equals(l)) {
                 break;
@@ -114,7 +102,7 @@ public class RequestHandler extends Thread {
         return new MyHttpRequest(httpMethod, requestPath, parameters, headers, requestBody);
     }
 
-    private static List<String> readHttpRequest(BufferedReader br) throws IOException {
+    private static List<String> readInputStream(BufferedReader br) throws IOException {
         List<String> lines = new ArrayList<>();
         String line;
         while ((line = br.readLine()) != null && !"".equals(line)) {

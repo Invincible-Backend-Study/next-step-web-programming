@@ -69,23 +69,28 @@ public class WebpageController {
         if (requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
 
-            // 동적 페이지 생성
-            StringBuilder sb = new StringBuilder();
-            File file = new File(RESOURCE_PATH + "/user/list.html");
-            BufferedReader br = new BufferedReader((new FileReader(file)));
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line + "\r\n");
-            }
-            String content = new String(sb);
-            content = content.replaceAll("noUserInDB", users);
-
-            byte[] body = content.getBytes();
+            byte[] body = dynamicUserList(users);
             List<String> headers = ResponseHeadersMaker.ok(body.length);
             return new Response(headers, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login.html").toPath());
         List<String> headers = ResponseHeadersMaker.found("/user/login.html");
         return new Response(headers, body);
+    }
+
+    private static byte[] dynamicUserList(String users) throws IOException {
+        // 동적 페이지 생성
+        StringBuilder sb = new StringBuilder();
+        File file = new File(RESOURCE_PATH + "/user/list.html");
+        BufferedReader br = new BufferedReader((new FileReader(file)));
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line + "\r\n");
+        }
+        String content = new String(sb);
+        content = content.replaceAll("noUserInDB", users);
+
+        byte[] body = content.getBytes();
+        return body;
     }
 }
