@@ -57,7 +57,25 @@ at webserver.RequestHandler.run(RequestHandler.java:40)
 * StringBuilder: https://onlyfor-me-blog.tistory.com/317
 * StringBuilder Insert : https://ponyozzang.tistory.com/178
 
-### 요구사항 6 - stylesheet 적용
+### 요구사항 6 - 유저목록
+- 한 유저가 여러명 뜸 ㅠㅠ
+![img_1.png](img_1.png)
+
+- StringBuilder.toString()을 사용해도 builder 내부에 있는 내용이 사라지지 않으므로, 사용시 유의!
+  - 아래처럼 사용해야함
+```java
+StringBuilder builder = new StringBuilder();
+String result = "";
+
+for(User user : users) {
+    builder.append(result)
+            .append("내용내용내용");
+}
+
+result = builder.toString();
+```
+
+### 요구사항 7 - stylesheet 적용
 * 
 
 ### heroku 서버에 배포 후
