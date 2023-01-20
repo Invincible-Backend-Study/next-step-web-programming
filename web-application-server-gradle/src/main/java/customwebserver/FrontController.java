@@ -36,8 +36,7 @@ public class FrontController {
     }
 
     /**
-     * 1. 컨트롤러가 존재하는지 체크
-     * 2. 정적 파일 체크
+     * 1. 컨트롤러가 존재하는지 체크 2. 정적 파일 체크
      */
     private void requestDispatch() throws IOException {
         Controller requestController = (Controller) handlerMapping.get(httpRequest.getRequestUri());

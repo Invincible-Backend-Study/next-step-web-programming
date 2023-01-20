@@ -11,6 +11,7 @@ public class DataBase {
     static {
         users.put("test", new User("test", "1234", "test", "test@none.com"));
     }
+
     public static void addUser(User user) {
         users.put(user.getUserId(), user);
     }
