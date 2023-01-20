@@ -2,7 +2,6 @@ package webserver;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
 import util.IOUtils;
+import webserver.http.MyHttpRequest;
+import webserver.http.Response;
 
 public class RequestHandler extends Thread {
-    private static final String RESOURCE_PATH = "./webapp";
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
     private Socket connection;
@@ -37,16 +37,12 @@ public class RequestHandler extends Thread {
             Response response = controllerMapper.mapping(myHttpRequest);
             log.debug("Response => " + response.toString());
             String httpStatus = response.getHttpStatus();
+            List<String> headers = response.getHeaders();
             byte[] body = response.getBody();
 
             // 응답 작성
             DataOutputStream dos = new DataOutputStream(out);
-
-            if (myHttpRequest.getRequestPath().endsWith(".css")) {  //TODO 헤더를 여기서 확인하지 않게 수정 필요
-                responseHeaderForCss(dos, body.length);
-            } else {
-                responseHeader(dos, body.length, httpStatus);
-            }
+            responseHeader(dos, headers);
             responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -128,27 +124,11 @@ public class RequestHandler extends Thread {
         return lines;
     }
 
-    private void responseHeader(DataOutputStream dos, int lengthOfBodyContent, String httpStatus) {
+    private void responseHeader(DataOutputStream dos, List<String> headers) {
         try {
-            dos.writeBytes("HTTP/1.1 " + httpStatus + " \r\n");
-            if ("302 Found".equals(httpStatus)) {
-                dos.writeBytes("Location: /index.html\r\n");
-            } else {
-                dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-                dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            for (String header : headers) {
+                dos.writeBytes(header + "\r\n");
             }
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void responseHeaderForCss(DataOutputStream dos, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }

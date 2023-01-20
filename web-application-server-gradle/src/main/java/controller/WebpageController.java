@@ -5,13 +5,15 @@ import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.WebpageService;
-import webserver.MyHttpRequest;
+import webserver.ResponseHeadersMaker;
+import webserver.http.MyHttpRequest;
 import webserver.RequestHandler;
-import webserver.Response;
+import webserver.http.Response;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Map;
 
 public class WebpageController {
@@ -19,14 +21,29 @@ public class WebpageController {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
     private static final WebpageService webpageService = new WebpageService();
 
+    public Response defaultResponse(MyHttpRequest myHttpRequest) throws IOException {
+        String path = myHttpRequest.getRequestPath();
+
+        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + path).toPath());
+
+        List<String> headers = null;
+        if (path.endsWith(".css")) {
+            headers = ResponseHeadersMaker.css(body.length);
+        } else {
+            headers = ResponseHeadersMaker.ok(body.length);
+        }
+
+        return new Response("200 OK", headers, body);
+    }
+
     public Response signup(MyHttpRequest myHttpRequest) throws IOException {
         Map<String, String> params = myHttpRequest.getParameters();
         webpageService.signup(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
 
-        log.debug(DataBase.findAll().toString());
-
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        return new Response("302 Found", null, body);
+        List<String> headers = ResponseHeadersMaker.found("/index.html");
+
+        return new Response("302 Found", headers, body);
     }
 
     public Response login(MyHttpRequest myHttpRequest) throws IOException {
@@ -35,21 +52,25 @@ public class WebpageController {
 
         if (user == null) {
             byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login_failed.html").toPath());
-            return new Response("404 NotFound", null, body);
+            List<String> headers = ResponseHeadersMaker.found("/index.html");
+            return new Response("404 NotFound", headers, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        return new Response("302 Found", null, body);
+        List<String> headers = ResponseHeadersMaker.found("/index.html");
+        return new Response("302 Found", headers, body);
     }
 
     public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
-        Map<String, String> headers = myHttpRequest.getHttpHeaders();
+        Map<String, String> requestHeaders = myHttpRequest.getHttpHeaders();
 
-        if ( headers.get("Cookie").equals("logined=true")) {
+        if ( requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
             byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/list.html").toPath());
-            return new Response("200 OK", null, body);
+            List<String> headers = ResponseHeadersMaker.found("/index.html");
+            return new Response("200 OK", headers, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        return new Response("200 OK", null, body);
+        List<String> headers = ResponseHeadersMaker.found("/index.html");
+        return new Response("200 OK", headers, body);
     }
 }
