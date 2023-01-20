@@ -35,17 +35,21 @@ public class FrontController {
     private void requestDispatch() throws IOException {
         Controller requestController = (Controller) handlerMapping.get(httpRequest.getRequestUri());
         if (requestController == null) {
-            byte[] fileBytes = Files.readAllBytes(new File("./webapp" + httpRequest.getRequestUri()).toPath());
-            httpResponse.successStaticUri(fileBytes);
+            responseStaticUri();
             return;
         }
         if (httpRequest.containMethod(HttpMethod.GET)) {
             boolean success = requestController.doGet(httpRequest, httpResponse);
-            response(success);
+            responseMappingUri(success);
         }
     }
 
-    private void response(final boolean success) {
+    private void responseStaticUri() throws IOException {
+        byte[] fileBytes = Files.readAllBytes(new File("./webapp" + httpRequest.getRequestUri()).toPath());
+        httpResponse.successStaticUri(fileBytes);
+    }
+
+    private void responseMappingUri(final boolean success) {
         if (success) {
             httpResponse.successMappingUri();
         }
