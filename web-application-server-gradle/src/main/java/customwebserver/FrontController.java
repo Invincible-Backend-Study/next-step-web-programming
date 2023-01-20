@@ -1,12 +1,11 @@
 package customwebserver;
 
 import controller.Controller;
+import controller.LoginController;
 import controller.UserController;
 import customwebserver.http.HttpRequest;
 import customwebserver.http.HttpResponse;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -19,6 +18,7 @@ public class FrontController {
 
     static {
         handlerMapping.put("/user/create", new UserController());
+        handlerMapping.put("/user/login", new LoginController());
     }
 
     private final HttpRequest httpRequest;
@@ -54,7 +54,6 @@ public class FrontController {
     }
 
     private void responseStaticUri() throws IOException {
-        byte[] fileBytes = Files.readAllBytes(new File("./webapp" + httpRequest.getRequestUri()).toPath());
         httpResponse.successStaticUri(httpRequest.getRequestUri());
     }
 

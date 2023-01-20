@@ -39,7 +39,7 @@
 
 ### 요구사항 5 - 로그인 하기 with cookie
 - [x] 사용자가 회원가입을 하게 되면 database에 해당 user 정보를 저장한다.
-- [ ] 사용자의 로그인 요청시 입력한 값과 DB의 user와 일치한다면 로그인 성공이다.
+- [x] 사용자의 로그인 요청시 입력한 값과 DB의 user와 일치한다면 로그인 성공이다.
   - [ ] 일치하지 않으면 실패
 - [ ] 로그인 성공시 response header에 cookie값으로 logined=true를 전달해야 한다.
 - [ ] 로그인을 성공하게 되면 index.html로 redirect 한다.
