@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import utils.HttpRequestUtils;
 import utils.IOUtils;
 import utils.dto.Pair;
-import utils.dto.RequestLine;
 import utils.enums.HttpMethod;
 
 public class HttpRequest {

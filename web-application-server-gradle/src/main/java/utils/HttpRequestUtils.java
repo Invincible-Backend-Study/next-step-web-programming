@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import utils.dto.Pair;
-import utils.dto.RequestLine;
+import customwebserver.http.RequestLine;
 
 public class HttpRequestUtils {
     /**
