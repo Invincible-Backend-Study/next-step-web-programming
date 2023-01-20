@@ -1,15 +1,17 @@
 package webserver;
 
-public class Response <T> {
+import java.util.Map;
+
+public class Response {
     private final String httpStatus;
     private final String path;
-    private final boolean auth;
-    private final T body;
+    private final Map<String, String> headers;
+    private final byte[] body;
 
-    public Response(String httpStatus, String path, boolean auth, T body) {
+    public Response(String httpStatus, String path, Map<String, String> headers, byte[] body) {
         this.httpStatus = httpStatus;
         this.path = path;
-        this.auth = auth;
+        this.headers = headers;
         this.body = body;
     }
 
@@ -21,11 +23,11 @@ public class Response <T> {
         return path;
     }
 
-    public boolean getAuth() {
-        return auth;
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
-    public T getBody() {
+    public byte[] getBody() {
         return body;
     }
 
