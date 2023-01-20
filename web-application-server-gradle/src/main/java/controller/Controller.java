@@ -1,7 +1,7 @@
 package controller;
 
-import controller.http.HttpRequest;
-import controller.http.HttpResponse;
+import customwebserver.http.HttpRequest;
+import customwebserver.http.HttpResponse;
 
 public interface Controller {
     /**

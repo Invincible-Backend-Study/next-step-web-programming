@@ -1,7 +1,9 @@
-package controller;
+package customwebserver;
 
-import controller.http.HttpRequest;
-import controller.http.HttpResponse;
+import controller.Controller;
+import controller.UserController;
+import customwebserver.http.HttpRequest;
+import customwebserver.http.HttpResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,7 +42,11 @@ public class FrontController {
         }
         if (httpRequest.containMethod(HttpMethod.GET)) {
             boolean success = requestController.doGet(httpRequest, httpResponse);
-            responseMappingUri(success);
+            responseUriWithEmptyData(success);
+        }
+        if (httpRequest.containMethod(HttpMethod.POST)) {
+            boolean success = requestController.doPost(httpRequest, httpResponse);
+            responseUriWithEmptyData(success);
         }
     }
 
@@ -49,7 +55,7 @@ public class FrontController {
         httpResponse.successStaticUri(fileBytes);
     }
 
-    private void responseMappingUri(final boolean success) {
+    private void responseUriWithEmptyData(final boolean success) {
         if (success) {
             httpResponse.successMappingUri();
         }

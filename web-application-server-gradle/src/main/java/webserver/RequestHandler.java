@@ -1,8 +1,8 @@
 package webserver;
 
-import controller.FrontController;
-import controller.http.HttpRequest;
-import controller.http.HttpResponse;
+import customwebserver.FrontController;
+import customwebserver.http.HttpRequest;
+import customwebserver.http.HttpResponse;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
