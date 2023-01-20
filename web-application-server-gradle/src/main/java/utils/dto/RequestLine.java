@@ -1,17 +1,32 @@
 package utils.dto;
 
+import java.util.Map;
 import java.util.Objects;
+import utils.HttpRequestUtils;
 import utils.enums.HttpMethod;
 
 public class RequestLine {
+    public static final int QUERY_STRING = 1;
+    public static final int REQUEST_URI = 0;
+
     private final HttpMethod httpMethod;
-    private final String requestUri;
+    private String requestUri;
+    private Map<String, String> queryStrings;
     private final String httpVersion;
 
     private RequestLine(final HttpMethod httpMethod, final String requestUri, final String httpVersion) {
         this.httpMethod = httpMethod;
         this.requestUri = requestUri;
         this.httpVersion = httpVersion;
+        parseQueryString();
+    }
+
+    private void parseQueryString() {
+        if (requestUri.contains("?")) {
+            String[] splitRequestUri = requestUri.split("\\?");
+            queryStrings = HttpRequestUtils.parseQueryString(splitRequestUri[QUERY_STRING]);
+            requestUri = splitRequestUri[REQUEST_URI];
+        }
     }
 
     public static RequestLine from(final String header) {
@@ -21,6 +36,14 @@ public class RequestLine {
 
     public String getUri() {
         return requestUri;
+    }
+
+    public boolean containMethod(final HttpMethod method) {
+        return httpMethod == method;
+    }
+
+    public String getQueryString(final String userId) {
+        return queryStrings.get(userId);
     }
 
     @Override
@@ -39,5 +62,15 @@ public class RequestLine {
     @Override
     public int hashCode() {
         return Objects.hash(httpMethod, requestUri, httpVersion);
+    }
+
+    @Override
+    public String toString() {
+        return "RequestLine{" +
+                "httpMethod=" + httpMethod +
+                ", requestUri='" + requestUri + '\'' +
+                ", queryStrings=" + queryStrings +
+                ", httpVersion='" + httpVersion + '\'' +
+                '}';
     }
 }
