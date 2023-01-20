@@ -20,6 +20,15 @@ public class ResponseHeadersMaker {
         );
     }
 
+    public static List<String> foundLogined(String redirectUrl) {
+        return List.of(
+                "HTTP/1.1 302 Found",
+                "Set-Cookie: logined=true",
+                "Location: " + redirectUrl,
+                ""
+        );
+    }
+
     public static List<String> css(int lengthOfBodyContent) {
         return List.of(
                 "HTTP/1.1 200 OK",

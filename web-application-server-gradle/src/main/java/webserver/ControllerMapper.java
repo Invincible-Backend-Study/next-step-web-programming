@@ -7,7 +7,6 @@ import webserver.http.Response;
 import java.io.IOException;
 
 public class ControllerMapper {
-    private static final String RESOURCE_PATH = "./webapp";
     private final WebpageController webpageController = new WebpageController();
 
     public Response mapping(MyHttpRequest myHttpRequest) throws IOException {
@@ -21,7 +20,7 @@ public class ControllerMapper {
         if ("POST".equals(method) && "/user/login".equals(path)) {
             return webpageController.login(myHttpRequest);
         }
-        if ("GET".equals(method) && "/user/list".equals(path)) {
+        if ("GET".equals(method) && "/user/list.html".equals(path)) {
             return webpageController.getUserList(myHttpRequest);
         }
         return webpageController.defaultResponse(myHttpRequest);

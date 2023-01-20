@@ -56,20 +56,22 @@ public class WebpageController {
             return new Response(headers, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        List<String> headers = ResponseHeadersMaker.found("/index.html");
+        List<String> headers = ResponseHeadersMaker.foundLogined("/index.html");
         return new Response(headers, body);
     }
 
     public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
         Map<String, String> requestHeaders = myHttpRequest.getHttpHeaders();
 
+        log.debug("----->" + requestHeaders.get("Cookie"));
         if ( requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
-            byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/list.html").toPath());
-            List<String> headers = ResponseHeadersMaker.found("/index.html");
+            log.debug("user -----> "+users);
+            byte[] body = users.getBytes();
+            List<String> headers = ResponseHeadersMaker.ok(body.length);
             return new Response(headers, body);
         }
-        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
+        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login.html").toPath());
         List<String> headers = ResponseHeadersMaker.found("/index.html");
         return new Response(headers, body);
     }
