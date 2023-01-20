@@ -6,9 +6,11 @@ import java.io.IOException;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.UserService;
 
 public class UserController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService = new UserService();
 
     @Override
     public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
@@ -21,6 +23,7 @@ public class UserController implements Controller {
         }
         User user = new User(userId, password, name, email);
         log.info("GET 회원가입 user={}", user);
+        userService.addUser(user);
         httpResponse.sendRedirect("/index.html");
         return true;
     }
@@ -36,6 +39,7 @@ public class UserController implements Controller {
         }
         User user = new User(userId, password, name, email);
         log.info("POST 회원가입 user={}", user);
+        userService.addUser(user);
         httpResponse.sendRedirect("/index.html");
         return true;
     }
