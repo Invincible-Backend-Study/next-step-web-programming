@@ -1,12 +1,10 @@
 package controller.http;
 
-import controller.UserController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,7 +53,7 @@ public class HttpRequest {
         return requestLine.containMethod(method);
     }
 
-    public String getAttribute(final String userId) {
+    public String getParameter(final String userId) {
         return requestLine.getQueryString(userId);
     }
 }

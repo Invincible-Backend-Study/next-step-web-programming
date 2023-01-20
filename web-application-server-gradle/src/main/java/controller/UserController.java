@@ -11,10 +11,10 @@ public class UserController implements Controller {
 
     @Override
     public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) {
-        String userId = httpRequest.getAttribute("userId");
-        String password = httpRequest.getAttribute("password");
-        String name = httpRequest.getAttribute("name");
-        String email = httpRequest.getAttribute("email");
+        String userId = httpRequest.getParameter("userId");
+        String password = httpRequest.getParameter("password");
+        String name = httpRequest.getParameter("name");
+        String email = httpRequest.getParameter("email");
         if (userId == null || password == null || name == null || email == null) {
             throw new IllegalArgumentException("[ERROR] 회원가입 오류");
         }
