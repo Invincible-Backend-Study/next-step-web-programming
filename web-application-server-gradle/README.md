@@ -21,7 +21,7 @@
 - [x]  전송 방식은 기본이 HTTP/1.1이다.
 
 ### 요구사항 2 - get 방식으로 회원가입
-- [ ] 모든 요청은 Request Line, Request Header, Message body로 나뉜다.
+- [x] 모든 요청은 Request Line, Request Header, Message body로 나뉜다.
 - [X] GET 쿼리스트링으로 값이 들어온다면, URI와 쿼리스트링을 분리할 수 있어야한다.
   - [X] 각 쿼리스트링 값은 &로 구분되며, key=value 타입이다.
 - [ ] 입력받은 내용을 가지고 회원가입을 해야한다.
