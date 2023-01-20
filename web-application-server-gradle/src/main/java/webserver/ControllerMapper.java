@@ -2,9 +2,6 @@ package webserver;
 
 import controller.WebpageController;
 
-import java.io.File;
-import java.nio.file.Files;
-
 public class ControllerMapper {
     private final WebpageController webpageController = new WebpageController();
 
@@ -18,6 +15,9 @@ public class ControllerMapper {
         }
         if ("POST".equals(method) && "/user/login".equals(path)) {
             return webpageController.login(myHttpRequest);
+        }
+        if ("GET".equals(method) && "/user/list".equals(path)) {
+            return webpageController.getUserList(myHttpRequest);
         }
         return null;
     }

@@ -30,40 +30,51 @@ public class RequestHandler extends Thread {
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             // BufferedReader 값 읽기
-            InputStreamReader reader = new InputStreamReader(in);
-            BufferedReader br = new BufferedReader(reader);
-
-            List<String> lines = readHttpRequest(br);
-            if (lines == null) {
-                return;
-            }
-            MyHttpRequest myHttpRequest = linesToMyHttpRequest(br, lines);
+            MyHttpRequest myHttpRequest = httpRequestFromInputStream(in);
             log.debug("request  ===========>" + myHttpRequest.toString());
 
             // 동작 맵핑 및 반환
             Response response = controllerMapper.mapping(myHttpRequest);
 
-            boolean auth = false;
             String httpStatus = "200 OK";
             String resourcePath = myHttpRequest.getRequestPath();
             if (response != null) {
                 log.debug("response ===========>" + response.toString());
                 resourcePath = response.getPath();
                 httpStatus = response.getHttpStatus();
-                auth = response.getAuth();
+
+                // user list 반환
+                if (resourcePath.equals("/user/list.html")) {
+                }
             }
 
             // 응답 작성
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + resourcePath).toPath());
-            responseHeader(dos, body.length, httpStatus, auth);
+
+            if (resourcePath.contains(".css")) {
+                responseHeaderForCss(dos, body.length);
+            } else {
+                responseHeader(dos, body.length, httpStatus);
+            }
             responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private static MyHttpRequest linesToMyHttpRequest(BufferedReader br, List<String> lines) throws IOException {
+    private static MyHttpRequest httpRequestFromInputStream(InputStream in) throws IOException {
+        // BufferedReader 값 읽기
+        InputStreamReader reader = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(reader);
+
+        List<String> lines = new ArrayList<>();
+        String line;
+        while ((line = br.readLine()) != null && !"".equals(line)) {
+            lines.add(line);
+            log.debug("BufferedReader: " + line);
+        }
+
         // RequestHttp Full
         String[] tokens = lines.get(0).split(" ");
         lines.remove(0);
@@ -90,14 +101,12 @@ public class RequestHandler extends Thread {
         log.debug("url =>" + url);
         log.debug("path =>" + requestPath);
 
-
-
         // header 읽기
-        for (String line : lines) {
-            if ("".equals(line)) {
+        for (String l : lines) {
+            if ("".equals(l)) {
                 break;
             }
-            String[] headerTokens = line.split(": ");
+            String[] headerTokens = l.split(": ");
             if (headerTokens.length == 2) {
                 headers.put(headerTokens[0], headerTokens[1]);
             }
@@ -105,15 +114,18 @@ public class RequestHandler extends Thread {
         log.debug("contentLength:" + headers.get("Content-Length"));
 
         // request body 읽기
+        String requestBody = null;
         if (headers.get("Content-Length") != null) {
-            String requestBody = IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));
+            requestBody = IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));
             if (!"".equals(requestBody)) {
                 log.debug("requestBody: " + requestBody);
-                parameters = HttpRequestUtils.parseQueryString(requestBody);
+                if ("POST".equals(httpMethod)) {
+                    parameters = HttpRequestUtils.parseQueryString(requestBody);
+                }
             }
         }
 
-        return new MyHttpRequest(headers, httpMethod, requestPath, parameters);
+        return new MyHttpRequest(httpMethod, requestPath, parameters, headers, requestBody);
     }
 
     private static List<String> readHttpRequest(BufferedReader br) throws IOException {
@@ -140,22 +152,36 @@ public class RequestHandler extends Thread {
     private void response302Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("Location: /index.html\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void responseHeader(DataOutputStream dos, int lengthOfBodyContent, String httpStatus, boolean isLogin) {
+    private void responseHeader(DataOutputStream dos, int lengthOfBodyContent, String httpStatus) {
         try {
             dos.writeBytes("HTTP/1.1 " + httpStatus + " \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            if (isLogin) {
-                dos.writeBytes("Set-Cookie: " + "logined=true");
+            if ("302 Found".equals(httpStatus)) {
+                dos.writeBytes("Location: /index.html\r\n");
+            } else {
+                dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+                dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             }
+//            if (isLogin) {
+//                dos.writeBytes("Set-Cookie: " + "logined=true");
+//            }
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void responseHeaderForCss(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());

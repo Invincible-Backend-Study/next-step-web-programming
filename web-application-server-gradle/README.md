@@ -38,7 +38,8 @@
 ```
 
 ### 요구사항 4 - redirect 방식으로 이동
-* 
+* HTTP 302 상태 적용 후, Location: href 를 적용하지 않으니 url에 /user 가 한번 더 붙는 문제가 발생함
+  * ex) /user/user/form.html
 * 에러 발생
 ```java
 Exception in thread "Thread-34" java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
@@ -53,7 +54,8 @@ at webserver.RequestHandler.run(RequestHandler.java:40)
 
 
 ### 요구사항 5 - cookie
-* 
+* StringBuilder: https://onlyfor-me-blog.tistory.com/317
+* StringBuilder Insert : https://ponyozzang.tistory.com/178
 
 ### 요구사항 6 - stylesheet 적용
 * 

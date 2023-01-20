@@ -9,7 +9,7 @@ public class MyHttpRequest {
     private final Map<String, String> httpHeaders;
     private final String requestBody;
 
-    public MyHttpRequest(Map<String, String> httpHeaders, String httpMethod, String requestPath, Map<String, String> parameters, String requestBody) {
+    public MyHttpRequest(String httpMethod, String requestPath, Map<String, String> parameters, Map<String, String> httpHeaders, String requestBody) {
         this.httpHeaders = httpHeaders;
         this.httpMethod = httpMethod;
         this.requestPath = requestPath;
