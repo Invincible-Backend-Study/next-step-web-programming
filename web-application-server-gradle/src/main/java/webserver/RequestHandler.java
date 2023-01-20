@@ -32,7 +32,7 @@ public class RequestHandler extends Thread {
             HttpRequest httpRequest = new HttpRequest(in);
             HttpResponse httpResponse = new HttpResponse(out);
             FrontController frontController = new FrontController(httpRequest, httpResponse);
-            RequestLine requestLine = httpRequest.getRequestLine();
+            frontController.doProcess();
 //            byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestLine.getUri()).toPath());
 //            DataOutputStream dos = new DataOutputStream(out);
 //            response200Header(dos, fileBytes.length);

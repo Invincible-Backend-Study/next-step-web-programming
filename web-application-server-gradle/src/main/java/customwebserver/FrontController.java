@@ -24,9 +24,12 @@ public class FrontController {
     private final HttpRequest httpRequest;
     private final HttpResponse httpResponse;
 
-    public FrontController(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public FrontController(final HttpRequest httpRequest, final HttpResponse httpResponse) {
         this.httpRequest = httpRequest;
         this.httpResponse = httpResponse;
+    }
+
+    public void doProcess() throws IOException {
         requestDispatch();
     }
 
