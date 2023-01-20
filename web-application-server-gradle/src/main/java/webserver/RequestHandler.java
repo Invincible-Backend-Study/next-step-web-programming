@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import model.User;
 import org.slf4j.Logger;
@@ -26,6 +27,12 @@ public class RequestHandler extends Thread {
 
     public RequestHandler(Socket connectionSocket) {
         this.connection = connectionSocket;
+    }
+
+    private static Map<String, String> parseBodyParams(BufferedReader bufferedReader,
+                                                       int contentLength) throws IOException {
+        var bodyData = IOUtils.readData(bufferedReader, contentLength);
+        return HttpRequestUtils.parseQueryString(bodyData);
     }
 
     public void run() {
@@ -63,9 +70,8 @@ public class RequestHandler extends Thread {
 
             // 회원가입을 처리하기 위한 경로
             if (requestPath.equals("/user/create")) {
-                var bodyData = IOUtils.readData(bufferedReader,
+                Map<String, String> bodyParams = parseBodyParams(bufferedReader,
                         Integer.parseInt(httpHeaders.get("Content-Length").trim()));
-                var bodyParams = HttpRequestUtils.parseQueryString(bodyData);
                 var user = User.builder()
                         .userId(bodyParams.get("userId"))
                         .password(bodyParams.get("password"))
@@ -73,6 +79,7 @@ public class RequestHandler extends Thread {
                         .name(bodyParams.get("name"))
                         .build();
                 DataBase.addUser(user);
+
                 log.info(DataBase.findUserById(bodyParams.get("userId")).toString());
 
                 url = "/index.html";
@@ -80,10 +87,10 @@ public class RequestHandler extends Thread {
                 responseRedirectHeader(dos, url);
                 return;
             }
+            // 로그인을 처리하기 위한 경로
             if (requestPath.equals("/user/login")) {
-                var bodyData = IOUtils.readData(bufferedReader,
+                Map<String, String> bodyParams = parseBodyParams(bufferedReader,
                         Integer.parseInt(httpHeaders.get("Content-Length").trim()));
-                var bodyParams = HttpRequestUtils.parseQueryString(bodyData);
 
                 var userId = bodyParams.get("userId");
                 var password = bodyParams.get("password");
@@ -132,7 +139,7 @@ public class RequestHandler extends Thread {
                         + "</ul>"
                         + "</body>"
                         + "</html>";
-                responseHtmlBody(new DataOutputStream(out), html);
+                responseHtml(new DataOutputStream(out), html);
                 return;
             }
 
@@ -146,7 +153,7 @@ public class RequestHandler extends Thread {
         }
     }
 
-    private void responseHtmlBody(DataOutputStream dos, String html) {
+    private void responseHtml(DataOutputStream dos, String html) {
         try {
             dos.writeBytes("HTTP/1.1 202 OK \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
@@ -173,8 +180,6 @@ public class RequestHandler extends Thread {
         try {
             dos.writeBytes("HTTP/1.1 302 FOUND \r\n");
             dos.writeBytes("Location: " + location);
-            //dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            //dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
