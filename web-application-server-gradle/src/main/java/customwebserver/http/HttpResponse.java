@@ -16,7 +16,7 @@ public class HttpResponse {
 
     public void successMappingUri() {
         response200Header(dos, 0);
-        responseBody(dos, null);
+        responseBody(dos, "".getBytes());
     }
 
     public void successStaticUri(final byte[] fileBytes) {

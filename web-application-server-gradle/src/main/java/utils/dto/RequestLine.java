@@ -42,8 +42,11 @@ public class RequestLine {
         return httpMethod == method;
     }
 
-    public String getQueryString(final String userId) {
-        return queryStrings.get(userId);
+    public String getQueryString(final String parameterName) {
+        if (queryStrings == null || !queryStrings.containsKey(parameterName)) {
+            return null;
+        }
+        return queryStrings.get(parameterName);
     }
 
     @Override

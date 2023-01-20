@@ -1,4 +1,4 @@
-package controller.http;
+package customwebserver.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.HttpRequestUtils;
+import utils.IOUtils;
 import utils.dto.Pair;
 import utils.dto.RequestLine;
 import utils.enums.HttpMethod;
@@ -22,14 +23,25 @@ public class HttpRequest {
     private final BufferedReader httpRequest;
     private RequestLine requestLine;
     private Map<String, String> requestHeaderKeyValue;
+    private Map<String, String> queryStringByForm;
 
     public HttpRequest(final InputStream in) throws IOException {
         httpRequest = new BufferedReader(new InputStreamReader(in));
         requestLine = HttpRequestUtils.parseRequestLine(httpRequest.readLine());
-        requestHeaderKeyValue = parseHttpRequestHeaderKeyValue(httpRequest);
+        requestHeaderKeyValue = parseHttpRequestHeaderKeyValue();
+        queryStringByForm = parseQueryStringByForm();
     }
 
-    private Map<String, String> parseHttpRequestHeaderKeyValue(final BufferedReader httpRequest) throws IOException {
+        private Map<String, String> parseQueryStringByForm() throws IOException {
+        if (requestHeaderKeyValue.containsKey("Content-Length")) {
+            String formData = IOUtils.readData(httpRequest, Integer.parseInt(requestHeaderKeyValue.get("Content-Length")));
+            log.info("POST form Data={}", formData);
+            return HttpRequestUtils.parseQueryString(formData);
+        }
+        return null;
+    }
+
+    private Map<String, String> parseHttpRequestHeaderKeyValue() throws IOException {
         String header = httpRequest.readLine();
         List<Pair> headerPairs = new ArrayList<>();
         while (!header.equals(EMPTY)) {
@@ -53,7 +65,14 @@ public class HttpRequest {
         return requestLine.containMethod(method);
     }
 
-    public String getParameter(final String userId) {
-        return requestLine.getQueryString(userId);
+    /**
+     * url에 붙은 쿼리스트링 값이 없다면, form 데이터 조회
+     */
+    public String getParameter(final String parameterName) {
+        String urlQueryString = requestLine.getQueryString(parameterName);
+        if (urlQueryString != null) {
+            return urlQueryString;
+        }
+        return queryStringByForm.get(parameterName);
     }
 }
