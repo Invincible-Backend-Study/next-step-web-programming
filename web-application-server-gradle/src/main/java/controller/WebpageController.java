@@ -26,7 +26,7 @@ public class WebpageController {
         log.debug(DataBase.findAll().toString());
 
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        return new Response("302 Found", "/index.html", null, body);
+        return new Response("302 Found", null, body);
     }
 
     public Response login(MyHttpRequest myHttpRequest) throws IOException {
@@ -35,10 +35,10 @@ public class WebpageController {
 
         if (user == null) {
             byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login_failed.html").toPath());
-            return new Response("404 NotFound", "/user/login_failed.html", null, body);
+            return new Response("404 NotFound", null, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        return new Response("302 Found", "/index.html", null, body);
+        return new Response("302 Found", null, body);
     }
 
     public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
@@ -47,9 +47,9 @@ public class WebpageController {
         if ( headers.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
             byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/list.html").toPath());
-            return new Response("200 OK", "/user/list.html", null, body);
+            return new Response("200 OK", null, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        return new Response("200 OK", "/index.html", null, body);
+        return new Response("200 OK", null, body);
     }
 }

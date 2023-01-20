@@ -27,6 +27,6 @@ public class ControllerMapper {
 
         // 맵핑할게 없는 경우 해당 path에 파일을 반환
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + path).toPath());
-        return new Response("200 OK", path, null, body);
+        return new Response("200 OK", null, body);
     }
 }

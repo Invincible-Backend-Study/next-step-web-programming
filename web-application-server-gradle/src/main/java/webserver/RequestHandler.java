@@ -37,13 +37,12 @@ public class RequestHandler extends Thread {
             Response response = controllerMapper.mapping(myHttpRequest);
             log.debug("Response => " + response.toString());
             String httpStatus = response.getHttpStatus();
-            String resourcePath = response.getPath();
             byte[] body = response.getBody();
 
             // 응답 작성
             DataOutputStream dos = new DataOutputStream(out);
 
-            if (resourcePath.endsWith(".css")) {
+            if (myHttpRequest.getRequestPath().endsWith(".css")) {  //TODO 헤더를 여기서 확인하지 않게 수정 필요
                 responseHeaderForCss(dos, body.length);
             } else {
                 responseHeader(dos, body.length, httpStatus);
