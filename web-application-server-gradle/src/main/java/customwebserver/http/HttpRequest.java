@@ -16,7 +16,6 @@ import utils.dto.Pair;
 import utils.enums.HttpMethod;
 
 public class HttpRequest {
-    public static final String EMPTY = "";
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
 
     private final BufferedReader httpRequest;
@@ -68,7 +67,7 @@ public class HttpRequest {
     private Map<String, String> parseHttpRequestHeaderKeyValue() throws IOException {
         String header = httpRequest.readLine();
         List<Pair> headerPairs = new ArrayList<>();
-        while (!header.equals(EMPTY)) {
+        while (!header.equals("")) {
             headerPairs.add(HttpRequestUtils.parseHeader(header));
             header = httpRequest.readLine();
         }
