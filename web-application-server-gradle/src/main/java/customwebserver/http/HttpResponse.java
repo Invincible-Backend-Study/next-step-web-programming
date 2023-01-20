@@ -44,6 +44,7 @@ public class HttpResponse {
             log.error(e.getMessage());
         }
     }
+
     private void response200Header(final DataOutputStream dos, final int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
