@@ -55,7 +55,7 @@ public class FrontController {
 
     private void responseStaticUri() throws IOException {
         byte[] fileBytes = Files.readAllBytes(new File("./webapp" + httpRequest.getRequestUri()).toPath());
-        httpResponse.successStaticUri(fileBytes);
+        httpResponse.successStaticUri(httpRequest.getRequestUri());
     }
 
     private void responseUriWithEmptyData(final boolean success) {

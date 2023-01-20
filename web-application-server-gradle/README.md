@@ -33,9 +33,9 @@
 - [x] 회원가입을 하게되면 해당 정보로 User 클래스의 인스턴스를 생성한다.
 
 ### 요구사항 4 - redirect 방식으로 이동
-- [ ] 회원가입을 완료하면 /index.html 페이지로 이동해야 한다.
-  - [ ] Response Http Status를 302로 변경해야 한다.
-  - [ ] Location header에 /index.html을 입력해야 한다.
+- [x] 회원가입을 완료하면 /index.html 페이지로 이동해야 한다.
+  - [x] Response Http Status를 302로 변경해야 한다.
+  - [x] Location header에 /index.html을 입력해야 한다.
 
 ### 요구사항 5 - cookie
 * 
