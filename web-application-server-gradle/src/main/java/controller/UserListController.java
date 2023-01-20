@@ -14,10 +14,10 @@ public class UserListController implements Controller {
 
     @Override
     public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-        boolean logined = Boolean.valueOf(httpRequest.getCookie("logined"));
-        log.info("{}", logined);
+        Boolean logined = Boolean.valueOf(httpRequest.getCookie("logined"));
         if (!logined) {
-            return false;
+            httpResponse.sendRedirect("/user/login.html");
+            return true;
         }
         StringBuilder userList = new StringBuilder();
         userService.findAll()

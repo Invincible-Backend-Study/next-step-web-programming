@@ -45,10 +45,10 @@
 - [x] 로그인을 성공하게 되면 index.html로 redirect 한다.
 
 ### 요구사항 6 - 사용자 목록 출력
-- [ ] request header에 존재하는 쿠키값을 파싱해야 한다.
-  - [ ] logined=true라면 사용자의 목록을 보여준다.
-  - [ ] logined=false라면 로그인 페이지(login.html)로 이동한다.
-- 사용자의 목록은 데이터베이스에서 가져온다.
+- [x] request header에 존재하는 쿠키값을 파싱해야 한다.
+- [ ] logined=true라면 사용자의 목록을 보여준다.
+- [ ] logined=false라면 로그인 페이지(login.html)로 이동한다.
+- [x] 사용자의 목록은 데이터베이스에서 가져온다.
 
 ### 요구사항 7 - CSS 지원하기
 

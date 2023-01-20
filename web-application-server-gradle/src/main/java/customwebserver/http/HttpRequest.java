@@ -51,6 +51,11 @@ public class HttpRequest {
         return queryStringByForm.get(parameterName);
     }
 
+    public String getCookie(final String cookieName) {
+        Map<String, String> cookies = HttpRequestUtils.parseCookies(requestHeaderKeyValue.get("Cookie"));
+        return cookies.get(cookieName);
+    }
+
     private Map<String, String> parseQueryStringByForm() throws IOException {
         if (requestHeaderKeyValue.containsKey("Content-Length")) {
             String formData = IOUtils.readData(httpRequest,

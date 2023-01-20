@@ -3,6 +3,7 @@ package customwebserver;
 import controller.Controller;
 import controller.LoginController;
 import controller.UserController;
+import controller.UserListController;
 import customwebserver.http.HttpRequest;
 import customwebserver.http.HttpResponse;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class FrontController {
     static {
         handlerMapping.put("/user/create", new UserController());
         handlerMapping.put("/user/login", new LoginController());
+        handlerMapping.put("/user/list", new UserListController());
     }
 
     private final HttpRequest httpRequest;
