@@ -34,7 +34,6 @@ public class WebpageController {
     }
 
     public Response getUserList(MyHttpRequest myHttpRequest) {
-        Map<String, String> params = myHttpRequest.getParameters();
         Map<String, String> headers = myHttpRequest.getHttpHeaders();
 
         if ( headers.get("Cookie").equals("logined=true")) {

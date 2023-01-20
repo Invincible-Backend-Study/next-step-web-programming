@@ -19,6 +19,6 @@ public class ControllerMapper {
         if ("GET".equals(method) && "/user/list".equals(path)) {
             return webpageController.getUserList(myHttpRequest);
         }
-        return null;
+        return new Response("200 OK", path, null, null);
     }
 }

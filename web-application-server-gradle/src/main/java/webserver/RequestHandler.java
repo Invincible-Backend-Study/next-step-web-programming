@@ -35,18 +35,8 @@ public class RequestHandler extends Thread {
 
             // 동작 맵핑 및 반환
             Response response = controllerMapper.mapping(myHttpRequest);
-
-            String httpStatus = "200 OK";
-            String resourcePath = myHttpRequest.getRequestPath();
-            if (response != null) {
-                log.debug("response ===========>" + response.toString());
-                resourcePath = response.getPath();
-                httpStatus = response.getHttpStatus();
-
-                // user list 반환
-                if (resourcePath.equals("/user/list.html")) {
-                }
-            }
+            String httpStatus = response.getHttpStatus();
+            String resourcePath = response.getPath();
 
             // 응답 작성
             DataOutputStream dos = new DataOutputStream(out);
@@ -138,27 +128,6 @@ public class RequestHandler extends Thread {
         return lines;
     }
 
-    private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void response302Header(DataOutputStream dos, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 302 Found \r\n");
-            dos.writeBytes("Location: /index.html\r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
     private void responseHeader(DataOutputStream dos, int lengthOfBodyContent, String httpStatus) {
         try {
             dos.writeBytes("HTTP/1.1 " + httpStatus + " \r\n");
@@ -168,9 +137,6 @@ public class RequestHandler extends Thread {
                 dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
                 dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             }
-//            if (isLogin) {
-//                dos.writeBytes("Set-Cookie: " + "logined=true");
-//            }
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());

@@ -1,14 +1,14 @@
 package webserver;
 
-import java.util.Map;
+import java.util.List;
 
 public class Response {
     private final String httpStatus;
     private final String path;
-    private final Map<String, String> headers;
+    private final List<String> headers;
     private final byte[] body;
 
-    public Response(String httpStatus, String path, Map<String, String> headers, byte[] body) {
+    public Response(String httpStatus, String path, List<String> headers, byte[] body) {
         this.httpStatus = httpStatus;
         this.path = path;
         this.headers = headers;
@@ -23,7 +23,7 @@ public class Response {
         return path;
     }
 
-    public Map<String, String> getHeaders() {
+    public List<String> getHeaders() {
         return headers;
     }
 
