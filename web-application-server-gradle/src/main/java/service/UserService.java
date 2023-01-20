@@ -1,6 +1,8 @@
 package service;
 
 import db.DataBase;
+import java.util.ArrayList;
+import java.util.List;
 import model.User;
 
 public class UserService {
@@ -15,5 +17,9 @@ public class UserService {
             return false;
         }
         return user.getPassword().equals(password);
+    }
+
+    public List<User> findAll() {
+        return new ArrayList<>(DataBase.findAll());
     }
 }
