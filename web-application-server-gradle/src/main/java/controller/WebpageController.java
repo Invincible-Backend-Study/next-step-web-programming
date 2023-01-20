@@ -10,7 +10,9 @@ import webserver.http.MyHttpRequest;
 import webserver.RequestHandler;
 import webserver.http.Response;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
@@ -39,6 +41,7 @@ public class WebpageController {
     public Response signup(MyHttpRequest myHttpRequest) throws IOException {
         Map<String, String> params = myHttpRequest.getParameters();
         webpageService.signup(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+        log.debug("가입한 유저목록: " + DataBase.findAll().toString());
 
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
         List<String> headers = ResponseHeadersMaker.found("/index.html");
@@ -63,16 +66,26 @@ public class WebpageController {
     public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
         Map<String, String> requestHeaders = myHttpRequest.getHttpHeaders();
 
-        log.debug("----->" + requestHeaders.get("Cookie"));
         if ( requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
-            log.debug("user -----> "+users);
-            byte[] body = users.getBytes();
+
+            // 동적 페이지 생성
+            StringBuilder sb = new StringBuilder();
+            File file = new File(RESOURCE_PATH + "/user/list.html");
+            BufferedReader br = new BufferedReader((new FileReader(file)));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\r\n");
+            }
+            String content = new String(sb);
+            content = content.replaceAll("noUserInDB", users);
+
+            byte[] body = content.getBytes();
             List<String> headers = ResponseHeadersMaker.ok(body.length);
             return new Response(headers, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login.html").toPath());
-        List<String> headers = ResponseHeadersMaker.found("/index.html");
+        List<String> headers = ResponseHeadersMaker.found("/user/login.html");
         return new Response(headers, body);
     }
 }
