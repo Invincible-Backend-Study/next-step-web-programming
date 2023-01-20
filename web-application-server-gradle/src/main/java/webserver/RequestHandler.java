@@ -36,7 +36,6 @@ public class RequestHandler extends Thread {
             // 동작 맵핑 및 반환
             Response response = controllerMapper.mapping(myHttpRequest);
             log.debug("Response => " + response.toString());
-            String httpStatus = response.getHttpStatus();
             List<String> headers = response.getHeaders();
             byte[] body = response.getBody();
 

@@ -52,7 +52,7 @@ public class WebpageController {
 
         if (user == null) {
             byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login_failed.html").toPath());
-            List<String> headers = ResponseHeadersMaker.found("/index.html");
+            List<String> headers = ResponseHeadersMaker.found("/user/login_failed.html");
             return new Response(headers, body);
         }
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
