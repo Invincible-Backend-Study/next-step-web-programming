@@ -37,7 +37,6 @@ public class RequestHandler extends Thread {
 
             var startLine = bufferedReader.readLine();
 
-            log.info(startLine);
             if (startLine == null) {
                 return;
             }
@@ -47,16 +46,12 @@ public class RequestHandler extends Thread {
             var url = splitStr[1]; // 첫줄의 1번째 인덱스에는 Url이 위치함
 
             // url에서 파라미터가 존재하는 경우가 있을 수 있음
-
             var delimiterIndex = url.indexOf('?');
 
             var requestPath = url;
-            var paramString = "";
             if (delimiterIndex != -1) {
                 requestPath = url.substring(0, delimiterIndex);
-                paramString = url.substring(delimiterIndex + 1);
             }
-            var queryParams = HttpRequestUtils.parseQueryString(paramString);
 
             var httpHeaders = new LinkedHashMap<String, String>();
             var line = bufferedReader.readLine();
@@ -98,7 +93,6 @@ public class RequestHandler extends Thread {
                 DataOutputStream dos = new DataOutputStream(out);
                 if (findedUser == null) {
                     url = "/user/login_failed.html";
-                    //var body = Files.readAllBytes(new File("./webapp" + url).toPath());
                     responseLoginHeader(dos, url, false);
                     return;
                 }
@@ -109,12 +103,26 @@ public class RequestHandler extends Thread {
                 }
                 url = "/user/login_failed.html";
                 responseLoginHeader(dos, url, false);
-                responseLoginHeader(dos, url, true);
                 return;
             }
             if (url.equals("/user/list")) {
+                DataOutputStream dos = new DataOutputStream(out);
+                if (!httpHeaders.containsKey("Cookie")) {
+                    responseRedirectHeader(dos, "user/login.html");
+                    return;
+                }
+                var parseCookies = HttpRequestUtils.parseCookies(httpHeaders.get("Cookie"));
+                if (!parseCookies.containsKey("logined")) {
+                    responseRedirectHeader(dos, "/user/login.html");
+                    return;
+                }
+                if (!Boolean.parseBoolean(parseCookies.get("logined"))) {
+                    responseRedirectHeader(dos, "/user/login.html");
+                    return;
+                }
+
                 var users = DataBase.findAll();
-                String html = "<!DOCTYPE HTML>" // 인텔리제이가 스트링빌더를 자꾸 평문으로 바꿈
+                var html = "<!DOCTYPE HTML>" // 인텔리제이가 스트링빌더를 자꾸 평문으로 바꿈
                         + "<head>"
                         + "</head>"
                         + "<body>"
@@ -127,7 +135,6 @@ public class RequestHandler extends Thread {
                 responseHtmlBody(new DataOutputStream(out), html);
                 return;
             }
-            //var queryParameters = HttpRequestUtils.parseQueryString(url);
 
             var body = Files.readAllBytes(new File("./webapp" + url).toPath());
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
