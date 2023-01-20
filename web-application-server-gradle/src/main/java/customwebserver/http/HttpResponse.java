@@ -14,12 +14,19 @@ public class HttpResponse {
     private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
     private final Map<String, Object> cookies = new HashMap<>();
+    private String responseBodyData;
 
     public HttpResponse(final OutputStream out) {
         dos = new DataOutputStream(out);
     }
 
     public void successMappingUri() {
+        if (responseBodyData != null) {
+            byte[] dataBytes = responseBodyData.getBytes();
+            response200HeaderWithBody(dos, dataBytes.length);
+            responseBody(dos, dataBytes);
+            return;
+        }
         response200Header(dos, 0);
         responseBody(dos, "".getBytes());
     }
@@ -46,7 +53,7 @@ public class HttpResponse {
         if (!cookies.isEmpty()) {
             cookies.keySet()
                     .forEach(key -> cookieMessage.append(key)
-                            .append(":")
+                            .append("=")
                             .append(cookies.get(key))
                             .append("; "));
             return cookieMessage.delete(cookieMessage.length() - 2, cookieMessage.length())
@@ -69,11 +76,22 @@ public class HttpResponse {
         }
     }
 
-
     private void response200Header(final DataOutputStream dos, final int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void response200HeaderWithBody(final DataOutputStream dos, final int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/plain;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes(getAllCookieMessage());
             dos.writeBytes("\r\n");
@@ -94,5 +112,9 @@ public class HttpResponse {
     private static byte[] getFileBytes(final String requestUri) throws IOException {
         byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestUri).toPath());
         return fileBytes;
+    }
+
+    public void sendResponseBody(final String data) {
+        this.responseBodyData = data;
     }
 }
