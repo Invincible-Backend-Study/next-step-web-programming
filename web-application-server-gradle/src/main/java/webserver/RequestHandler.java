@@ -1,5 +1,6 @@
 package webserver;
 
+import db.DataBase;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -15,6 +16,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+import javax.xml.crypto.Data;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +53,7 @@ public class RequestHandler extends Thread {
                 if (splited.size() >= 2) {
                     headers.put(splited.get(0), splited.get(1));
                 }
+                System.out.println(line);
             }
             DataOutputStream dos = new DataOutputStream(out);
 
@@ -59,9 +64,27 @@ public class RequestHandler extends Thread {
                 Map<String, String> queryString = HttpRequestUtils.parseQueryString(bodyData);
                 User user = new User(queryString.get("userId"), queryString.get("password"), queryString.get("name"),
                         queryString.get("email"));
-                response302Header(dos);
+                DataBase.addUser(user);
+                response302Header(dos, "logined = true");
                 url = "/index.html";
-
+                return;
+            }
+            if (url.equals("/user/login")) {
+                String bodyData = IOUtils.readData(reader, Integer.parseInt(headers.get("Content-Length").trim()));
+                Map<String, String> queryString = HttpRequestUtils.parseQueryString(bodyData);
+                User user = DataBase.findUserById(queryString.get("userId"));
+                if (user == null) {
+                    response302Header(dos, "logined = false");
+                    log.debug("로그인 실패");
+                    return;
+                }
+                if (user.getPassword().equals(queryString.get("password"))) {
+                    response302Header(dos, "logined = true");
+                    log.debug("로그인 성공");
+                } else {
+                    response302Header(dos, "logined = false");
+                    log.debug("로그인 실패");
+                }
             }
 
             byte[] body = Files.readAllBytes(
@@ -86,10 +109,11 @@ public class RequestHandler extends Thread {
         }
     }
 
-    private void response302Header(DataOutputStream dos) {
+    private void response302Header(DataOutputStream dos, String cookie) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
             dos.writeBytes("Location: /index.html\r\n");
+            dos.writeBytes("Set-Cookie: " + cookie + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
