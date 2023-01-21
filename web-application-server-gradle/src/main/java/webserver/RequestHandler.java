@@ -9,16 +9,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-import javax.xml.crypto.Data;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +50,7 @@ public class RequestHandler extends Thread {
                 if (splited.size() >= 2) {
                     headers.put(splited.get(0), splited.get(1));
                 }
-                System.out.println(line);
+                log.debug("Header {}", line);
             }
             DataOutputStream dos = new DataOutputStream(out);
 
@@ -65,7 +62,7 @@ public class RequestHandler extends Thread {
                 User user = new User(queryString.get("userId"), queryString.get("password"), queryString.get("name"),
                         queryString.get("email"));
                 DataBase.addUser(user);
-                response302Header(dos, "logined = true");
+                response302HeaderAndSetCookie(dos, "logined = true");
                 url = "/index.html";
                 return;
             }
@@ -74,17 +71,33 @@ public class RequestHandler extends Thread {
                 Map<String, String> queryString = HttpRequestUtils.parseQueryString(bodyData);
                 User user = DataBase.findUserById(queryString.get("userId"));
                 if (user == null) {
-                    response302Header(dos, "logined = false");
+                    response302HeaderAndSetCookie(dos, "logined = false");
                     log.debug("로그인 실패");
                     return;
                 }
                 if (user.getPassword().equals(queryString.get("password"))) {
-                    response302Header(dos, "logined = true");
+                    response302HeaderAndSetCookie(dos, "logined = true");
                     log.debug("로그인 성공");
                 } else {
-                    response302Header(dos, "logined = false");
+                    response302HeaderAndSetCookie(dos, "logined = false");
                     log.debug("로그인 실패");
                 }
+            }
+
+            if (url.startsWith("/user/list")) {
+                String cookie = headers.get("Cookie");
+                if (cookie == null) {
+                    response302Header(dos);
+                    return;
+                }
+                if (Boolean.parseBoolean(HttpRequestUtils.parseCookies(cookie).get("logined"))) {
+                    System.out.println("|||||||||||||||||");
+                    Collection<User> users = DataBase.findAll();
+                    users.forEach(userName -> {
+                        log.debug("사용자 {}",userName);
+                    });
+                }
+                response302Header(dos);
             }
 
             byte[] body = Files.readAllBytes(
@@ -109,11 +122,21 @@ public class RequestHandler extends Thread {
         }
     }
 
-    private void response302Header(DataOutputStream dos, String cookie) {
+    private void response302HeaderAndSetCookie(DataOutputStream dos, String cookie) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
             dos.writeBytes("Location: /index.html\r\n");
             dos.writeBytes("Set-Cookie: " + cookie + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void response302Header(DataOutputStream dos) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n");
+            dos.writeBytes("Location: /index.html\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
