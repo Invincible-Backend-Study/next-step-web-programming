@@ -42,8 +42,7 @@ public class RequestHandler extends Thread {
                 return;
             }
             String url = Arrays.asList(line.split(" ")).get(1);
-
-            HashMap<String, String> headers = new HashMap();
+            HashMap<String, String> headers = new HashMap<>();
             while (!"".equals(line)) {
                 line = reader.readLine();
                 List<String> splited = Arrays.asList(line.split(":"));
@@ -63,9 +62,9 @@ public class RequestHandler extends Thread {
                         queryString.get("email"));
                 DataBase.addUser(user);
                 response302HeaderAndSetCookie(dos, "logined = true");
-                url = "/index.html";
                 return;
             }
+
             if (url.equals("/user/login")) {
                 String bodyData = IOUtils.readData(reader, Integer.parseInt(headers.get("Content-Length").trim()));
                 Map<String, String> queryString = HttpRequestUtils.parseQueryString(bodyData);
@@ -82,6 +81,7 @@ public class RequestHandler extends Thread {
                     response302HeaderAndSetCookie(dos, "logined = false");
                     log.debug("로그인 실패");
                 }
+                return;
             }
 
             if (url.startsWith("/user/list")) {
@@ -94,16 +94,16 @@ public class RequestHandler extends Thread {
                     System.out.println("|||||||||||||||||");
                     Collection<User> users = DataBase.findAll();
                     users.forEach(userName -> {
-                        log.debug("사용자 {}",userName);
+                        log.debug("사용자 {}", userName);
                     });
                 }
                 response302Header(dos);
+                return;
             }
 
             byte[] body = Files.readAllBytes(
                     Paths.get(new File("./web-application-server-gradle/webapp").toPath() + url));
-
-            response200Header(dos, body.length);
+            response200Header(dos, body.length, headers.get("Accept"));
             responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -111,10 +111,25 @@ public class RequestHandler extends Thread {
     }
 
 
-    private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
+    private void response200Header(DataOutputStream dos, int lengthOfBodyContent, String accept) {
+        if (accept.contains("css")) {
+            response200HeaderWithCss(dos,lengthOfBodyContent);
+        }
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Content-Type: */* \r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+
+    private void response200HeaderWithCss(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/css;html;charset=utf-8 \r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
