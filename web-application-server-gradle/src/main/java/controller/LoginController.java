@@ -24,7 +24,7 @@ public class LoginController implements Controller {
             throw new IllegalArgumentException("[ERROR] 로그인 정보를 모두 입력해야 합니다.");
         }
         Boolean login = userService.login(userId, password);
-        log.info("login result={}", login);
+        log.debug("login result={}", login);
         httpResponse.addCookie("logined", login);
         if (login) {
             httpResponse.sendRedirect("/index.html");

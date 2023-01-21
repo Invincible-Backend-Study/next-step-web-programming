@@ -58,7 +58,7 @@ public class HttpRequest {
         if (requestHeaderKeyValue.containsKey("Content-Length")) {
             String formData = IOUtils.readData(httpRequest,
                     Integer.parseInt(requestHeaderKeyValue.get("Content-Length")));
-            log.info("POST form Data={}", formData);
+            log.debug("POST form Data={}", formData);
             return HttpRequestUtils.parseQueryString(formData);
         }
         return null;

@@ -132,7 +132,6 @@ public class HttpResponse {
     }
 
     private static byte[] getFileBytes(final String requestUri) throws IOException {
-        byte[] fileBytes = Files.readAllBytes(new File("./webapp" + requestUri).toPath());
-        return fileBytes;
+        return Files.readAllBytes(new File("./webapp" + requestUri).toPath());
     }
 }

@@ -22,7 +22,7 @@ public class UserController implements Controller {
             throw new IllegalArgumentException("[ERROR] GET 회원가입 오류");
         }
         User user = new User(userId, password, name, email);
-        log.info("GET 회원가입 user={}", user);
+        log.debug("GET 회원가입 user={}", user);
         userService.addUser(user);
         httpResponse.sendRedirect("/index.html");
         return true;
@@ -38,7 +38,7 @@ public class UserController implements Controller {
             throw new IllegalArgumentException("[ERROR] POST 회원가입 오류");
         }
         User user = new User(userId, password, name, email);
-        log.info("POST 회원가입 user={}", user);
+        log.debug("POST 회원가입 user={}", user);
         userService.addUser(user);
         httpResponse.sendRedirect("/index.html");
         return true;
