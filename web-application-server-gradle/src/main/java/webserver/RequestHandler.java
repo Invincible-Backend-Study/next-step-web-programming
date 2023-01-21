@@ -49,7 +49,6 @@ public class RequestHandler extends Thread {
             }
             // 첫 줄에 대한 요청을 처리함
             var splitStr = startLine.split(" ");
-
             var url = splitStr[1]; // 첫줄의 1번째 인덱스에는 Url이 위치함
 
             // url에서 파라미터가 존재하는 경우가 있을 수 있음
@@ -68,6 +67,8 @@ public class RequestHandler extends Thread {
                 line = bufferedReader.readLine();
             }
 
+            DataOutputStream dos = new DataOutputStream(out);
+
             // 회원가입을 처리하기 위한 경로
             if (requestPath.equals("/user/create")) {
                 Map<String, String> bodyParams = parseBodyParams(bufferedReader,
@@ -83,7 +84,6 @@ public class RequestHandler extends Thread {
                 log.info(DataBase.findUserById(bodyParams.get("userId")).toString());
 
                 url = "/index.html";
-                DataOutputStream dos = new DataOutputStream(out);
                 responseRedirectHeader(dos, url);
                 return;
             }
@@ -97,7 +97,6 @@ public class RequestHandler extends Thread {
 
                 var findedUser = DataBase.findUserById(userId);
 
-                DataOutputStream dos = new DataOutputStream(out);
                 if (findedUser == null) {
                     url = "/user/login_failed.html";
                     responseLoginHeader(dos, url, false);
@@ -113,7 +112,6 @@ public class RequestHandler extends Thread {
                 return;
             }
             if (url.equals("/user/list")) {
-                DataOutputStream dos = new DataOutputStream(out);
                 if (!httpHeaders.containsKey("Cookie")) {
                     responseRedirectHeader(dos, "user/login.html");
                     return;
@@ -144,8 +142,6 @@ public class RequestHandler extends Thread {
             }
 
             var body = Files.readAllBytes(new File("./webapp" + url).toPath());
-            // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
-            DataOutputStream dos = new DataOutputStream(out);
             response200Header(dos, body.length, httpHeaders.get("Accept").split(",")[0]);
             responseBody(dos, body);
         } catch (IOException e) {
