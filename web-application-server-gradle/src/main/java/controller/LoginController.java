@@ -28,9 +28,9 @@ public class LoginController implements Controller {
         httpResponse.addCookie("logined", login);
         if (login) {
             httpResponse.sendRedirect("/index.html");
-            return login;
+            return true;
         }
         httpResponse.sendRedirect("/user/login_failed.html");
-        return login;
+        return true;
     }
 }
