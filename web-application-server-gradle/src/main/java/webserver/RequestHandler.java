@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import model.User;
@@ -35,56 +35,76 @@ public class RequestHandler extends Thread {
         return HttpRequestUtils.parseQueryString(bodyData);
     }
 
+    private static HashMap<String, String> parseHttpHeader(BufferedReader bufferedReader) throws IOException {
+        var httpHeaders = new HashMap<String, String>(); // 순서를 보장할 필요는 없음
+        var line = bufferedReader.readLine();
+
+        while (!"".equals(line)) {
+            var pair = HttpRequestUtils.parseHeader(line);
+            httpHeaders.put(pair.getKey(), pair.getValue());
+            line = bufferedReader.readLine();
+        }
+        return httpHeaders;
+    }
+
+    private static String parseRequestPath(String[] splitStr) {
+        var url = splitStr[1]; // 첫줄의 1번째 인덱스에는 Url이 위치함
+
+        // url에서 파라미터가 존재하는 경우가 있을 수 있음
+        var delimiterIndex = url.indexOf('?');
+
+        var requestPath = url;
+        if (delimiterIndex != -1) {
+            requestPath = url.substring(0, delimiterIndex);
+        }
+        return requestPath;
+    }
+
     public void run() {
         log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
                 connection.getPort());
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            var inputStreamReader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            var bufferedReader = new BufferedReader(inputStreamReader);
+            final var inputStreamReader = new InputStreamReader(in, StandardCharsets.UTF_8);
+            final var bufferedReader = new BufferedReader(inputStreamReader);
 
-            var startLine = bufferedReader.readLine();
+            if (!bufferedReader.ready()) {
+                return;
+            }
+
+            final var startLine = bufferedReader.readLine();
 
             if (startLine == null) {
                 return;
             }
             // 첫 줄에 대한 요청을 처리함
-            var splitStr = startLine.split(" ");
-            var url = splitStr[1]; // 첫줄의 1번째 인덱스에는 Url이 위치함
+            final var splitStr = startLine.split(" ");
+            final String requestPath = parseRequestPath(splitStr);
 
-            // url에서 파라미터가 존재하는 경우가 있을 수 있음
-            var delimiterIndex = url.indexOf('?');
+            // parse httpHeader
+            final HashMap<String, String> httpHeaders = parseHttpHeader(bufferedReader);
 
-            var requestPath = url;
-            if (delimiterIndex != -1) {
-                requestPath = url.substring(0, delimiterIndex);
-            }
-
-            var httpHeaders = new LinkedHashMap<String, String>();
-            var line = bufferedReader.readLine();
-            while (!"".equals(line)) {
-                var pair = HttpRequestUtils.parseHeader(line);
-                httpHeaders.put(pair.getKey(), pair.getValue());
-                line = bufferedReader.readLine();
-            }
-
-            DataOutputStream dos = new DataOutputStream(out);
-
+            final DataOutputStream dos = new DataOutputStream(out);
             // 회원가입을 처리하기 위한 경로
             if (requestPath.equals("/user/create")) {
-                Map<String, String> bodyParams = parseBodyParams(bufferedReader,
+                final Map<String, String> bodyParams = parseBodyParams(bufferedReader,
                         Integer.parseInt(httpHeaders.get("Content-Length").trim()));
+
+                // 이미 회원가입한 사용자에 대한 처리
+                if (DataBase.existsUserById(bodyParams.get("userId"))) {
+                    responseRedirectHeader(dos, "/user/form.html");
+                    return;
+                }
+                // null 혹은 빈값에 대한 예외처리는 하지 않음
                 var user = User.builder()
                         .userId(bodyParams.get("userId"))
                         .password(bodyParams.get("password"))
                         .email(bodyParams.get("email"))
                         .name(bodyParams.get("name"))
                         .build();
+
+                // 사용자 추가
                 DataBase.addUser(user);
-
-                log.info(DataBase.findUserById(bodyParams.get("userId")).toString());
-
-                url = "/index.html";
-                responseRedirectHeader(dos, url);
+                responseRedirectHeader(dos, "/index/html");
                 return;
             }
             // 로그인을 처리하기 위한 경로
@@ -97,30 +117,34 @@ public class RequestHandler extends Thread {
 
                 var findedUser = DataBase.findUserById(userId);
 
+                // 사용자가 존재하지 않는 경우
                 if (findedUser == null) {
-                    url = "/user/login_failed.html";
-                    responseLoginHeader(dos, url, false);
+                    responseLoginHeader(dos, "/user/login_failed.html", false);
                     return;
                 }
-                if (findedUser.samePassword(password)) {
-                    url = "/index.html";
-                    responseLoginHeader(dos, url, true);
+                // 비밀번호가 동일한 경우
+                if (findedUser.comparePassword(password)) {
+                    responseLoginHeader(dos, "/index.html", true);
                     return;
                 }
-                url = "/user/login_failed.html";
-                responseLoginHeader(dos, url, false);
+                // 그렇지 않은 경우
+                responseLoginHeader(dos, "/user/login_failed.html", false);
                 return;
             }
-            if (url.equals("/user/list")) {
+            // 사용자 항목을 반환하기 위한 경로
+            if (requestPath.equals("/user/list")) {
+                // 키에 쿠키가 포함되지 않는 경우
                 if (!httpHeaders.containsKey("Cookie")) {
                     responseRedirectHeader(dos, "user/login.html");
                     return;
                 }
                 var parseCookies = HttpRequestUtils.parseCookies(httpHeaders.get("Cookie"));
+                // 키에 logined가 존재하지 않는 경우
                 if (!parseCookies.containsKey("logined")) {
                     responseRedirectHeader(dos, "/user/login.html");
                     return;
                 }
+                //로그인한 사용자가 아닌경우
                 if (!Boolean.parseBoolean(parseCookies.get("logined"))) {
                     responseRedirectHeader(dos, "/user/login.html");
                     return;
@@ -137,11 +161,11 @@ public class RequestHandler extends Thread {
                         + "</ul>"
                         + "</body>"
                         + "</html>";
-                responseHtml(new DataOutputStream(out), html);
+                responseHtml(dos, html);
                 return;
             }
 
-            var body = Files.readAllBytes(new File("./webapp" + url).toPath());
+            var body = Files.readAllBytes(new File("./webapp" + requestPath).toPath());
             response200Header(dos, body.length, httpHeaders.get("Accept").split(",")[0]);
             responseBody(dos, body);
         } catch (IOException e) {
