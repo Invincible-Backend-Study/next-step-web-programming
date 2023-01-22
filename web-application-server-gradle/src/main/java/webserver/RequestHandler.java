@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -98,7 +99,7 @@ public class RequestHandler extends Thread {
                 var user = User.builder()
                         .userId(bodyParams.get("userId"))
                         .password(bodyParams.get("password"))
-                        .email(bodyParams.get("email"))
+                        .email(URLDecoder.decode(bodyParams.get("email"), StandardCharsets.UTF_8))
                         .name(bodyParams.get("name"))
                         .build();
 
