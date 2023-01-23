@@ -15,7 +15,7 @@ import utils.enums.HttpMethod;
 
 public class FrontController {
     private static final Logger log = LoggerFactory.getLogger(FrontController.class);
-    private static final Map<String, Object> handlerMapping = new HashMap<>();
+    private static final Map<String, Controller> handlerMapping = new HashMap<>();
 
     static {
         handlerMapping.put("/user/create", new UserController());
@@ -39,7 +39,7 @@ public class FrontController {
      * 1. 컨트롤러가 존재하는지 체크 2. 정적 파일 체크
      */
     private void requestDispatch() throws IOException {
-        Controller requestController = (Controller) handlerMapping.get(httpRequest.getRequestUri());
+        Controller requestController = handlerMapping.get(httpRequest.getRequestUri());
         if (requestController == null) {
             responseStaticUri();
             return;
