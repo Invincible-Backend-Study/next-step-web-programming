@@ -14,22 +14,73 @@
 * 구현을 완료한 후 구현 과정에서 새롭게 알게된 내용, 궁금한 내용을 기록한다.
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
+
+### 흐름
+request -> RequestHandler -> (HttpInputStream -> BufferedReader -> readHttpReqeust) MyHttpRequest -> ControllerMapper -> (Controller -> Service) Response -> RequestHandler -> response  
+
+
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+* URL: http://localhost:8080/index.html
+* BufferedReader
+  * .readLine() : InputStream 데이터를 라인별로 읽는다.
+  * 여기서는 HTTP 요청 정보를 읽어들임
+  * https://makemethink.tistory.com/170
+*
+          String[] tokens = lines.get(0).split(" ");
+          String url = tokens[1];
+
+          byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
 
 ### 요구사항 3 - post 방식으로 회원가입
-* 
+* post는 본문에 데이터가 담긴다.
+  * 본문과 헤더는 공백라인("")으로 구분되어있다.
+* ![img.png](img.png)
+```java
+[User [userId=hello, password=getget, name=getmy, email=get%40my.name], User [userId=asdf, password=null, name=%ED%98%84%EC%8B%9D%EB%B3%B4%EC%9D%B4, email=asdfasdf%40naver.com]]
+```
 
 ### 요구사항 4 - redirect 방식으로 이동
-* 
+* HTTP 302 상태 적용 후, Location: href 를 적용하지 않으니 url에 /user 가 한번 더 붙는 문제가 발생함
+  * ex) /user/user/form.html
+* 에러 발생
+```java
+Exception in thread "Thread-34" java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:266)
+at java.base/java.util.Objects.checkIndex(Objects.java:359)
+at java.base/java.util.ArrayList.get(ArrayList.java:427)
+at webserver.RequestHandler.linesToMyHttpRequest(RequestHandler.java:66)
+at webserver.RequestHandler.run(RequestHandler.java:40)
+```
+
 
 ### 요구사항 5 - cookie
-* 
+* StringBuilder: https://onlyfor-me-blog.tistory.com/317
+* StringBuilder Insert : https://ponyozzang.tistory.com/178
 
-### 요구사항 6 - stylesheet 적용
+### 요구사항 6 - 유저목록
+- 한 유저가 여러명 뜸 ㅠㅠ
+![img_1.png](img_1.png)
+
+- StringBuilder.toString()을 사용해도 builder 내부에 있는 내용이 사라지지 않으므로, 사용시 유의!
+  - 아래처럼 사용해야함
+```java
+StringBuilder builder = new StringBuilder();
+String result = "";
+
+for(User user : users) {
+    builder.append(result)
+            .append("내용내용내용");
+}
+
+result = builder.toString();
+```
+
+### 요구사항 7 - stylesheet 적용
 * 
 
 ### heroku 서버에 배포 후
