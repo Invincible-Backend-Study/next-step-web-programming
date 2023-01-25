@@ -14,7 +14,7 @@
 * 구현을 완료한 후 구현 과정에서 새롭게 알게된 내용, 궁금한 내용을 기록한다.
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
-
+## 3장, 4장
 ### 흐름
 request -> RequestHandler -> (HttpInputStream -> BufferedReader -> readHttpReqeust) MyHttpRequest -> ControllerMapper -> (Controller -> Service) Response -> RequestHandler -> response  
 
@@ -83,5 +83,15 @@ result = builder.toString();
 ### 요구사항 7 - stylesheet 적용
 * 
 
-### heroku 서버에 배포 후
-* 
+
+## 5장
+### 목표
+- indent n 이하
+- else 사용하지 않음
+- 리팩토링
+
+### 리팩토링 1단계
+- 요청 데이터를 처리하는 로직을 별도의 클래스로 분리한다. (MyHttpRequest)
+  - 클라이언트 요청 데이터를 담고있는 InputStream을 생성자로 받아 HTTP 메소드, URL, 헤더, 본문을 분리하는 작업을 한다.
+  - 헤더는 Map<String, String>에 저장해 관리하고 getHeader("필드이름") 메소드를 통해 접근 가능하도록 구현한다.
+  - GET과 POST 메소드에 따라 전달되는 인자를 Map<String, String>에 저장해 관리하고 getParameter("인자 이름") 메소드를 통해 접근 가능하도록 구현한다.
