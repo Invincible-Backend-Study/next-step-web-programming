@@ -16,7 +16,7 @@ class MyHttpRequestTest {
         InputStream in = new FileInputStream(new File(testDirectory + "Http_GET.http"));
         MyHttpRequest myHttpRequest = new MyHttpRequest(in);
 
-        assertEquals("GET", myHttpRequest.getHttpMethod());
+        assertEquals("GET", myHttpRequest.getMethod());
         assertEquals("/user/create", myHttpRequest.getRequestPath());
         assertEquals("keep-alive", myHttpRequest.getHeader("Connection"));
         assertEquals("myid", myHttpRequest.getParameter("userId"));
@@ -27,7 +27,7 @@ class MyHttpRequestTest {
         InputStream in = new FileInputStream(new File(testDirectory + "Http_POST.http"));
         MyHttpRequest myHttpRequest = new MyHttpRequest(in);
 
-        assertEquals("POST", myHttpRequest.getHttpMethod());
+        assertEquals("POST", myHttpRequest.getMethod());
         assertEquals("/user/create", myHttpRequest.getRequestPath());
         assertEquals("keep-alive", myHttpRequest.getHeader("Connection"));
         assertEquals("myii", myHttpRequest.getParameter("userId"));
@@ -38,7 +38,7 @@ class MyHttpRequestTest {
         InputStream in = new FileInputStream(new File(testDirectory + "Http_POST_paramsInUrl.http"));
         MyHttpRequest myHttpRequest = new MyHttpRequest(in);
 
-        assertEquals("POST", myHttpRequest.getHttpMethod());
+        assertEquals("POST", myHttpRequest.getMethod());
         assertEquals("/user/create", myHttpRequest.getRequestPath());
         assertEquals("keep-alive", myHttpRequest.getHeader("Connection"));
         assertEquals("myjj", myHttpRequest.getParameter("userId"));

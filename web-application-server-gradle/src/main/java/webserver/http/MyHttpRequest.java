@@ -18,19 +18,21 @@ import java.util.Map;
 
 public class MyHttpRequest {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
+    private static final int REQUEST_LINE = 0;
+    private static final int HEADER_START_LINE = 1;
 
-    private final String httpMethod;
+    private final String method;
     private final String requestPath;
     private final Map<String, String> parameters;
-    private final Map<String, String> httpHeaders;
-    private final String requestBody;
+    private final Map<String, String> headers;
+    private final String body;
 
-    public MyHttpRequest(String httpMethod, String requestPath, Map<String, String> parameters, Map<String, String> httpHeaders, String requestBody) {
-        this.httpHeaders = httpHeaders;
-        this.httpMethod = httpMethod;
+    public MyHttpRequest(String method, String requestPath, Map<String, String> parameters, Map<String, String> headers, String body) {
+        this.headers = headers;
+        this.method = method;
         this.requestPath = requestPath;
         this.parameters = parameters;
-        this.requestBody = requestBody;
+        this.body = body;
     }
 
     public MyHttpRequest(InputStream in) throws IOException {
@@ -40,26 +42,19 @@ public class MyHttpRequest {
         List<String> lines = readInputStream(br);
 
         // RequestLine 가져오기 (Method, RequestPath&Parameter, HttpVer)
-        log.debug("RequestLine: {}", lines.get(0));
-        String[] tokens = lines.get(0).split(" ");
-        String httpMethod = tokens[0];
-        String url = tokens[1];
-        String httpVersion = tokens[2];
+        String[] requestLine = lines.get(REQUEST_LINE).split(" ");
+        String url = requestLine[1];
 
-        String requestPath = extractRequestPath(url);
-        Map<String, String> headers = extractHeaders(lines);
-        String requestBody = extractBody(br, headers.get("Content-Length"));
-        Map<String, String> parameters = extractParameters(url, requestBody);
-
-        this.httpMethod = httpMethod;
-        this.requestPath = requestPath;
-        this.parameters = parameters;
-        this.httpHeaders = headers;
-        this.requestBody = requestBody;
+        // 변수 초기화
+        method = requestLine[0];
+        requestPath = extractRequestPath(url);
+        headers = extractHeaders(lines);
+        body = extractBody(br, headers.get("Content-Length"));
+        parameters = extractParameters(url, body);
     }
 
-
     private static Map<String, String> extractParameters(String url, String requestBody) {
+        // url 또는 body에 있는 params를 반환한다.
         Map<String, String> params = extractParametersFromUrl(url);
         if (!params.isEmpty()) {
             return params;
@@ -83,13 +78,11 @@ public class MyHttpRequest {
     }
 
     private static String extractRequestPath(String url) {
-        String requestPath = url;
-        Map<String, String> parameters = null;
         int index = url.indexOf("?");
         if (index != -1) {
-            requestPath = url.substring(0, index);
+            return url.substring(0, index);
         }
-        return requestPath;
+        return url;
     }
 
     private static String extractBody(BufferedReader br, String contentLength) throws IOException {
@@ -101,12 +94,12 @@ public class MyHttpRequest {
 
     private static Map<String, String> extractHeaders(List<String> lines) {
         Map<String, String> headers = new HashMap<String, String>();
-        for (int i = 1; i < lines.size(); i++) {
-            String l = lines.get(i);  //TODO l말고 다른 변수명을
-            if ("".equals(l)) {
+        for (int i = HEADER_START_LINE; i < lines.size(); i++) {
+            String line = lines.get(i);
+            if ("".equals(line)) {
                 break;
             }
-            String[] headerTokens = l.split(": ");
+            String[] headerTokens = line.split(": ");
             if (headerTokens.length == 2) {
                 headers.put(headerTokens[0], headerTokens[1]);
             }
@@ -125,15 +118,15 @@ public class MyHttpRequest {
     }
 
     public Map<String, String> getAllHeaders() {
-        return httpHeaders;
+        return headers;
     }
 
     public String getHeader(String key) {
-        return httpHeaders.get(key);
+        return headers.get(key);
     }
 
-    public String getHttpMethod() {
-        return httpMethod;
+    public String getMethod() {
+        return method;
     }
 
     public String getRequestPath() {
@@ -148,16 +141,16 @@ public class MyHttpRequest {
         return parameters.get(key);
     }
 
-    public String getRequestBody() {
-        return requestBody;
+    public String getBody() {
+        return body;
     }
 
     @Override
     public String toString() {
-        return "HttpMethod:" + httpMethod
+        return "HttpMethod:" + method
                 + ", requestPath:" + requestPath
                 + ", parameters:" + (parameters == null ? "-" : parameters.toString())
-                + ", httpHeaders:" + (httpHeaders == null ? "-" : httpHeaders.toString())
-                + ", requestBody:" + requestBody;
+                + ", httpHeaders:" + (headers == null ? "-" : headers.toString())
+                + ", requestBody:" + body;
     }
 }

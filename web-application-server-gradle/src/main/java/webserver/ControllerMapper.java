@@ -10,7 +10,7 @@ public class ControllerMapper {
     private final WebpageController webpageController = new WebpageController();
 
     public Response mapping(MyHttpRequest myHttpRequest) throws IOException {
-        String method = myHttpRequest.getHttpMethod();
+        String method = myHttpRequest.getMethod();
         String path = myHttpRequest.getRequestPath();
 
         // controller 맵핑
