@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,30 +37,72 @@ public class MyHttpRequest {
         // BufferedReader 값 읽기
         InputStreamReader reader = new InputStreamReader(in);
         BufferedReader br = new BufferedReader(reader);
-
         List<String> lines = readInputStream(br);
 
-        // RequestLine 가져오기
+        // RequestLine 가져오기 (Method, RequestPath&Parameter, HttpVer)
+        log.debug("RequestLine: {}", lines.get(0));
         String[] tokens = lines.get(0).split(" ");
-        lines.remove(0);
         String httpMethod = tokens[0];
         String url = tokens[1];
+        String httpVersion = tokens[2];
 
-        // request path & parameter 읽기
+        String requestPath = extractRequestPath(url);
+        Map<String, String> headers = extractHeaders(lines);
+        String requestBody = extractBody(br, headers.get("Content-Length"));
+        Map<String, String> parameters = extractParameters(url, requestBody);
+
+        this.httpMethod = httpMethod;
+        this.requestPath = requestPath;
+        this.parameters = parameters;
+        this.httpHeaders = headers;
+        this.requestBody = requestBody;
+    }
+
+
+    private static Map<String, String> extractParameters(String url, String requestBody) {
+        Map<String, String> params = extractParametersFromUrl(url);
+        if (!params.isEmpty()) {
+            return params;
+        }
+        return extractParametersFromBody(requestBody);
+    }
+
+    private static Map<String, String> extractParametersFromBody(String requestBody) {
+        if (!"".equals(requestBody)) {
+            return HttpRequestUtils.parseQueryString(requestBody);
+        }
+        return Collections.emptyMap();
+    }
+
+    private static Map<String, String> extractParametersFromUrl(String url) {
+        int index = url.indexOf("?");
+        if (index != -1) {
+            return HttpRequestUtils.parseQueryString(url.substring(index + 1));
+        }
+        return Collections.emptyMap();
+    }
+
+    private static String extractRequestPath(String url) {
         String requestPath = url;
         Map<String, String> parameters = null;
         int index = url.indexOf("?");
         if (index != -1) {
             requestPath = url.substring(0, index);
-            String params = url.substring(index + 1);
-
-            // parameter map으로 분리
-            parameters = HttpRequestUtils.parseQueryString(params);
         }
+        return requestPath;
+    }
 
-        // header 읽기
+    private static String extractBody(BufferedReader br, String contentLength) throws IOException {
+        if (contentLength != null) {
+            return IOUtils.readData(br, Integer.parseInt(contentLength));
+        }
+        return null;
+    }
+
+    private static Map<String, String> extractHeaders(List<String> lines) {
         Map<String, String> headers = new HashMap<String, String>();
-        for (String l : lines) {
+        for (int i = 1; i < lines.size(); i++) {
+            String l = lines.get(i);  //TODO l말고 다른 변수명을
             if ("".equals(l)) {
                 break;
             }
@@ -68,25 +111,7 @@ public class MyHttpRequest {
                 headers.put(headerTokens[0], headerTokens[1]);
             }
         }
-        log.debug("contentLength:" + headers.get("Content-Length"));
-
-        // request body 읽기
-        String requestBody = null;
-        if (headers.get("Content-Length") != null) {
-            requestBody = IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));
-            if (!"".equals(requestBody)) {
-                log.debug("requestBody: " + requestBody);
-                if ("POST".equals(httpMethod)) {
-                    parameters = HttpRequestUtils.parseQueryString(requestBody);
-                }
-            }
-        }
-
-        this.httpMethod = httpMethod;
-        this.requestPath = requestPath;
-        this.parameters = parameters;
-        this.httpHeaders = headers;
-        this.requestBody = requestBody;
+        return headers;
     }
 
     private static List<String> readInputStream(BufferedReader br) throws IOException {
