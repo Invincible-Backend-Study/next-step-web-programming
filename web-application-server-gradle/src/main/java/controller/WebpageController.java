@@ -39,9 +39,9 @@ public class WebpageController {
     }
 
     public Response signup(MyHttpRequest myHttpRequest) throws IOException {
-        Map<String, String> params = myHttpRequest.getParameters();
+        Map<String, String> params = myHttpRequest.getAllParameters();  //TODO 애초에 회원가입 관련 인자들을 역직렬화해서 받는 방법?
         webpageService.signup(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
-        log.debug("가입한 유저목록: " + DataBase.findAll().toString());
+        log.debug("가입한 유저목록: " + DataBase.findAll().toString());  //TODO 포맷팅방식으로 사용해야한다. (불필요한 연산 발생)
 
         byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
         List<String> headers = ResponseHeadersMaker.found("/index.html");
@@ -49,8 +49,14 @@ public class WebpageController {
         return new Response(headers, body);
     }
 
+
+
+
+
+
+
     public Response login(MyHttpRequest myHttpRequest) throws IOException {
-        Map<String, String> params = myHttpRequest.getParameters();
+        Map<String, String> params = myHttpRequest.getAllParameters();
         User user = webpageService.login(params.get("userId"), params.get("password"));
 
         if (user == null) {
@@ -64,7 +70,7 @@ public class WebpageController {
     }
 
     public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
-        Map<String, String> requestHeaders = myHttpRequest.getHttpHeaders();
+        Map<String, String> requestHeaders = myHttpRequest.getAllHeaders();
 
         if (requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
