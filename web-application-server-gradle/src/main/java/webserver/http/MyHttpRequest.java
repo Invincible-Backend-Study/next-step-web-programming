@@ -22,8 +22,6 @@ public class MyHttpRequest {
     private static final int HEADER_START_LINE = 1;
 
     private final RequestLine requestLine;
-    // private final String method;
-    // private final String requestPath;
     private final Map<String, String> parameters;
     private final Map<String, String> headers;
     private final String body;
@@ -34,14 +32,7 @@ public class MyHttpRequest {
         BufferedReader br = new BufferedReader(reader);
         List<String> lines = readInputStream(br);
 
-//        // RequestLine 가져오기 (Method, RequestPath&Parameter, HttpVer)
-//        String[] requestLine = lines.get(REQUEST_LINE).split(" ");
-//        String url = requestLine[1];
-//
-//        // 변수 초기화
-//        method = requestLine[0];
-//        requestPath = extractRequestPath(url);
-
+        // 변수 초기화
         requestLine = new RequestLine(lines.get(REQUEST_LINE));
         headers = extractHeaders(lines);
         body = extractBody(br, headers.get("Content-Length"));
@@ -103,7 +94,7 @@ public class MyHttpRequest {
         return headers.get(key);
     }
 
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return requestLine.getMethod();
     }
 

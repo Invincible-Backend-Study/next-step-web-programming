@@ -6,14 +6,14 @@ import java.util.Collections;
 import java.util.Map;
 
 public class RequestLine {
-    private final String method;
+    private final HttpMethod method;
     private final String path;
     private final Map<String, String> params;
 
     public RequestLine(String line) {
         // RequestLine 가져오기 (Method, RequestPath&Parameter, HttpVer)
         String[] requestLine = line.split(" ");
-        method = requestLine[0];
+        method = HttpMethod.valueOf(requestLine[0]);
         String url = requestLine[1];
 
         int index = url.indexOf("?");
@@ -26,7 +26,7 @@ public class RequestLine {
         }
     }
 
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
