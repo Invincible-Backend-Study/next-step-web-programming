@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
 import util.IOUtils;
 import webserver.http.MyHttpRequest;
+import webserver.http.MyHttpResponse;
 import webserver.http.Response;
 
 import java.io.*;
@@ -32,16 +33,17 @@ public class RequestHandler extends Thread {
             log.debug("request  ===========>" + myHttpRequest.toString());
 
             // 컨트롤러 맵핑 및 반환
-            Response response = controllerMapper.mapping(myHttpRequest);
-            log.debug("Response => " + response.toString());
+            MyHttpResponse myHttpResponse = new MyHttpResponse(out);
+            controllerMapper.mapping(myHttpRequest, myHttpResponse);
+            // log.debug("Response => " + response.toString());
 
-            List<String> headers = response.getHeaders();
-            byte[] body = response.getBody();
-
-            // 응답 작성
-            DataOutputStream dos = new DataOutputStream(out);
-            responseHeader(dos, headers);
-            responseBody(dos, body);
+//            List<String> headers = response.getHeaders();
+//            byte[] body = response.getBody();
+//
+//            // 응답 작성
+//            DataOutputStream dos = new DataOutputStream(out);
+//            responseHeader(dos, headers);
+//            responseBody(dos, body);
         } catch (IOException e) {
             log.error(e.getMessage());
         }

@@ -3,6 +3,7 @@ package webserver;
 import controller.WebpageController;
 import webserver.http.HttpMethod;
 import webserver.http.MyHttpRequest;
+import webserver.http.MyHttpResponse;
 import webserver.http.Response;
 
 import java.io.IOException;
@@ -10,20 +11,23 @@ import java.io.IOException;
 public class ControllerMapper {
     private final WebpageController webpageController = new WebpageController();
 
-    public Response mapping(MyHttpRequest myHttpRequest) throws IOException {
+    public void mapping(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
         HttpMethod method = myHttpRequest.getMethod();
         String path = myHttpRequest.getRequestPath();
 
         // controller 맵핑
         if ((method.isGet() || method.isPost()) && "/user/create".equals(path)) {
-            return webpageController.signup(myHttpRequest);
+            webpageController.signup(myHttpRequest, myHttpResponse);
+            return;
         }
         if (method.isPost() && "/user/login".equals(path)) {
-            return webpageController.login(myHttpRequest);
+            webpageController.login(myHttpRequest, myHttpResponse);
+            return;
         }
         if (method.isGet() && "/user/list.html".equals(path)) {
-            return webpageController.getUserList(myHttpRequest);
+            webpageController.getUserList(myHttpRequest, myHttpResponse);
+            return;
         }
-        return webpageController.defaultResponse(myHttpRequest);
+        webpageController.defaultResponse(myHttpRequest, myHttpResponse);
     }
 }

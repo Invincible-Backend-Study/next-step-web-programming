@@ -8,6 +8,7 @@ import service.WebpageService;
 import webserver.ResponseHeadersMaker;
 import webserver.http.MyHttpRequest;
 import webserver.RequestHandler;
+import webserver.http.MyHttpResponse;
 import webserver.http.Response;
 
 import java.io.BufferedReader;
@@ -23,65 +24,39 @@ public class WebpageController {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
     private static final WebpageService webpageService = new WebpageService();
 
-    public Response defaultResponse(MyHttpRequest myHttpRequest) throws IOException {
+    public void defaultResponse(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
         String path = myHttpRequest.getRequestPath();
-
-        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + path).toPath());
-
-        List<String> headers = null;
-        if (path.endsWith(".css")) {
-            headers = ResponseHeadersMaker.css(body.length);
-        } else {
-            headers = ResponseHeadersMaker.ok(body.length);
-        }
-
-        return new Response(headers, body);
+        myHttpResponse.forward(path);
     }
 
-    public Response signup(MyHttpRequest myHttpRequest) throws IOException {
-        Map<String, String> params = myHttpRequest.getAllParameters();  //TODO 애초에 회원가입 관련 인자들을 역직렬화해서 받는 방법?
+    public void signup(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
+        Map<String, String> params = myHttpRequest.getAllParameters();
         webpageService.signup(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
-        log.debug("가입한 유저목록: " + DataBase.findAll().toString());  //TODO 포맷팅방식으로 사용해야한다. (불필요한 연산 발생)
+        log.debug("가입한 유저목록: " + DataBase.findAll().toString());
 
-        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        List<String> headers = ResponseHeadersMaker.found("/index.html");
-
-        return new Response(headers, body);
+        myHttpResponse.sendRedirect("/index.html");
     }
 
-
-
-
-
-
-
-    public Response login(MyHttpRequest myHttpRequest) throws IOException {
+    public void login(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
         Map<String, String> params = myHttpRequest.getAllParameters();
         User user = webpageService.login(params.get("userId"), params.get("password"));
 
         if (user == null) {
-            byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login_failed.html").toPath());
-            List<String> headers = ResponseHeadersMaker.found("/user/login_failed.html");
-            return new Response(headers, body);
+            myHttpResponse.sendRedirect("/user/login_failed.html");
         }
-        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/index.html").toPath());
-        List<String> headers = ResponseHeadersMaker.foundLogined("/index.html");
-        return new Response(headers, body);
+        myHttpResponse.addHeader("Set-Cookie", "logined=true");
+        myHttpResponse.sendRedirect("/index.html");
     }
 
-    public Response getUserList(MyHttpRequest myHttpRequest) throws IOException {
+    public void getUserList(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
         Map<String, String> requestHeaders = myHttpRequest.getAllHeaders();
 
         if (requestHeaders.get("Cookie").equals("logined=true")) {
             String users = webpageService.userListString();
-
             byte[] body = dynamicUserList(users);
-            List<String> headers = ResponseHeadersMaker.ok(body.length);
-            return new Response(headers, body);
+            myHttpResponse.forwardBody(body);
         }
-        byte[] body = Files.readAllBytes(new File(RESOURCE_PATH + "/user/login.html").toPath());
-        List<String> headers = ResponseHeadersMaker.found("/user/login.html");
-        return new Response(headers, body);
+        myHttpResponse.sendRedirect("/user/login.html");
     }
 
     private static byte[] dynamicUserList(String users) throws IOException {
