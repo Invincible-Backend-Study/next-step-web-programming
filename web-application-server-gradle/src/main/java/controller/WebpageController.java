@@ -31,15 +31,19 @@ public class WebpageController {
 
     public void signup(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
         Map<String, String> params = myHttpRequest.getAllParameters();
-        webpageService.signup(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+        webpageService.signup(
+                myHttpRequest.getHeader("userId"),
+                myHttpRequest.getHeader("password"),
+                myHttpRequest.getHeader("name"),
+                myHttpRequest.getHeader("email")
+        );
         log.debug("가입한 유저목록: " + DataBase.findAll().toString());
 
         myHttpResponse.sendRedirect("/index.html");
     }
 
     public void login(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
-        Map<String, String> params = myHttpRequest.getAllParameters();
-        User user = webpageService.login(params.get("userId"), params.get("password"));
+        User user = webpageService.login(myHttpRequest.getHeader("userId"), myHttpRequest.getHeader("password"));
 
         if (user == null) {
             myHttpResponse.sendRedirect("/user/login_failed.html");
@@ -49,9 +53,7 @@ public class WebpageController {
     }
 
     public void getUserList(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
-        Map<String, String> requestHeaders = myHttpRequest.getAllHeaders();
-
-        if (requestHeaders.get("Cookie").equals("logined=true")) {
+        if ("logined=true".equals(myHttpRequest.getHeader("Cookie"))) {
             String users = webpageService.userListString();
             byte[] body = dynamicUserList(users);
             myHttpResponse.forwardBody(body);
