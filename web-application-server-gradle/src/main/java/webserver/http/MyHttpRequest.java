@@ -21,19 +21,12 @@ public class MyHttpRequest {
     private static final int REQUEST_LINE = 0;
     private static final int HEADER_START_LINE = 1;
 
-    private final String method;
-    private final String requestPath;
+    private final RequestLine requestLine;
+    // private final String method;
+    // private final String requestPath;
     private final Map<String, String> parameters;
     private final Map<String, String> headers;
     private final String body;
-
-    public MyHttpRequest(String method, String requestPath, Map<String, String> parameters, Map<String, String> headers, String body) {
-        this.headers = headers;
-        this.method = method;
-        this.requestPath = requestPath;
-        this.parameters = parameters;
-        this.body = body;
-    }
 
     public MyHttpRequest(InputStream in) throws IOException {
         // BufferedReader 값 읽기
@@ -41,23 +34,24 @@ public class MyHttpRequest {
         BufferedReader br = new BufferedReader(reader);
         List<String> lines = readInputStream(br);
 
-        // RequestLine 가져오기 (Method, RequestPath&Parameter, HttpVer)
-        String[] requestLine = lines.get(REQUEST_LINE).split(" ");
-        String url = requestLine[1];
+//        // RequestLine 가져오기 (Method, RequestPath&Parameter, HttpVer)
+//        String[] requestLine = lines.get(REQUEST_LINE).split(" ");
+//        String url = requestLine[1];
+//
+//        // 변수 초기화
+//        method = requestLine[0];
+//        requestPath = extractRequestPath(url);
 
-        // 변수 초기화
-        method = requestLine[0];
-        requestPath = extractRequestPath(url);
+        requestLine = new RequestLine(lines.get(REQUEST_LINE));
         headers = extractHeaders(lines);
         body = extractBody(br, headers.get("Content-Length"));
-        parameters = extractParameters(url, body);
+        parameters = extractParameters(requestLine.getParams(), body);
     }
 
-    private static Map<String, String> extractParameters(String url, String requestBody) {
+    private static Map<String, String> extractParameters(Map<String, String> requestLineParams, String requestBody) {
         // url 또는 body에 있는 params를 반환한다.
-        Map<String, String> params = extractParametersFromUrl(url);
-        if (!params.isEmpty()) {
-            return params;
+        if (!requestLineParams.isEmpty()) {
+            return requestLineParams;
         }
         return extractParametersFromBody(requestBody);
     }
@@ -67,22 +61,6 @@ public class MyHttpRequest {
             return HttpRequestUtils.parseQueryString(requestBody);
         }
         return Collections.emptyMap();
-    }
-
-    private static Map<String, String> extractParametersFromUrl(String url) {
-        int index = url.indexOf("?");
-        if (index != -1) {
-            return HttpRequestUtils.parseQueryString(url.substring(index + 1));
-        }
-        return Collections.emptyMap();
-    }
-
-    private static String extractRequestPath(String url) {
-        int index = url.indexOf("?");
-        if (index != -1) {
-            return url.substring(0, index);
-        }
-        return url;
     }
 
     private static String extractBody(BufferedReader br, String contentLength) throws IOException {
@@ -126,11 +104,11 @@ public class MyHttpRequest {
     }
 
     public String getMethod() {
-        return method;
+        return requestLine.getMethod();
     }
 
     public String getRequestPath() {
-        return requestPath;
+        return requestLine.getPath();
     }
 
     public Map<String, String> getAllParameters() {
@@ -147,8 +125,8 @@ public class MyHttpRequest {
 
     @Override
     public String toString() {
-        return "HttpMethod:" + method
-                + ", requestPath:" + requestPath
+        return "HttpMethod:" + requestLine.getMethod()
+                + ", requestPath:" + requestLine.getPath()
                 + ", parameters:" + (parameters == null ? "-" : parameters.toString())
                 + ", httpHeaders:" + (headers == null ? "-" : headers.toString())
                 + ", requestBody:" + body;
