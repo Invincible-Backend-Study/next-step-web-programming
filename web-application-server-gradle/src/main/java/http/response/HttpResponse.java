@@ -4,6 +4,7 @@ import http.request.HttpRequest;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,19 @@ public class HttpResponse {
             dataOutputStream.write(responseBodyRecord, 0, responseBodyRecord.length);
         }
         dataOutputStream.flush();
+    }
+
+    public HttpResponse writeRedirect(String redirectUrl) {
+        this.responseHeaderRecord.add("HTTP/1.1 302 FOUND");
+        this.responseHeaderRecord.add("Location: " + redirectUrl);
+        return this;
+    }
+
+    public HttpResponse writeHtml(String generateView) {
+        this.responseHeaderRecord.add("HTTP/1.1 202 OK");
+        this.responseHeaderRecord.add("Content-Type: text/html;charset=utf-8");
+        this.responseBodyRecord = generateView.getBytes(StandardCharsets.UTF_8);
+        return this;
     }
     // 응답에 대한 처리를 상태패턴으로 처리할 수 있을 것 같음
     // 응답요청 처리 상태 -> 응답 헤더 처리 상태 -> 응답 바디 처리 상태
