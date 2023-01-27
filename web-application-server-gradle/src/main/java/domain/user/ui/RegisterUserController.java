@@ -16,7 +16,6 @@ public class RegisterUserController implements BasicController {
         try {
             registerUserUseCase.execute(this.parserUserRequest(httpRequest));
             response.writeRedirect("/index.html");
-
         } catch (DomainException domainException) {
             response.writeRedirect(domainException.getRedirectUrl().orElseGet(() -> "/user/form.html"));
         }
