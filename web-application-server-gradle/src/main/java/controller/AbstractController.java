@@ -7,14 +7,17 @@ import webserver.http.Response;
 
 abstract class AbstractController implements Controller {
     public void service(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
+        if (myHttpRequest.getMethod().isPost()) {
+            doPost(myHttpRequest, myHttpResponse);
+        }
+        if (myHttpRequest.getMethod().isGet()) {
+            doGet(myHttpRequest, myHttpResponse);
+        }
     }
 
-    Response doGet(MyHttpRequest myHttpRequest) {
-        return null;
+    void doGet(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) {
     }
 
-    Response doPost(MyHttpRequest myHttpRequest) {
-        return null;
+    void doPost(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) {
     }
-
 }
