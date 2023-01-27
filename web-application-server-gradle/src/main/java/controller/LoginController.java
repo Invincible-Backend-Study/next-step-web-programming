@@ -9,7 +9,7 @@ import webserver.http.MyHttpRequest;
 import webserver.http.MyHttpResponse;
 
 public class LoginController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @Override
     public void service(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) {

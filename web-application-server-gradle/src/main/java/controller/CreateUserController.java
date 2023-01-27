@@ -10,7 +10,7 @@ import webserver.http.MyHttpResponse;
 import webserver.http.Response;
 
 public class CreateUserController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     @Override
     public void doGet(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) {

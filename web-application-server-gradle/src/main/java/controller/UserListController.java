@@ -15,7 +15,7 @@ import webserver.http.MyHttpResponse;
 
 public class UserListController extends AbstractController {
     private static final String RESOURCE_PATH = "./webapp";
-    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(UserListController.class);
 
     @Override
     public void service(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
