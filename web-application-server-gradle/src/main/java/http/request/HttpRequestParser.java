@@ -1,6 +1,9 @@
 package http.request;
 
 import http.exception.HttpExceptionCode;
+import http.request.header.HttpHeader;
+import http.request.startline.HttpRequestMethod;
+import http.request.startline.HttpRequestStartLine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,11 +12,20 @@ import java.nio.charset.StandardCharsets;
 
 public class HttpRequestParser {
     public static HttpRequest parse(final InputStream inputStream) throws IOException {
-        var bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        final var bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         final var line = bufferedReader.readLine();
-        
+
         validateHttpRequestFirstLineIsNull(line);
-        return new HttpPostRequest();
+
+        var httpStartLine = HttpRequestStartLine.of(line);
+        var httpHeaders = HttpHeader.of(bufferedReader);
+
+        // Get Request
+        if (httpStartLine.getHttpMethod() == HttpRequestMethod.GET) {
+            return new HttpGetRequest(httpStartLine, httpHeaders, bufferedReader);
+        }
+        // Post Request
+        return new HttpPostRequest(httpStartLine, httpHeaders, bufferedReader);
     }
 
     // http request is null
@@ -22,4 +34,6 @@ public class HttpRequestParser {
             throw HttpExceptionCode.HTTP_START_LINE_IS_NULL.newInstance();
         }
     }
+
+
 }
