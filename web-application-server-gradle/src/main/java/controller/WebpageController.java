@@ -30,12 +30,11 @@ public class WebpageController {
     }
 
     public void signup(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
-        Map<String, String> params = myHttpRequest.getAllParameters();
         webpageService.signup(
-                myHttpRequest.getHeader("userId"),
-                myHttpRequest.getHeader("password"),
-                myHttpRequest.getHeader("name"),
-                myHttpRequest.getHeader("email")
+                myHttpRequest.getParameter("userId"),
+                myHttpRequest.getParameter("password"),
+                myHttpRequest.getParameter("name"),
+                myHttpRequest.getParameter("email")
         );
         log.debug("가입한 유저목록: " + DataBase.findAll().toString());
 
