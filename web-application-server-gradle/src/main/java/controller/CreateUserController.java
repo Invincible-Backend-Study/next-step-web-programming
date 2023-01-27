@@ -4,10 +4,8 @@ import db.DataBase;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.RequestHandler;
 import webserver.http.MyHttpRequest;
 import webserver.http.MyHttpResponse;
-import webserver.http.Response;
 
 public class CreateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
