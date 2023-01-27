@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
 import util.IOUtils;
-import webserver.RequestHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,7 +80,7 @@ public class MyHttpRequest {
         String line;
         while ((line = br.readLine()) != null && !"".equals(line)) {
             lines.add(line);
-            log.debug("BufferedReader: " + line);
+            log.debug("BufferedReader: {}", line);
         }
         return lines;
     }

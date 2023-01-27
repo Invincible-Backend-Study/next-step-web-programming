@@ -9,7 +9,6 @@ import java.util.Collection;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.RequestHandler;
 import webserver.http.MyHttpRequest;
 import webserver.http.MyHttpResponse;
 
@@ -35,6 +34,7 @@ public class UserListController extends AbstractController {
         StringBuilder sb = new StringBuilder();
         File file = new File(RESOURCE_PATH + "/user/list.html");
         BufferedReader br = new BufferedReader((new FileReader(file)));
+
         String line;
         while ((line = br.readLine()) != null) {
             sb.append(line + "\r\n");
