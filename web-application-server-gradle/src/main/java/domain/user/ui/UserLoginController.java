@@ -12,13 +12,14 @@ public class UserLoginController implements BasicController {
 
     @Override
     public void process(HttpRequest httpRequest, HttpResponse response) throws IOException {
-        if (userLoginUseCase.execute(this.convertRequestToLoginRequest(httpRequest))) {
-            response.writeRedirect("/index.html")
-                    .write("Set-Cookie: logined=true; Path=/");
+        final var successLogin = userLoginUseCase.execute(this.convertRequestToLoginRequest(httpRequest));
+
+        if (successLogin) {
+            response.writeRedirect("/index.html").write("Set-Cookie: logined=true; Path=/");
             return;
         }
-        response.writeRedirect("/user/login_failed.html")
-                .write("Set-Cookie: logined=false; Path=/");
+
+        response.writeRedirect("/user/login_failed.html").write("Set-Cookie: logined=false; Path=/");
     }
 
     private UserLoginRequest convertRequestToLoginRequest(HttpRequest httpRequest) {

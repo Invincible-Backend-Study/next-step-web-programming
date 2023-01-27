@@ -14,15 +14,15 @@ public class FindUserController implements BasicController {
 
     @Override
     public void process(HttpRequest httpRequest, HttpResponse response) {
-        var logined = httpRequest.getCookie("logined");
-        if (logined.isEmpty()) {
-            response.writeRedirect("/index.html");
-            return;
-        }
-        if (Boolean.parseBoolean(logined.get())) {
+        var isUserLogin = httpRequest.getCookie("logined")
+                .map(Boolean::parseBoolean)
+                .orElse(false);
+
+        if (isUserLogin) {
             response.writeHtml(this.generateView(findUserUseCase.getAllUser()));
             return;
         }
+
         response.writeRedirect("/index.html");
     }
 
