@@ -9,14 +9,14 @@ import lombok.Getter;
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class GenerateUserRequest {
+public class RegisterUserRequest {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public static GenerateUserRequest of(String userId, String password, String name, String email) {
-        return GenerateUserRequest.builder()
+    public static RegisterUserRequest of(String userId, String password, String name, String email) {
+        return RegisterUserRequest.builder()
                 .email(email)
                 .userId(userId)
                 .name(name)

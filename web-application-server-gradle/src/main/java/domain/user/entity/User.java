@@ -1,20 +1,34 @@
-package model;
+package domain.user.entity;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 
-@Builder
+
 public class User {
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(String userId, String password, String name, String email) {
+    @Builder(access = AccessLevel.PRIVATE)
+    private User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+
+        ValidateUserPolicy.validate(this);
     }
+
+    public static User of(String userId, String password, String name, String email) {
+        return User.builder()
+                .userId(userId)
+                .name(name)
+                .password(password)
+                .email(email)
+                .build();
+    }
+
 
     public String getUserId() {
         return userId;
