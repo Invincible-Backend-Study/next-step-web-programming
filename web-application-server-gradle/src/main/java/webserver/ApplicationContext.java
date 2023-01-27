@@ -1,7 +1,9 @@
 package webserver;
 
 import common.BasicController;
+import domain.user.ui.FindUserController;
 import domain.user.ui.RegisterUserController;
+import domain.user.ui.UserLoginController;
 import http.request.HttpRequest;
 import http.response.HttpResponse;
 import java.io.IOException;
@@ -14,6 +16,8 @@ public class ApplicationContext {
 
     static {
         previousMappingController.put("/user/create", new RegisterUserController());
+        previousMappingController.put("/user/login", new UserLoginController());
+        previousMappingController.put("/user/list", new FindUserController());
         //previousMappingController.put("/user")
     }
 
