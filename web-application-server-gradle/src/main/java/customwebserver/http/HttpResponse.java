@@ -66,7 +66,7 @@ public class HttpResponse {
                             .append("=")
                             .append(cookies.get(key))
                             .append("; "));
-            return cookieMessage.delete(cookieMessage.length() - 2, cookieMessage.length())
+            return cookieMessage.append(" path=/")
                     .append("\r\n")
                     .toString();
         }
