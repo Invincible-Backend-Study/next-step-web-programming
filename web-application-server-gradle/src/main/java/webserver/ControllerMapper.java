@@ -1,33 +1,31 @@
 package webserver;
 
-import controller.WebpageController;
-import webserver.http.HttpMethod;
-import webserver.http.MyHttpRequest;
-import webserver.http.MyHttpResponse;
-import webserver.http.Response;
-
-import java.io.IOException;
+import controller.Controller;
+import controller.CreateUserController;
+import controller.DefaultController;
+import controller.LoginController;
+import controller.UserListController;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ControllerMapper {
-    private final WebpageController webpageController = new WebpageController();
+    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
-    public void mapping(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
-        HttpMethod method = myHttpRequest.getMethod();
-        String path = myHttpRequest.getRequestPath();
+    private static Map<String, Controller> controllers = new HashMap<String, Controller>();
+    static {
+        controllers.put("/user/create", new CreateUserController());
+        controllers.put("/user/login", new LoginController());
+        controllers.put("/user/list", new UserListController());
+    }
 
-        // controller 맵핑
-        if ((method.isGet() || method.isPost()) && "/user/create".equals(path)) {
-            webpageController.signup(myHttpRequest, myHttpResponse);
-            return;
+    public static Controller getController(String requestUrl) {
+        Controller controller = controllers.get(requestUrl);
+        if (controller == null) {
+            // html, css, js ... etc
+            return new DefaultController();
         }
-        if (method.isPost() && "/user/login".equals(path)) {
-            webpageController.login(myHttpRequest, myHttpResponse);
-            return;
-        }
-        if (method.isGet() && "/user/list.html".equals(path)) {
-            webpageController.getUserList(myHttpRequest, myHttpResponse);
-            return;
-        }
-        webpageController.defaultResponse(myHttpRequest, myHttpResponse);
+        return controller;
     }
 }
