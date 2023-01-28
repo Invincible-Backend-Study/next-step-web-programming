@@ -2,7 +2,6 @@ package utils;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import customwebserver.http.RequestLine;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,9 +52,4 @@ public class HttpRequestUtils {
     public static Pair parseHeader(String header) {
         return getKeyValue(header, ": ");
     }
-
-    public static RequestLine parseRequestLine(final String header) {
-        return RequestLine.from(header);
-    }
-
 }
