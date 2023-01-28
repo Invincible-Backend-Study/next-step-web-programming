@@ -50,24 +50,6 @@ public class RequestLine {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        RequestLine that = (RequestLine) o;
-        return httpMethod == that.httpMethod && requestUri.equals(that.requestUri) && httpVersion.equals(
-                that.httpVersion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(httpMethod, requestUri, httpVersion);
-    }
-
-    @Override
     public String toString() {
         return "RequestLine{" +
                 "httpMethod=" + httpMethod +

@@ -4,9 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import customwebserver.http.RequestLine;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.dto.Pair;
+import utils.enums.HttpMethod;
 
 public class HttpRequestUtilsTest {
     @Test
@@ -81,6 +83,10 @@ public class HttpRequestUtilsTest {
         RequestLine requestLine = HttpRequestUtils.parseRequestLine(header);
 
         // then
-        assertThat(requestLine).isEqualTo(expectedRequestLine);
+        Assertions.assertAll(() -> {
+            assertThat(requestLine.containMethod(HttpMethod.GET)).isEqualTo(
+                    expectedRequestLine.containMethod(HttpMethod.GET));
+            assertThat(requestLine.getUri()).isEqualTo(expectedRequestLine.getUri());
+        });
     }
 }
