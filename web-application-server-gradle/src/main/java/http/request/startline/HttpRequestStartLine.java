@@ -1,10 +1,11 @@
 package http.request.startline;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HttpRequestStartLine {
     private final HttpRequestMethod httpMethod;
     private final String url;
@@ -17,17 +18,16 @@ public class HttpRequestStartLine {
 
         var splitStr = line.split(" ");
         var httpRequestMethod = HttpRequestMethod.of(splitStr[0]);
-        return new HttpRequestStartLine(httpRequestMethod, splitStr[1], splitStr[2]);
+        return new HttpRequestStartLine(httpRequestMethod, parserUrl(splitStr[1]), splitStr[2]);
     }
 
     public static String parserUrl(final String url) {
         var delimiterIndex = url.indexOf('?');
 
-        var requestPath = url;
         if (delimiterIndex != -1) {
-            requestPath = url.substring(0, delimiterIndex);
+            return url.substring(0, delimiterIndex);
         }
-        return requestPath;
+        return url;
     }
 
 }

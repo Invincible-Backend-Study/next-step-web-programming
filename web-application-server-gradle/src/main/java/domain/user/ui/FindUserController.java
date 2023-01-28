@@ -14,12 +14,13 @@ public class FindUserController implements BasicController {
 
     @Override
     public void process(HttpRequest httpRequest, HttpResponse response) {
-        var isUserLogin = httpRequest.getCookie("logined")
+        var logined = httpRequest.getCookie("logined")
                 .map(Boolean::parseBoolean)
                 .orElse(false);
 
-        if (isUserLogin) {
-            response.writeHtml(this.generateView(findUserUseCase.getAllUser()));
+        if (logined) {
+            var generatedHtml = this.generateView(findUserUseCase.getAllUser());
+            response.writeHtml(generatedHtml);
             return;
         }
 
@@ -27,15 +28,11 @@ public class FindUserController implements BasicController {
     }
 
     private String generateView(List<UserInformationResponse> allUser) {
-        return "<!DOCTYPE HTML>"
-                + "<head>"
-                + "</head>"
-                + "<body>"
-                + "<ul>"
-                + allUser.stream().map(UserInformationResponse::toHTML).collect(Collectors.joining())
-                + "</ul>"
-                + "</body>"
-                + "</html>";
+        final var userView = allUser.stream()
+                .map(UserInformationResponse::toHTML)
+                .collect(Collectors.joining());
+
+        return String.format("<!DOCTYPE HTML><head></head><body><ul>%s</ul></body></html>", userView);
 
 
     }

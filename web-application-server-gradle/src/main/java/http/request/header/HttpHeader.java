@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import util.HttpRequestUtils;
@@ -19,9 +18,9 @@ public class HttpHeader {
     }
 
     private static Map<String, String> parseHttpHeaders(BufferedReader bufferedReader) throws IOException {
-        var line = bufferedReader.readLine();
-
         var httpHeaders = new LinkedHashMap<String, String>();
+
+        var line = bufferedReader.readLine();
         while (!"".equals(line)) {
             var pair = HttpRequestUtils.parseHeader(line);
             httpHeaders.put(pair.getKey(), pair.getValue());
@@ -31,10 +30,6 @@ public class HttpHeader {
     }
 
     public String get(String key) {
-        return this.header.get(key);
-    }
-
-    public Optional<String> optionalGet(String key) {
-        return Optional.of(this.get(key));
+        return this.header.getOrDefault(key, null);
     }
 }

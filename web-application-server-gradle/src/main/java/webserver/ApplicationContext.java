@@ -16,6 +16,7 @@ public class ApplicationContext {
                 .process(request, response);
 
         // response interceptor 필요한 경우
+
         response.send();
     }
 

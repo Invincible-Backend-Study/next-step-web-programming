@@ -23,6 +23,6 @@ public class PreviousMappingController {
 
     // 자원을 처리하는 컨트롤러
     public BasicController getResourceHandleController() {
-        return (httpRequest, httpResponse) -> httpResponse.write("HTTP/1.1 200 OK ").writeFile(httpRequest.getRequestPath());
+        return (httpRequest, httpResponse) -> httpResponse.write("HTTP/1.1 200 OK").writeFile(httpRequest.getRequestPath());
     }
 }
