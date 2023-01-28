@@ -39,7 +39,7 @@ public class FrontController {
      * 1. 컨트롤러가 존재하는지 체크 2. 정적 파일 체크
      */
     private void requestDispatch() throws IOException {
-        Controller requestController = handlerMapping.get(httpRequest.getRequestUri());
+        Controller requestController = handlerMapping.get(httpRequest.getPath());
         if (requestController == null) {
             responseStaticUri();
             return;
@@ -55,7 +55,7 @@ public class FrontController {
     }
 
     private void responseStaticUri() throws IOException {
-        String requestUri = httpRequest.getRequestUri();
+        String requestUri = httpRequest.getPath();
         if (requestUri.contains("css")) {
             httpResponse.successStaticCss(requestUri);
             return;

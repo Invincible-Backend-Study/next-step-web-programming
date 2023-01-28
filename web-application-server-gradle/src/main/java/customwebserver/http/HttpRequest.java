@@ -18,12 +18,14 @@ import utils.enums.HttpMethod;
 public class HttpRequest {
     private static final int HTTP_METHOD = 0;
     private static final int URI = 1;
+    public static final int HTTP_VERSION = 2;
     private static final int QUERY_STRING = 1;
     private static final int REQUEST_URI = 0;
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
 
     private final HttpMethod httpMethod;
     private String requestUri;
+    private final String httpVersion;
     private final Map<String, String> requestHeader;
     private Map<String, String> queryStrings;
 
@@ -32,11 +34,12 @@ public class HttpRequest {
         String[] requestLine = parseRequestLine(httpRequestReader.readLine());
         httpMethod = HttpMethod.valueOf(requestLine[HTTP_METHOD]);
         requestUri = requestLine[URI];
+        httpVersion = requestLine[HTTP_VERSION];
         requestHeader = parseHttpRequestHeader(httpRequestReader);
         queryStrings = parseQueryString(httpRequestReader);
     }
 
-    public String getRequestUri() {
+    public String getPath() {
         return requestUri;
     }
 
@@ -49,9 +52,17 @@ public class HttpRequest {
      */
     public String getParameter(final String parameterName) {
         if (queryStrings == null) {
-            throw new IllegalArgumentException("[ERROR] No Parameter in request");
+            throw new IllegalArgumentException("[ERROR] No parameter in request");
         }
         return queryStrings.get(parameterName);
+    }
+
+    public String getHeader(final String headerName) {
+        String header = requestHeader.get(headerName);
+        if (header == null) {
+            throw new IllegalArgumentException("[ERROR] No header in request");
+        }
+        return header;
     }
 
     public String getCookie(final String cookieName) {
@@ -68,7 +79,6 @@ public class HttpRequest {
         }
         return null;
     }
-
 
     private String[] parseRequestLine(final String requestLine) {
         return requestLine.split(" ");
