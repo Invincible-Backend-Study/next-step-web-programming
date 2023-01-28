@@ -17,17 +17,15 @@ import utils.enums.HttpMethod;
 
 public class HttpRequest {
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
-
-    private final BufferedReader httpRequest;
     private RequestLine requestLine;
     private Map<String, String> requestHeaderKeyValue;
     private Map<String, String> queryStringByForm;
 
     public HttpRequest(final InputStream in) throws IOException {
-        httpRequest = new BufferedReader(new InputStreamReader(in));
-        requestLine = HttpRequestUtils.parseRequestLine(httpRequest.readLine());
-        requestHeaderKeyValue = parseHttpRequestHeaderKeyValue();
-        queryStringByForm = parseQueryStringByForm();
+        BufferedReader httpRequestReader = new BufferedReader(new InputStreamReader(in));
+        requestLine = HttpRequestUtils.parseRequestLine(httpRequestReader.readLine());
+        requestHeaderKeyValue = parseHttpRequestHeaderKeyValue(httpRequestReader);
+        queryStringByForm = parseQueryStringByForm(httpRequestReader);
     }
 
     public String getRequestUri() {
@@ -54,9 +52,9 @@ public class HttpRequest {
         return cookies.get(cookieName);
     }
 
-    private Map<String, String> parseQueryStringByForm() throws IOException {
+    private Map<String, String> parseQueryStringByForm(final BufferedReader httpRequestReader) throws IOException {
         if (requestHeaderKeyValue.containsKey("Content-Length")) {
-            String formData = IOUtils.readData(httpRequest,
+            String formData = IOUtils.readData(httpRequestReader,
                     Integer.parseInt(requestHeaderKeyValue.get("Content-Length")));
             log.debug("POST form Data={}", formData);
             return HttpRequestUtils.parseQueryString(formData);
@@ -64,12 +62,12 @@ public class HttpRequest {
         return null;
     }
 
-    private Map<String, String> parseHttpRequestHeaderKeyValue() throws IOException {
-        String header = httpRequest.readLine();
+    private Map<String, String> parseHttpRequestHeaderKeyValue(final BufferedReader httpRequestReader) throws IOException {
+        String header = httpRequestReader.readLine();
         List<Pair> headerPairs = new ArrayList<>();
         while (!header.equals("")) {
             headerPairs.add(HttpRequestUtils.parseHeader(header));
-            header = httpRequest.readLine();
+            header = httpRequestReader.readLine();
         }
         return headerPairs.stream()
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
