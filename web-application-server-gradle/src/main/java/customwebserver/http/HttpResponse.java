@@ -26,13 +26,13 @@ public class HttpResponse {
      */
     public void forward(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
-        selectStaticContentType(path);
+        putStaticContentTypeHeader(path);
         headers.put("Content-Length", String.valueOf(fileBytes.length));
         response200Header();
         responseBody(fileBytes);
     }
 
-    private void selectStaticContentType(final String path) {
+    private void putStaticContentTypeHeader(final String path) {
         if (path.endsWith(".css")) {
             headers.put("Content-Type", "text/css;charset=utf-8");
         }
@@ -43,7 +43,6 @@ public class HttpResponse {
             headers.put("Content-Type", "text/html;charset=utf-8");
         }
     }
-
 
     public void successMappingUri() {
         if (responseBodyData != null) {
@@ -59,7 +58,16 @@ public class HttpResponse {
 
     public void sendRedirect(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
-        response302Header(fileBytes.length, path);
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n");
+            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + fileBytes.length + "\r\n");
+            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes("Location: " + path + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
         responseBody(fileBytes);
     }
 
@@ -85,19 +93,6 @@ public class HttpResponse {
                     .toString();
         }
         return "";
-    }
-
-    private void response302Header(final int lengthOfBodyContent, final String path) {
-        try {
-            dos.writeBytes("HTTP/1.1 302 Found \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
-            dos.writeBytes("Location: " + path + "\r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
     }
 
     private void response200Header() {
