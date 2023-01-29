@@ -29,4 +29,21 @@ class HttpRequestTest {
             assertThat(httpRequest.getParameter("userId")).isEqualTo("javajigi");
         });
     }
+
+    @Test
+    @DisplayName("POST 요청에 대한 정상 파싱 테스트")
+    public void request_POST() throws IOException {
+        // given
+        FileInputStream in = new FileInputStream(new File(testDirectory + "Http_POST.txt"));
+        // when
+        HttpRequest httpRequest = new HttpRequest(in);
+
+        // then
+        Assertions.assertAll(() -> {
+            assertThat(httpRequest.containMethod(HttpMethod.POST)).isTrue();
+            assertThat(httpRequest.getPath()).isEqualTo("/user/create");
+            assertThat(httpRequest.getHeader("Connection")).isEqualTo("keep-alive");
+            assertThat(httpRequest.getParameter("userId")).isEqualTo("javajigi");
+        });
+    }
 }
