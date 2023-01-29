@@ -12,12 +12,11 @@ public class LoginController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-        return true;
+    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
     }
 
     @Override
-    public boolean doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         String userId = httpRequest.getParameter("userId");
         String password = httpRequest.getParameter("password");
         if (userId == null || password == null) {
@@ -28,9 +27,8 @@ public class LoginController implements Controller {
         httpResponse.addCookie("logined", login);
         if (login) {
             httpResponse.sendRedirect("/index.html");
-            return true;
+            return;
         }
         httpResponse.sendRedirect("/user/login_failed.html");
-        return true;
     }
 }

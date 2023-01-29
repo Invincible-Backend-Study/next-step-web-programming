@@ -13,11 +13,11 @@ public class UserListController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         Boolean logined = Boolean.valueOf(httpRequest.getCookie("logined"));
         if (!logined) {
             httpResponse.sendRedirect("/user/login.html");
-            return true;
+            return;
         }
         StringBuilder userList = new StringBuilder();
         userService.findAll()
@@ -25,11 +25,9 @@ public class UserListController implements Controller {
                 .map(User::toString)
                 .forEach(userInfo -> userList.append(userInfo).append("\n"));
         httpResponse.sendResponseBody(userList.toString());
-        return true;
     }
 
     @Override
-    public boolean doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-        return false;
+    public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
     }
 }

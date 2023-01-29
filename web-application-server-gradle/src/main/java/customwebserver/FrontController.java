@@ -45,10 +45,10 @@ public class FrontController {
             return;
         }
         if (httpRequest.containMethod(HttpMethod.GET)) {
-            boolean success = requestController.doGet(httpRequest, httpResponse);
+            requestController.doGet(httpRequest, httpResponse);
         }
         if (httpRequest.containMethod(HttpMethod.POST)) {
-            boolean success = requestController.doPost(httpRequest, httpResponse);
+            requestController.doPost(httpRequest, httpResponse);
         }
     }
 }
