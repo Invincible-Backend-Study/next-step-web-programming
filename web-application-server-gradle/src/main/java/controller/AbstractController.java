@@ -18,7 +18,7 @@ public abstract class AbstractController implements Controller {
         }
     }
 
-    public abstract void doGet(final HttpRequest request, final HttpResponse response) throws IOException;
+    protected abstract void doGet(final HttpRequest request, final HttpResponse response) throws IOException;
 
-    public abstract void doPost(final HttpRequest request, final HttpResponse response) throws IOException;
+    protected abstract void doPost(final HttpRequest request, final HttpResponse response) throws IOException;
 }
