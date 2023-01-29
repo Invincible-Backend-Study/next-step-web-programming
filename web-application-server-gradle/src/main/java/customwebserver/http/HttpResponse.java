@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class HttpResponse {
     private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
+    private final Map<String, String> headers = new HashMap<>();
     private final Map<String, Object> cookies = new HashMap<>();
     private String responseBodyData;
 
@@ -20,9 +21,29 @@ public class HttpResponse {
         dos = new DataOutputStream(out);
     }
 
-    public void forward(final String path) {
-
+    /**
+     * html, css, js와 같은 정적파일을 응답할때 사용됨
+     */
+    public void forward(final String path) throws IOException {
+        byte[] fileBytes = getFileBytes(path);
+        selectStaticContentType(path);
+        headers.put("Content-Length", String.valueOf(fileBytes.length));
+        response200Header();
+        responseBody(fileBytes);
     }
+
+    private void selectStaticContentType(final String path) {
+        if (path.endsWith(".css")) {
+            headers.put("Content-Type", "text/css;charset=utf-8");
+        }
+        if (path.endsWith(".js")) {
+            headers.put("Content-Type", "application/javascript");
+        }
+        if (path.endsWith(".html")) {
+            headers.put("Content-Type", "text/html;charset=utf-8");
+        }
+    }
+
 
     public void successMappingUri() {
         if (responseBodyData != null) {
@@ -31,21 +52,10 @@ public class HttpResponse {
             responseBody(dataBytes);
             return;
         }
-        response200Header(0);
+        response200Header();
         responseBody("".getBytes());
     }
 
-    public void successStaticUri(final String requestUri) throws IOException {
-        byte[] fileBytes = getFileBytes(requestUri);
-        response200Header(fileBytes.length);
-        responseBody(fileBytes);
-    }
-
-    public void successStaticCss(final String requestUri) throws IOException {
-        byte[] fileBytes = getFileBytes(requestUri);
-        response200HeaderWithCss(fileBytes.length);
-        responseBody(fileBytes);
-    }
 
     public void sendRedirect(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
@@ -90,23 +100,10 @@ public class HttpResponse {
         }
     }
 
-    private void response200Header(final int lengthOfBodyContent) {
+    private void response200Header() {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void response200HeaderWithCss(final int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            writeHeaders();
             dos.writeBytes(getAllCookieMessage());
             dos.writeBytes("\r\n");
         } catch (IOException e) {
@@ -124,6 +121,19 @@ public class HttpResponse {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private void writeHeaders() {
+        headers.keySet()
+                .stream()
+                .map(key -> key + ": " + headers.get(key) + "\r\n")
+                .forEach(header -> {
+                    try {
+                        dos.writeBytes(header);
+                    } catch (IOException e) {
+                        log.error(e.getMessage());
+                    }
+                });
     }
 
     private void responseBody(byte[] body) {
