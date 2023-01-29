@@ -12,7 +12,7 @@ public class LoginController extends AbstractController {
     private final UserService userService = new UserService();
 
     @Override
-    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse)  {
+    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) {
     }
 
     @Override

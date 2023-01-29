@@ -3,7 +3,6 @@ package webserver;
 import customwebserver.FrontController;
 import customwebserver.http.HttpRequest;
 import customwebserver.http.HttpResponse;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

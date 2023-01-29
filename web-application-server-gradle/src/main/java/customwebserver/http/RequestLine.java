@@ -20,14 +20,6 @@ public class RequestLine {
         parseQueryString();
     }
 
-    private void parseQueryString() {
-        if (requestUri.contains("?")) {
-            String[] splitRequestUri = requestUri.split("\\?");
-            params = HttpRequestUtils.parseQueryString(splitRequestUri[QUERY_STRING]);
-            requestUri = splitRequestUri[REQUEST_URI];
-        }
-    }
-
     public static RequestLine from(final String header) {
         String[] splitHeaders = header.split(" ");
         return new RequestLine(HttpMethod.valueOf(splitHeaders[0]), splitHeaders[1], splitHeaders[2]);
@@ -48,17 +40,15 @@ public class RequestLine {
         return params.get(parameterName);
     }
 
-    @Override
-    public String toString() {
-        return "RequestLine{" +
-                "httpMethod=" + httpMethod +
-                ", requestUri='" + requestUri + '\'' +
-                ", queryStrings=" + params +
-                ", httpVersion='" + httpVersion + '\'' +
-                '}';
-    }
-
     public Map<String, String> getParams() {
         return params;
+    }
+
+    private void parseQueryString() {
+        if (requestUri.contains("?")) {
+            String[] splitRequestUri = requestUri.split("\\?");
+            params = HttpRequestUtils.parseQueryString(splitRequestUri[QUERY_STRING]);
+            requestUri = splitRequestUri[REQUEST_URI];
+        }
     }
 }
