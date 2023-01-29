@@ -33,13 +33,6 @@ public class RequestLine {
         return httpMethod == method;
     }
 
-    public String getQueryString(final String parameterName) {
-        if (params == null || !params.containsKey(parameterName)) {
-            return null;
-        }
-        return params.get(parameterName);
-    }
-
     public Map<String, String> getParams() {
         return params;
     }

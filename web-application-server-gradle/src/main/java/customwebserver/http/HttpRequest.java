@@ -54,10 +54,6 @@ public class HttpRequest {
     }
 
     public String getParameter(final String parameterName) {
-        String urlQueryString = requestLine.getQueryString(parameterName);
-        if (urlQueryString != null) {
-            return urlQueryString;
-        }
         return params.get(parameterName);
     }
 
