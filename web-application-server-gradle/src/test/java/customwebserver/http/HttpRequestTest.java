@@ -17,8 +17,7 @@ class HttpRequestTest {
     @DisplayName("GET 요청에 대한 정상 파싱 테스트")
     public void request_GET() throws IOException {
         // given
-        FileInputStream in = new FileInputStream(new File(testDirectory) + "Http_GET.txt");
-
+        FileInputStream in = new FileInputStream(new File(testDirectory + "Http_GET.txt"));
         // when
         HttpRequest httpRequest = new HttpRequest(in);
 
