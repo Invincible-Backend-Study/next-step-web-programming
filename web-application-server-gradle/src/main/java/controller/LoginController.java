@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.UserService;
 
-public class LoginController implements Controller {
+public class LoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final UserService userService = new UserService();
 
     @Override
-    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse)  {
     }
 
     @Override

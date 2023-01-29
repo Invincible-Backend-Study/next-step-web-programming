@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.UserService;
 
-public class UserController implements Controller {
+public class UserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService = new UserService();
 

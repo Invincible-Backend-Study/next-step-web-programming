@@ -44,11 +44,7 @@ public class FrontController {
             httpResponse.forward(httpRequest.getPath());
             return;
         }
-        if (httpRequest.containMethod(HttpMethod.GET)) {
-            requestController.doGet(httpRequest, httpResponse);
-        }
-        if (httpRequest.containMethod(HttpMethod.POST)) {
-            requestController.doPost(httpRequest, httpResponse);
-        }
+        log.debug("select controller={}", requestController);
+        requestController.service(httpRequest, httpResponse);
     }
 }
