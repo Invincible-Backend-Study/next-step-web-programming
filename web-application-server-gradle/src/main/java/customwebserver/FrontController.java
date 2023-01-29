@@ -41,32 +41,14 @@ public class FrontController {
     private void requestDispatch() throws IOException {
         Controller requestController = handlerMapping.get(httpRequest.getPath());
         if (requestController == null) {
-            responseStaticUri();
+            httpResponse.forward(httpRequest.getPath());
             return;
         }
         if (httpRequest.containMethod(HttpMethod.GET)) {
             boolean success = requestController.doGet(httpRequest, httpResponse);
-            responseUriWithEmptyData(success);
         }
         if (httpRequest.containMethod(HttpMethod.POST)) {
             boolean success = requestController.doPost(httpRequest, httpResponse);
-            responseUriWithEmptyData(success);
         }
     }
-
-    private void responseStaticUri() throws IOException {
-        String requestUri = httpRequest.getPath();
-        if (requestUri.contains("css")) {
-            httpResponse.successStaticCss(requestUri);
-            return;
-        }
-        httpResponse.successStaticUri(requestUri);
-    }
-
-    private void responseUriWithEmptyData(final boolean success) {
-        if (success) {
-            httpResponse.successMappingUri();
-        }
-    }
-
 }

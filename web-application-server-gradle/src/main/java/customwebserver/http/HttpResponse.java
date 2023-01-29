@@ -15,7 +15,6 @@ public class HttpResponse {
     private final DataOutputStream dos;
     private final Map<String, String> headers = new HashMap<>();
     private final Map<String, Object> cookies = new HashMap<>();
-    private String responseBodyData;
 
     public HttpResponse(final OutputStream out) {
         dos = new DataOutputStream(out);
@@ -44,18 +43,6 @@ public class HttpResponse {
         }
     }
 
-    public void successMappingUri() {
-        if (responseBodyData != null) {
-            byte[] dataBytes = responseBodyData.getBytes();
-            response200HeaderWithBody(dataBytes.length);
-            responseBody(dataBytes);
-            return;
-        }
-        response200Header();
-        responseBody("".getBytes());
-    }
-
-
     public void sendRedirect(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
         try {
@@ -71,12 +58,22 @@ public class HttpResponse {
         responseBody(fileBytes);
     }
 
-    public void addCookie(final String cookieKey, final Object value) {
-        cookies.put(cookieKey, value);
+    public void sendResponseBody(final String data) {
+        byte[] dataBytes = data.getBytes();
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/plain;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + dataBytes.length + "\r\n");
+            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        responseBody(dataBytes);
     }
 
-    public void sendResponseBody(final String data) {
-        this.responseBodyData = data;
+    public void addCookie(final String cookieKey, final Object value) {
+        cookies.put(cookieKey, value);
     }
 
     private String getAllCookieMessage() {
@@ -99,18 +96,6 @@ public class HttpResponse {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             writeHeaders();
-            dos.writeBytes(getAllCookieMessage());
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void response200HeaderWithBody(final int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/plain;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes(getAllCookieMessage());
             dos.writeBytes("\r\n");
         } catch (IOException e) {
