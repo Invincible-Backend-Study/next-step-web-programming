@@ -12,11 +12,11 @@ public class LoginController extends AbstractController {
     private final UserService userService = new UserService();
 
     @Override
-    protected void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) {
+    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) {
     }
 
     @Override
-    protected void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         String userId = httpRequest.getParameter("userId");
         String password = httpRequest.getParameter("password");
         if (userId == null || password == null) {
