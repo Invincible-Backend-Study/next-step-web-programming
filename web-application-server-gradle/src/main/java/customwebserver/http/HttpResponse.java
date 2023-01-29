@@ -49,6 +49,7 @@ public class HttpResponse {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + fileBytes.length + "\r\n");
+            writeHeaders();
             dos.writeBytes(getAllCookieMessage());
             dos.writeBytes("Location: " + path + "\r\n");
             dos.writeBytes("\r\n");
@@ -74,6 +75,10 @@ public class HttpResponse {
 
     public void addCookie(final String cookieKey, final Object value) {
         cookies.put(cookieKey, value);
+    }
+
+    public void addHeader(final String header, final String value) {
+        headers.put(header, value);
     }
 
     private String getAllCookieMessage() {
