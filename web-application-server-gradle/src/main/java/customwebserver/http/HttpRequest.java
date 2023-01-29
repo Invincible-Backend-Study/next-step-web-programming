@@ -16,45 +16,33 @@ import utils.dto.Pair;
 import utils.enums.HttpMethod;
 
 public class HttpRequest {
-    private static final int HTTP_METHOD = 0;
-    private static final int URI = 1;
-    public static final int HTTP_VERSION = 2;
-    private static final int QUERY_STRING = 1;
-    private static final int REQUEST_URI = 0;
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
 
-    private final HttpMethod httpMethod;
-    private String requestUri;
-    private final String httpVersion;
-    private final Map<String, String> requestHeader;
-    private Map<String, String> queryStrings;
+    private final BufferedReader httpRequest;
+    private RequestLine requestLine;
+    private Map<String, String> requestHeader;
+    private Map<String, String> params;
 
     public HttpRequest(final InputStream in) throws IOException {
-        BufferedReader httpRequestReader = new BufferedReader(new InputStreamReader(in));
-        String[] requestLine = parseRequestLine(httpRequestReader.readLine());
-        httpMethod = HttpMethod.valueOf(requestLine[HTTP_METHOD]);
-        requestUri = requestLine[URI];
-        httpVersion = requestLine[HTTP_VERSION];
-        requestHeader = parseHttpRequestHeader(httpRequestReader);
-        queryStrings = parseQueryString(httpRequestReader);
+        httpRequest = new BufferedReader(new InputStreamReader(in));
+        requestLine = HttpRequestUtils.parseRequestLine(httpRequest.readLine());
+        requestHeader = parseHttpRequestHeader();
+        setParams();
+    }
+
+    private void setParams() throws IOException {
+        if (requestLine.containMethod(HttpMethod.GET)) {
+            params = requestLine.getParams();
+        }
+        params = parseQueryStringByForm();
     }
 
     public String getPath() {
-        return requestUri;
+        return requestLine.getUri();
     }
 
     public boolean containMethod(final HttpMethod method) {
-        return httpMethod == method;
-    }
-
-    /**
-     * url에 붙은 쿼리스트링 값이 없다면, form 데이터 조회
-     */
-    public String getParameter(final String parameterName) {
-        if (queryStrings == null) {
-            throw new IllegalArgumentException("[ERROR] No parameter in request");
-        }
-        return queryStrings.get(parameterName);
+        return requestLine.containMethod(method);
     }
 
     public String getHeader(final String headerName) {
@@ -65,38 +53,22 @@ public class HttpRequest {
         return header;
     }
 
+    public String getParameter(final String parameterName) {
+        String urlQueryString = requestLine.getQueryString(parameterName);
+        if (urlQueryString != null) {
+            return urlQueryString;
+        }
+        return params.get(parameterName);
+    }
+
     public String getCookie(final String cookieName) {
         Map<String, String> cookies = HttpRequestUtils.parseCookies(requestHeader.get("Cookie"));
         return cookies.get(cookieName);
     }
 
-    private Map<String, String> parseQueryString(final BufferedReader httpRequestReader) throws IOException {
-        if (httpMethod.equals(HttpMethod.GET)) {
-            return parseQueryStringByUri();
-        }
-        if (httpMethod.equals(HttpMethod.POST)) {
-            return parseQueryStringByForm(httpRequestReader);
-        }
-        return null;
-    }
-
-    private String[] parseRequestLine(final String requestLine) {
-        return requestLine.split(" ");
-    }
-
-    private Map<String, String> parseQueryStringByUri() {
-        String[] splitRequestUri = requestUri.split("\\?");
-        if (splitRequestUri.length == 1) {
-            return null;
-        }
-        requestUri = splitRequestUri[REQUEST_URI];
-        log.debug("requestUri={}", requestUri);
-        return HttpRequestUtils.parseQueryString(splitRequestUri[QUERY_STRING]);
-    }
-
-    private Map<String, String> parseQueryStringByForm(final BufferedReader httpRequestReader) throws IOException {
+    private Map<String, String> parseQueryStringByForm() throws IOException {
         if (requestHeader.containsKey("Content-Length")) {
-            String formData = IOUtils.readData(httpRequestReader,
+            String formData = IOUtils.readData(httpRequest,
                     Integer.parseInt(requestHeader.get("Content-Length")));
             log.debug("POST form Data={}", formData);
             return HttpRequestUtils.parseQueryString(formData);
@@ -104,13 +76,12 @@ public class HttpRequest {
         return null;
     }
 
-    private Map<String, String> parseHttpRequestHeader(final BufferedReader httpRequestReader)
-            throws IOException {
-        String header = httpRequestReader.readLine();
+    private Map<String, String> parseHttpRequestHeader() throws IOException {
+        String header = httpRequest.readLine();
         List<Pair> headerPairs = new ArrayList<>();
         while (!header.equals("")) {
             headerPairs.add(HttpRequestUtils.parseHeader(header));
-            header = httpRequestReader.readLine();
+            header = httpRequest.readLine();
         }
         return headerPairs.stream()
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
