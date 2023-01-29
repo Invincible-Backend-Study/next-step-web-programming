@@ -20,33 +20,37 @@ public class HttpResponse {
         dos = new DataOutputStream(out);
     }
 
+    public void forward(final String path) {
+
+    }
+
     public void successMappingUri() {
         if (responseBodyData != null) {
             byte[] dataBytes = responseBodyData.getBytes();
-            response200HeaderWithBody(dos, dataBytes.length);
-            responseBody(dos, dataBytes);
+            response200HeaderWithBody(dataBytes.length);
+            responseBody(dataBytes);
             return;
         }
-        response200Header(dos, 0);
-        responseBody(dos, "".getBytes());
+        response200Header(0);
+        responseBody("".getBytes());
     }
 
     public void successStaticUri(final String requestUri) throws IOException {
         byte[] fileBytes = getFileBytes(requestUri);
-        response200Header(dos, fileBytes.length);
-        responseBody(dos, fileBytes);
+        response200Header(fileBytes.length);
+        responseBody(fileBytes);
     }
 
     public void successStaticCss(final String requestUri) throws IOException {
         byte[] fileBytes = getFileBytes(requestUri);
-        response200HeaderWithCss(dos, fileBytes.length);
-        responseBody(dos, fileBytes);
+        response200HeaderWithCss(fileBytes.length);
+        responseBody(fileBytes);
     }
 
     public void sendRedirect(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
-        response302Header(dos, fileBytes.length, path);
-        responseBody(dos, fileBytes);
+        response302Header(fileBytes.length, path);
+        responseBody(fileBytes);
     }
 
     public void addCookie(final String cookieKey, final Object value) {
@@ -73,7 +77,7 @@ public class HttpResponse {
         return "";
     }
 
-    private void response302Header(final DataOutputStream dos, final int lengthOfBodyContent, final String path) {
+    private void response302Header(final int lengthOfBodyContent, final String path) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
@@ -86,7 +90,7 @@ public class HttpResponse {
         }
     }
 
-    private void response200Header(final DataOutputStream dos, final int lengthOfBodyContent) {
+    private void response200Header(final int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
@@ -98,7 +102,7 @@ public class HttpResponse {
         }
     }
 
-    private void response200HeaderWithCss(final DataOutputStream dos, final int lengthOfBodyContent) {
+    private void response200HeaderWithCss(final int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
@@ -110,7 +114,7 @@ public class HttpResponse {
         }
     }
 
-    private void response200HeaderWithBody(final DataOutputStream dos, final int lengthOfBodyContent) {
+    private void response200HeaderWithBody(final int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/plain;charset=utf-8\r\n");
@@ -122,7 +126,7 @@ public class HttpResponse {
         }
     }
 
-    private void responseBody(DataOutputStream dos, byte[] body) {
+    private void responseBody(byte[] body) {
         try {
             dos.write(body, 0, body.length);
             dos.flush();
