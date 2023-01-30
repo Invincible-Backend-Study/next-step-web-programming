@@ -12,10 +12,6 @@ public class LoginController extends AbstractController {
     private final UserService userService = new UserService();
 
     @Override
-    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) {
-    }
-
-    @Override
     public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         String userId = httpRequest.getParameter("userId");
         String password = httpRequest.getParameter("password");

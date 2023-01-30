@@ -26,8 +26,4 @@ public class UserListController extends AbstractController {
                 .forEach(userInfo -> userList.append(userInfo).append("\n"));
         httpResponse.sendResponseBody(userList.toString());
     }
-
-    @Override
-    public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-    }
 }
