@@ -96,4 +96,11 @@ public class HttpResponse {
         response302HeaderAndSetCookie(dos, "logined = false;Path=/;");
         redirectHome();
     }
+
+    public void response404Header(HttpRequest httpRequest) throws IOException {
+        byte[] body = Files.readAllBytes(
+                Paths.get(new File("./web-application-server-gradle/webapp").toPath() + "/404.html"));
+        response200Header(dos, body.length, httpRequest.getHeaders("Accept"));
+        responseBody(dos, body);
+    }
 }

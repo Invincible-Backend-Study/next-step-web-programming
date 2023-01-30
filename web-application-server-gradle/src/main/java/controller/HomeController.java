@@ -9,6 +9,10 @@ public class HomeController implements Controller {
 
     @Override
     public void use(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-        httpResponse.responseStaticFile(httpRequest);
+        try {
+            httpResponse.responseStaticFile(httpRequest);
+        } catch (IOException e) {
+            httpResponse.response404Header(httpRequest);
+        }
     }
 }
