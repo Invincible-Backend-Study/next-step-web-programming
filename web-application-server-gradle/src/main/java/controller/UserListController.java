@@ -3,6 +3,7 @@ package controller;
 import db.DataBase;
 import http.HttpRequest;
 import http.HttpResponse;
+import java.util.stream.Collectors;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class UserListController implements Controller {
         boolean isLogin = Boolean.parseBoolean(loginValue);
         if (isLogin) {
             Collection<User> users = DataBase.findAll();
-            users.forEach(user -> log.debug(user.getName()));
+            log.debug("{}", users.stream().map(User::getName).collect(Collectors.joining("\n")));
             httpResponse.redirectHome();
             return;
         }
