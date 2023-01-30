@@ -4,6 +4,7 @@ import db.DataBase;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.parser.HttpBodyParser;
+import javax.xml.crypto.Data;
 import model.User;
 import util.HttpRequestUtils;
 import util.method.HttpMethod;
@@ -16,7 +17,7 @@ public class MemberRegistrationController implements Controller {
     @Override
     public void use(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         saveUserData(httpParseMethod(httpRequest));
-        httpResponse.redirectHome();
+        httpResponse.loginSucess();
     }
 
     private static String httpParseMethod(final HttpRequest httpRequest) throws IOException {
