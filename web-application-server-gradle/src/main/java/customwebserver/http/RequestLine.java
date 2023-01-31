@@ -1,5 +1,6 @@
 package customwebserver.http;
 
+import java.util.HashMap;
 import java.util.Map;
 import utils.HttpRequestUtils;
 import utils.enums.HttpMethod;
@@ -10,7 +11,7 @@ public class RequestLine {
 
     private final HttpMethod httpMethod;
     private String requestUri;
-    private Map<String, String> params;
+    private Map<String, String> params = new HashMap<>();
     private final String httpVersion;
 
     private RequestLine(final HttpMethod httpMethod, final String requestUri, final String httpVersion) {

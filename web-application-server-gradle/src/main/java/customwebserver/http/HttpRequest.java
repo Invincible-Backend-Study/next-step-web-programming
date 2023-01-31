@@ -20,20 +20,20 @@ public class HttpRequest {
 
     private final RequestLine requestLine;
     private final HttpHeaders httpHeaders;
-    private Map<String, String> params;
+    private final RequestParameters requestParameters = new RequestParameters();
 
     public HttpRequest(final InputStream in) throws IOException {
         BufferedReader httpRequestReader = new BufferedReader(new InputStreamReader(in));
         requestLine = RequestLine.from(httpRequestReader.readLine());
         httpHeaders = new HttpHeaders(parseHttpRequestHeader(httpRequestReader));
-        setParams(httpRequestReader);
+        requestParameters.addParams(requestLine.getParams());
+        addFormParams(httpRequestReader);
     }
 
-    private void setParams(final BufferedReader httpRequestReader) throws IOException {
-        if (requestLine.containMethod(HttpMethod.GET)) {
-            params = requestLine.getParams();
+    private void addFormParams(final BufferedReader httpRequestReader) throws IOException {
+        if (requestLine.containMethod(HttpMethod.POST)) {
+            requestParameters.addParams(parseQueryStringByForm(httpRequestReader));
         }
-        params = parseQueryStringByForm(httpRequestReader);
     }
 
     public String getPath() {
@@ -53,7 +53,7 @@ public class HttpRequest {
     }
 
     public String getParameter(final String parameterName) {
-        return params.get(parameterName);
+        return requestParameters.getParameter(parameterName);
     }
 
     public String getCookie(final String cookieName) {
