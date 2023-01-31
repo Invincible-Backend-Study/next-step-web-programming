@@ -41,11 +41,7 @@ public class HttpRequest {
     }
 
     public String getHeader(final String headerName) {
-        String header = httpHeaders.getHeader(headerName);
-        if (header == null) {
-            throw new IllegalArgumentException("[ERROR] No header in request");
-        }
-        return header;
+        return httpHeaders.getHeader(headerName);
     }
 
     public String getPath() {

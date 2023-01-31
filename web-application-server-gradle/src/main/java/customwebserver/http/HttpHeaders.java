@@ -12,7 +12,10 @@ public class HttpHeaders {
     }
 
     public String getHeader(final String headerName) {
-        return httpHeaders.get(headerName);
+        if (httpHeaders.containsKey(headerName)) {
+            return httpHeaders.get(headerName);
+        }
+        throw new IllegalArgumentException("[ERROR] No Header about " + headerName);
     }
 
     public int getContentLength() {
