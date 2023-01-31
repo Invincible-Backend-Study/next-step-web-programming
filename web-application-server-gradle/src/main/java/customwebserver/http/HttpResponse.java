@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class HttpResponse {
     private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
-    private final Map<String, String> headers = new HashMap<>();
+    private final HttpHeaders httpHeaders = new HttpHeaders();
     private final Map<String, Object> cookies = new HashMap<>();
 
     public HttpResponse(final OutputStream out) {
@@ -26,20 +26,20 @@ public class HttpResponse {
     public void forward(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
         putStaticContentTypeHeader(path);
-        headers.put("Content-Length", String.valueOf(fileBytes.length));
+        httpHeaders.addHeader("Content-Length", String.valueOf(fileBytes.length));
         response200Header();
         responseBody(fileBytes);
     }
 
     private void putStaticContentTypeHeader(final String path) {
         if (path.endsWith(".css")) {
-            headers.put("Content-Type", "text/css;charset=utf-8");
+            httpHeaders.addHeader("Content-Type", "text/css;charset=utf-8");
         }
         if (path.endsWith(".js")) {
-            headers.put("Content-Type", "application/javascript");
+            httpHeaders.addHeader("Content-Type", "application/javascript");
         }
         if (path.endsWith(".html")) {
-            headers.put("Content-Type", "text/html;charset=utf-8");
+            httpHeaders.addHeader("Content-Type", "text/html;charset=utf-8");
         }
     }
 
@@ -78,7 +78,7 @@ public class HttpResponse {
     }
 
     public void addHeader(final String header, final String value) {
-        headers.put(header, value);
+        httpHeaders.addHeader(header, value);
     }
 
     private String getAllCookieMessage() {
@@ -108,17 +108,8 @@ public class HttpResponse {
         }
     }
 
-    private void writeHeaders() {
-        headers.keySet()
-                .stream()
-                .map(key -> key + ": " + headers.get(key) + "\r\n")
-                .forEach(header -> {
-                    try {
-                        dos.writeBytes(header);
-                    } catch (IOException e) {
-                        log.error(e.getMessage());
-                    }
-                });
+    private void writeHeaders() throws IOException {
+        dos.writeBytes(httpHeaders.createHeaderMessage());
     }
 
     private void responseBody(byte[] body) {
