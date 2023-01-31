@@ -14,7 +14,7 @@ public class HttpResponse {
     private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
     private final HttpHeaders httpHeaders = new HttpHeaders();
-    private final Map<String, Object> cookies = new HashMap<>();
+    private final HttpCookies httpCookies = new HttpCookies();
 
     public HttpResponse(final OutputStream out) {
         dos = new DataOutputStream(out);
@@ -50,7 +50,7 @@ public class HttpResponse {
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + fileBytes.length + "\r\n");
             writeHeaders();
-            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes(httpCookies.createCookieMessage());
             dos.writeBytes("Location: " + path + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
@@ -65,7 +65,7 @@ public class HttpResponse {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/plain;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + dataBytes.length + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes(httpCookies.createCookieMessage());
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -74,34 +74,18 @@ public class HttpResponse {
     }
 
     public void addCookie(final String cookieKey, final Object value) {
-        cookies.put(cookieKey, value);
+        httpCookies.addCookie(cookieKey, value);
     }
 
     public void addHeader(final String header, final String value) {
         httpHeaders.addHeader(header, value);
     }
 
-    private String getAllCookieMessage() {
-        StringBuilder cookieMessage = new StringBuilder();
-        cookieMessage.append("Set-Cookie: ");
-        if (!cookies.isEmpty()) {
-            cookies.keySet()
-                    .forEach(key -> cookieMessage.append(key)
-                            .append("=")
-                            .append(cookies.get(key))
-                            .append("; "));
-            return cookieMessage.append(" path=/")
-                    .append("\r\n")
-                    .toString();
-        }
-        return "";
-    }
-
     private void response200Header() {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             writeHeaders();
-            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes(httpCookies.createCookieMessage());
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
