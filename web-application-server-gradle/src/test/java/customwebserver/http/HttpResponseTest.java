@@ -1,7 +1,5 @@
 package customwebserver.http;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,7 +16,6 @@ class HttpResponseTest {
         HttpResponse response = new HttpResponse(createOutputStream("Http_Forward.txt"));
         response.forward("/index.html");
     }
-
 
     @Test
     @DisplayName("리다이렉트 정상 응답 테스트")
