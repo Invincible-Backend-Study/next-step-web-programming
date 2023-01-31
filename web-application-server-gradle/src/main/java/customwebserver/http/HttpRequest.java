@@ -36,10 +36,6 @@ public class HttpRequest {
         }
     }
 
-    public String getPath() {
-        return requestLine.getUri();
-    }
-
     public boolean containMethod(final HttpMethod method) {
         return requestLine.containMethod(method);
     }
@@ -50,6 +46,10 @@ public class HttpRequest {
             throw new IllegalArgumentException("[ERROR] No header in request");
         }
         return header;
+    }
+
+    public String getPath() {
+        return requestLine.getUri();
     }
 
     public String getParameter(final String parameterName) {
