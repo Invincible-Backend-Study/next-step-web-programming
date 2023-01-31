@@ -18,14 +18,14 @@ import utils.enums.HttpMethod;
 public class HttpRequest {
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
 
-    private RequestLine requestLine;
-    private Map<String, String> requestHeader;
+    private final RequestLine requestLine;
+    private final HttpHeaders httpHeaders;
     private Map<String, String> params;
 
     public HttpRequest(final InputStream in) throws IOException {
         BufferedReader httpRequestReader = new BufferedReader(new InputStreamReader(in));
         requestLine = RequestLine.from(httpRequestReader.readLine());
-        requestHeader = parseHttpRequestHeader(httpRequestReader);
+        httpHeaders = new HttpHeaders(parseHttpRequestHeader(httpRequestReader));
         setParams(httpRequestReader);
     }
 
@@ -45,7 +45,7 @@ public class HttpRequest {
     }
 
     public String getHeader(final String headerName) {
-        String header = requestHeader.get(headerName);
+        String header = httpHeaders.getHeader(headerName);
         if (header == null) {
             throw new IllegalArgumentException("[ERROR] No header in request");
         }
@@ -57,18 +57,14 @@ public class HttpRequest {
     }
 
     public String getCookie(final String cookieName) {
-        Map<String, String> cookies = HttpRequestUtils.parseCookies(requestHeader.get("Cookie"));
+        Map<String, String> cookies = HttpRequestUtils.parseCookies(httpHeaders.getHeader("Cookie"));
         return cookies.get(cookieName);
     }
 
     private Map<String, String> parseQueryStringByForm(final BufferedReader httpRequestReader) throws IOException {
-        if (requestHeader.containsKey("Content-Length")) {
-            String formData = IOUtils.readData(httpRequestReader,
-                    Integer.parseInt(requestHeader.get("Content-Length")));
-            log.debug("POST form Data={}", formData);
-            return HttpRequestUtils.parseQueryString(formData);
-        }
-        return null;
+        String formData = IOUtils.readData(httpRequestReader, httpHeaders.getContentLength());
+        log.debug("POST form Data={}", formData);
+        return HttpRequestUtils.parseQueryString(formData);
     }
 
     private Map<String, String> parseHttpRequestHeader(final BufferedReader httpRequestReader) throws IOException {
