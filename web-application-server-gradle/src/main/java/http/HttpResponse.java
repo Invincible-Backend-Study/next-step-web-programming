@@ -19,20 +19,10 @@ public class HttpResponse {
     }
 
     private void response200Header(final DataOutputStream dos, int lengthOfBodyContent, String accept) {
+        String contentType = accept.split(",")[0].trim();
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type:" + accept.split(",")[0].trim() + "\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void response200HeaderWithCss(final DataOutputStream dos, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/css;html;charset=utf-8 \r\n");
+            dos.writeBytes("Content-Type:" + contentType + "\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
@@ -51,15 +41,6 @@ public class HttpResponse {
         }
     }
 
-    private void response302Header(final DataOutputStream dos) {
-        try {
-            dos.writeBytes("HTTP/1.1 302 Found \r\n");
-            dos.writeBytes("Location: /index.html\r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
 
     private void responseBody(final DataOutputStream dos, byte[] body) {
         try {
@@ -79,17 +60,21 @@ public class HttpResponse {
     }
 
     public void redirectHome() {
-        response302Header(dos);
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n");
+            dos.writeBytes("Location: /index.html\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
     }
 
     public void loginSucess() {
         response302HeaderAndSetCookie(dos, "logined = true;Path=/;");
-        redirectHome();
     }
 
     public void loginFailed() {
         response302HeaderAndSetCookie(dos, "logined = false;Path=/;");
-        redirectHome();
     }
 
     public void response404Header(HttpRequest httpRequest) throws IOException {
