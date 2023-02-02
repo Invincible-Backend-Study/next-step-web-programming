@@ -18,58 +18,57 @@ import utils.enums.HttpMethod;
 public class HttpRequest {
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
 
-    private final BufferedReader httpRequest;
-    private RequestLine requestLine;
-    private Map<String, String> requestHeaderKeyValue;
-    private Map<String, String> queryStringByForm;
+    private final RequestLine requestLine;
+    private final HttpHeaders httpHeaders;
+    private final RequestParameters requestParameters = new RequestParameters();
 
     public HttpRequest(final InputStream in) throws IOException {
-        httpRequest = new BufferedReader(new InputStreamReader(in));
-        requestLine = HttpRequestUtils.parseRequestLine(httpRequest.readLine());
-        requestHeaderKeyValue = parseHttpRequestHeaderKeyValue();
-        queryStringByForm = parseQueryStringByForm();
+        BufferedReader httpRequestReader = new BufferedReader(new InputStreamReader(in));
+        requestLine = RequestLine.from(httpRequestReader.readLine());
+        httpHeaders = new HttpHeaders(parseHttpRequestHeader(httpRequestReader));
+        requestParameters.addParams(requestLine.getParams());
+        addFormParams(httpRequestReader);
     }
 
-    public String getRequestUri() {
-        return requestLine.getUri();
+    private void addFormParams(final BufferedReader httpRequestReader) throws IOException {
+        if (requestLine.containMethod(HttpMethod.POST)) {
+            requestParameters.addParams(parseQueryStringByForm(httpRequestReader));
+        }
     }
 
     public boolean containMethod(final HttpMethod method) {
         return requestLine.containMethod(method);
     }
 
-    /**
-     * url에 붙은 쿼리스트링 값이 없다면, form 데이터 조회
-     */
+    public String getHeader(final String headerName) {
+        return httpHeaders.getHeader(headerName);
+    }
+
+    public String getPath() {
+        return requestLine.getUri();
+    }
+
     public String getParameter(final String parameterName) {
-        String urlQueryString = requestLine.getQueryString(parameterName);
-        if (urlQueryString != null) {
-            return urlQueryString;
-        }
-        return queryStringByForm.get(parameterName);
+        return requestParameters.getParameter(parameterName);
     }
 
     public String getCookie(final String cookieName) {
-        Map<String, String> cookies = HttpRequestUtils.parseCookies(requestHeaderKeyValue.get("Cookie"));
+        Map<String, String> cookies = HttpRequestUtils.parseCookies(httpHeaders.getHeader("Cookie"));
         return cookies.get(cookieName);
     }
 
-    private Map<String, String> parseQueryStringByForm() throws IOException {
-        if (requestHeaderKeyValue.containsKey("Content-Length")) {
-            String formData = IOUtils.readData(httpRequest,
-                    Integer.parseInt(requestHeaderKeyValue.get("Content-Length")));
-            log.debug("POST form Data={}", formData);
-            return HttpRequestUtils.parseQueryString(formData);
-        }
-        return null;
+    private Map<String, String> parseQueryStringByForm(final BufferedReader httpRequestReader) throws IOException {
+        String formData = IOUtils.readData(httpRequestReader, httpHeaders.getContentLength());
+        log.debug("POST form Data={}", formData);
+        return HttpRequestUtils.parseQueryString(formData);
     }
 
-    private Map<String, String> parseHttpRequestHeaderKeyValue() throws IOException {
-        String header = httpRequest.readLine();
+    private Map<String, String> parseHttpRequestHeader(final BufferedReader httpRequestReader) throws IOException {
+        String header = httpRequestReader.readLine();
         List<Pair> headerPairs = new ArrayList<>();
         while (!header.equals("")) {
             headerPairs.add(HttpRequestUtils.parseHeader(header));
-            header = httpRequest.readLine();
+            header = httpRequestReader.readLine();
         }
         return headerPairs.stream()
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));

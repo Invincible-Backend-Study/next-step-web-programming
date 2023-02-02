@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.enums.HttpMethod;
 
 public class FrontController {
     private static final Logger log = LoggerFactory.getLogger(FrontController.class);
@@ -39,34 +38,12 @@ public class FrontController {
      * 1. 컨트롤러가 존재하는지 체크 2. 정적 파일 체크
      */
     private void requestDispatch() throws IOException {
-        Controller requestController = handlerMapping.get(httpRequest.getRequestUri());
+        Controller requestController = handlerMapping.get(httpRequest.getPath());
         if (requestController == null) {
-            responseStaticUri();
+            httpResponse.forward(httpRequest.getPath());
             return;
         }
-        if (httpRequest.containMethod(HttpMethod.GET)) {
-            boolean success = requestController.doGet(httpRequest, httpResponse);
-            responseUriWithEmptyData(success);
-        }
-        if (httpRequest.containMethod(HttpMethod.POST)) {
-            boolean success = requestController.doPost(httpRequest, httpResponse);
-            responseUriWithEmptyData(success);
-        }
+        log.debug("select controller={}", requestController);
+        requestController.service(httpRequest, httpResponse);
     }
-
-    private void responseStaticUri() throws IOException {
-        String requestUri = httpRequest.getRequestUri();
-        if (requestUri.contains("css")) {
-            httpResponse.successStaticCss(requestUri);
-            return;
-        }
-        httpResponse.successStaticUri(requestUri);
-    }
-
-    private void responseUriWithEmptyData(final boolean success) {
-        if (success) {
-            httpResponse.successMappingUri();
-        }
-    }
-
 }

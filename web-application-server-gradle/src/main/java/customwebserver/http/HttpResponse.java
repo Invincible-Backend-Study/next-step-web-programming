@@ -13,116 +13,90 @@ import org.slf4j.LoggerFactory;
 public class HttpResponse {
     private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
-    private final Map<String, Object> cookies = new HashMap<>();
-    private String responseBodyData;
+    private final HttpHeaders httpHeaders = new HttpHeaders();
+    private final HttpCookies httpCookies = new HttpCookies();
 
     public HttpResponse(final OutputStream out) {
         dos = new DataOutputStream(out);
     }
 
-    public void successMappingUri() {
-        if (responseBodyData != null) {
-            byte[] dataBytes = responseBodyData.getBytes();
-            response200HeaderWithBody(dos, dataBytes.length);
-            responseBody(dos, dataBytes);
-            return;
+    /**
+     * html, css, js와 같은 정적파일을 응답할때 사용됨
+     */
+    public void forward(final String path) throws IOException {
+        byte[] fileBytes = getFileBytes(path);
+        putStaticContentTypeHeader(path);
+        httpHeaders.addHeader("Content-Length", String.valueOf(fileBytes.length));
+        response200Header();
+        responseBody(fileBytes);
+    }
+
+    private void putStaticContentTypeHeader(final String path) {
+        if (path.endsWith(".css")) {
+            httpHeaders.addHeader("Content-Type", "text/css;charset=utf-8");
         }
-        response200Header(dos, 0);
-        responseBody(dos, "".getBytes());
-    }
-
-    public void successStaticUri(final String requestUri) throws IOException {
-        byte[] fileBytes = getFileBytes(requestUri);
-        response200Header(dos, fileBytes.length);
-        responseBody(dos, fileBytes);
-    }
-
-    public void successStaticCss(final String requestUri) throws IOException {
-        byte[] fileBytes = getFileBytes(requestUri);
-        response200HeaderWithCss(dos, fileBytes.length);
-        responseBody(dos, fileBytes);
+        if (path.endsWith(".js")) {
+            httpHeaders.addHeader("Content-Type", "application/javascript");
+        }
+        if (path.endsWith(".html")) {
+            httpHeaders.addHeader("Content-Type", "text/html;charset=utf-8");
+        }
     }
 
     public void sendRedirect(final String path) throws IOException {
         byte[] fileBytes = getFileBytes(path);
-        response302Header(dos, fileBytes.length, path);
-        responseBody(dos, fileBytes);
-    }
-
-    public void addCookie(final String cookieKey, final Object value) {
-        cookies.put(cookieKey, value);
-    }
-
-    public void sendResponseBody(final String data) {
-        this.responseBodyData = data;
-    }
-
-    private String getAllCookieMessage() {
-        StringBuilder cookieMessage = new StringBuilder();
-        cookieMessage.append("Set-Cookie: ");
-        if (!cookies.isEmpty()) {
-            cookies.keySet()
-                    .forEach(key -> cookieMessage.append(key)
-                            .append("=")
-                            .append(cookies.get(key))
-                            .append("; "));
-            return cookieMessage.delete(cookieMessage.length() - 2, cookieMessage.length())
-                    .append("\r\n")
-                    .toString();
-        }
-        return "";
-    }
-
-    private void response302Header(final DataOutputStream dos, final int lengthOfBodyContent, final String path) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes("Content-Length: " + fileBytes.length + "\r\n");
+            writeHeaders();
+            dos.writeBytes(httpCookies.createCookieMessage());
             dos.writeBytes("Location: " + path + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+        responseBody(fileBytes);
     }
 
-    private void response200Header(final DataOutputStream dos, final int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void response200HeaderWithCss(final DataOutputStream dos, final int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private void response200HeaderWithBody(final DataOutputStream dos, final int lengthOfBodyContent) {
+    public void sendResponseBody(final String data) {
+        byte[] dataBytes = data.getBytes();
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/plain;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-            dos.writeBytes(getAllCookieMessage());
+            dos.writeBytes("Content-Length: " + dataBytes.length + "\r\n");
+            dos.writeBytes(httpCookies.createCookieMessage());
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        responseBody(dataBytes);
+    }
+
+    public void addCookie(final String cookieKey, final Object value) {
+        httpCookies.addCookie(cookieKey, value);
+    }
+
+    public void addHeader(final String header, final String value) {
+        httpHeaders.addHeader(header, value);
+    }
+
+    private void response200Header() {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            writeHeaders();
+            dos.writeBytes(httpCookies.createCookieMessage());
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void responseBody(DataOutputStream dos, byte[] body) {
+    private void writeHeaders() throws IOException {
+        dos.writeBytes(httpHeaders.createHeaderMessage());
+    }
+
+    private void responseBody(byte[] body) {
         try {
             dos.write(body, 0, body.length);
             dos.flush();

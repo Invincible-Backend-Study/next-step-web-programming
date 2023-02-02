@@ -1,7 +1,7 @@
 package customwebserver.http;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import utils.HttpRequestUtils;
 import utils.enums.HttpMethod;
 
@@ -11,7 +11,7 @@ public class RequestLine {
 
     private final HttpMethod httpMethod;
     private String requestUri;
-    private Map<String, String> queryStrings;
+    private Map<String, String> params = new HashMap<>();
     private final String httpVersion;
 
     private RequestLine(final HttpMethod httpMethod, final String requestUri, final String httpVersion) {
@@ -19,14 +19,6 @@ public class RequestLine {
         this.requestUri = requestUri;
         this.httpVersion = httpVersion;
         parseQueryString();
-    }
-
-    private void parseQueryString() {
-        if (requestUri.contains("?")) {
-            String[] splitRequestUri = requestUri.split("\\?");
-            queryStrings = HttpRequestUtils.parseQueryString(splitRequestUri[QUERY_STRING]);
-            requestUri = splitRequestUri[REQUEST_URI];
-        }
     }
 
     public static RequestLine from(final String header) {
@@ -42,38 +34,15 @@ public class RequestLine {
         return httpMethod == method;
     }
 
-    public String getQueryString(final String parameterName) {
-        if (queryStrings == null || !queryStrings.containsKey(parameterName)) {
-            return null;
-        }
-        return queryStrings.get(parameterName);
+    public Map<String, String> getParams() {
+        return params;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
+    private void parseQueryString() {
+        if (requestUri.contains("?")) {
+            String[] splitRequestUri = requestUri.split("\\?");
+            params = HttpRequestUtils.parseQueryString(splitRequestUri[QUERY_STRING]);
+            requestUri = splitRequestUri[REQUEST_URI];
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        RequestLine that = (RequestLine) o;
-        return httpMethod == that.httpMethod && requestUri.equals(that.requestUri) && httpVersion.equals(
-                that.httpVersion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(httpMethod, requestUri, httpVersion);
-    }
-
-    @Override
-    public String toString() {
-        return "RequestLine{" +
-                "httpMethod=" + httpMethod +
-                ", requestUri='" + requestUri + '\'' +
-                ", queryStrings=" + queryStrings +
-                ", httpVersion='" + httpVersion + '\'' +
-                '}';
     }
 }

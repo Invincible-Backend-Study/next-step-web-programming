@@ -7,17 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.UserService;
 
-public class LoginController implements Controller {
+public class LoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final UserService userService = new UserService();
 
     @Override
-    public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-        return true;
-    }
-
-    @Override
-    public boolean doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         String userId = httpRequest.getParameter("userId");
         String password = httpRequest.getParameter("password");
         if (userId == null || password == null) {
@@ -28,9 +23,8 @@ public class LoginController implements Controller {
         httpResponse.addCookie("logined", login);
         if (login) {
             httpResponse.sendRedirect("/index.html");
-            return true;
+            return;
         }
         httpResponse.sendRedirect("/user/login_failed.html");
-        return true;
     }
 }

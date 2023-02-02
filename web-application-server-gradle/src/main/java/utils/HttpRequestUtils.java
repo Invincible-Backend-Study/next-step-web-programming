@@ -54,8 +54,4 @@ public class HttpRequestUtils {
         return getKeyValue(header, ": ");
     }
 
-    public static RequestLine parseRequestLine(final String header) {
-        return RequestLine.from(header);
-    }
-
 }

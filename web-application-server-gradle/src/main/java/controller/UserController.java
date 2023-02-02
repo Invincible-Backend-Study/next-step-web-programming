@@ -8,12 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.UserService;
 
-public class UserController implements Controller {
+public class UserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService = new UserService();
 
     @Override
-    public boolean doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         String userId = httpRequest.getParameter("userId");
         String password = httpRequest.getParameter("password");
         String name = httpRequest.getParameter("name");
@@ -25,11 +25,10 @@ public class UserController implements Controller {
         log.debug("GET 회원가입 user={}", user);
         userService.addUser(user);
         httpResponse.sendRedirect("/index.html");
-        return true;
     }
 
     @Override
-    public boolean doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
+    public void doPost(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
         String userId = httpRequest.getParameter("userId");
         String password = httpRequest.getParameter("password");
         String name = httpRequest.getParameter("name");
@@ -41,6 +40,5 @@ public class UserController implements Controller {
         log.debug("POST 회원가입 user={}", user);
         userService.addUser(user);
         httpResponse.sendRedirect("/index.html");
-        return true;
     }
 }
