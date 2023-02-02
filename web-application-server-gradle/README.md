@@ -14,7 +14,7 @@
 * 구현을 완료한 후 구현 과정에서 새롭게 알게된 내용, 궁금한 내용을 기록한다.
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
-
+## 3장, 4장
 ### 흐름
 request -> RequestHandler -> (HttpInputStream -> BufferedReader -> readHttpReqeust) MyHttpRequest -> ControllerMapper -> (Controller -> Service) Response -> RequestHandler -> response  
 
@@ -83,5 +83,94 @@ result = builder.toString();
 ### 요구사항 7 - stylesheet 적용
 * 
 
-### heroku 서버에 배포 후
-* 
+
+## 5장
+### 목표
+- indent n 이하
+- else 사용하지 않음
+- 리팩토링
+
+### 리팩토링 1단계
+- 요청 데이터를 처리하는 로직을 별도의 클래스로 분리한다. (MyHttpRequest)
+  - 클라이언트 요청 데이터를 담고있는 InputStream을 생성자로 받아 HTTP 메소드, URL, 헤더, 본문을 분리하는 작업을 한다.
+  - 헤더는 Map<String, String>에 저장해 관리하고 getHeader("필드이름") 메소드를 통해 접근 가능하도록 구현한다.
+  - GET과 POST 메소드에 따라 전달되는 인자를 Map<String, String>에 저장해 관리하고 getParameter("인자 이름") 메소드를 통해 접근 가능하도록 구현한다.
+
+- POST 파라미터가 url에 위치할 수 있는가?
+  - 표준은 아니지만 가능은 하다. 
+    - https://stackoverflow.com/questions/6728938/is-url-parameters-okay-in-http-post-requests
+  - HTML Form에 경우 parameter들이 HttpBody에 포장되어 전송됨
+  - 일반 POST
+```java
+00:37:17.217 [DEBUG] [Thread-4] [webserver.RequestHandler] - New Client Connect! Connected IP : /127.0.0.1, Port : 10272
+        00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: POST /user/create HTTP/1.1
+        00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: Host: localhost:8080
+        00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: Connection: keep-alive
+        00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: Content-Type: application/x-www-form-urlencoded
+        00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: Accept: */*
+00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: Content-Length: 43
+00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - BufferedReader: Accept-Encoding: br,deflate,gzip,x-gzip
+00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - RequestLine: POST /user/create HTTP/1.1
+00:37:17.218 [DEBUG] [Thread-4] [webserver.RequestHandler] - Body: userId=myid&password=mypassword&name=myname
+00:37:17.219 [DEBUG] [Thread-4] [webserver.RequestHandler] - request  ===========>HttpMethod:POST, requestPath:/user/create, parameters:{}, httpHeaders:{Accept=*/*, Connection=keep-alive, User-Agent=Apache-HttpClient/4.5.13 (Java/17.0.5), Host=localhost:8080, Accept-Encoding=br,deflate,gzip,x-gzip, Content-Length=43, Content-Type=application/x-www-form-urlencoded}, requestBody:userId=myid&password=mypassword&name=myname
+        00:37:17.219 [DEBUG] [Thread-4] [webserver.RequestHandler] - 가입한 유저목록: [User [userId=null, password=null, name=null, email=null]]
+        00:37:17.220 [DEBUG] [Thread-4] [webserver.RequestHandler] - Response => headers:[HTTP/1.1 302 Found, Location: /index.html, ], body:[B@31aa7008
+        00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - New Client Connect! Connected IP : /127.0.0.1, Port : 10273
+        00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: GET /index.html HTTP/1.1
+        00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: Host: localhost:8080
+        00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: Connection: keep-alive
+        00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: Content-Type: application/x-www-form-urlencoded
+        00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: Accept: */*
+00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - BufferedReader: Accept-Encoding: br,deflate,gzip,x-gzip
+00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - RequestLine: GET /index.html HTTP/1.1
+00:37:17.224 [DEBUG] [Thread-5] [webserver.RequestHandler] - Body: null
+00:37:17.225 [DEBUG] [Thread-5] [webserver.RequestHandler] - request  ===========>HttpMethod:GET, requestPath:/index.html, parameters:{}, httpHeaders:{Accept=*/*, Connection=keep-alive, User-Agent=Apache-HttpClient/4.5.13 (Java/17.0.5), Host=localhost:8080, Accept-Encoding=br,deflate,gzip,x-gzip, Content-Type=application/x-www-form-urlencoded}, requestBody:null
+        00:37:17.226 [DEBUG] [Thread-5] [webserver.RequestHandler] - Response => headers:[HTTP/1.1 200 OK, Content-Type: text/html;charset=utf-8, Content-Length: 10500, ], body:[B@1f8ae156
+```
+
+  - POST but params in url
+```java
+00:36:18.965 [DEBUG] [Thread-0] [webserver.RequestHandler] - New Client Connect! Connected IP : /127.0.0.1, Port : 10262
+        00:36:18.980 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: POST /user/create?userId=myid&password=mypassword&name=myname HTTP/1.1
+        00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: Host: localhost:8080
+        00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: Connection: keep-alive
+        00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: Content-Type: application/x-www-form-urlencoded
+        00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: Accept: */*
+00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: Content-Length: 0
+00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - BufferedReader: Accept-Encoding: br,deflate,gzip,x-gzip
+00:36:18.981 [DEBUG] [Thread-0] [webserver.RequestHandler] - RequestLine: POST /user/create?userId=myid&password=mypassword&name=myname HTTP/1.1
+00:36:18.983 [DEBUG] [Thread-0] [webserver.RequestHandler] - Body: 
+00:36:19.007 [DEBUG] [Thread-0] [webserver.RequestHandler] - request  ===========>HttpMethod:POST, requestPath:/user/create, parameters:{}, httpHeaders:{Accept=*/*, Connection=keep-alive, User-Agent=Apache-HttpClient/4.5.13 (Java/17.0.5), Host=localhost:8080, Accept-Encoding=br,deflate,gzip,x-gzip, Content-Length=0, Content-Type=application/x-www-form-urlencoded}, requestBody:
+        00:36:19.033 [DEBUG] [Thread-0] [webserver.RequestHandler] - 가입한 유저목록: [User [userId=null, password=null, name=null, email=null]]
+        00:36:19.041 [DEBUG] [Thread-0] [webserver.RequestHandler] - Response => headers:[HTTP/1.1 302 Found, Location: /index.html, ], body:[B@77650691
+        00:36:19.045 [DEBUG] [Thread-1] [webserver.RequestHandler] - New Client Connect! Connected IP : /127.0.0.1, Port : 10263
+        00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: GET /index.html HTTP/1.1
+        00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: Host: localhost:8080
+        00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: Connection: keep-alive
+        00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: Content-Type: application/x-www-form-urlencoded
+        00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: Accept: */*
+00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - BufferedReader: Accept-Encoding: br,deflate,gzip,x-gzip
+00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - RequestLine: GET /index.html HTTP/1.1
+00:36:19.046 [DEBUG] [Thread-1] [webserver.RequestHandler] - Body: null
+00:36:19.047 [DEBUG] [Thread-1] [webserver.RequestHandler] - request  ===========>HttpMethod:GET, requestPath:/index.html, parameters:{}, httpHeaders:{Accept=*/*, Connection=keep-alive, User-Agent=Apache-HttpClient/4.5.13 (Java/17.0.5), Host=localhost:8080, Accept-Encoding=br,deflate,gzip,x-gzip, Content-Type=application/x-www-form-urlencoded}, requestBody:null
+        00:36:19.051 [DEBUG] [Thread-1] [webserver.RequestHandler] - Response => headers:[HTTP/1.1 200 OK, Content-Type: text/html;charset=utf-8, Content-Length: 10500, ], body:[B@4c598bc6
+```
+
+- 응답 데이터를 처리하는 로직을 별도의 클래스로 분리한다. (HttpResponse)
+  - RequestHandler 클래스를 보면 응답 데이터 처리를 위한 많은 중복이 있다. 이 중복을 제거해 본다.
+  - 응답 헤더 정보를 Map<String, String>으로 관리한다.
+  - 응답을 보낼 때 HTML, CSS, JS 파일을 직접 읽어 응답으로 보내는 메소드는 forward(),
+  - 다른 URI로 리다이렉트하는 메소드는 sendRedirect() 메소드로 나누어 구현한다.
+
+- 다형성을 활용해 클라이언트 요청 URL에 대한 분기 처리를 제거한다.
+  - 각 요청과 응답에 대한 처리를 담당하는 부분을 추상화해 인터페이스로 만든다.
+  - 각 분기문을 Controller 인터페이스를 구현하는 클래스를 만들어 분리한다.
+  - 이렇게 생성한 Controller 구현체를 Map<String, Controller>에 저장한다.
+    - Map의 Key에 해당하는 String은 요청 URL, value에 해당하는 Controller는 Controller 구현체이다.
+  - 클라이언트 요청 URL에 해당하는 Controller를 찾아 service() 메소드를 호출한다.
+  - Controller 인터페이스를 구현하는 AbstractController 추상클래스를 추가해 중복을 제거하고,
+  - service() 메소드에서 GET과 POST HTTP 메소드에 따라 doGet(), doPost() 메소드를 호출하도록 한다.

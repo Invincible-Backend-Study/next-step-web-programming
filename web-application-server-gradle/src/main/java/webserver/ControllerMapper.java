@@ -1,28 +1,31 @@
 package webserver;
 
-import controller.WebpageController;
-import webserver.http.MyHttpRequest;
-import webserver.http.Response;
-
-import java.io.IOException;
+import controller.Controller;
+import controller.CreateUserController;
+import controller.DefaultController;
+import controller.LoginController;
+import controller.UserListController;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ControllerMapper {
-    private final WebpageController webpageController = new WebpageController();
+    private static final Logger log = LoggerFactory.getLogger(ControllerMapper.class);
 
-    public Response mapping(MyHttpRequest myHttpRequest) throws IOException {
-        String method = myHttpRequest.getHttpMethod();
-        String path = myHttpRequest.getRequestPath();
+    private static Map<String, Controller> controllers = new HashMap<String, Controller>();
+    static {
+        controllers.put("/user/create", new CreateUserController());
+        controllers.put("/user/login", new LoginController());
+        controllers.put("/user/list", new UserListController());
+    }
 
-        // controller 맵핑
-        if (("GET".equals(method) || "POST".equals(method)) && "/user/create".equals(path)) {
-            return webpageController.signup(myHttpRequest);
+    public static Controller getController(String requestUrl) {
+        Controller controller = controllers.get(requestUrl);
+        if (controller == null) {
+            // html, css, js ... etc
+            return new DefaultController();
         }
-        if ("POST".equals(method) && "/user/login".equals(path)) {
-            return webpageController.login(myHttpRequest);
-        }
-        if ("GET".equals(method) && "/user/list.html".equals(path)) {
-            return webpageController.getUserList(myHttpRequest);
-        }
-        return webpageController.defaultResponse(myHttpRequest);
+        return controller;
     }
 }

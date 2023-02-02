@@ -1,3 +1,7 @@
+HTTP/1.1 200 OK 
+Content-Length: 10500
+Content-Type: text/html;charset=utf-8
+
 <!DOCTYPE html>
 <html lang="kr">
 	<head>
@@ -32,8 +36,7 @@
                 </div>
               </div>
           </form>
-          <ul class="nav navbar-nav navbar-right">
-              <li><a href="./user/list"><i class="glyphicon"></i>/user/list</a></li>
+          <ul class="nav navbar-nav navbar-right">             
              <li>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></a>
                 <ul class="dropdown-menu">
