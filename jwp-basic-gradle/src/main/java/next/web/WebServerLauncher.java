@@ -1,4 +1,4 @@
-package next;
+package next.web;
 
 import java.io.File;
 
