@@ -3,6 +3,6 @@
 /.classpath
 /.project
 /tomcat.8080
-WEB-INF/lib/**
+webapp/WEB-INF/lib/
 /.idea
 jwp-basic.iml
