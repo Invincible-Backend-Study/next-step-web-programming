@@ -29,6 +29,20 @@ public class User {
         return email;
     }
 
+    public boolean isAuthWith(User user) {
+        return isAuthWith(user);
+    }
+
+    public boolean isAuthWith(String id, String password) {
+        if (!this.getUserId().equals(id)) {
+            return false;
+        }
+        if (!this.getPassword().equals(password)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
