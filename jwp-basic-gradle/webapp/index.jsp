@@ -6,10 +6,9 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>SLiPP Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <jsp:include page="head.jsp"/>
+    <title>SLiPP Java Web Programming</title>
 </head>
 <body>
 
@@ -23,12 +22,12 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="./qna/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                                <a href="qna/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">2016-01-15 18:47</span>
-                                <a href="./user/profile.html" class="author">자바지기</a>
+                                <a href="user/profile.html" class="author">자바지기</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -41,12 +40,12 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="./qna/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
+                                <a href="qna/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">2016-01-05 18:47</span>
-                                <a href="./user/profile.html" class="author">김문수</a>
+                                <a href="user/profile.html" class="author">김문수</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -70,7 +69,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="./qna/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <a href="qna/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
                 </div>
             </div>
         </div>
@@ -155,8 +154,6 @@
 -->
 
 <!-- script references -->
-<script src="js/jquery-2.2.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/scripts.js"></script>
+<jsp:include page="script.jsp"/>
 </body>
 </html>

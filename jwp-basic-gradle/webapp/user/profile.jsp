@@ -6,11 +6,10 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>SLiPP Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">
-</head>
+    <jsp:include page="../head.jsp"/>
+    <title>SLiPP Java Web Programming</title>
+ </head>
 <body>
 
 <jsp:include page="../navigation.jsp"/>
@@ -39,8 +38,6 @@
 </div>
 
 <!-- script references -->
-<script src="../js/jquery-2.2.0.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/scripts.js"></script>
+<jsp:include page="../script.jsp"/>
 	</body>
 </html>
