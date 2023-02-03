@@ -1,0 +1,42 @@
+<web-app>
+
+    <!-- 1. aliases 설정 -->
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>next.HelloWorldServlet</servlet-class>
+
+    </servlet>
+    <servlet>
+        <servlet-name>createUser</servlet-name>
+        <servlet-class>next.web.CreateUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>userList</servlet-name>
+        <servlet-class>next.web.ListUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateUser</servlet-name>
+        <servlet-class>next.web.UpdateUserServlet</servlet-class>
+    </servlet>
+
+    <!-- 2. 매핑 -->
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/welcome</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>createUser</servlet-name>
+        <url-pattern>/user/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>userList</servlet-name>
+        <url-pattern>/user/list</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>updateUser</servlet-name>
+        <url-pattern>/user/update</url-pattern>
+    </servlet-mapping>
+</web-app>
