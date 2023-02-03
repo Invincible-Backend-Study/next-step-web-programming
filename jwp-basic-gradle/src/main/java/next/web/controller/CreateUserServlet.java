@@ -21,6 +21,12 @@ public class CreateUserServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CreateUserServlet.class);
 
     @Override
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/user/form.jsp").forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User(
                 request.getParameter("userId"),
