@@ -1,4 +1,4 @@
-package next.web;
+package next.web.controller;
 
 import java.io.IOException;
 
@@ -21,15 +21,15 @@ public class CreateUserServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CreateUserServlet.class);
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User(
-                req.getParameter("userId"),
-                req.getParameter("password"),
-                req.getParameter("name"),
-                req.getParameter("email")
+                request.getParameter("userId"),
+                request.getParameter("password"),
+                request.getParameter("name"),
+                request.getParameter("email")
         );
         log.debug("user : {}", user);
         DataBase.addUser(user);
-        resp.sendRedirect("/user/list");
+        response.sendRedirect("/user/list");
     }
 }
