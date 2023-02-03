@@ -1,0 +1,5 @@
+POST /user/create?userId=myjj&password=mypassword&name=myname HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Content-Type: application/x-www-form-urlencoded
+Accept: */*
