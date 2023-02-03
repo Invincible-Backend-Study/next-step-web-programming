@@ -1,6 +1,5 @@
 package next.web.controller;
 
-import core.db.DataBase;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

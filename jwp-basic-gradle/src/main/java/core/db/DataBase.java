@@ -1,10 +1,8 @@
 package core.db;
 
+import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
-
 import next.model.User;
 
 public class DataBase {
