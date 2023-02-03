@@ -26,7 +26,6 @@ public class LoginController extends AbstractController {
         if (user == null) {
             return null;
         }
-        log.debug("USER!!! {}", user.toString());
         if (user.getPassword().equals(password)) {
             return user;
         }

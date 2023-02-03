@@ -21,11 +21,6 @@ public class ControllerMapper {
     }
 
     public static Controller getController(String requestUrl) {
-        Controller controller = controllers.get(requestUrl);
-        if (controller == null) {
-            // html, css, js ... etc
-            return new DefaultController();
-        }
-        return controller;
+        return controllers.getOrDefault(requestUrl, new DefaultController());
     }
 }
