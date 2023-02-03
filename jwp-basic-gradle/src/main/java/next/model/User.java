@@ -29,6 +29,10 @@ public class User {
         return email;
     }
 
+    public boolean containPassword(final String password) {
+        return this.password.equals(password);
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -75,5 +79,4 @@ public class User {
             return false;
         return true;
     }
-
 }
