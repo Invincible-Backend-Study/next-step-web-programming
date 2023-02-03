@@ -4,6 +4,7 @@ import db.DataBase;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.http.HttpSessions;
 import webserver.http.MyHttpRequest;
 import webserver.http.MyHttpResponse;
 
@@ -17,7 +18,9 @@ public class LoginController extends AbstractController {
             myHttpResponse.sendRedirect("/user/login_failed.html");
             return;
         }
-        myHttpResponse.addHeader("Set-Cookie", "logined=true");
+        myHttpRequest.getSession().setAttribute("user", user);
+
+        // myHttpResponse.addHeader("Set-Cookie", "logined=true");
         myHttpResponse.sendRedirect("/index.html");
     }
 

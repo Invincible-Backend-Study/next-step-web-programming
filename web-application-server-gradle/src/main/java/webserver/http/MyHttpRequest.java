@@ -24,6 +24,7 @@ public class MyHttpRequest {
     private final Map<String, String> parameters;
     private final Map<String, String> headers;
     private final Map<String, String> cookies;
+    private final MyHttpSession session;
     private final String body;
 
     public MyHttpRequest(InputStream in) throws IOException {
@@ -36,6 +37,7 @@ public class MyHttpRequest {
         requestLine = new RequestLine(lines.get(REQUEST_LINE));
         headers = extractHeaders(lines);
         cookies = extractCookies(headers.get("Cookie"));
+        session = getSession(getSessionId());
         body = extractBody(br, headers.get("Content-Length"));
         parameters = extractParameters(requestLine.getParams(), body);
         logWithoutStyle();
@@ -85,6 +87,14 @@ public class MyHttpRequest {
         return HttpRequestUtils.parseCookies(cookies);
     }
 
+    private static MyHttpSession getSession(String uuid) {
+        log.debug("SessionId: {}", uuid);
+        if (uuid == null) {
+            return null;
+        }
+        return HttpSessions.get(uuid);
+    }
+
     private static List<String> readInputStream(BufferedReader br) throws IOException {
         List<String> lines = new ArrayList<>();
         String line;
@@ -104,7 +114,18 @@ public class MyHttpRequest {
     }
 
     public String getCookie(String key) {
+        if (cookies == null) {
+            return null;
+        }
         return cookies.get(key);
+    }
+
+    public MyHttpSession getSession() {
+        return session;
+    }
+
+    public String getSessionId() {
+        return getCookie("JSESSIONID");
     }
 
     public HttpMethod getMethod() {
@@ -144,6 +165,7 @@ public class MyHttpRequest {
         log.debug("Http: {} {}  Parameters: {}", requestLine.getMethod(), requestLine.getPath(), (parameters == null ? "-" : parameters.toString()));
         log.debug("Headers: {}", (headers == null ? "-" : headers.toString()));
         log.debug("Cookie: {}", (cookies == null ? "-" : cookies.toString()));
+        log.debug("Session: {}", (session == null ? "-" : session.toString()));
         log.debug("Body: {}", body);
     }
 }
