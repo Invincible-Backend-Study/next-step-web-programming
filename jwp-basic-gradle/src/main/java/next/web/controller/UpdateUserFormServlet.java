@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import next.model.User;
 import next.web.service.UserService;
 import org.slf4j.Logger;
@@ -21,8 +22,6 @@ public class UpdateUserFormServlet extends HttpServlet {
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        User user = DataBase.findUserById(request.getParameter("userId"));
-        request.setAttribute("user", user);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user/update.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -38,7 +37,9 @@ public class UpdateUserFormServlet extends HttpServlet {
         );
         log.info("updatedUser={}", updatedUser);
         userService.updateUserInformation(updatedUser);
-
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        session.setAttribute("user", updatedUser);
         response.sendRedirect("/user/list");
     }
 }
