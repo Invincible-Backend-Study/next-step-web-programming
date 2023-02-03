@@ -43,6 +43,10 @@ public class User {
         return true;
     }
 
+    public boolean isSameUser(String id) {
+        return this.getUserId().equals(id);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
