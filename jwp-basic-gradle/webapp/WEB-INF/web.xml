@@ -39,4 +39,23 @@
         <servlet-name>updateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>loginUser</servlet-name>
+        <servlet-class>next.web.UserLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginUser</servlet-name>
+        <url-pattern>/user/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>logoutUser</servlet-name>
+        <servlet-class>next.web.UserLogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>logoutUser</servlet-name>
+        <url-pattern>/user/logout</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -13,10 +13,17 @@ import next.model.User;
 
 @WebServlet("/user/update")
 public class UpdateUserServlet extends HttpServlet {
+
+    private User getUser(HttpServletRequest req){
+        var user = req.getSession().getAttribute("user");
+        if(user == null) {
+            return null;
+        }
+        return (User) user;
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var userId = req.getParameter("userId");
-        var user = DataBase.findUserById(userId);
+        final var user = this.getUser(req);
         if(user == null){
             resp.sendRedirect("/user/list");
             return ;
@@ -28,8 +35,7 @@ public class UpdateUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var userId = req.getParameter("userId");
-        var user = DataBase.findUserById(userId);
+        final var user = this.getUser(req);
         if(user == null){
             resp.sendRedirect("/user/list");
             return ;
