@@ -1,12 +1,11 @@
 package customwebserver.http;
 
+import customwebserver.http.cookie.HttpCookies;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +72,7 @@ public class HttpResponse {
         responseBody(dataBytes);
     }
 
-    public void addCookie(final String cookieKey, final Object value) {
+    public void addCookie(final String cookieKey, final String value) {
         httpCookies.addCookie(cookieKey, value);
     }
 
