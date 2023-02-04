@@ -9,6 +9,7 @@ import customwebserver.http.HttpResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +31,19 @@ public class FrontController {
         this.httpResponse = httpResponse;
     }
 
+
     public void doProcess() throws IOException {
+        sendRequestDataToResponse();
         requestDispatch();
+    }
+
+    /**
+     * 응답에 필요한 데이터를 httpRequest에서 전달
+     */
+    private void sendRequestDataToResponse() {
+        if (httpRequest.getCookies().getCookie("MYJESSIONID") == null) {
+            httpResponse.addCookie("MYJESSIONID", UUID.randomUUID().toString());
+        }
     }
 
     /**
