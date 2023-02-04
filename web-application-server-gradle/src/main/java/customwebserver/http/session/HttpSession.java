@@ -37,4 +37,12 @@ public class HttpSession {
     public void invalidate() {
         store.clear();
     }
+
+    @Override
+    public String toString() {
+        return "HttpSession{" +
+                "store=" + store +
+                ", sessionId='" + sessionId + '\'' +
+                '}';
+    }
 }
