@@ -2,10 +2,8 @@ package next.controller;
 
 import next.web.HttpMethod;
 
-import javax.servlet.annotation.HttpMethodConstraint;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.http.HttpConnectTimeoutException;
 
 abstract public class AbstractController implements Controller {
     public String execute(HttpServletRequest request, HttpServletResponse response) {

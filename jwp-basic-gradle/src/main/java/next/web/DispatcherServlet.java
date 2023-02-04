@@ -22,6 +22,9 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.debug("DispatcherServlet: {} {}", req.getMethod(), req.getRequestURI());
         Controller controller = RequestMapping.getController(req.getRequestURI());
+        if (controller == null) {
+            logger.debug("DispatcherServlet: controller를 찾을 수 없습니다.");
+        }
         String uri = controller.execute(req, resp);
 
         logger.debug("DispatcherServlet: {} {}", controller.toString(), uri);
