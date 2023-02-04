@@ -2,6 +2,7 @@ package controller;
 
 import customwebserver.http.HttpRequest;
 import customwebserver.http.HttpResponse;
+import customwebserver.http.session.HttpSession;
 import java.io.IOException;
 import model.User;
 import org.slf4j.Logger;
@@ -14,16 +15,13 @@ public class UserListController extends AbstractController {
 
     @Override
     public void doGet(final HttpRequest httpRequest, final HttpResponse httpResponse) throws IOException {
-        Boolean logined = Boolean.valueOf(httpRequest.getCookie("logined"));
-        if (!logined) {
+        HttpSession session = httpRequest.getSession();
+        User user = (User) session.getAttribute("user");
+        log.debug("find from session user={}", user);
+        if (user == null) {
             httpResponse.sendRedirect("/user/login.html");
             return;
         }
-        StringBuilder userList = new StringBuilder();
-        userService.findAll()
-                .stream()
-                .map(User::toString)
-                .forEach(userInfo -> userList.append(userInfo).append("\n"));
-        httpResponse.sendResponseBody(userList.toString());
+        httpResponse.sendResponseBody(user.toString());
     }
 }

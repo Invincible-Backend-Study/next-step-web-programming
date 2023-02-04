@@ -2,7 +2,9 @@ package controller;
 
 import customwebserver.http.HttpRequest;
 import customwebserver.http.HttpResponse;
+import customwebserver.http.session.HttpSession;
 import java.io.IOException;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.UserService;
@@ -18,13 +20,15 @@ public class LoginController extends AbstractController {
         if (userId == null || password == null) {
             throw new IllegalArgumentException("[ERROR] 로그인 정보를 모두 입력해야 합니다.");
         }
-        Boolean login = userService.login(userId, password);
-        log.debug("login result={}", login);
-        httpResponse.addCookie("logined", login);
-        if (login) {
-            httpResponse.sendRedirect("/index.html");
+        User user = userService.login(userId, password);
+        if (user == null) {
+            httpResponse.sendRedirect("/user/login_failed.html");
             return;
         }
-        httpResponse.sendRedirect("/user/login_failed.html");
+        // 세션 적용
+        HttpSession session = httpRequest.getSession();
+        session.setAttribute("user", user);
+        log.debug("login user={}", user);
+        httpResponse.sendRedirect("/index.html");
     }
 }
