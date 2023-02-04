@@ -84,4 +84,8 @@ public class User {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "id:" + userId + ", pw:" + password + ", name:" + name + ", email:" + email;
+    }
 }
