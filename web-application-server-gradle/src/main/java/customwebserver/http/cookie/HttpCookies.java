@@ -1,4 +1,4 @@
-package customwebserver.http;
+package customwebserver.http.cookie;
 
 import java.util.HashMap;
 import java.util.Map;
