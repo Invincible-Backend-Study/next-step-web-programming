@@ -20,7 +20,7 @@ public class HttpHeaders {
         if (httpHeaders.containsKey(headerName)) {
             return httpHeaders.get(headerName);
         }
-        throw new IllegalArgumentException("[ERROR] No Header about " + headerName);
+        return null;
     }
 
     public int getContentLength() {
