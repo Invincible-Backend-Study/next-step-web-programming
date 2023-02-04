@@ -11,12 +11,12 @@ public class UserService {
         DataBase.addUser(user);
     }
 
-    public boolean login(final String userId, final String password) {
+    public User login(final String userId, final String password) {
         User user = DataBase.findUserById(userId);
-        if (user == null) {
-            return false;
+        if (user.containPassword(password)) {
+            return user;
         }
-        return user.getPassword().equals(password);
+        return null;
     }
 
     public List<User> findAll() {
