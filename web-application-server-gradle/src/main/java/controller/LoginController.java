@@ -14,11 +14,12 @@ public class LoginController extends AbstractController {
     private final UserService userService = new UserService();
 
     /**
-     * 현재 세션에서 발생될 수 있는 문제점
-     * FrontController에서 response에 MYJSESSIONID를 정의하고 로그인 요청을 즉시하게 되면(GET) 아직
-     * Set-Cookie -> Cookie로 request에 Cookie값이 전달되지 않았다. 따라서 request.getSession()시 내부적으로 request헤더에서 MYJSESSIONID로 key값이 된 쿠키값을 찾지만
-     * 찾을 수 없어 null이 반환된다.
-     * 다음 요청부터는 FrontController에서 정의한 MYJSESSIONID값이 Set-Cookie를 통해 전달됐으므로 Cookie값에 포함된다. 따라서 user/list를 요청하면 로그인을 했지만 접근할 수 없게된다.
+     * 현재 세션에서 발생될 수 있는 문제점 <br>
+     * FrontController에서 response에 MYJSESSIONID를 정의하고 로그인 요청을 즉시하게 되면(GET) <br>
+     * 아직 Set-Cookie -> Cookie로 request에 Cookie값이 전달되지 않았다. <br>
+     * 따라서 request.getSession()시 내부적으로 request헤더에서 MYJSESSIONID로 key값이 된 쿠키값을 찾지만 찾을 수 없어 null이 반환된다.<br>
+     * 다음 요청부터는 FrontController에서 정의한 MYJSESSIONID값이 Set-Cookie를 통해 전달됐으므로 Cookie값에 포함된다. <br>
+     * 따라서 user/list를 요청하면 로그인을 했지만 접근할 수 없게된다.<br>
      */
     @Override
     protected void doGet(final HttpRequest request, final HttpResponse response) throws IOException {
