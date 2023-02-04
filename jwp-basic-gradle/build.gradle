@@ -38,14 +38,15 @@ version = '1.0'
 description = 'jwp-basic'
 java.sourceCompatibility = JavaVersion.VERSION_11
 
-apply plugin: 'idea'
-idea {
-    module {
-        inheritOutputDirs = false
-        outputDir = file('/Users/ihoseok/develop/java/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
-        testOutputDir = file('/Users/ihoseok/develop/java/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
-    }
-}
+// out 경로 수정 코드
+//apply plugin: 'idea'
+//idea {
+//    module {
+//        inheritOutputDirs = false
+//        outputDir = file('/Users/ihoseok/develop/java/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
+//        testOutputDir = file('/Users/ihoseok/develop/java/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
+//    }
+//}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
