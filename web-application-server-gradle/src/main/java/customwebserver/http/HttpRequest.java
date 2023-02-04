@@ -20,7 +20,6 @@ import utils.enums.HttpMethod;
 
 public class HttpRequest {
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
-    public static final String SESSION_ID = "MYJESSIONID";
 
     private final RequestLine requestLine;
     private final HttpHeaders httpHeaders;
@@ -61,7 +60,7 @@ public class HttpRequest {
     }
 
     public HttpSession getSession() {
-        return HttpSessions.getSession(getCookies().getCookie(SESSION_ID));
+        return HttpSessions.getSession(getCookies().getCookie(HttpSessions.SESSION_ID_NAME));
     }
 
     private Map<String, String> parseQueryStringByForm(final BufferedReader httpRequestReader) throws IOException {

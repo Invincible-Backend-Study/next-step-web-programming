@@ -6,6 +6,8 @@ import controller.UserController;
 import controller.UserListController;
 import customwebserver.http.HttpRequest;
 import customwebserver.http.HttpResponse;
+import customwebserver.http.session.HttpSession;
+import customwebserver.http.session.HttpSessions;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +43,9 @@ public class FrontController {
      * 응답에 필요한 데이터를 httpRequest에서 전달
      */
     private void sendRequestDataToResponse() {
-        if (httpRequest.getCookies().getCookie("MYJESSIONID") == null) {
-            httpResponse.addCookie("MYJESSIONID", UUID.randomUUID().toString());
+        if (httpRequest.getCookies().getCookie(HttpSessions.SESSION_ID_NAME) == null) {
+            log.debug("generate sessionIdName");
+            httpResponse.addCookie(HttpSessions.SESSION_ID_NAME, UUID.randomUUID().toString());
         }
     }
 

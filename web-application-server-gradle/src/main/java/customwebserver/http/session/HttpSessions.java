@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HttpSessions {
+    public static final String SESSION_ID_NAME = "MYJESSIONID";
     private static final Logger log = LoggerFactory.getLogger(HttpSessions.class);
 
     private static final Map<String, HttpSession> sessionStore = new HashMap<>();
