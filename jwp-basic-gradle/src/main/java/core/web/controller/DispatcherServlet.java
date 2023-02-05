@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 @WebServlet("/")
 public class DispatcherServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
+    private static final int REDIRECT_URI = 1;
+
     private final RequestMapping requestMapping = new RequestMapping();
     private String prefixViewPath = "/WEB-INF/views/";
     private String suffixViewPath = ".jsp";
@@ -43,7 +45,7 @@ public class DispatcherServlet extends HttpServlet {
 
     private void resolveExecute(final String executeResult) throws IOException, ServletException {
         if (isRedirect(executeResult)) {
-            response.sendRedirect(executeResult.split(":")[1]);
+            response.sendRedirect(executeResult.split(":")[REDIRECT_URI]);
             return;
         }
         resolveView(executeResult);
