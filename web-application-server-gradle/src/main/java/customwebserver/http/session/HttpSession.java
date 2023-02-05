@@ -35,7 +35,7 @@ public class HttpSession {
     }
 
     public void invalidate() {
-        store.clear();
+        HttpSessions.remove(sessionId);
     }
 
     @Override

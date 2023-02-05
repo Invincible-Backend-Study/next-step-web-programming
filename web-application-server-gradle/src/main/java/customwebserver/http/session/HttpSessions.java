@@ -23,4 +23,8 @@ public class HttpSessions {
         }
         return httpSession;
     }
+
+    public static void remove(final String sessionId) {
+        sessionStore.remove(sessionId);
+    }
 }
