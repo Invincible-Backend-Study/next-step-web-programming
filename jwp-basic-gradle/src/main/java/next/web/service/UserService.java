@@ -26,4 +26,8 @@ public class UserService {
         }
         return null;
     }
+
+    public User findUserById(final String userId) {
+        return DataBase.findUserById(userId);
+    }
 }

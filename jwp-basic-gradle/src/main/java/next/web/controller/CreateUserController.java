@@ -33,6 +33,6 @@ public class CreateUserController extends HttpServlet {
         );
         log.debug("user : {}", user);
         DataBase.addUser(user);
-        response.sendRedirect("/user/list");
+        response.sendRedirect("/");
     }
 }
