@@ -1,7 +1,5 @@
 package core.web.controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -9,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class AbstractController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(AbstractController.class);
+
     @Override
     public String execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpMethod method = HttpMethod.valueOf(request.getMethod());

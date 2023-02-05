@@ -16,7 +16,8 @@ public class WebServerLauncher {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
 
-        StandardContext context = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
+        StandardContext context = (StandardContext) tomcat.addWebapp("/",
+                new File(webappDirLocation).getAbsolutePath());
         logger.info("configuring app with basedir: {}", new File("./" + webappDirLocation).getAbsolutePath());
 
         // /out/production/classes 아래에 빌드 파일들을 WEB-INF/classes/로 옮김
