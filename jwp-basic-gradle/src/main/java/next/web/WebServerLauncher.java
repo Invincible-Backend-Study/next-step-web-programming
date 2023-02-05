@@ -19,8 +19,8 @@ public class WebServerLauncher {
         StandardContext context = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
         logger.info("configuring app with basedir: {}", new File("./" + webappDirLocation).getAbsolutePath());
 
-        // /build/classes 아래에 빌드 파일들을 WEB-INF/classes/로 옮김
-        File additionWebInfClasses = new File("build/classes");
+        // /out/production/classes 아래에 빌드 파일들을 WEB-INF/classes/로 옮김
+        File additionWebInfClasses = new File("out/production/classes");
         StandardRoot resources = new StandardRoot(context);
         resources.addPreResources(
                 new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClasses.getAbsolutePath(), "/"));
