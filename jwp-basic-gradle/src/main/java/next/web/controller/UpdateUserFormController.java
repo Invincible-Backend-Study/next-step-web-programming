@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebServlet("/user/update")
-public class UpdateUserFormServlet extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(UpdateUserFormServlet.class);
+public class UpdateUserFormController extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(UpdateUserFormController.class);
     private final UserService userService = new UserService();
 
     @Override

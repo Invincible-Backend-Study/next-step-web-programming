@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebServlet("/user/login")
-public class LoginUserServlet extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(LoginUserServlet.class);
+public class LoginUserController extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(LoginUserController.class);
 
     private final UserService userService = new UserService();
 
