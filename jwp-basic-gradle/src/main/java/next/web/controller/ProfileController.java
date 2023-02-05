@@ -1,6 +1,6 @@
 package next.web.controller;
 
-import core.web.controller.AbstractController;
+import core.mvcframework.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.web.controller.dto.ProfileUserDto;

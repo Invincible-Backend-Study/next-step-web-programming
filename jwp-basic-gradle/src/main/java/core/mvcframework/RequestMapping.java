@@ -1,4 +1,4 @@
-package core.web.controller;
+package core.mvcframework;
 
 import java.util.HashMap;
 import java.util.Map;

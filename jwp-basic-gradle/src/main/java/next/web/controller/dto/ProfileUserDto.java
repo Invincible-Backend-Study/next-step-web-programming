@@ -14,7 +14,6 @@ public class ProfileUserDto {
     }
 
     public static ProfileUserDto from(final User user) {
-
         return new ProfileUserDto(user.getUserId(), user.getName(), user.getEmail());
     }
 

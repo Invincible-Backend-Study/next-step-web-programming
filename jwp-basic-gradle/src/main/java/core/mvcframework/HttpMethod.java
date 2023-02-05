@@ -1,4 +1,4 @@
-package core.web.controller;
+package core.mvcframework;
 
 public enum HttpMethod {
     GET, POST;
