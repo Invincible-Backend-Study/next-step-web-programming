@@ -12,10 +12,10 @@ public class AbstractController implements Controller {
     public String execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
         log.debug("httpMethod={}", method);
-        if (method.equals(HttpMethod.GET)) {
+        if (method.isGet()) {
             return doGet(request, response);
         }
-        if (method.equals(HttpMethod.POST)) {
+        if (method.isPost()) {
             return doPost(request, response);
         }
         throw new IllegalArgumentException("[ERROR] 요청과 일치되는 메소드가 없습니다.");

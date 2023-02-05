@@ -1,5 +1,13 @@
 package core.web.controller;
 
 public enum HttpMethod {
-    GET, POST
+    GET, POST;
+
+    public boolean isGet() {
+        return this == GET;
+    }
+
+    public boolean isPost() {
+        return this == POST;
+    }
 }
