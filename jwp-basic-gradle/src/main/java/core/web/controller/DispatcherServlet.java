@@ -38,12 +38,15 @@ public class DispatcherServlet extends HttpServlet {
             throws ServletException, IOException {
         initialize(request, response);
         Controller handler = requestMapping.getHandlerMapping(request.getRequestURI());
+        if (handler == null) {
+            throw new IllegalArgumentException("[ERROR] No URL mapping");
+        }
         String executeResult = handler.execute(request, response);
         log.debug("handlerExecuteResult={}", executeResult);
-        resolveExecute(executeResult);
+        resolveExecuteResult(executeResult);
     }
 
-    private void resolveExecute(final String executeResult) throws IOException, ServletException {
+    private void resolveExecuteResult(final String executeResult) throws IOException, ServletException {
         if (isRedirect(executeResult)) {
             response.sendRedirect(executeResult.split(":")[REDIRECT_URI]);
             return;
