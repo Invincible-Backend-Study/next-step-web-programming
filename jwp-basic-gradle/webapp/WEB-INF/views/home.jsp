@@ -27,7 +27,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">2016-01-15 18:47</span>
-                                <a href="user/profile.html" class="author">자바지기</a>
+                                <a href="user/html/profile.html" class="author">자바지기</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -45,7 +45,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">2016-01-05 18:47</span>
-                                <a href="user/profile.html" class="author">김문수</a>
+                                <a href="user/html/profile.html" class="author">김문수</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
