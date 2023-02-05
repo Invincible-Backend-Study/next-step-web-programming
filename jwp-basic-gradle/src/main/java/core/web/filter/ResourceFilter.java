@@ -8,10 +8,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebFilter(urlPatterns = {"/css/*", "/js/*", "/fonts/*", "images/*"})
+@WebFilter(urlPatterns = {"/css/*", "/js/*", "/fonts/*", "/images/*", "/favicon.ico"})
 public class ResourceFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(ResourceFilter.class);
 
@@ -23,9 +24,8 @@ public class ResourceFilter implements Filter {
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
-        String contentType = request.getContentType();
-        log.info("requestContentType={}", contentType);
-        chain.doFilter(request, response);
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        request.getRequestDispatcher(httpServletRequest.getRequestURI()).forward(request, response);
     }
 
     @Override
