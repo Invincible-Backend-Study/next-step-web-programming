@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="../header.jsp"%>
-<%@include file="../nav.jsp"%>
+<%@include file="header.jsp"%>
+<%@include file="nav.jsp"%>
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
@@ -23,9 +23,9 @@
                   <input type="email" class="form-control" id="email" name="email" placeholder="Email">
               </div>
               <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
-              <div class="clearfix" />
+              <div class="clearfix"></div>
           </form>
         </div>
     </div>
 </div>
-<%@include file="../footer.jsp"%>
+<%@include file="footer.jsp"%>

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="../header.jsp"%>
-<%@include file="../nav.jsp"%>
+<%@include file="../WEB-INF/header.jsp"%>
+<%@include file="../WEB-INF/nav.jsp"%>
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
@@ -20,4 +20,4 @@
         </div>
     </div>
 </div>
-<%@include file="../footer.jsp"%>
+<%@include file="../WEB-INF/footer.jsp"%>

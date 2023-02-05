@@ -36,7 +36,7 @@
         <div class="navbar-header">
             <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <li><a href="user/profile.html"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
+                <li><a href="Downloads/next-step-web-programming/jwp-basic-gradle/webapp/user/profile.html"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
             </ul>
@@ -51,8 +51,8 @@
                         <li><a href="#" role="button">개인정보수정</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/user/login" role="button">로그인</a></li>
-                        <li><a href="/user/create" role="button">회원가입</a></li>
+                        <li><a href="/users/loginForm" role="button">로그인</a></li>
+                        <li><a href="/users/form" role="button">회원가입</a></li>
                     </c:otherwise>
                 </c:choose>
 
