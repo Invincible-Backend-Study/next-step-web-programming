@@ -12,7 +12,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
-    private static final Logger logger = LoggerFactory.getLogger(ContextLoaderListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ContextLoaderListener.class);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -20,7 +20,7 @@ public class ContextLoaderListener implements ServletContextListener {
         populator.addScript(new ClassPathResource("jwp.sql"));
         DatabasePopulatorUtils.execute(populator, ConnectionManager.getDataSource());
 
-        logger.info("Completed Load ServletContext!");
+        log.info("Completed Load ServletContext!");
     }
 
     @Override
