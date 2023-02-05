@@ -1,5 +1,6 @@
 package next.web.controller;
 
+import core.web.controller.AbstractController;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,20 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/user/list")
-public class ListUserController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+public class ListUserController extends AbstractController {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected String doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object userObject = session.getAttribute("user");
         if (userObject != null) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/list.jsp");
-            dispatcher.forward(request, response);
-            return;
+            return "user/list";
         }
-        response.sendRedirect("/user/login");
+        return "redirect:/user/login";
     }
 }

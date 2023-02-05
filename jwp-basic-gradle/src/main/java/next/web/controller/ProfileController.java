@@ -1,5 +1,6 @@
 package next.web.controller;
 
+import core.web.controller.AbstractController;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,23 +12,20 @@ import next.web.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet("/user/profile")
-public class ProfileController extends HttpServlet {
+public class ProfileController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     private final UserService userService = new UserService();
 
     @Override
-    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    protected String doGet(final HttpServletRequest request, final HttpServletResponse response) {
         String userId = request.getParameter("userId");
         log.debug("userId={}", userId);
-
         if (userId == null) {
-            response.sendRedirect("/user/login");
+            return "redirect:/user/login";
         }
         ProfileUserDto profileUser = ProfileUserDto.from(userService.findUserById(userId));
         request.getSession().setAttribute("user", profileUser);
-        request.getRequestDispatcher("/WEB-INF/views/user/profile.jsp").forward(request, response);
+        return "user/profile";
     }
 }

@@ -1,5 +1,6 @@
 package next.web.controller;
 
+import core.web.controller.AbstractController;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,46 +13,37 @@ import next.web.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet("/user/login")
-public class LoginUserController extends HttpServlet {
+public class LoginUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginUserController.class);
 
     private final UserService userService = new UserService();
 
     @Override
-    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    protected String doGet(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object loginTry = session.getAttribute("loginTry");
         if (loginTry != null && (boolean) loginTry) {
             session.removeAttribute("loginTry");
-            request.getRequestDispatcher("/WEB-INF/views/user/login_failed.jsp").forward(request, response);
-            return;
+            return "user/login_failed";
         }
-
-        request.getRequestDispatcher("/WEB-INF/views/user/login.jsp").forward(request, response);
+        return "user/login";
     }
 
     @Override
-    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    protected String doPost(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
         try {
             User loginedUser = userService.loginUser(request.getParameter("userId"), request.getParameter("password"));
             if (loginedUser == null) {
-                failLogin(response, session);
-                return;
+                session.setAttribute("loginTry", true);
+                return "redirect:/user/login";
             }
             session.setAttribute("user", loginedUser);
-            response.sendRedirect("/");
+            return "redirect:/";
         } catch (IllegalArgumentException exception) {
             log.error(exception.getMessage());
-            failLogin(response, session);
+            session.setAttribute("loginTry", true);
+            return "redirect:/user/login";
         }
-    }
-
-    private static void failLogin(final HttpServletResponse response, final HttpSession session) throws IOException {
-        session.setAttribute("loginTry", true);
-        response.sendRedirect("/user/login");
     }
 }

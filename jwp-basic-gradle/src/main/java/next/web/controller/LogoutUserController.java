@@ -1,5 +1,6 @@
 package next.web.controller;
 
+import core.web.controller.AbstractController;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,12 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/user/logout")
-public class LogoutUserController extends HttpServlet {
+public class LogoutUserController extends AbstractController {
+
     @Override
-    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    protected String doGet(final HttpServletRequest request, final HttpServletResponse response) {
         request.getSession().invalidate();
-        response.sendRedirect("/");
+        return "redirect:/";
     }
 }
