@@ -25,11 +25,11 @@ public class LoginUserController extends HttpServlet {
         Object loginTry = session.getAttribute("loginTry");
         if (loginTry != null && (boolean) loginTry) {
             session.removeAttribute("loginTry");
-            request.getRequestDispatcher("/user/login_failed.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/user/login_failed.jsp").forward(request, response);
             return;
         }
 
-        request.getRequestDispatcher("/user/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/user/login.jsp").forward(request, response);
     }
 
     @Override

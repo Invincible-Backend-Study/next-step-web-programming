@@ -19,7 +19,7 @@ public class CreateUserController extends HttpServlet {
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/user/form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/user/form.jsp").forward(request, response);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class UpdateUserFormController extends HttpServlet {
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user/update.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/user/update.jsp");
         requestDispatcher.forward(request, response);
     }
 

@@ -19,7 +19,7 @@ public class ListUserController extends HttpServlet {
         HttpSession session = request.getSession();
         Object userObject = session.getAttribute("user");
         if (userObject != null) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/list.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/list.jsp");
             dispatcher.forward(request, response);
             return;
         }
