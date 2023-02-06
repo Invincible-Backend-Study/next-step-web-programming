@@ -29,6 +29,11 @@ public class CreateUserController implements Controller {
                 req.getParameter("name"),
                 req.getParameter("email")
         );
+        try {
+            user.validationLogin();
+        } catch (IllegalStateException e) {
+            log.debug("공백 : { }", e);
+        }
         log.debug("user : {}", user.getUserId());
         DataBase.addUser(user);
         return "/user/list.jsp";

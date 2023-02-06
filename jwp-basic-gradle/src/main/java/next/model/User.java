@@ -41,28 +41,37 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         User other = (User) obj;
         if (email == null) {
-            if (other.email != null)
+            if (other.email != null) {
                 return false;
-        } else if (!email.equals(other.email))
+            }
+        } else if (!email.equals(other.email)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (userId == null) {
-            if (other.userId != null)
+            if (other.userId != null) {
                 return false;
-        } else if (!userId.equals(other.userId))
+            }
+        } else if (!userId.equals(other.userId)) {
             return false;
+        }
         return true;
     }
 
@@ -71,5 +80,22 @@ public class User {
         this.password = newUserData.password;
         this.email = newUserData.email;
         this.name = newUserData.name;
+    }
+
+    public String validationLogin() {
+        if (name == null) {
+            throw new IllegalStateException("[ERROR] 이름이 입력되지 않았습니다.");
+        }
+        if (email == null) {
+            throw new IllegalStateException("[ERROR] 이메일이 입력되지 않았습니다.");
+        }
+        if (password == null) {
+            throw new IllegalStateException("[ERROR] 패스워드가 입력되지 않았습니다.");
+        }
+        if (userId == null) {
+            throw new IllegalStateException("[ERROR] 아이디가 입력되지 않았습니다.");
+        }
+
+
     }
 }
