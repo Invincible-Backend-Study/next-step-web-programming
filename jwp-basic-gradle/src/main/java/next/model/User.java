@@ -82,7 +82,7 @@ public class User {
         this.name = newUserData.name;
     }
 
-    public String validationLogin() {
+    public void validationLogin() {
         if (name == null) {
             throw new IllegalStateException("[ERROR] 이름이 입력되지 않았습니다.");
         }
@@ -95,7 +95,5 @@ public class User {
         if (userId == null) {
             throw new IllegalStateException("[ERROR] 아이디가 입력되지 않았습니다.");
         }
-
-
     }
 }
