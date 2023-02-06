@@ -8,10 +8,11 @@ import javax.servlet.http.HttpSession;
 public class UserLoginController implements Controller{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        var userId = request.getParameter("userId");
-        var user = DataBase.findUserById(userId);
+        final var userId = request.getParameter("userId");
+        final var user = DataBase.findUserById(userId);
+
         if(user == null) {
-            return "redirect: /user/login";
+            return "/WEB-INF/user/login_failed.jsp";
         }
 
         if(user.comparePassword(request.getParameter("password"))){
@@ -19,6 +20,6 @@ public class UserLoginController implements Controller{
             session.setAttribute("user", user);
             return "redirect: /";
         }
-        return "redirect: /user/login";
+        return "/WEB-INF/user/login_failed.jsp";
     }
 }

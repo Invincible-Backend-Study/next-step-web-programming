@@ -27,15 +27,15 @@ public class DispatchServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final var requestUrl = req.getRequestURI();
-        log.info("Method : {}, Request URL: {}", req.getMethod(), requestUrl);
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        final var requestUrl = request.getRequestURI();
+        log.info("Method : {}, Request URL: {}", request.getMethod(), requestUrl);
 
-        var controller = requestMapping.findController(req.getRequestURI());
+        var controller = requestMapping.findController(request.getRequestURI());
 
         try{
-            var viewName = controller.execute(req,resp);
-            move(viewName, req,resp);
+            final var viewName = controller.execute(request,response);
+            move(viewName, request,response);
         }catch (Throwable e){
             log.error("Exception : {} ", e);
             throw new ServletException(e.getMessage());
@@ -47,8 +47,7 @@ public class DispatchServlet extends HttpServlet {
             resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
             return ;
         }
-
-        var requestDispatcher = req.getRequestDispatcher(viewName);
+        final var requestDispatcher = req.getRequestDispatcher(viewName);
         requestDispatcher.forward(req, resp);
 
     }

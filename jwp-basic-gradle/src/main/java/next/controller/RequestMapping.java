@@ -7,22 +7,25 @@ import org.slf4j.LoggerFactory;
 
 public class RequestMapping {
     private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
+    private static final String DEFAULT_VIEW_PATH = "/WEB-INF";
 
-    private Map<String, Controller> mapping = new HashMap<>();
+    private final Map<String, Controller> mapping = new HashMap<>();
 
 
     public void initMapping(){
-        mapping.put("/",new ForwardController("/WEB-INF/index.jsp"));
-        mapping.put("/users/form", new ForwardController("/WEB-INF/form.jsp"));
-        mapping.put("/users/loginForm", new ForwardController("/user/login.jsp"));
-        mapping.put("/user/updateForm", new ForwardController("/user/update.jsp"));
+        mapping.put("/",new ForwardController(DEFAULT_VIEW_PATH + "/index.jsp"));
+        mapping.put("/user/form", new ForwardController(DEFAULT_VIEW_PATH + "/user/form.jsp"));
+        mapping.put("/user/loginForm", new ForwardController(DEFAULT_VIEW_PATH + "/user/login.jsp"));
+        // 고민중
+        mapping.put("/user/updateForm", new ForwardController(DEFAULT_VIEW_PATH + "/user/update.jsp"));
+        //mapping.put("/user/loginFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/login_failed.jsp"));
+        //mapping.put("/user/signupFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/signup_failed.jsp"));
 
         mapping.put("/user/list", new ListUserController());
         mapping.put("/user/create", new CreateUserController());
         mapping.put("/user/update" , new UpdateUserController());
         mapping.put("/user/login", new UserLoginController());
         mapping.put("/user/logout", new UserLogoutController());
-        log.info("Initialized RequestMapping!");
     }
 
     public Controller findController(String url){
