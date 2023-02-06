@@ -28,6 +28,8 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-core:8.0.15'
     implementation 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.15'
+    implementation 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
@@ -37,7 +39,7 @@ dependencies {
 group = 'org.nhnnext'
 version = '1.0'
 description = 'jwp-basic'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 publishing {
     publications {
@@ -57,4 +59,13 @@ tasks.withType(Javadoc) {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+apply plugin: 'idea'
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file('/Users/jaehong/Downloads/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
+        testOutputDir = file('/Users/jaehong/Downloads/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
+    }
 }
