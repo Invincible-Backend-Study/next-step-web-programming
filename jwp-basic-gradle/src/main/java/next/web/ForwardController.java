@@ -10,6 +10,9 @@ public class ForwardController implements Controller {
     private final String url;
 
     public ForwardController(String url) {
+        if(url == null){
+            throw new NullPointerException("[ERROR] URL을 입력하세요");
+        }
         this.url = url;
     }
 
