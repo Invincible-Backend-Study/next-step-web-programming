@@ -11,6 +11,14 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+        validate();
+    }
+
+    private void validate() {
+        if ((userId == null || password == null || name == null || email == null)
+                || (userId.equals("") || password.equals("") || name.equals("") || email.equals(""))) {
+            throw new IllegalArgumentException("[ERROR] 회원가입 정보를 모두 입력해야 합니다.");
+        }
     }
 
     public String getUserId() {
