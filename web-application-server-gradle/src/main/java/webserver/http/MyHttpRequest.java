@@ -23,6 +23,8 @@ public class MyHttpRequest {
     private final RequestLine requestLine;
     private final Map<String, String> parameters;
     private final Map<String, String> headers;
+    private final Map<String, String> cookies;
+    private final MyHttpSession session;
     private final String body;
 
     public MyHttpRequest(InputStream in) throws IOException {
@@ -34,8 +36,11 @@ public class MyHttpRequest {
         // 변수 초기화
         requestLine = new RequestLine(lines.get(REQUEST_LINE));
         headers = extractHeaders(lines);
+        cookies = extractCookies(headers.get("Cookie"));
+        session = getSession(getSessionId());
         body = extractBody(br, headers.get("Content-Length"));
         parameters = extractParameters(requestLine.getParams(), body);
+        logWithoutStyle();
     }
 
     private static Map<String, String> extractParameters(Map<String, String> requestLineParams, String requestBody) {
@@ -75,12 +80,27 @@ public class MyHttpRequest {
         return headers;
     }
 
+    private static Map<String, String> extractCookies(String cookies) {
+        if (cookies == null) {
+            return null;
+        }
+        return HttpRequestUtils.parseCookies(cookies);
+    }
+
+    private static MyHttpSession getSession(String uuid) {
+        log.debug("SessionId: {}", uuid);
+        if (uuid == null) {
+            return null;
+        }
+        return HttpSessions.get(uuid);
+    }
+
     private static List<String> readInputStream(BufferedReader br) throws IOException {
         List<String> lines = new ArrayList<>();
         String line;
         while ((line = br.readLine()) != null && !"".equals(line)) {
             lines.add(line);
-            log.debug("BufferedReader: {}", line);
+            // log.debug("BufferedReader: {}", line);
         }
         return lines;
     }
@@ -91,6 +111,21 @@ public class MyHttpRequest {
 
     public String getHeader(String key) {
         return headers.get(key);
+    }
+
+    public String getCookie(String key) {
+        if (cookies == null) {
+            return null;
+        }
+        return cookies.get(key);
+    }
+
+    public MyHttpSession getSession() {
+        return session;
+    }
+
+    public String getSessionId() {
+        return getCookie("JSESSIONID");
     }
 
     public HttpMethod getMethod() {
@@ -115,10 +150,22 @@ public class MyHttpRequest {
 
     @Override
     public String toString() {
-        return "HttpMethod:" + requestLine.getMethod()
-                + ", requestPath:" + requestLine.getPath()
-                + ", parameters:" + (parameters == null ? "-" : parameters.toString())
-                + ", httpHeaders:" + (headers == null ? "-" : headers.toString())
-                + ", requestBody:" + body;
+        return "Http:" + requestLine.getMethod()
+                + " " + requestLine.getPath()
+                + ", Parameters: " + (parameters == null ? "-" : parameters.toString())
+                + "\n Headers:" + (headers == null ? "-" : headers.toString())
+                + "\n Cookie:" + (cookies == null ? "-" : cookies.toString())
+                + "\n Body:" + body;
+    }
+
+    private void logWithoutStyle() {
+        if (requestLine.getPath().endsWith(".css") || requestLine.getPath().endsWith(".js") || requestLine.getPath().endsWith(".ico") || requestLine.getPath().endsWith(".woff")) {
+            return;
+        }
+        log.debug("Http: {} {}  Parameters: {}", requestLine.getMethod(), requestLine.getPath(), (parameters == null ? "-" : parameters.toString()));
+        log.debug("Headers: {}", (headers == null ? "-" : headers.toString()));
+        log.debug("Cookie: {}", (cookies == null ? "-" : cookies.toString()));
+        log.debug("Session: {}", (session == null ? "-" : session.toString()));
+        log.debug("Body: {}", body);
     }
 }

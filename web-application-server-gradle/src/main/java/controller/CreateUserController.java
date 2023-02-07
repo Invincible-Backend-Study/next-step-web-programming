@@ -18,7 +18,7 @@ public class CreateUserController extends AbstractController {
                 myHttpRequest.getParameter("name"),
                 myHttpRequest.getParameter("email")
         );
-        log.debug("user: {}", user);
+        log.debug("createUser: {}", user);
         DataBase.addUser(user);
         myHttpResponse.sendRedirect("/index.html");
     }

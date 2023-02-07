@@ -174,3 +174,12 @@ result = builder.toString();
   - 클라이언트 요청 URL에 해당하는 Controller를 찾아 service() 메소드를 호출한다.
   - Controller 인터페이스를 구현하는 AbstractController 추상클래스를 추가해 중복을 제거하고,
   - service() 메소드에서 GET과 POST HTTP 메소드에 따라 doGet(), doPost() 메소드를 호출하도록 한다.
+
+## 6장
+### 요구사항
+- 서블릿 HttpSession API의 일부를 지원할 것
+  - getId : 현제 세션에 할당되어 있는 고유한 세션 아이디를 반환
+  - setAttribute : 현재 세션에 value 인자로 전달되는 객체를 name 인자 이름으로 저장
+  - getAttribute : 현재 세션에 name 인자로 저장되어 있는 개체 값을 찾아 반환
+  - removeAttribute : 현재 세션에 name 인자로 저장되어 있는 객체 값을 삭제
+  - invalidate : 현재 세션에 저장되어 있는 모든 값을 삭제

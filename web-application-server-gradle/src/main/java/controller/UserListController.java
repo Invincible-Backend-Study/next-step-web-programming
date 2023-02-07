@@ -18,14 +18,12 @@ public class UserListController extends AbstractController {
 
     @Override
     public void service(MyHttpRequest myHttpRequest, MyHttpResponse myHttpResponse) throws IOException {
-        if ("logined=true".equals(myHttpRequest.getHeader("Cookie"))) {
-            log.debug("=====> {}", myHttpRequest.getHeader("Cookie"));
+        if (myHttpRequest.getSession().getAttribute("user") != null) {
             String users = userListString();
             byte[] body = dynamicUserList(users);
             myHttpResponse.forwardBody(body);
             return;
         }
-        log.debug("=====> no");
         myHttpResponse.sendRedirect("/user/login.html");
     }
 
