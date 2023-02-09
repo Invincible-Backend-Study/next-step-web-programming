@@ -2,8 +2,10 @@ package next.web.controller;
 
 import core.db.DataBase;
 import core.mvcframework.AbstractController;
+import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import next.dao.UserDao;
 import next.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +26,13 @@ public class CreateUserController extends AbstractController {
                 request.getParameter("name"),
                 request.getParameter("email")
         );
-        log.debug("createUser={}", user);
-        DataBase.addUser(user);
+        UserDao userDao = new UserDao();
+        try {
+            log.debug("createUser={}", user);
+            userDao.insert(user);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
         return "redirect:/";
     }
 }
