@@ -1,5 +1,8 @@
 package customwebserver.http;
 
+import customwebserver.http.cookie.HttpCookies;
+import customwebserver.http.session.HttpSession;
+import customwebserver.http.session.HttpSessions;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,9 +55,12 @@ public class HttpRequest {
         return requestParameters.getParameter(parameterName);
     }
 
-    public String getCookie(final String cookieName) {
-        Map<String, String> cookies = HttpRequestUtils.parseCookies(httpHeaders.getHeader("Cookie"));
-        return cookies.get(cookieName);
+    public HttpCookies getCookies() {
+        return new HttpCookies(HttpRequestUtils.parseCookies(httpHeaders.getHeader("Cookie")));
+    }
+
+    public HttpSession getSession() {
+        return HttpSessions.getSession(getCookies().getCookie(HttpSessions.SESSION_ID_NAME));
     }
 
     private Map<String, String> parseQueryStringByForm(final BufferedReader httpRequestReader) throws IOException {
