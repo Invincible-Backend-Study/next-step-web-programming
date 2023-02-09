@@ -1,6 +1,5 @@
 package next.dao;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.After;
@@ -38,7 +37,7 @@ public class UserDaoTest {
         User user = new User("userId", "password", "name", "javajigi@email.com");
         userDao.insert(user);
         User expected = new User("userId", "password123", "name123", "javajigi123@email.com");
-        userDao.updateUser(expected);
+        userDao.update(expected);
 
         User actual = userDao.findByUserId(user.getUserId());
         assertEquals(expected, actual);

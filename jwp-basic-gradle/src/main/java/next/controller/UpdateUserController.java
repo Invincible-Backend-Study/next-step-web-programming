@@ -1,6 +1,5 @@
 package next.controller;
 
-import core.db.DataBase;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,7 +23,7 @@ public class UpdateUserController extends AbstractController {
                 request.getParameter("email"));
         log.debug("updateUser : {}", user);
         try {
-            UserDao.updateUser(user);
+            UserDao.update(user);
         } catch (SQLException e) {
             log.error(e.toString());
         }
