@@ -16,7 +16,8 @@ public class UpdateUserFormController implements Controller {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse res) {
         try {
-            User user = new UserDao().findByUserId(req.getParameter("userId"));
+            UserDao userDao = new UserDao();
+            User user = userDao.findByUserId(req.getParameter("userId"));
 
             if (user == null) {
                 return "/user/update.jsp";
@@ -27,7 +28,8 @@ public class UpdateUserFormController implements Controller {
                         req.getParameter("password"),
                         req.getParameter("name"),
                         req.getParameter("email"));
-                user.update(newUser);
+                userDao.update(newUser,user.getUserId());
+
                 return "redirect:/";
             }
             return "/user/update.jsp";
