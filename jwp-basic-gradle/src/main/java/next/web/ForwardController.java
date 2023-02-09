@@ -11,7 +11,7 @@ public class ForwardController implements Controller {
 
     public ForwardController(String url) {
         if(url == null){
-            throw new NullPointerException("[ERROR] URL을 입력하세요");
+            throw new NullPointerException("[ERROR]url을 입력하세요");
         }
         this.url = url;
     }

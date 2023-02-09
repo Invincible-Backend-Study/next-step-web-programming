@@ -1,6 +1,5 @@
 package next;
 
-import java.net.URI;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;

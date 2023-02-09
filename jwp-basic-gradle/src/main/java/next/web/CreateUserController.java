@@ -23,19 +23,18 @@ public class CreateUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse res) {
-        User user = new User(
-                req.getParameter("userId"),
-                req.getParameter("password"),
-                req.getParameter("name"),
-                req.getParameter("email")
-        );
         try {
-            user.validationLogin();
+            User user = new User(
+                    req.getParameter("userId"),
+                    req.getParameter("password"),
+                    req.getParameter("name"),
+                    req.getParameter("email")
+            );
+            log.debug("user : {}", user.getUserId());
+            DataBase.addUser(user);
         } catch (IllegalStateException e) {
             log.debug("공백 : { }", e);
         }
-        log.debug("user : {}", user.getUserId());
-        DataBase.addUser(user);
         return "/user/list.jsp";
     }
 }

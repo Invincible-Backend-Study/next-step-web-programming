@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="/include/head.jspf" %>
 <%@ include file="/include/nav.jspf" %>
+
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
@@ -29,5 +30,4 @@
         </div>
     </div>
 </div>
-
 <%@ include file="/include/footer.jspf" %>
