@@ -7,14 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.jdbc.ConnectionManager;
-import core.jdbc.JdbcTemplate;
-import core.jdbc.SelectJdbcTemplate;
+import core.jdbc.*;
 import next.model.User;
 
 public class UserDao {
     public static void insert(User user) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate() {  // 어나니머스 클래스
+        PreparedStatementParameters ps = new PreparedStatementParameters() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
@@ -23,16 +21,19 @@ public class UserDao {
                 pstmt.setString(4, user.getEmail());
             }
         };
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        jdbcTemplate.executeUpdate(sql);
+        jdbcTemplate.executeUpdate(sql, ps);
     }
 
     public static List<User> findAll() throws SQLException {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        PreparedStatementParameters ps = new PreparedStatementParameters() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
             }
-
+        };
+        ResultSetMapper resultSetMapper = new ResultSetMapper() {
             @Override
             public Object mapRow(ResultSet rs) throws SQLException {
                 List<User> users = new ArrayList<User>();
@@ -44,17 +45,19 @@ public class UserDao {
             }
         };
 
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return (List<User>) selectJdbcTemplate.select(sql);
+        return (List<User>) jdbcTemplate.select(sql, ps, resultSetMapper);
     }
 
     public static User findByUserId(String userId) throws SQLException {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        PreparedStatementParameters ps = new PreparedStatementParameters() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, userId);
             }
-
+        };
+        ResultSetMapper resultSetMapper = new ResultSetMapper() {
             @Override
             public Object mapRow(ResultSet rs) throws SQLException {
                 User user = null;
@@ -66,12 +69,13 @@ public class UserDao {
             }
         };
 
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) selectJdbcTemplate.select(sql);
+        return (User) jdbcTemplate.select(sql, ps, resultSetMapper);
     }
 
     public static int update(User user) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+        PreparedStatementParameters ps = new PreparedStatementParameters() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getPassword());
@@ -81,18 +85,20 @@ public class UserDao {
             }
         };
 
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
-        return jdbcTemplate.executeUpdate(sql);
+        return jdbcTemplate.executeUpdate(sql, ps);
     }
 
     public static int deleteAll() throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+        PreparedStatementParameters ps = new PreparedStatementParameters() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
             }
         };
 
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "DELETE FROM USERS";
-        return jdbcTemplate.executeUpdate(sql);
+        return jdbcTemplate.executeUpdate(sql, ps);
     }
 }
