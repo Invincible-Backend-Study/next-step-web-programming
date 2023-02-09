@@ -8,31 +8,28 @@ import java.sql.SQLException;
 import core.jdbc.ConnectionManager;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import next.dao.template.InsertJdbcTemplate;
 import next.model.User;
 
-public class UserDao {
+@Slf4j
+public class UserDao implements IUserDao{
     public void insert(User user) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
+        final var jdbcTemplate = new InsertJdbcTemplate();
+        jdbcTemplate.insert(user, this);
+    }
 
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
+    @Override
+    public void setValuesForInsert(User user, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, user.getUserId());
+        preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getName());
+        preparedStatement.setString(4, user.getEmail());
+    }
 
-            if (con != null) {
-                con.close();
-            }
-        }
+    @Override
+    public String createQueryForInsert() {
+        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
     }
 
     public User findByUserId(String userId) throws SQLException {
@@ -66,7 +63,6 @@ public class UserDao {
             }
         }
     }
-
     public List<User> findAll() throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -98,5 +94,40 @@ public class UserDao {
                 con.close();
             }
         }
+    }
+    public void update(final User user) throws SQLException{
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = ConnectionManager.getConnection();
+            log.info("update user query {}",this.createQueryForUpdate());
+            pstmt = con.prepareStatement(this.createQueryForUpdate());
+            this.setValuesForUpdate(user, pstmt);
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void setValuesForUpdate(User user, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, user.getPassword());
+        preparedStatement.setString(2, user.getName());
+        preparedStatement.setString(3, user.getEmail());
+        preparedStatement.setString(4, user.getUserId());
+    }
+
+    @Override
+    public String createQueryForUpdate() {
+        return "UPDATE USERS SET "
+                + "password = ?,"
+                + "name = ?,"
+                + "email = ? "
+                + "WHERE userid = ?";
     }
 }
