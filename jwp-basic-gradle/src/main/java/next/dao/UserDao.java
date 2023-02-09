@@ -11,6 +11,8 @@ import core.jdbc.*;
 import next.model.User;
 
 public class UserDao {
+    static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
     public static void insert(User user) throws SQLException {
         PreparedStatementParameters ps = new PreparedStatementParameters() {
             @Override
@@ -22,7 +24,6 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         jdbcTemplate.executeUpdate(sql, ps);
     }
@@ -45,7 +46,6 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT userId, password, name, email FROM USERS";
         return (List<User>) jdbcTemplate.select(sql, ps, resultSetMapper);
     }
@@ -69,7 +69,6 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
         return (User) jdbcTemplate.select(sql, ps, resultSetMapper);
     }
@@ -85,7 +84,6 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
         return jdbcTemplate.executeUpdate(sql, ps);
     }
@@ -97,7 +95,6 @@ public class UserDao {
             }
         };
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "DELETE FROM USERS";
         return jdbcTemplate.executeUpdate(sql, ps);
     }
