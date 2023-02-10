@@ -1,6 +1,5 @@
 package next.dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +16,16 @@ public class UserDao {
     }
 
     public static List<User> findAll() throws SQLException {
-        ResultSetMapper<List<User>> resultSetMapper = new ResultSetMapper() {
-            @Override
-            public List<User> mapRow(ResultSet rs) throws SQLException {
-                List<User> users = new ArrayList<User>();
-                while (rs.next()) {
-                    users.add(new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                            rs.getString("email")));
-                }
-                return users;
+        ResultSetMapper<List<User>> resultSetMapper = rs -> {
+            List<User> users = new ArrayList<User>();
+            while (rs.next()) {
+                users.add(new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")));
             }
+            return users;
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS";
@@ -34,19 +33,16 @@ public class UserDao {
     }
 
     public static User findByUserId(String userId) throws SQLException {
-        ResultSetMapper<User> resultSetMapper = new ResultSetMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs) throws SQLException {
-                if (rs.next()) {
-                    return new User(
+        ResultSetMapper<User> resultSetMapper = rs -> {
+            if (rs.next()) {
+                return new User(
                         rs.getString("userId"),
                         rs.getString("password"),
                         rs.getString("name"),
                         rs.getString("email")
-                    );
-                }
-                return null;
+                );
             }
+            return null;
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
