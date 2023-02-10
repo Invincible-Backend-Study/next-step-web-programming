@@ -12,9 +12,8 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserDao userDao = new UserDao();
 
-    public void updateUserInformation(final User updatedUser) {
-        DataBase.deleteUserById(updatedUser.getUserId());
-        DataBase.addUser(updatedUser);
+    public void updateUserInformation(final User updatedUser)  {
+        userDao.updateUser(updatedUser);
     }
 
     public User loginUser(final String userId, final String password) {
@@ -35,7 +34,7 @@ public class UserService {
         return DataBase.findUserById(userId);
     }
 
-    public List<User> findAllUsers() throws SQLException {
+    public List<User> findAllUsers()  {
         return userDao.findAll();
     }
 }

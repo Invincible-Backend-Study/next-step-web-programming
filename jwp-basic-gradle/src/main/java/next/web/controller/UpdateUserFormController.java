@@ -31,8 +31,8 @@ public class UpdateUserFormController extends AbstractController {
                 request.getParameter("name"),
                 request.getParameter("email")
         );
-        log.info("updatedUser={}", updatedUser);
         userService.updateUserInformation(updatedUser);
+        log.info("updatedUser={}", updatedUser);
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
