@@ -6,16 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JdbcTemplate {
-    public int executeUpdate(String sql) {
-        int countChanged = 0;
-        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
-            countChanged = pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataAccessException(e.toString());
-        }
-        return countChanged;
-    }
-
     public int executeUpdate(String sql, PreparedStatementParameters ps) {
         int countChanged = 0;
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
@@ -27,17 +17,14 @@ public class JdbcTemplate {
         return countChanged;
     }
 
+    public int executeUpdate(String sql) {
+        PreparedStatementParameters ps = getPreparedStatementParameters(null);
+        return executeUpdate(sql, ps);
+    }
+    
     public int executeUpdate(String sql, Object... parameters) {
-        int countChanged = 0;
-        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
-            for (int i = 0; i < parameters.length; i++) {
-                pstmt.setObject(i + 1, parameters[i]);
-            }
-            countChanged = pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataAccessException(e.toString());
-        }
-        return countChanged;
+        PreparedStatementParameters ps = getPreparedStatementParameters(parameters);
+        return executeUpdate(sql, ps);
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper, PreparedStatementParameters ps) throws SQLException {
@@ -58,37 +45,23 @@ public class JdbcTemplate {
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper) throws SQLException {
-        ResultSet rs = null;  //TODO rs도 빼는 방법?
-        T result = null;
-        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
-            rs = pstmt.executeQuery();
-            result = resultSetMapper.mapRow(rs);
-        } catch (SQLException e) {
-            throw new DataAccessException();
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return result;
+        PreparedStatementParameters ps = getPreparedStatementParameters(null);
+        return select(sql, resultSetMapper, ps);
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper, Object... parameters) throws SQLException {
-        ResultSet rs = null;  //TODO rs도 빼는 방법?
-        T result = null;
-        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+        PreparedStatementParameters ps = getPreparedStatementParameters(parameters);
+        return select(sql, resultSetMapper, ps);
+    }
+
+    private static PreparedStatementParameters getPreparedStatementParameters(Object[] parameters) {
+        return pstmt -> {
+            if (parameters == null) {
+                return;
+            }
             for (int i = 0; i < parameters.length; i++) {
                 pstmt.setObject(i + 1, parameters[i]);
             }
-            rs = pstmt.executeQuery();
-            result = resultSetMapper.mapRow(rs);
-        } catch (SQLException e) {
-            throw new DataAccessException();
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return result;
+        };
     }
 }
