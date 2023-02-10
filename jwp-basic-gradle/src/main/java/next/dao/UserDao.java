@@ -1,11 +1,12 @@
 package next.dao;
 
+import core.jdbc.JdbcTemplate;
+import core.jdbc.ResultSetMapper;
+import next.model.User;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import core.jdbc.*;
-import next.model.User;
 
 public class UserDao {
     static final JdbcTemplate jdbcTemplate = new JdbcTemplate();

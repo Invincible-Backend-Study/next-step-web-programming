@@ -21,7 +21,7 @@ public class JdbcTemplate {
         PreparedStatementParameters ps = getPreparedStatementParameters(null);
         return executeUpdate(sql, ps);
     }
-    
+
     public int executeUpdate(String sql, Object... parameters) {
         PreparedStatementParameters ps = getPreparedStatementParameters(parameters);
         return executeUpdate(sql, ps);

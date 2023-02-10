@@ -1,14 +1,15 @@
 package next.dao;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import next.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import next.model.User;
-
 import java.util.List;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDaoTest {
     UserDao userDao;
@@ -51,7 +52,7 @@ public class UserDaoTest {
         userDao.update(expected);
 
         User actual = userDao.findByUserId(expected.getUserId());
-        assertEquals(null, actual);
+        assertNull(actual);
     }
 
     @Test
@@ -76,10 +77,12 @@ public class UserDaoTest {
         userDao.insert(expected1);
         userDao.insert(expected2);
 
-        List<User> actual = userDao.findAll();
-        assertEquals(3, actual.size());
-        userDao.deleteAll();
-        actual = userDao.findAll();
-        assertEquals(0, actual.size());
+        assertAll(() -> {
+            List<User> actual = userDao.findAll();
+            assertEquals(3, actual.size());
+            userDao.deleteAll();
+            actual = userDao.findAll();
+            assertEquals(0, actual.size());
+        });
     }
 }
