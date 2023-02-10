@@ -8,10 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import next.exception.DataAccessException;
 import next.model.User;
 
 public class UserDao {
-    public void insert(User user) throws SQLException {
+    public void insert(User user) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -24,7 +25,6 @@ public class UserDao {
             pstmt.setString(4, user.getEmail());
 
             pstmt.executeUpdate();
-        } finally {
             if (pstmt != null) {
                 pstmt.close();
             }
@@ -32,10 +32,12 @@ public class UserDao {
             if (con != null) {
                 con.close();
             }
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
         }
     }
 
-    public User findByUserId(String userId) throws SQLException {
+    public User findByUserId(String userId)  {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -52,9 +54,6 @@ public class UserDao {
                 user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
                         rs.getString("email"));
             }
-
-            return user;
-        } finally {
             if (rs != null) {
                 rs.close();
             }
@@ -64,12 +63,15 @@ public class UserDao {
             if (con != null) {
                 con.close();
             }
+
+            return user;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
         }
     }
 
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll()  {
         Connection con = null;
-        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
@@ -89,18 +91,39 @@ public class UserDao {
                 );
                 users.add(user);
             }
-
-            return users;
-        } finally {
             if (rs != null) {
                 rs.close();
             }
+            if (con != null) {
+                con.close();
+            }
+            return users;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
+        }
+    }
+
+    public int updateUser(final User updatedUser) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = ConnectionManager.getConnection();
+            String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, updatedUser.getPassword());
+            pstmt.setString(2, updatedUser.getName());
+            pstmt.setString(3, updatedUser.getEmail());
+            pstmt.setString(4, updatedUser.getUserId());
+            int result = pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
             }
             if (con != null) {
                 con.close();
             }
+            return result;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
         }
     }
 }

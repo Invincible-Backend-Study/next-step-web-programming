@@ -1,7 +1,6 @@
 package next.web.controller;
 
 import core.mvcframework.AbstractController;
-import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,13 +16,9 @@ public class ListUserController extends AbstractController {
 
     @Override
     protected String doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            List<User> users = userService.findAllUsers();
-            request.setAttribute("users", users);
-            return "user/list";
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            return "redirect:/";
-        }
+        List<User> users = userService.findAllUsers();
+        log.debug("allUserList={}", users);
+        request.setAttribute("users", users);
+        return "user/list";
     }
 }
