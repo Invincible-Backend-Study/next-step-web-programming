@@ -1,12 +1,16 @@
 package next.web.service;
 
 import core.db.DataBase;
+import java.sql.SQLException;
+import java.util.List;
+import next.dao.UserDao;
 import next.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final UserDao userDao = new UserDao();
 
     public void updateUserInformation(final User updatedUser) {
         DataBase.deleteUserById(updatedUser.getUserId());
@@ -29,5 +33,9 @@ public class UserService {
 
     public User findUserById(final String userId) {
         return DataBase.findUserById(userId);
+    }
+
+    public List<User> findAllUsers() throws SQLException {
+        return userDao.findAll();
     }
 }

@@ -28,14 +28,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>${sessionScope.user.userId}</td>
-                    <td>${sessionScope.user.name}</td>
-                    <td>${sessionScope.user.email}</td>
-                    <td><a href="/user/update" class="btn btn-success" role="button">수정</a>
-                    </td>
-                </tr>
+                <c:forEach var="users" items="${users}" varStatus="status">
+                    <tr>
+                        <th scope="row">${status.count}</th>
+                        <td>${users.userId}</td>
+                        <td>${users.name}</td>
+                        <td>${users.email}</td>
+                        <td><a href="/user/update" class="btn btn-success" role="button">수정</a>
+                        </td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
