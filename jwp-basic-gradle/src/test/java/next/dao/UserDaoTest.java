@@ -44,6 +44,17 @@ public class UserDaoTest {
     }
 
     @Test
+    public void updateUser_유저없음() throws Exception {
+        User user = new User("userId", "password", "name", "javajigi@email.com");
+        userDao.insert(user);
+        User expected = new User("userId222", "password123", "name123", "javajigi123@email.com");
+        userDao.update(expected);
+
+        User actual = userDao.findByUserId(expected.getUserId());
+        assertEquals(null, actual);
+    }
+
+    @Test
     public void findAll() throws Exception {
         User expected0 = new User("userId0", "password", "name", "javajigi@email.com");
         User expected1 = new User("userId1", "password", "name", "javajigi@email.com");
