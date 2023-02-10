@@ -37,4 +37,8 @@ public class UserService {
     public List<User> findAllUsers()  {
         return userDao.findAll();
     }
+
+    public void signUp(final User user) {
+        userDao.insert(user);
+    }
 }
