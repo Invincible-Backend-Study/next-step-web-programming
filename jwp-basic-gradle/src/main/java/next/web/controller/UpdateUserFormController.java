@@ -15,9 +15,10 @@ public class UpdateUserFormController extends AbstractController {
 
     @Override
     protected String doGet(final HttpServletRequest request, final HttpServletResponse response) {
+        String userId = request.getParameter("userId");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        if (user == null) {
+        if (user == null || !userId.equals(user.getUserId())) {
             return "redirect:/";
         }
         return "user/update";

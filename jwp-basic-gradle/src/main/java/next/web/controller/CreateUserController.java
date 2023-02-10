@@ -27,12 +27,8 @@ public class CreateUserController extends AbstractController {
                 request.getParameter("email")
         );
         UserDao userDao = new UserDao();
-        try {
-            log.debug("createUser={}", user);
-            userDao.insert(user);
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-        }
+        userDao.insert(user);
+        log.debug("createUser={}", user);
         return "redirect:/";
     }
 }
