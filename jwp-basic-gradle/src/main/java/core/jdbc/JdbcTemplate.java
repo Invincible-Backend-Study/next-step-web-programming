@@ -4,17 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import next.exception.DataAccessException;
-import next.model.User;
 
 public abstract class JdbcTemplate {
-    public void update(final User user) {
+    public void update(final String query) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQuery();
-            pstmt = con.prepareStatement(sql);
-            setValue(user, pstmt);
+            pstmt = con.prepareStatement(query);
+            setValue(pstmt);
             pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
@@ -27,7 +25,6 @@ public abstract class JdbcTemplate {
         }
     }
 
-    protected abstract void setValue(final User user, final PreparedStatement pstmt) throws SQLException;
+    protected abstract void setValue(final PreparedStatement pstmt) throws SQLException;
 
-    protected abstract String createQuery();
 }
