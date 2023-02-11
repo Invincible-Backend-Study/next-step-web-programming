@@ -31,12 +31,12 @@ public class UserDao {
     public User findByUserId(String userId) {
         JdbcTemplate<User> jdbcTemplate = new JdbcTemplate<>();
         return jdbcTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userId = ?",
-                preparedStatement -> preparedStatement.setString(1, userId),
                 resultSet -> new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),
                         resultSet.getString("name"),
-                        resultSet.getString("email"))
+                        resultSet.getString("email")),
+                preparedStatement -> preparedStatement.setString(1, userId)
         );
     }
 

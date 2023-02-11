@@ -21,6 +21,19 @@ public class JdbcTemplate<T> {
         }
     }
 
+    public void update(final String query, final Object... values) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            PreparedStatementSetter preparedStatementSetter = createPreparedStatementSetter(values);
+            preparedStatementSetter.setValue(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
+        }
+    }
+
+
     public List<T> query(final String query, final RowMapper<T> rowMapper) {
         try (Connection connection = ConnectionManager.getConnection();
              Statement statement = connection.createStatement();
@@ -38,8 +51,8 @@ public class JdbcTemplate<T> {
 
     public T queryForObject(
             final String query,
-            final PreparedStatementSetter preparedStatementSetter,
-            final RowMapper<T> rowMapper) {
+            final RowMapper<T> rowMapper,
+            final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -56,4 +69,32 @@ public class JdbcTemplate<T> {
         }
     }
 
+    public T queryForObject(
+            final String query,
+            final RowMapper<T> rowMapper,
+            final Object... values) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            PreparedStatementSetter preparedStatementSetter = createPreparedStatementSetter(values);
+            preparedStatementSetter.setValue(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            T result = null;
+            if (resultSet.next()) {
+                result = rowMapper.mapRow(resultSet);
+            }
+            resultSet.close();
+            return result;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
+        }
+    }
+
+    private PreparedStatementSetter createPreparedStatementSetter(final Object[] values) {
+        return preparedStatement -> {
+            for (int count = 1; count <= values.length; count++) {
+                preparedStatement.setObject(count, values[count]);
+            }
+        };
+    }
 }
