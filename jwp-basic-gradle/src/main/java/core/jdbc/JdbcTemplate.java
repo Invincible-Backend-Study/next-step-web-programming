@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
 
-public class JdbcTemplate<T> {
+public class JdbcTemplate {
     public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -34,7 +34,7 @@ public class JdbcTemplate<T> {
     }
 
 
-    public List<T> query(final String query, final RowMapper<T> rowMapper) {
+    public <T> List<T> query(final String query, final RowMapper<T> rowMapper) {
         try (Connection connection = ConnectionManager.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -49,7 +49,7 @@ public class JdbcTemplate<T> {
         }
     }
 
-    public T queryForObject(
+    public <T> T queryForObject(
             final String query,
             final RowMapper<T> rowMapper,
             final PreparedStatementSetter preparedStatementSetter) {
@@ -69,7 +69,7 @@ public class JdbcTemplate<T> {
         }
     }
 
-    public T queryForObject(
+    public <T> T queryForObject(
             final String query,
             final RowMapper<T> rowMapper,
             final Object... values) {
