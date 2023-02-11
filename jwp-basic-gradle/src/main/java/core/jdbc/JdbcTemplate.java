@@ -11,41 +11,24 @@ import next.exception.DataAccessException;
 
 public class JdbcTemplate {
     public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(query);
-            preparedStatementSetter.setValue(pstmt);
-            pstmt.executeUpdate();
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatementSetter.setValue(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
     }
 
     public List query(final String query, final RowMapper rowMapper) {
-        Connection con = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            Statement st = con.createStatement();
-            rs = st.executeQuery(query);
+        try (Connection connection = ConnectionManager.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             List<Object> results = new ArrayList<>();
-            while (rs.next()) {
-                results.add(rowMapper.mapRow(rs));
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            if (con != null) {
-                con.close();
+            while (resultSet.next()) {
+                results.add(rowMapper.mapRow(resultSet));
             }
             return results;
         } catch (SQLException exception) {
@@ -57,29 +40,16 @@ public class JdbcTemplate {
             final String query,
             final PreparedStatementSetter preparedStatementSetter,
             final RowMapper rowMapper) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(query);
-            preparedStatementSetter.setValue(pstmt);
-            rs = pstmt.executeQuery();
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
+            preparedStatementSetter.setValue(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
             Object result = null;
-            if (rs.next()) {
-                result = rowMapper.mapRow(rs);
+            if (resultSet.next()) {
+                result = rowMapper.mapRow(resultSet);
             }
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-
+            resultSet.close();
             return result;
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());

@@ -6,8 +6,8 @@ import next.model.User;
 
 public class UserDao {
     public void insert(User user) {
-        JdbcTemplate insertTemplate = new JdbcTemplate();
-        insertTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)", preparedStatement -> {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)", preparedStatement -> {
                     preparedStatement.setString(1, user.getUserId());
                     preparedStatement.setString(2, user.getPassword());
                     preparedStatement.setString(3, user.getName());
@@ -17,8 +17,8 @@ public class UserDao {
     }
 
     public void update(final User user) {
-        JdbcTemplate updateTemplate = new JdbcTemplate();
-        updateTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?",
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?",
                 preparedStatement -> {
                     preparedStatement.setString(1, user.getPassword());
                     preparedStatement.setString(2, user.getName());
@@ -29,8 +29,8 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) {
-        JdbcTemplate selectTemplate = new JdbcTemplate();
-        return (User) selectTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userId = ?",
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        return (User) jdbcTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userId = ?",
                 preparedStatement -> preparedStatement.setString(1, userId),
                 resultSet -> new User(
                         resultSet.getString("userId"),
@@ -41,8 +41,8 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        JdbcTemplate selectTemplate = new JdbcTemplate();
-        return selectTemplate.query("SELECT userId, password, name, email from USERS",
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        return jdbcTemplate.query("SELECT userId, password, name, email from USERS",
                 resultSet -> new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),
