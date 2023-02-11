@@ -93,7 +93,7 @@ public class JdbcTemplate {
     private PreparedStatementSetter createPreparedStatementSetter(final Object[] values) {
         return preparedStatement -> {
             for (int count = 1; count <= values.length; count++) {
-                preparedStatement.setObject(count, values[count]);
+                preparedStatement.setObject(count, values[count - 1]);
             }
         };
     }
