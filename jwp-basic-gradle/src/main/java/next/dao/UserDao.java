@@ -2,12 +2,11 @@ package next.dao;
 
 import core.jdbc.ConnectionManager;
 import core.jdbc.JdbcTemplate;
+import core.jdbc.SelectJdbcTemplate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
 import next.model.User;
@@ -73,35 +72,22 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        Connection con = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS";
-            Statement st = con.createStatement();
+        SelectJdbcTemplate selectTemplate = new SelectJdbcTemplate() {
+            @Override
+            protected void setValue(final PreparedStatement preparedStatement) throws SQLException {
+            }
 
-            rs = st.executeQuery(sql);
-
-            List<User> users = new ArrayList<>();
-            User user;
-            while (rs.next()) {
-                user = new User(
-                        rs.getString("userId"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
+            @Override
+            protected Object mapRow(final ResultSet resultSet) throws SQLException {
+                return new User(
+                        resultSet.getString("userId"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email")
                 );
-                users.add(user);
             }
-            if (rs != null) {
-                rs.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-            return users;
-        } catch (SQLException exception) {
-            throw new DataAccessException(exception.getMessage());
-        }
+
+        };
+        return selectTemplate.query("SELECT userId, password, name, email from USERS");
     }
 }
