@@ -1,17 +1,13 @@
 package next.dao;
 
-import java.sql.Array;
+import core.jdbc.ConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import core.jdbc.ConnectionManager;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import next.model.User;
 
 public class UserDao {
@@ -101,12 +97,15 @@ public class UserDao {
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, name, password,email FROM USERS";
+            String sql = "SELECT userId, name, password, email FROM USERS";
             pstmt = con.createStatement();
             rs = pstmt.executeQuery(sql);
             List<User> userList = new ArrayList<>();
             while (rs.next()) {
-                User user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
+                User user = new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
                         rs.getString("email"));
                 userList.add(user);
             }
