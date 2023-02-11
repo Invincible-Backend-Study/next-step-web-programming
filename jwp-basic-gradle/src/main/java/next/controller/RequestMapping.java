@@ -17,10 +17,11 @@ public class RequestMapping {
         mapping.put("/user/form", new ForwardController(DEFAULT_VIEW_PATH + "/user/form.jsp"));
         mapping.put("/user/loginForm", new ForwardController(DEFAULT_VIEW_PATH + "/user/login.jsp"));
         // 고민중
-        mapping.put("/user/updateForm", new ForwardController(DEFAULT_VIEW_PATH + "/user/update.jsp"));
         //mapping.put("/user/loginFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/login_failed.jsp"));
         //mapping.put("/user/signupFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/signup_failed.jsp"));
 
+
+        mapping.put("/user/updateForm", new UpdateFormController());
         mapping.put("/user/list", new ListUserController());
         mapping.put("/user/create", new CreateUserController());
         mapping.put("/user/update" , new UpdateUserController());
