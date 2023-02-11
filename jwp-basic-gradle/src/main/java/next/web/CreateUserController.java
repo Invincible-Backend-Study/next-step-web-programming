@@ -27,9 +27,9 @@ public class CreateUserController implements Controller {
             req.setAttribute("users", new UserDao().findAll());
         } catch (IllegalStateException e) {
             log.error("공백 : { }", e);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return "/user/list.jsp";
+        return "redirect:/";
     }
 }
