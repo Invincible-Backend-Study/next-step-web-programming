@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
 
-public abstract class JdbcTemplate {
-    public void update(final String query) {
+public class JdbcTemplate {
+    public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(query);
-            setValue(pstmt);
+            preparedStatementSetter.setValue(pstmt);
             pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
@@ -29,7 +29,7 @@ public abstract class JdbcTemplate {
         }
     }
 
-    public List query(final String query) {
+    public List query(final String query, final RowMapper rowMapper) {
         Connection con = null;
         ResultSet rs = null;
         try {
@@ -39,7 +39,7 @@ public abstract class JdbcTemplate {
 
             List<Object> results = new ArrayList<>();
             while (rs.next()) {
-                results.add(mapRow(rs));
+                results.add(rowMapper.mapRow(rs));
             }
             if (rs != null) {
                 rs.close();
@@ -53,19 +53,22 @@ public abstract class JdbcTemplate {
         }
     }
 
-    public Object queryForObject(final String query) {
+    public Object queryForObject(
+            final String query,
+            final PreparedStatementSetter preparedStatementSetter,
+            final RowMapper rowMapper) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(query);
-            setValue(pstmt);
+            preparedStatementSetter.setValue(pstmt);
             rs = pstmt.executeQuery();
 
             Object result = null;
             if (rs.next()) {
-                result = mapRow(rs);
+                result = rowMapper.mapRow(rs);
             }
             if (rs != null) {
                 rs.close();
@@ -82,9 +85,5 @@ public abstract class JdbcTemplate {
             throw new DataAccessException(exception.getMessage());
         }
     }
-
-    protected abstract void setValue(final PreparedStatement preparedStatement) throws SQLException;
-
-    protected abstract Object mapRow(final ResultSet resultSet) throws SQLException;
 
 }
