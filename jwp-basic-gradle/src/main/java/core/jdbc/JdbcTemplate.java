@@ -6,21 +6,19 @@ import java.sql.SQLException;
 import next.exception.DataAccessException;
 import next.model.User;
 
-public abstract class InsertJdbcTemplate {
-    public void insert(final User user) {
+public abstract class JdbcTemplate {
+    public void update(final User user) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQueryForInsert();
+            String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValueForInsert(user, pstmt);
-
+            setValue(user, pstmt);
             pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
             }
-
             if (con != null) {
                 con.close();
             }
@@ -29,8 +27,7 @@ public abstract class InsertJdbcTemplate {
         }
     }
 
-    protected abstract void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException;
+    protected abstract void setValue(final User user, final PreparedStatement pstmt) throws SQLException;
 
-    protected abstract String createQueryForInsert();
-
+    protected abstract String createQuery();
 }

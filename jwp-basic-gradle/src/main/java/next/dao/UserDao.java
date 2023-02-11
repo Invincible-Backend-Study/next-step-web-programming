@@ -1,8 +1,7 @@
 package next.dao;
 
 import core.jdbc.ConnectionManager;
-import core.jdbc.InsertJdbcTemplate;
-import core.jdbc.UpdateJdbcTemplate;
+import core.jdbc.JdbcTemplate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +13,9 @@ import next.exception.DataAccessException;
 import next.model.User;
 
 public class UserDao {
-    private final InsertJdbcTemplate insertJdbcTemplate = new InsertJdbcTemplate() {
+    private final JdbcTemplate insertJdbcTemplate = new JdbcTemplate() {
         @Override
-        protected void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException {
+        protected void setValue(final User user, final PreparedStatement pstmt) throws SQLException {
             pstmt.setString(1, user.getUserId());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getName());
@@ -24,14 +23,14 @@ public class UserDao {
         }
 
         @Override
-        protected String createQueryForInsert() {
+        protected String createQuery() {
             return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         }
     };
 
-    private final UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate() {
+    private final JdbcTemplate updateJdbcTemplate = new JdbcTemplate() {
         @Override
-        protected void setValueForUpdate(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
+        protected void setValue(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
             pstmt.setString(1, updatedUser.getPassword());
             pstmt.setString(2, updatedUser.getName());
             pstmt.setString(3, updatedUser.getEmail());
@@ -39,13 +38,13 @@ public class UserDao {
         }
 
         @Override
-        protected String createQueryForUpdate() {
+        protected String createQuery() {
             return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
         }
     };
 
     public void insert(User user) {
-        insertJdbcTemplate.insert(user);
+        insertJdbcTemplate.update(user);
     }
 
     public void update(final User user) {
