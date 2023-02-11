@@ -36,7 +36,33 @@ public abstract class SelectJdbcTemplate {
     }
 
     public Object queryForObject(final String query) {
-        return null;
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = ConnectionManager.getConnection();
+            pstmt = con.prepareStatement(query);
+            setValue(pstmt);
+            rs = pstmt.executeQuery();
+
+            Object result = null;
+            if (rs.next()) {
+                result = mapRow(rs);
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+
+            return result;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
+        }
     }
 
     protected abstract void setValue(final PreparedStatement preparedStatement) throws SQLException;
