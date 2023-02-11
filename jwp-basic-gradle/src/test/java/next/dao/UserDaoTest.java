@@ -1,6 +1,7 @@
 package next.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 import java.util.Arrays;
@@ -41,7 +42,7 @@ public class UserDaoTest {
         userDao.insert(user);
         List<User> findAlluser = userDao.findAll();
         List<User> expected = Arrays.asList(user, admin);
-        assertEquals(findAlluser.containsAll(expected), true);
+        assertTrue(findAlluser.containsAll(expected));
     }
 
 }
