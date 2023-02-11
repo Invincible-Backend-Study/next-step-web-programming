@@ -17,12 +17,9 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+            String sql = createQueryForInsert();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
+            setValueForInsert(user, pstmt);
 
             pstmt.executeUpdate();
             if (pstmt != null) {
@@ -37,7 +34,50 @@ public class UserDao {
         }
     }
 
-    public User findByUserId(String userId)  {
+    public int update(final User updatedUser) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = ConnectionManager.getConnection();
+            String sql = createQueryForUpdate();
+            pstmt = con.prepareStatement(sql);
+            setValueForUpdate(updatedUser, pstmt);
+            int result = pstmt.executeUpdate();
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            return result;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception.getMessage());
+        }
+    }
+
+    private static void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, user.getUserId());
+        pstmt.setString(2, user.getPassword());
+        pstmt.setString(3, user.getName());
+        pstmt.setString(4, user.getEmail());
+    }
+
+    private static String createQueryForInsert() {
+        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+    }
+
+    private static void setValueForUpdate(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, updatedUser.getPassword());
+        pstmt.setString(2, updatedUser.getName());
+        pstmt.setString(3, updatedUser.getEmail());
+        pstmt.setString(4, updatedUser.getUserId());
+    }
+
+    private static String createQueryForUpdate() {
+        return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
+    }
+
+    public User findByUserId(String userId) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -70,7 +110,7 @@ public class UserDao {
         }
     }
 
-    public List<User> findAll()  {
+    public List<User> findAll() {
         Connection con = null;
         ResultSet rs = null;
         try {
@@ -98,30 +138,6 @@ public class UserDao {
                 con.close();
             }
             return users;
-        } catch (SQLException exception) {
-            throw new DataAccessException(exception.getMessage());
-        }
-    }
-
-    public int updateUser(final User updatedUser) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, updatedUser.getPassword());
-            pstmt.setString(2, updatedUser.getName());
-            pstmt.setString(3, updatedUser.getEmail());
-            pstmt.setString(4, updatedUser.getUserId());
-            int result = pstmt.executeUpdate();
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-            return result;
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }

@@ -1,7 +1,6 @@
 package next.web.service;
 
 import core.db.DataBase;
-import java.sql.SQLException;
 import java.util.List;
 import next.dao.UserDao;
 import next.model.User;
@@ -13,7 +12,7 @@ public class UserService {
     private final UserDao userDao = new UserDao();
 
     public void updateUserInformation(final User updatedUser)  {
-        userDao.updateUser(updatedUser);
+        userDao.update(updatedUser);
     }
 
     public User loginUser(final String userId, final String password) {
