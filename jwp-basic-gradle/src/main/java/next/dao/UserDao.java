@@ -70,7 +70,6 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            System.out.println(newUser.getUserId());
             String sql = "UPDATE USERS SET userId = ?, password = ?, name = ?, email = ? WHERE USERID = ?";
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, newUser.getUserId());
@@ -93,13 +92,13 @@ public class UserDao {
 
     public List<User> findAll() throws SQLException {
         Connection con = null;
-        Statement pstmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = "SELECT userId, name, password, email FROM USERS";
-            pstmt = con.createStatement();
-            rs = pstmt.executeQuery(sql);
+            pstmt = con.prepareStatement(sql);
+            rs = pstmt.executeQuery();
             List<User> userList = new ArrayList<>();
             while (rs.next()) {
                 User user = new User(
