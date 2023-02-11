@@ -5,8 +5,9 @@ import java.util.List;
 import next.model.User;
 
 public class UserDao {
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
     public void insert(User user) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)", preparedStatement -> {
                     preparedStatement.setString(1, user.getUserId());
                     preparedStatement.setString(2, user.getPassword());
@@ -17,7 +18,6 @@ public class UserDao {
     }
 
     public void update(final User user) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?",
                 preparedStatement -> {
                     preparedStatement.setString(1, user.getPassword());
@@ -29,19 +29,17 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         return jdbcTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userId = ?",
                 resultSet -> new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),
                         resultSet.getString("name"),
                         resultSet.getString("email")),
-                preparedStatement -> preparedStatement.setString(1, userId)
+                userId
         );
     }
 
     public List<User> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         return jdbcTemplate.query("SELECT userId, password, name, email from USERS",
                 resultSet -> new User(
                         resultSet.getString("userId"),
