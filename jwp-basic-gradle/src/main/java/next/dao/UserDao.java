@@ -35,7 +35,7 @@ public class UserDao {
         return templete.find(sql, rm);
     }
 
-    private static RawMapper<List<User>> findedUserResult() {
+    private RawMapper<List<User>> findedUserResult() {
         return rs -> {
             List<User> userList = new ArrayList<>();
             while (rs.next()) {
