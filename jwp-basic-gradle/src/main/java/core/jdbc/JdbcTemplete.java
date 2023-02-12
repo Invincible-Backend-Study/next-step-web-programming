@@ -17,9 +17,9 @@ public abstract class JdbcTemplete {
 
     public Object find(String sql) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            Object user = null;
-            user = mapRow(rs);
-            return user;
+            Object data = null;
+            data = mapRow(rs);
+            return data;
         }
     }
 
