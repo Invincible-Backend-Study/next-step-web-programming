@@ -1,6 +1,9 @@
 package next.dao.template;
 
+import static core.jdbc.ConnectionManager.getConnection;
+
 import core.jdbc.ConnectionManager;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ public class JdbcTemplate {
 
     public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws DataAccessException {
 
-        try(final var connection = ConnectionManager.getConnection(); final var preparedStatement = connection.prepareStatement(sql)){
+        try (final var connection = ConnectionManager.getConnection(); final var preparedStatement = connection.prepareStatement(sql)){
             preparedStatementSetter.setValues(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -29,7 +32,7 @@ public class JdbcTemplate {
         }
     }
     public <T> List<T> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper<T> rowMapper) throws DataAccessException{
-        try(final var connection = ConnectionManager.getConnection();
+        try(final var connection = getConnection();
             final var preparedStatement = connection.prepareStatement(sql);){
 
             preparedStatementSetter.setValues(preparedStatement);
