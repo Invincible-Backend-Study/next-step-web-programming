@@ -8,7 +8,9 @@ public class UserDao {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     public void insert(User user) {
-        jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)", preparedStatement -> {
+        jdbcTemplate.update(
+                "INSERT INTO USERS VALUES (?, ?, ?, ?)",
+                preparedStatement -> {
                     preparedStatement.setString(1, user.getUserId());
                     preparedStatement.setString(2, user.getPassword());
                     preparedStatement.setString(3, user.getName());
@@ -18,7 +20,8 @@ public class UserDao {
     }
 
     public void update(final User user) {
-        jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?",
+        jdbcTemplate.update(
+                "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?",
                 preparedStatement -> {
                     preparedStatement.setString(1, user.getPassword());
                     preparedStatement.setString(2, user.getName());
@@ -29,7 +32,8 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) {
-        return jdbcTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userId = ?",
+        return jdbcTemplate.queryForObject(
+                "SELECT userId, password, name, email FROM USERS WHERE userId = ?",
                 resultSet -> new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),
@@ -40,7 +44,8 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT userId, password, name, email from USERS",
+        return jdbcTemplate.query(
+                "SELECT userId, password, name, email from USERS",
                 resultSet -> new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),

@@ -1,6 +1,5 @@
 package next.web.service;
 
-import core.db.DataBase;
 import java.util.List;
 import next.dao.UserDao;
 import next.model.User;
@@ -11,7 +10,7 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserDao userDao = new UserDao();
 
-    public void updateUserInformation(final User updatedUser)  {
+    public void updateUserInformation(final User updatedUser) {
         userDao.update(updatedUser);
     }
 
@@ -33,7 +32,7 @@ public class UserService {
         return userDao.findByUserId(userId);
     }
 
-    public List<User> findAllUsers()  {
+    public List<User> findAllUsers() {
         return userDao.findAll();
     }
 

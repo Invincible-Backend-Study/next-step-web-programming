@@ -1,11 +1,8 @@
 package next.web.controller;
 
-import core.db.DataBase;
 import core.mvcframework.AbstractController;
-import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.dao.UserDao;
 import next.model.User;
 import next.web.service.UserService;
 import org.slf4j.Logger;
