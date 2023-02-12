@@ -13,11 +13,16 @@ public class JdbcTemplete {
         }
     }
 
-    public <T> T find(String sql, RawMapper<T> rm) throws SQLException {
-        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            T data = null;
-            data = rm.mapRow(rs);
-            return data;
+    public <T> T find(String sql, RawMapper<T> rm, PreparedStatementSetter pss) throws SQLException {
+        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+            pss.setParameters(pstmt);
+            return getResultSet(rm, pstmt);
+        }
+    }
+
+    private static <T> T getResultSet(RawMapper<T> rm, PreparedStatement pstmt) throws SQLException {
+        try (ResultSet rs = pstmt.executeQuery()) {
+            return rm.mapRow(rs);
         }
     }
 
