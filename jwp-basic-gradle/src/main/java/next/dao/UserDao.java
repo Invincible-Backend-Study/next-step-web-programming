@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.sql.UserSql;
+import next.dao.template.DataAccessException;
 import next.dao.template.JdbcTemplate;
 import next.model.User;
 
@@ -13,7 +14,7 @@ import next.model.User;
 @Slf4j
 public class UserDao {
     private final JdbcTemplate jdbcTemplate;
-    public void insert(User user) throws SQLException {
+    public void insert(User user) throws DataAccessException{
         jdbcTemplate.update(UserSql.CREATE, (preparedStatement -> {
             preparedStatement.setString(1, user.getUserId());
             preparedStatement.setString(2, user.getPassword());
@@ -21,7 +22,7 @@ public class UserDao {
             preparedStatement.setString(4, user.getEmail());
         }));
     }
-    public User findByUserId(String userId) throws SQLException {
+    public User findByUserId(String userId) throws DataAccessException {
         return jdbcTemplate.queryForObject(UserSql.FIND_USER_BY_ID, preparedStatement -> preparedStatement.setString(1,userId),
                 resultSet -> User.of(
                         resultSet.getString("userId"),
@@ -31,7 +32,7 @@ public class UserDao {
                 )
         );
     }
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() throws DataAccessException{
         return jdbcTemplate.query(UserSql.FIND_ALL, preparedStatement -> {},
                 resultSet -> User.of(
                         resultSet.getString("userId"),
@@ -41,7 +42,7 @@ public class UserDao {
                 )
         );
     }
-    public void update(final User user) throws SQLException{
+    public void update(final User user) throws DataAccessException{
         jdbcTemplate.update(UserSql.UPDATE, preparedStatement -> {
             preparedStatement.setString(1, user.getPassword());
             preparedStatement.setString(2, user.getName());
