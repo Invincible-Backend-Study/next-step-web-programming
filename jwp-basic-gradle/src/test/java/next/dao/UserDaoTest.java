@@ -37,7 +37,7 @@ public class UserDaoTest {
         User user = new User("wnsgh12s", "123", "이준호", "junho1273@gmail.com");
         User admin = new User("admin", "password", "자바지기", "admin@slipp.net");
         userDao.addUser(user);
-        List<User> findAlluser = userDao.findAll();
+        List<User> findAlluser = userDao.findAllUser();
         List<User> expected = Arrays.asList(user, admin);
         assertTrue(findAlluser.containsAll(expected));
     }

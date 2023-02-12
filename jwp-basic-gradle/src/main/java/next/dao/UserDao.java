@@ -16,6 +16,11 @@ public class UserDao {
     public void addUser(User user) throws SQLException {
         JdbcTemplete templete = new JdbcTemplete() {
             @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+
+            @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
                 pstmt.setString(2, user.getPassword());
@@ -31,6 +36,11 @@ public class UserDao {
     public void updateUser(User newUser, String userId) throws SQLException {
         JdbcTemplete templete = new JdbcTemplete() {
             @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+
+            @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, newUser.getUserId());
                 pstmt.setString(2, newUser.getPassword());
@@ -44,66 +54,54 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, userId);
-            rs = pstmt.executeQuery();
-
-            User user = null;
-            if (rs.next()) {
-                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
+        JdbcTemplete templete = new JdbcTemplete() {
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                if (rs.next()) {
+                    return new User(
+                            rs.getString("userId"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email"));
+                }
+                return null;
             }
 
-            return user;
-        } finally {
-            if (rs != null) {
-                rs.close();
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
             }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
+
+            ;
+
+        };
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
+        return (User) templete.find(sql);
     }
 
 
-    public List<User> findAll() throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, name, password, email FROM USERS";
-            pstmt = con.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            List<User> userList = new ArrayList<>();
-            while (rs.next()) {
-                User user = new User(
-                        rs.getString("userId"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email"));
-                userList.add(user);
+    public List<User> findAllUser() throws SQLException {
+        JdbcTemplete templete = new JdbcTemplete() {
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                List<User> userList = new ArrayList<>();
+                while (rs.next()) {
+                    User user = new User(
+                            rs.getString("userId"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email"));
+                    userList.add(user);
+                }
+                return userList;
             }
-            return userList;
-        } finally {
-            if (rs != null) {
-                rs.close();
+
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
+                return;
             }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
+        };
+        String sql = "SELECT userId, name, password, email FROM USERS";
+        return (List<User>) templete.find(sql);
     }
+
 }

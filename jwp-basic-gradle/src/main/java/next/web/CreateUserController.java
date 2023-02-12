@@ -24,7 +24,7 @@ public class CreateUserController implements Controller {
             );
             UserDao userDao = new UserDao();
             userDao.addUser(user);
-            req.setAttribute("users", new UserDao().findAll());
+            req.setAttribute("users", new UserDao().findAllUser());
         } catch (IllegalStateException e) {
             log.error("공백 : { }", e);
         } catch (SQLException e) {

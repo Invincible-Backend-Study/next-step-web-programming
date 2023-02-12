@@ -3,7 +3,7 @@ package next.web;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import next.dao.UserDao;
 import next.mvc.Controller;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class UserListController implements Controller {
 
     public String execute(HttpServletRequest req, HttpServletResponse res) {
         try {
-            req.setAttribute("users", new UserDao().findAll());
+            req.setAttribute("users", new UserDao().findAllUser());
         } catch (SQLException err) {
             log.error(err.getMessage());
         }
