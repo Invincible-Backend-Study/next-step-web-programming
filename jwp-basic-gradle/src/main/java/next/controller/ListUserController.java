@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
+import next.dao.template.DataAccessException;
 import next.utils.UserUtils;
 
 
@@ -21,7 +22,7 @@ public class ListUserController implements Controller{
         UserDao userDao = UserDaoFactory.getUserDao();
         try {
             request.setAttribute("users", userDao.findAll());
-        }catch (SQLException exception){
+        }catch (DataAccessException exception){
             request.setAttribute("users", List.of());
             log.error("{}",exception);
         }

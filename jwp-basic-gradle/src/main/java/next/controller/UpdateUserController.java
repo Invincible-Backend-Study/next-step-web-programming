@@ -8,16 +8,18 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
+import next.dao.template.DataAccessException;
 import next.model.User;
 import next.utils.UserUtils;
 
 
 @Slf4j
 public class UpdateUserController implements Controller{
+
+    private final UserDao userDao = UserDaoFactory.getUserDao();
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        UserDao userDao = UserDaoFactory.getUserDao();
         try {
             final var user = userDao.findByUserId(request.getParameter("userId"));
             user.updateUserInformation(
@@ -26,13 +28,15 @@ public class UpdateUserController implements Controller{
                     request.getParameter("email")
             );
             userDao.update(user);
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             log.error("{}",e);
         }
-      /*  final var user = UserUtils.getUserBy(request);
 
+        //의도적으로 인증을 거치지 않도록 함
+/*
+        final var user = UserUtils.getUserBy(request);
         if(user == null){
-            return "redirect: /user/list";
+            return "redirect: /user/loginForm";
         }
 */
 

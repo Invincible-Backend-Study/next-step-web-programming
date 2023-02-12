@@ -6,18 +6,19 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
+import next.dao.template.DataAccessException;
 
 
 @Slf4j
 public class UpdateFormController implements Controller{
+    private final UserDao userDao = UserDaoFactory.getUserDao();
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         final String userId = request.getParameter("userId");
-        UserDao userDao = UserDaoFactory.getUserDao();
         try {
             final var user = userDao.findByUserId(userId);
             request.setAttribute("user", user);
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             log.error("{}",e);
             return "redirect: /user/list";
         }

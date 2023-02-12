@@ -8,10 +8,12 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
+import next.dao.template.DataAccessException;
 import next.model.User;
 
 @Slf4j
 public class CreateUserController implements Controller {
+    private final UserDao userDao = UserDaoFactory.getUserDao();
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -21,16 +23,12 @@ public class CreateUserController implements Controller {
                 request.getParameter("name"),
                 request.getParameter("email")
         );
-
-        UserDao userDao = UserDaoFactory.getUserDao();
         try {
             userDao.insert(user);
-        }catch (SQLException exception){
+        }catch (DataAccessException exception){
             log.error(exception.getMessage());
+            return "/WEB-INF/user/signup_failed.jsp";
         }
-        //log.info("{}", DataBase.findAll());
-        log.debug("user : {}", user);
-        //DataBase.addUser(user);
         return "redirect: /user/list";
     }
 }
