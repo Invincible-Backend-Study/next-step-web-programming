@@ -23,7 +23,7 @@ public class CreateUserController implements Controller {
                     req.getParameter("email")
             );
             UserDao userDao = new UserDao();
-            userDao.insert(user);
+            userDao.addUser(user);
             req.setAttribute("users", new UserDao().findAll());
         } catch (IllegalStateException e) {
             log.error("공백 : { }", e);
