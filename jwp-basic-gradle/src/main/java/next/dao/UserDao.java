@@ -9,29 +9,28 @@ import core.jdbc.RawMapper;
 import next.model.User;
 
 public class UserDao {
+
+    private final JdbcTemplete templete = new JdbcTemplete();
+
     public void addUser(User user) throws SQLException {
-        JdbcTemplete templete = new JdbcTemplete();
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         templete.insert(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
 
     public void updateUser(User newUser, String userId) throws SQLException {
-        JdbcTemplete templete = new JdbcTemplete();
         String sql = "UPDATE USERS SET userId = ?, password = ?, name = ?, email = ? WHERE USERID = ?";
         templete.insert(sql, newUser.getUserId(), newUser.getPassword(), newUser.getName(), newUser.getEmail(), userId);
     }
 
     public User findByUserId(String userId) throws SQLException {
         RawMapper<List<User>> rm = findedUserResult();
-        JdbcTemplete templete = new JdbcTemplete();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
         return templete.find(sql, rm, userId).get(0);
     }
 
     public List<User> findAllUser() throws SQLException {
         RawMapper<List<User>> rm = findedUserResult();
-        JdbcTemplete templete = new JdbcTemplete();
         String sql = "SELECT userId, name, password, email FROM USERS";
         return templete.find(sql, rm);
     }
