@@ -1,8 +1,7 @@
-<%@ page import="java.io.Writer" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ include file="../WEB-INF/header.jsp"%>
-<%@ include file="../WEB-INF/nav.jsp"%>
+<%@ include file="../layout/header.jsp"%>
+<%@ include file="../layout/nav.jsp"%>
 
 
 <div class="container" id="main">
@@ -33,4 +32,4 @@
     </div>
 </div>
 
-<%@include file="../WEB-INF/footer.jsp"%>
+<%@include file="../layout/footer.jsp"%>

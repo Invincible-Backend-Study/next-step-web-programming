@@ -6,6 +6,7 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
+          <div class="alert alert-danger" role="alert">이미 등록되어 있는 계정입니다.</div>
           <form name="question" method="post" action="${pageContext.request.contextPath}user/create">
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>

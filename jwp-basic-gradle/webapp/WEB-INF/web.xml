@@ -12,4 +12,5 @@
         <url-pattern>*.woff</url-pattern>
         <url-pattern>*.tff</url-pattern>
     </servlet-mapping>
+
 </web-app>

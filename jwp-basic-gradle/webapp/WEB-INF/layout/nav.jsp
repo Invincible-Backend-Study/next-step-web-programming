@@ -47,12 +47,12 @@
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <li><a href="/user/logout" role="button">로그아웃</a></li>
+                        <li><a href="${pageContext.request.contextPath}user/logout" role="button">로그아웃</a></li>
                         <li><a href="#" role="button">개인정보수정</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/users/loginForm" role="button">로그인</a></li>
-                        <li><a href="/users/form" role="button">회원가입</a></li>
+                        <li><a href="${pageContext.request.contextPath}user/loginForm" role="button">로그인</a></li>
+                        <li><a href="${pageContext.request.contextPath}user/form" role="button">회원가입</a></li>
                     </c:otherwise>
                 </c:choose>
 

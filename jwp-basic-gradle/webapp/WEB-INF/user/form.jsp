@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="header.jsp"%>
-<%@include file="nav.jsp"%>
+<%@include file="../layout/header.jsp"%>
+<%@include file="../layout/nav.jsp"%>
+
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="question" method="post" action="/user/create">
+          <form name="question" method="post" action="${pageContext.request.contextPath}user/create">
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
                   <input class="form-control" id="userId" name="userId" placeholder="User ID">
@@ -28,4 +29,4 @@
         </div>
     </div>
 </div>
-<%@include file="footer.jsp"%>
+<%@include file="../layout/footer.jsp"%>
