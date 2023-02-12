@@ -6,16 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JdbcTemplete {
-    public void insert(String sql, PreparedStatementSetter pss) throws SQLException {
+    public void insert(String sql, Object... parameters) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pss.setParameters(pstmt);
+            for (int i = 0; i < parameters.length; i++) {
+                pstmt.setObject(i + 1, parameters[i]);
+            }
             pstmt.executeUpdate();
         }
     }
 
-    public <T> T find(String sql, RawMapper<T> rm, PreparedStatementSetter pss) throws SQLException {
+    public <T> T find(String sql, RawMapper<T> rm, Object... parameters) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
-            pss.setParameters(pstmt);
+            for (int i = 0; i < parameters.length; i++) {
+                pstmt.setObject(i + 1, parameters[i]);
+            }
             return getResultSet(rm, pstmt);
         }
     }
