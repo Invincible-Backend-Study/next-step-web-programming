@@ -19,7 +19,7 @@ public class UserService {
         if (userId.equals("") || password.equals("")) {
             throw new IllegalArgumentException("[ERROR] 로그인 정보를 입력해야 합니다.");
         }
-        User findUser = DataBase.findUserById(userId);
+        User findUser = userDao.findByUserId(userId);
         if (findUser == null) {
             throw new IllegalArgumentException("[ERROR] 일치하는 사용자 정보가 없습니다.");
         }
@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public User findUserById(final String userId) {
-        return DataBase.findUserById(userId);
+        return userDao.findByUserId(userId);
     }
 
     public List<User> findAllUsers()  {
