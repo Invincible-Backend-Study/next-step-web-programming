@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+
 import next.model.User;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ public class UserDaoTest {
         User expected = new User("qwe", "2", "123", "test@email.com");
         UserDao userDao = new UserDao();
         userDao.addUser(user);
-        userDao.update(expected, user.getUserId());
+        userDao.updateUser(expected, user.getUserId());
         User actual = userDao.findByUserId(expected.getUserId());
         assertEquals(expected, actual);
     }
@@ -41,5 +42,6 @@ public class UserDaoTest {
         List<User> expected = Arrays.asList(user, admin);
         assertTrue(findAlluser.containsAll(expected));
     }
+
 
 }

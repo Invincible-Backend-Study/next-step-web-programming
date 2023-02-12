@@ -10,98 +10,71 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.jdbc.JdbcTemplete;
+import core.jdbc.PreparedStatementSetter;
+import core.jdbc.RawMapper;
 import next.model.User;
 
 public class UserDao {
     public void addUser(User user) throws SQLException {
+        PreparedStatementSetter pss = pstmt -> {
+            pstmt.setString(1, user.getUserId());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getName());
+            pstmt.setString(4, user.getEmail());
+        };
         JdbcTemplete templete = new JdbcTemplete() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                return null;
-            }
-
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, user.getUserId());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(3, user.getName());
-                pstmt.setString(4, user.getEmail());
-            }
         };
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        templete.insert(sql);
+        templete.insert(sql, pss);
     }
 
 
     public void updateUser(User newUser, String userId) throws SQLException {
-        JdbcTemplete templete = new JdbcTemplete() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                return null;
-            }
-
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, newUser.getUserId());
-                pstmt.setString(2, newUser.getPassword());
-                pstmt.setString(3, newUser.getName());
-                pstmt.setString(4, newUser.getEmail());
-                pstmt.setString(5, userId);
-            }
+        PreparedStatementSetter pss = pstmt -> {
+            pstmt.setString(1, newUser.getUserId());
+            pstmt.setString(2, newUser.getPassword());
+            pstmt.setString(3, newUser.getName());
+            pstmt.setString(4, newUser.getEmail());
+            pstmt.setString(5, userId);
         };
+        JdbcTemplete templete = new JdbcTemplete();
         String sql = "UPDATE USERS SET userId = ?, password = ?, name = ?, email = ? WHERE USERID = ?";
-        templete.insert(sql);
+        templete.insert(sql, pss);
     }
 
     public User findByUserId(String userId) throws SQLException {
-        JdbcTemplete templete = new JdbcTemplete() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                if (rs.next()) {
-                    return new User(
-                            rs.getString("userId"),
-                            rs.getString("password"),
-                            rs.getString("name"),
-                            rs.getString("email"));
-                }
-                return null;
+        RawMapper rm = rs -> {
+            if (rs.next()) {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email"));
             }
-
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-            }
-
-            ;
-
+            return null;
         };
+        JdbcTemplete templete = new JdbcTemplete();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) templete.find(sql);
+        return (User) templete.find(sql, rm);
     }
 
 
     public List<User> findAllUser() throws SQLException {
-        JdbcTemplete templete = new JdbcTemplete() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                List<User> userList = new ArrayList<>();
-                while (rs.next()) {
-                    User user = new User(
-                            rs.getString("userId"),
-                            rs.getString("password"),
-                            rs.getString("name"),
-                            rs.getString("email"));
-                    userList.add(user);
-                }
-                return userList;
+        RawMapper rm = rs -> {
+            List<User> userList = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email"));
+                userList.add(user);
             }
-
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                return;
-            }
+            return userList;
         };
+        JdbcTemplete templete = new JdbcTemplete();
         String sql = "SELECT userId, name, password, email FROM USERS";
-        return (List<User>) templete.find(sql);
+        return (List<User>) templete.find(sql, rm);
     }
 
 }

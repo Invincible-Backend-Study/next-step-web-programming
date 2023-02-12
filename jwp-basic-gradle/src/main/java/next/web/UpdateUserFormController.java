@@ -28,7 +28,7 @@ public class UpdateUserFormController implements Controller {
                         req.getParameter("password"),
                         req.getParameter("name"),
                         req.getParameter("email"));
-                userDao.update(newUser,user.getUserId());
+                userDao.updateUser(newUser,user.getUserId());
 
                 return "redirect:/";
             }

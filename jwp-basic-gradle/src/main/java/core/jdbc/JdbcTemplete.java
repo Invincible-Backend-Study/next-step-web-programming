@@ -1,30 +1,25 @@
 package core.jdbc;
 
-import next.model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class JdbcTemplete {
-    public void insert(String sql) throws SQLException {
+public class JdbcTemplete {
+    public void insert(String sql, PreparedStatementSetter pss) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
-            setParameters(pstmt);
+            pss.setParameters(pstmt);
             pstmt.executeUpdate();
         }
     }
 
-    public Object find(String sql) throws SQLException {
+    public Object find(String sql,RawMapper rm) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             Object data = null;
-            data = mapRow(rs);
+            data = rm.mapRow(rs);
             return data;
         }
     }
 
-    abstract public Object mapRow(ResultSet rs) throws SQLException;
 
-
-    abstract public void setParameters(PreparedStatement pstmt) throws SQLException;
 }
