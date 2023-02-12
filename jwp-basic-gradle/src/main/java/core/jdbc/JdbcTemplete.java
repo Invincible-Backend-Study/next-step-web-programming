@@ -13,9 +13,9 @@ public class JdbcTemplete {
         }
     }
 
-    public Object find(String sql,RawMapper rm) throws SQLException {
+    public <T> T find(String sql, RawMapper<T> rm) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            Object data = null;
+            T data = null;
             data = rm.mapRow(rs);
             return data;
         }

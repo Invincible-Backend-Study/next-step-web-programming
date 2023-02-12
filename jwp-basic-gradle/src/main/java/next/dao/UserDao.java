@@ -43,7 +43,7 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        RawMapper rm = rs -> {
+        RawMapper<User> rm = rs -> {
             if (rs.next()) {
                 return new User(
                         rs.getString("userId"),
@@ -55,12 +55,12 @@ public class UserDao {
         };
         JdbcTemplete templete = new JdbcTemplete();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) templete.find(sql, rm);
+        return templete.find(sql, rm);
     }
 
 
     public List<User> findAllUser() throws SQLException {
-        RawMapper rm = rs -> {
+        RawMapper<List<User>> rm = rs -> {
             List<User> userList = new ArrayList<>();
             while (rs.next()) {
                 User user = new User(
@@ -74,7 +74,7 @@ public class UserDao {
         };
         JdbcTemplete templete = new JdbcTemplete();
         String sql = "SELECT userId, name, password, email FROM USERS";
-        return (List<User>) templete.find(sql, rm);
+        return templete.find(sql, rm);
     }
 
 }
