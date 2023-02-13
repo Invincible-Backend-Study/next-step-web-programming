@@ -67,29 +67,11 @@ public class JdbcTemplate {
             final String query,
             final RowMapper<T> rowMapper,
             final PreparedStatementSetter preparedStatementSetter) {
-        ResultSet resultSet = null;
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatementSetter.setValue(preparedStatement);
-            resultSet = preparedStatement.executeQuery();
-            T result = null;
-            if (resultSet.next()) {
-                result = rowMapper.mapRow(resultSet);
-            }
-            return result;
-        } catch (SQLException exception) {
-            throw new DataAccessException(exception);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    throw new DataAccessException(e);
-                }
-            }
-
+        List<T> results = query(query, rowMapper, preparedStatementSetter);
+        if (results.isEmpty()) {
+            return null;
         }
+        return results.get(0);
     }
 
     public <T> T queryForObject(
