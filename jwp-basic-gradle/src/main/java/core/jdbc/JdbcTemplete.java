@@ -1,6 +1,5 @@
 package core.jdbc;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,17 +15,17 @@ public class JdbcTemplete {
     }
 
 
-    public <T> T excuteFindData(String sql, RawMapper<T> rm, Object... parameters) throws SQLException {
-        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
-            setSqlParameters(pstmt, parameters);
-            return getResultSet(rm, pstmt);
-        }
-    }
-
-    public <T> T excuteFindAllData(String sql, RawMapper<T> rm) throws SQLException {
+    public <T> T excuteFindStaticData(String sql, RawMapper<T> rm) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(
                 sql);) {
             return rm.mapRow(rs);
+        }
+    }
+
+    public <T> T excuteFindDynamicData(String sql, RawMapper<T> rm, Object... parameters) throws SQLException {
+        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+            setSqlParameters(pstmt, parameters);
+            return getResultSet(rm, pstmt);
         }
     }
 

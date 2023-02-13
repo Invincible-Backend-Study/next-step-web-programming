@@ -34,13 +34,13 @@ public class UserDao {
     public User findByUserId(String userId) throws SQLException {
         RawMapper<List<User>> rm = findedUserResult();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return templete.excuteFindData(sql, rm, userId).get(0);
+        return templete.excuteFindDynamicData(sql, rm, userId).get(0);
     }
 
     public List<User> findAllUser() throws SQLException {
         RawMapper<List<User>> rm = findedUserResult();
         String sql = "SELECT userId, name, password, email FROM USERS";
-        return templete.excuteFindAllData(sql, rm);
+        return templete.excuteFindStaticData(sql, rm);
     }
 
     private RawMapper<List<User>> findedUserResult() {
