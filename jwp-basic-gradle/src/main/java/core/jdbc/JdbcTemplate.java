@@ -33,10 +33,11 @@ public class JdbcTemplate {
             final RowMapper<T> rowMapper,
             final PreparedStatementSetter preparedStatementSetter) {
 
+        ResultSet resultSet = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatementSetter.setValue(preparedStatement);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
 
             List<T> results = new ArrayList<>();
             while (resultSet.next()) {
@@ -46,6 +47,14 @@ public class JdbcTemplate {
             return results;
         } catch (SQLException exception) {
             throw new DataAccessException(exception);
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -58,19 +67,28 @@ public class JdbcTemplate {
             final String query,
             final RowMapper<T> rowMapper,
             final PreparedStatementSetter preparedStatementSetter) {
+        ResultSet resultSet = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatementSetter.setValue(preparedStatement);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             T result = null;
             if (resultSet.next()) {
                 result = rowMapper.mapRow(resultSet);
             }
-            resultSet.close();
             return result;
         } catch (SQLException exception) {
             throw new DataAccessException(exception);
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
+            }
+
         }
     }
 
