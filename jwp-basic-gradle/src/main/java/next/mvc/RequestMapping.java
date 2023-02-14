@@ -15,7 +15,7 @@ public class RequestMapping {
         mappings.put("/user/create", new CreateUserController());
         mappings.put("/user/updateForm", new UpdateUserFormController());
         mappings.put("/user/form", new ForwardController("/user/form.jsp"));
-        mappings.put("/user/list", new ForwardController("/user/list.jsp"));
+        mappings.put("/user/list", new UserListController());
     }
 
     public Controller getController(String url){

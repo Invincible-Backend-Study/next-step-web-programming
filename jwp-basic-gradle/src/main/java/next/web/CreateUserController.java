@@ -1,21 +1,13 @@
 package next.web;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import next.dao.UserDao;
 import next.model.User;
-
 import next.mvc.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import core.db.DataBase;
 
 public class CreateUserController implements Controller {
     private static final long serialVersionUID = 1L;
@@ -30,11 +22,14 @@ public class CreateUserController implements Controller {
                     req.getParameter("name"),
                     req.getParameter("email")
             );
-            log.debug("user : {}", user.getUserId());
-            DataBase.addUser(user);
+            UserDao userDao = new UserDao();
+            userDao.addUser(user);
+            req.setAttribute("users", new UserDao().findAllUser());
         } catch (IllegalStateException e) {
-            log.debug("공백 : { }", e);
+            log.error("공백 : { }", e);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
         }
-        return "/user/list.jsp";
+        return "redirect:/";
     }
 }
