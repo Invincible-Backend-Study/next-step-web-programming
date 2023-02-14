@@ -4,4 +4,19 @@
 /.project
 /tomcat.8080
 /.idea
+/webapp/WEB-INF/lib/
 jwp-basic.iml
+
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+.tmp
+caches
+daemon
+native
+wrapper
+
+### STS ###
+.apt_generated
+
+.jar
