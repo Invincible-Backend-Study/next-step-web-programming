@@ -34,6 +34,9 @@ public class UserDao {
     public User findByUserId(String userId) throws SQLException {
         RawMapper<List<User>> rm = findedUserResult();
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
+        if (userId == null) {
+            return null;
+        }
         return templete.excuteFindDynamicData(sql, rm, userId).get(0);
     }
 
