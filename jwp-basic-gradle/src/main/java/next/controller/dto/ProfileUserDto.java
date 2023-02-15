@@ -1,4 +1,4 @@
-package next.web.controller.dto;
+package next.controller.dto;
 
 import next.model.User;
 

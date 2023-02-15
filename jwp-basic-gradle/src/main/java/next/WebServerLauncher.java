@@ -1,4 +1,4 @@
-package next.web;
+package next;
 
 import java.io.File;
 import org.apache.catalina.core.StandardContext;

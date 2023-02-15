@@ -1,4 +1,4 @@
-package next.web.service;
+package next.service;
 
 import java.util.List;
 import next.dao.UserDao;

@@ -1,11 +1,11 @@
-package next.web.controller;
+package next.controller;
 
 import core.mvcframework.Controller;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.model.User;
-import next.web.service.UserService;
+import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,14 +1,13 @@
-package next.web.controller;
+package next.controller;
 
 import core.mvcframework.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LogoutUserController implements Controller {
+public class HomeController implements Controller {
 
     @Override
     public String execute(final HttpServletRequest request, final HttpServletResponse response) {
-        request.getSession().invalidate();
-        return "redirect:/";
+        return "home";
     }
 }

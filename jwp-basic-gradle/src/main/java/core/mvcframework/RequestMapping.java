@@ -2,16 +2,16 @@ package core.mvcframework;
 
 import java.util.HashMap;
 import java.util.Map;
-import next.web.controller.ShowFormController;
-import next.web.controller.CreateUserController;
-import next.web.controller.HomeController;
-import next.web.controller.ListUserController;
-import next.web.controller.LoginUserController;
-import next.web.controller.LogoutUserController;
-import next.web.controller.ProfileController;
-import next.web.controller.QuestionFormController;
-import next.web.controller.UpdateUserController;
-import next.web.controller.UpdateUserFormController;
+import next.controller.ShowFormController;
+import next.controller.CreateUserController;
+import next.controller.HomeController;
+import next.controller.ListUserController;
+import next.controller.LoginUserController;
+import next.controller.LogoutUserController;
+import next.controller.ProfileController;
+import next.controller.QuestionFormController;
+import next.controller.UpdateUserController;
+import next.controller.UpdateUserFormController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
