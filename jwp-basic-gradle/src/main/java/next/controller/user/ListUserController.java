@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import core.mvcframework.Controller;
 import java.util.List;
