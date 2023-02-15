@@ -34,7 +34,7 @@ public class RequestMapping {
 
         // 유저
         handlerMapping.put("/users/create", new CreateUserController());
-        handlerMapping.put("/users/list", new ListUserController());
+        handlerMapping.put("/users", new ListUserController());
         handlerMapping.put("/users/login", new LoginUserController());
         handlerMapping.put("/users/logout", new LogoutUserController());
         handlerMapping.put("/users/profile", new ProfileController());
