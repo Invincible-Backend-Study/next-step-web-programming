@@ -1,8 +1,6 @@
-package next.web;
+package core.web;
 
-import core.web.filter.ResourceFilter;
 import next.controller.Controller;
-import org.apache.coyote.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package next.web;
+package core.web;
 
 import next.controller.Controller;
 import next.controller.CreateUserController;

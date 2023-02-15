@@ -1,67 +1,62 @@
 package next.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import core.jdbc.ConnectionManager;
+import core.jdbc.JdbcTemplate;
+import core.jdbc.ResultSetMapper;
 import next.model.User;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDao {
-    public void insert(User user) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
+    static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-
-            if (con != null) {
-                con.close();
-            }
-        }
+    public static void insert(User user) throws SQLException {
+        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        jdbcTemplate.executeUpdate(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
-    public User findByUserId(String userId) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, userId);
+    public static List<User> findAll() throws SQLException {
+        ResultSetMapper<List<User>> resultSetMapper = rs -> {
+            List<User> users = new ArrayList<User>();
+            while (rs.next()) {
+                users.add(new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")));
+            }
+            return users;
+        };
 
-            rs = pstmt.executeQuery();
+        String sql = "SELECT userId, password, name, email FROM USERS";
+        return jdbcTemplate.select(sql, resultSetMapper);
+    }
 
-            User user = null;
+    public static User findByUserId(String userId) throws SQLException {
+        ResultSetMapper<User> resultSetMapper = rs -> {
             if (rs.next()) {
-                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
             }
+            return null;
+        };
 
-            return user;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
+        return jdbcTemplate.select(sql, resultSetMapper, userId);
+    }
+
+    public static int update(User user) throws SQLException {
+        String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
+        return jdbcTemplate.executeUpdate(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+    }
+
+    public static int deleteAll() throws SQLException {
+        String sql = "DELETE FROM USERS";
+        return jdbcTemplate.executeUpdate(sql);
     }
 }

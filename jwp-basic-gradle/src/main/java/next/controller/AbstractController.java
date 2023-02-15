@@ -1,6 +1,6 @@
 package next.controller;
 
-import next.web.HttpMethod;
+import core.web.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
