@@ -46,8 +46,6 @@
 
 
 <!-- script references -->
-<script src="../js/jquery-2.2.0.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/scripts.js"></script>
+<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>
