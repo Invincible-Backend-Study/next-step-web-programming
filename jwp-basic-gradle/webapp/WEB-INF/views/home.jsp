@@ -18,42 +18,28 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
             <ul class="list">
-                <li>
-                    <div class="wrap">
-                        <div class="main">
-                            <strong class="subject">
-                                <a href="/qna/showForm">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                            </strong>
-                            <div class="auth-info">
-                                <i class="icon-add-comment"></i>
-                                <span class="time">2016-01-15 18:47</span>
-                                <a href="user/html/profile.html" class="author">자바지기</a>
-                            </div>
-                            <div class="reply" title="댓글">
-                                <i class="icon-reply"></i>
-                                <span class="point">8</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="wrap">
-                        <div class="main">
-                            <strong class="subject">
-                                <a href="qna/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
-                            </strong>
-                            <div class="auth-info">
-                                <i class="icon-add-comment"></i>
-                                <span class="time">2016-01-05 18:47</span>
-                                <a href="user/html/profile.html" class="author">김문수</a>
-                            </div>
-                            <div class="reply"  title="댓글">
-                                <i class="icon-reply"></i>
-                                <span class="point">12</span>
+
+                <c:forEach var="questions" items="${requestScope.questions}">
+                    <li>
+                        <div class="wrap">
+                            <div class="main">
+                                <strong class="subject">
+                                    <a href="/qna/showForm">${questions.title}</a>
+                                </strong>
+                                <div class="auth-info">
+                                    <i class="icon-add-comment"></i>
+                                    <span class="time">${questions.createdDate}</span>
+                                    <a href="user/html/profile.html" class="author">${questions.writer}</a>
+                                </div>
+                                <div class="reply" title="댓글">
+                                    <i class="icon-reply"></i>
+                                    <span class="point">${questions.countOfAnswer}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                </c:forEach>
+
             </ul>
             <div class="row">
                 <div class="col-md-3"></div>

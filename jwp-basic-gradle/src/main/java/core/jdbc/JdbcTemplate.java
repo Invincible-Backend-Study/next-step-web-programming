@@ -59,7 +59,6 @@ public class JdbcTemplate {
     }
 
     public <T> List<T> query(final String query, final RowMapper<T> rowMapper, final Object... values) {
-        log.debug("valuesNullCheck={}", values == null);
         return query(query, rowMapper, createPreparedStatementSetter(values));
     }
 
