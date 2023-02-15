@@ -7,14 +7,12 @@ import java.sql.SQLException;
 
 public class JdbcTemplate {
     public int executeUpdate(String sql, PreparedStatementParameters ps) {
-        int countChanged = 0;
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             ps.setParameters(pstmt);
-            countChanged = pstmt.executeUpdate();
+            return pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException(e.toString());
         }
-        return countChanged;
     }
 
 
@@ -38,11 +36,6 @@ public class JdbcTemplate {
             }
         }
         return result;
-    }
-
-    public <T> T select(String sql, ResultSetMapper<T> resultSetMapper) throws SQLException {
-        PreparedStatementParameters ps = getPreparedStatementParameters(null);
-        return select(sql, resultSetMapper, ps);
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper, Object... parameters) throws SQLException {

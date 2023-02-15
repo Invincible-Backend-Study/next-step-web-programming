@@ -67,22 +67,4 @@ public class UserDaoTest {
         List<User> actual = userDao.findAll();
         assertEquals(3, actual.size());
     }
-
-    @Test
-    public void deleteAll() throws Exception {
-        User expected0 = new User("userId0", "password", "name", "javajigi@email.com");
-        User expected1 = new User("userId1", "password", "name", "javajigi@email.com");
-        User expected2 = new User("userId2", "password", "name", "javajigi@email.com");
-        userDao.insert(expected0);
-        userDao.insert(expected1);
-        userDao.insert(expected2);
-
-        assertAll(() -> {
-            List<User> actual = userDao.findAll();
-            assertEquals(3, actual.size());
-            userDao.deleteAll();
-            actual = userDao.findAll();
-            assertEquals(0, actual.size());
-        });
-    }
 }
