@@ -18,7 +18,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">
-                <h2 class="qna-title">${requestScope.question.title}</h2>
+                <h2 class="qna-title">${questionWithAnswers.question.title}</h2>
             </header>
             <div class="content-main">
                 <article class="article">
@@ -28,15 +28,15 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name">${requestScope.question.writer}</a>
+                            <a href="/users/92/kimmunsu" class="article-author-name">${questionWithAnswers.question.writer}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                ${requestScope.question.createdDate}
+                                ${questionWithAnswers.question.createdDate}
                                 <i class="icon-link"></i>
                             </a>
                         </div>
                     </div>
                     <div class="article-doc">
-                        <p>${requestScope.question.contents}</p>
+                        <p>${questionWithAnswers.question.contents}</p>
                     </div>
                     <div class="article-util">
                         <ul class="article-util-list">
@@ -58,9 +58,9 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong>${requestScope.question.countOfAnswer}</strong>개의 의견</p>
+                        <p class="qna-comment-count"><strong>${questionWithAnswers.question.countOfAnswer}</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
-                            <c:forEach var="answer" items="${requestScope.answers}">
+                            <c:forEach var="answer" items="${questionWithAnswers.answers}">
                                 <article class="article" id="answer-1405">
                                     <div class="article-header">
                                         <div class="article-header-thumb">

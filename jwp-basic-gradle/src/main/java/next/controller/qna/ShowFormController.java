@@ -1,25 +1,19 @@
 package next.controller.qna;
 
 import core.mvcframework.Controller;
-import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
-import next.model.Answer;
-import next.model.Question;
+import next.service.QuestionService;
 
 public class ShowFormController implements Controller {
-    private final QuestionDao questionDao = new QuestionDao();
-    private final AnswerDao answerDao = new AnswerDao();
+    private final QuestionService questionService = new QuestionService();
 
     @Override
     public String execute(final HttpServletRequest request, final HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
-        Question question = questionDao.findByQuestionId(questionId);
-        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
-        request.setAttribute("question", question);
-        request.setAttribute("answers", answers);
+        Map<String, Object> questionWithAnswers = questionService.findByQuestionIdWithAnswers(questionId);
+        request.setAttribute("questionWithAnswers", questionWithAnswers);
         return "qna/show";
     }
 }
