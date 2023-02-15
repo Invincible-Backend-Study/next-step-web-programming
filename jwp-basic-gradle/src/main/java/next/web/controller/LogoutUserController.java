@@ -1,13 +1,14 @@
 package next.web.controller;
 
 import core.mvcframework.AbstractController;
+import core.mvcframework.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LogoutUserController extends AbstractController {
+public class LogoutUserController implements Controller {
 
     @Override
-    protected String doGet(final HttpServletRequest request, final HttpServletResponse response) {
+    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
         request.getSession().invalidate();
         return "redirect:/";
     }
