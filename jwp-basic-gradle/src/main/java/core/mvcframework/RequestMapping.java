@@ -2,12 +2,14 @@ package core.mvcframework;
 
 import java.util.HashMap;
 import java.util.Map;
+import next.web.controller.ShowFormController;
 import next.web.controller.CreateUserController;
 import next.web.controller.HomeController;
 import next.web.controller.ListUserController;
 import next.web.controller.LoginUserController;
 import next.web.controller.LogoutUserController;
 import next.web.controller.ProfileController;
+import next.web.controller.QuestionFormController;
 import next.web.controller.UpdateUserController;
 import next.web.controller.UpdateUserFormController;
 import org.slf4j.Logger;
@@ -18,10 +20,19 @@ public class RequestMapping {
     private static final Map<String, Controller> handlerMapping = new HashMap<>();
 
     static {
+        // 홈
         handlerMapping.put("/", new HomeController());
+
+        // 유저 단순 포워딩
         handlerMapping.put("/users/form", new ForwardController("user/form"));
         handlerMapping.put("/users/loginForm", new ForwardController("user/login"));
         handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
+
+        // 질문/응답 단순 포워딩
+        handlerMapping.put("/qna/questionForm", new ForwardController("/qna/form"));
+        handlerMapping.put("/qna/showForm", new ForwardController("/qna/show"));
+
+        // 유저
         handlerMapping.put("/users/create", new CreateUserController());
         handlerMapping.put("/users/list", new ListUserController());
         handlerMapping.put("/users/login", new LoginUserController());
@@ -29,6 +40,10 @@ public class RequestMapping {
         handlerMapping.put("/users/profile", new ProfileController());
         handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
+
+        // 질문/응답
+        handlerMapping.put("/qna/question", new QuestionFormController());
+        handlerMapping.put("/qna/show", new ShowFormController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {

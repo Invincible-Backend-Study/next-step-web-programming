@@ -22,7 +22,7 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="qna/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                                <a href="/qna/showForm">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
@@ -47,7 +47,7 @@
                                 <span class="time">2016-01-05 18:47</span>
                                 <a href="user/html/profile.html" class="author">김문수</a>
                             </div>
-                            <div class="reply" title="댓글">
+                            <div class="reply"  title="댓글">
                                 <i class="icon-reply"></i>
                                 <span class="point">12</span>
                             </div>
@@ -69,7 +69,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="qna/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <a href="/qna/questionForm" class="btn btn-primary pull-right" role="button">질문하기</a>
                 </div>
             </div>
         </div>
