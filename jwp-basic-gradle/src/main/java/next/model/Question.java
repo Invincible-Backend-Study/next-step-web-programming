@@ -3,7 +3,7 @@ package next.model;
 import java.util.Date;
 
 public class Question {
-    private final Long questionId;
+    private Long questionId;
     private final String writer;
     private final String title;
     private final String contents;
@@ -13,6 +13,15 @@ public class Question {
     public Question(final Long questionId, final String writer, final String title, final String contents,
                     final Date createdDate, final int countOfAnswer) {
         this.questionId = questionId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = createdDate;
+        this.countOfAnswer = countOfAnswer;
+    }
+
+    public Question(final String writer, final String title, final String contents, final Date createdDate,
+                    final int countOfAnswer) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

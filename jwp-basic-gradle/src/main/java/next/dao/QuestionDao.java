@@ -52,4 +52,16 @@ public class QuestionDao {
                                 resultSet.getInt("countOfAnswer"))
         );
     }
+
+    public void insertNewQuestion(final Question question) {
+        jdbcTemplate.update(
+                "INSERT INTO"
+                        + " QUESTIONS(writer, title, contents, createdDate, countOfAnswer)"
+                        + " VALUES(?, ?, ?, ?, ?)",
+                question.getWriter(),
+                question.getTitle(),
+                question.getContents(),
+                question.getCreatedDate(),
+                question.getCountOfAnswer());
+    }
 }

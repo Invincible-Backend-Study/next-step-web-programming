@@ -10,4 +10,8 @@ public class QuestionService {
     public List<Question> findAllOrderByCreatedDate() {
         return questionDao.findAllOrderByCreatedDate();
     }
+
+    public void insertNewQuestion(final Question question) {
+        questionDao.insertNewQuestion(question);
+    }
 }

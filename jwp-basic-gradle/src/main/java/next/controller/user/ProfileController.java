@@ -3,7 +3,7 @@ package next.controller.user;
 import core.mvcframework.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.controller.dto.ProfileUserDto;
+import next.controller.user.dto.ProfileUserDto;
 import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
