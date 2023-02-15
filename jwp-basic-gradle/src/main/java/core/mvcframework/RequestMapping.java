@@ -8,6 +8,7 @@ import next.web.controller.ListUserController;
 import next.web.controller.LoginUserController;
 import next.web.controller.LogoutUserController;
 import next.web.controller.ProfileController;
+import next.web.controller.UpdateUserController;
 import next.web.controller.UpdateUserFormController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,8 @@ public class RequestMapping {
         handlerMapping.put("/users/login", new LoginUserController());
         handlerMapping.put("/users/logout", new LogoutUserController());
         handlerMapping.put("/users/profile", new ProfileController());
-        handlerMapping.put("/users/update", new UpdateUserFormController());
+        handlerMapping.put("/users/update", new UpdateUserController());
+        handlerMapping.put("/users/updateForm", new UpdateUserFormController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {
