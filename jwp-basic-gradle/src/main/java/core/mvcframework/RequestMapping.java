@@ -2,6 +2,7 @@ package core.mvcframework;
 
 import java.util.HashMap;
 import java.util.Map;
+import next.controller.qna.CreateQuestionController;
 import next.controller.qna.ShowFormController;
 import next.controller.user.CreateUserController;
 import next.controller.HomeController;
@@ -28,8 +29,6 @@ public class RequestMapping {
         handlerMapping.put("/users/loginForm", new ForwardController("user/login"));
         handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
 
-        // 질문/응답 단순 포워딩
-        handlerMapping.put("/qna/questionForm", new ForwardController("qna/form"));
 
         // 유저
         handlerMapping.put("/users/create", new CreateUserController());
@@ -41,9 +40,9 @@ public class RequestMapping {
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
 
         // 질문/응답
-        handlerMapping.put("/qna/question", new QuestionFormController());
+        handlerMapping.put("/qna/questionForm", new QuestionFormController());
+        handlerMapping.put("/qna/createQuestion", new CreateQuestionController());
         handlerMapping.put("/qna/showForm", new ShowFormController());
-        // handlerMapping.put("/qna/show", new ShowFormController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {
