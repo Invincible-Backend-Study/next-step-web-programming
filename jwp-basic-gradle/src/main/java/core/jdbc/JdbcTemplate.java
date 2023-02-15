@@ -17,10 +17,6 @@ public class JdbcTemplate {
         return countChanged;
     }
 
-    public int executeUpdate(String sql) {
-        PreparedStatementParameters ps = getPreparedStatementParameters(null);
-        return executeUpdate(sql, ps);
-    }
 
     public int executeUpdate(String sql, Object... parameters) {
         PreparedStatementParameters ps = getPreparedStatementParameters(parameters);
@@ -28,7 +24,7 @@ public class JdbcTemplate {
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper, PreparedStatementParameters ps) throws SQLException {
-        ResultSet rs = null;  //TODO rs도 빼는 방법?
+        ResultSet rs = null;
         T result = null;
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             ps.setParameters(pstmt);
