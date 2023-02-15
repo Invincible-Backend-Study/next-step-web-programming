@@ -17,7 +17,26 @@ public class QuestionDao {
                                 resultSet.getString("title"),
                                 resultSet.getString("contents"),
                                 resultSet.getDate("createdDate"),
-                                resultSet.getLong("countOfAnswer"))
+                                resultSet.getInt("countOfAnswer"))
         );
     }
+
+    public Question findByQuestionId(final long questionId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT "
+                        + "questionId, writer, title, contents, createdDate, countOfAnswer "
+                        + "FROM QUESTIONS "
+                        + "where questionId = ?",
+                resultSet ->
+                        new Question(
+                                resultSet.getLong("questionId"),
+                                resultSet.getString("writer"),
+                                resultSet.getString("title"),
+                                resultSet.getString("contents"),
+                                resultSet.getDate("createdDate"),
+                                resultSet.getInt("countOfAnswer")),
+                questionId
+        );
+    }
+
 }

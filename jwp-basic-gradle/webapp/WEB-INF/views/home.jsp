@@ -24,12 +24,12 @@
                         <div class="wrap">
                             <div class="main">
                                 <strong class="subject">
-                                    <a href="/qna/showForm">${questions.title}</a>
+                                    <a href="/qna/showForm?questionId=${questions.questionId}">${questions.title}</a>
                                 </strong>
                                 <div class="auth-info">
                                     <i class="icon-add-comment"></i>
                                     <span class="time">${questions.createdDate}</span>
-                                    <a href="user/html/profile.html" class="author">${questions.writer}</a>
+                                    <a href="/users/profile/profile.html" class="author">${questions.writer}</a>
                                 </div>
                                 <div class="reply" title="댓글">
                                     <i class="icon-reply"></i>

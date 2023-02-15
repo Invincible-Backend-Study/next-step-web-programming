@@ -8,10 +8,10 @@ public class Question {
     private final String title;
     private final String contents;
     private final Date createdDate;
-    private final long countOfAnswer;
+    private final int countOfAnswer;
 
     public Question(final Long questionId, final String writer, final String title, final String contents,
-                    final Date createdDate, final long countOfAnswer) {
+                    final Date createdDate, final int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
@@ -40,7 +40,7 @@ public class Question {
         return createdDate;
     }
 
-    public long getCountOfAnswer() {
+    public int getCountOfAnswer() {
         return countOfAnswer;
     }
 }

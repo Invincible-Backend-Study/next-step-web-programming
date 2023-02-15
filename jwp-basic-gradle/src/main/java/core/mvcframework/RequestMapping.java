@@ -29,8 +29,7 @@ public class RequestMapping {
         handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
 
         // 질문/응답 단순 포워딩
-        handlerMapping.put("/qna/questionForm", new ForwardController("/qna/form"));
-        handlerMapping.put("/qna/showForm", new ForwardController("/qna/show"));
+        handlerMapping.put("/qna/questionForm", new ForwardController("qna/form"));
 
         // 유저
         handlerMapping.put("/users/create", new CreateUserController());
@@ -43,7 +42,8 @@ public class RequestMapping {
 
         // 질문/응답
         handlerMapping.put("/qna/question", new QuestionFormController());
-        handlerMapping.put("/qna/show", new ShowFormController());
+        handlerMapping.put("/qna/showForm", new ShowFormController());
+        // handlerMapping.put("/qna/show", new ShowFormController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {

@@ -22,4 +22,10 @@ class QuestionDaoTest {
         List<Question> questions = questionDao.findAll();
         log.info("questions = {}", questions);
     }
+
+    @Test
+    void findByQuestionId() {
+        Question question = questionDao.findByQuestionId(1L);
+        log.info("question = {}", question);
+    }
 }
