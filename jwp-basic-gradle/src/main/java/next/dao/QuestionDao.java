@@ -10,14 +10,13 @@ public class QuestionDao {
     public List<Question> findAll() {
         return jdbcTemplate.query(
                 "SELECT * FROM QUESTIONS",
-                resultSet ->
-                        new Question(
-                                resultSet.getLong("questionId"),
-                                resultSet.getString("writer"),
-                                resultSet.getString("title"),
-                                resultSet.getString("contents"),
-                                resultSet.getDate("createdDate"),
-                                resultSet.getInt("countOfAnswer"))
+                resultSet -> new Question(
+                        resultSet.getLong("questionId"),
+                        resultSet.getString("writer"),
+                        resultSet.getString("title"),
+                        resultSet.getString("contents"),
+                        resultSet.getDate("createdDate"),
+                        resultSet.getInt("countOfAnswer"))
         );
     }
 
@@ -27,14 +26,13 @@ public class QuestionDao {
                         + "questionId, writer, title, contents, createdDate, countOfAnswer "
                         + "FROM QUESTIONS "
                         + "where questionId = ?",
-                resultSet ->
-                        new Question(
-                                resultSet.getLong("questionId"),
-                                resultSet.getString("writer"),
-                                resultSet.getString("title"),
-                                resultSet.getString("contents"),
-                                resultSet.getDate("createdDate"),
-                                resultSet.getInt("countOfAnswer")),
+                resultSet -> new Question(
+                        resultSet.getLong("questionId"),
+                        resultSet.getString("writer"),
+                        resultSet.getString("title"),
+                        resultSet.getString("contents"),
+                        resultSet.getDate("createdDate"),
+                        resultSet.getInt("countOfAnswer")),
                 questionId
         );
     }
@@ -42,14 +40,13 @@ public class QuestionDao {
     public List<Question> findAllOrderByCreatedDate() {
         return jdbcTemplate.query(
                 "SELECT * FROM QUESTIONS ORDER BY createdDate desc",
-                resultSet ->
-                        new Question(
-                                resultSet.getLong("questionId"),
-                                resultSet.getString("writer"),
-                                resultSet.getString("title"),
-                                resultSet.getString("contents"),
-                                resultSet.getDate("createdDate"),
-                                resultSet.getInt("countOfAnswer"))
+                resultSet -> new Question(
+                        resultSet.getLong("questionId"),
+                        resultSet.getString("writer"),
+                        resultSet.getString("title"),
+                        resultSet.getString("contents"),
+                        resultSet.getDate("createdDate"),
+                        resultSet.getInt("countOfAnswer"))
         );
     }
 
