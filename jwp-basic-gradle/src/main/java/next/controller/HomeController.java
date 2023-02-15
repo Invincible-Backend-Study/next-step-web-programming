@@ -7,9 +7,10 @@ import next.service.QuestionService;
 
 public class HomeController implements Controller {
     private final QuestionService questionService = new QuestionService();
+
     @Override
     public String execute(final HttpServletRequest request, final HttpServletResponse response) {
-        request.setAttribute("questions", questionService.findAll());
+        request.setAttribute("questions", questionService.findAllOrderByCreatedDate());
         return "home";
     }
 }

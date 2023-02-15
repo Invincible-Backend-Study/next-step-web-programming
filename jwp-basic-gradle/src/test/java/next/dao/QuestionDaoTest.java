@@ -24,6 +24,12 @@ class QuestionDaoTest {
     }
 
     @Test
+    void findAllOrderByCreatedDate() {
+        List<Question> questions = questionDao.findAllOrderByCreatedDate();
+        log.info("questions = {}", questions);
+    }
+
+    @Test
     void findByQuestionId() {
         Question question = questionDao.findByQuestionId(1L);
         log.info("question = {}", question);

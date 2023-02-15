@@ -39,4 +39,17 @@ public class QuestionDao {
         );
     }
 
+    public List<Question> findAllOrderByCreatedDate() {
+        return jdbcTemplate.query(
+                "SELECT * FROM QUESTIONS ORDER BY createdDate desc",
+                resultSet ->
+                        new Question(
+                                resultSet.getLong("questionId"),
+                                resultSet.getString("writer"),
+                                resultSet.getString("title"),
+                                resultSet.getString("contents"),
+                                resultSet.getDate("createdDate"),
+                                resultSet.getInt("countOfAnswer"))
+        );
+    }
 }
