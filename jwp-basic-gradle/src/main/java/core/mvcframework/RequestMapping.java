@@ -19,6 +19,8 @@ public class RequestMapping {
     static {
         handlerMapping.put("/", new HomeController());
         handlerMapping.put("/users/form", new ForwardController("user/form"));
+        handlerMapping.put("/users/loginForm", new ForwardController("user/login"));
+        handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
         handlerMapping.put("/users/create", new CreateUserController());
         handlerMapping.put("/users/list", new ListUserController());
         handlerMapping.put("/users/login", new LoginUserController());

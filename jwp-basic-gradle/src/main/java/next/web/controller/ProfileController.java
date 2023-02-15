@@ -18,7 +18,7 @@ public class ProfileController extends AbstractController {
         String userId = request.getParameter("userId");
         log.debug("userId={}", userId);
         if (userId == null || userId.equals("")) {
-            return "redirect:/users/login";
+            return "redirect:/users/loginForm";
         }
         ProfileUserDto profileUser = ProfileUserDto.from(userService.findUserById(userId));
         request.getSession().setAttribute("user", profileUser);
