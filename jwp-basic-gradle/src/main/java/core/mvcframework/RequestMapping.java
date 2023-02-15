@@ -18,12 +18,13 @@ public class RequestMapping {
 
     static {
         handlerMapping.put("/", new HomeController());
-        handlerMapping.put("/user/create", new CreateUserController());
-        handlerMapping.put("/user/list", new ListUserController());
-        handlerMapping.put("/user/login", new LoginUserController());
-        handlerMapping.put("/user/logout", new LogoutUserController());
-        handlerMapping.put("/user/profile", new ProfileController());
-        handlerMapping.put("/user/update", new UpdateUserFormController());
+        handlerMapping.put("/users/form", new ForwardController("user/form"));
+        handlerMapping.put("/users/create", new CreateUserController());
+        handlerMapping.put("/users/list", new ListUserController());
+        handlerMapping.put("/users/login", new LoginUserController());
+        handlerMapping.put("/users/logout", new LogoutUserController());
+        handlerMapping.put("/users/profile", new ProfileController());
+        handlerMapping.put("/users/update", new UpdateUserFormController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {
