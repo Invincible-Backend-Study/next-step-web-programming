@@ -32,14 +32,14 @@ public class LoginUserController extends AbstractController {
             User loginedUser = userService.loginUser(request.getParameter("userId"), request.getParameter("password"));
             if (loginedUser == null) {
                 session.setAttribute("loginTry", true);
-                return "redirect:/user/login";
+                return "redirect:/users/login";
             }
             session.setAttribute("user", loginedUser);
             return "redirect:/";
         } catch (IllegalArgumentException exception) {
             log.error(exception.getMessage());
             session.setAttribute("loginTry", true);
-            return "redirect:/user/login";
+            return "redirect:/users/login";
         }
     }
 }

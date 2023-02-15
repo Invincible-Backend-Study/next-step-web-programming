@@ -30,7 +30,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="/user/list"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="/users/list"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
     </div>
@@ -42,7 +42,7 @@
                data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <li><a href="/user/profile?userId=${sessionScope.user.userId}"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
+                <li><a href="/users/profile?userId=${sessionScope.user.userId}"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
                 </li>
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>

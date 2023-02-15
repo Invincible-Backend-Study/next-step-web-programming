@@ -19,7 +19,7 @@ public class UpdateUserFormController extends AbstractController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null || !userId.equals(user.getUserId())) {
-            return "redirect:/user/login";
+            return "redirect:/users/login";
         }
         return "user/update";
     }
@@ -37,6 +37,6 @@ public class UpdateUserFormController extends AbstractController {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
-        return "redirect:/user/list";
+        return "redirect:/users/list";
     }
 }
