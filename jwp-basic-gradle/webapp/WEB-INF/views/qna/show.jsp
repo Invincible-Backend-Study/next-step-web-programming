@@ -93,11 +93,14 @@
                                     </div>
                                 </article>
                             </c:forEach>
-                            <form class="submit-write">
+                            <form class="submit-write" method="post" action="/qna/createAnswer">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                                    <%--추가 시작--%>
+                                    <input  id="questionId" name="questionId" value="${questionWithAnswers.question.questionId}" type="hidden" />
+                                    <textarea class="form-control" id="contents" name="contents" placeholder="Update your status"></textarea>
+                                    <%--추가 끝--%>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">Post</button>
+                                <button class="btn btn-success pull-right" type="submit">Post</button>
                                 <div class="clearfix"/>
                             </form>
                         </div>

@@ -22,4 +22,10 @@ public class AnswerDao {
         );
     }
 
+    public int insert(final Answer answer) {
+        return jdbcTemplate.update(
+                "INSERT INTO ANSWERS(writer, contents, createdDate, questionId)"
+                        + "VALUES(?, ?, ?, ?)",
+                answer.getWriter(), answer.getContents(), answer.getCreatedDate(), answer.getQuestionId());
+    }
 }

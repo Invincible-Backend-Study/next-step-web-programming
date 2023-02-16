@@ -13,19 +13,19 @@ import org.slf4j.LoggerFactory;
 public class JdbcTemplate {
     private static final Logger log = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
+    public int update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatementSetter.setValue(preparedStatement);
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new DataAccessException(exception);
         }
     }
 
-    public void update(final String query, final Object... values) {
-        update(query, createPreparedStatementSetter(values));
+    public int update(final String query, final Object... values) {
+        return update(query, createPreparedStatementSetter(values));
     }
 
     public <T> List<T> query(

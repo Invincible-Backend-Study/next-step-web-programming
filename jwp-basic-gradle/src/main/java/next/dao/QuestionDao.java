@@ -61,4 +61,10 @@ public class QuestionDao {
                 question.getCreatedDate(),
                 question.getCountOfAnswer());
     }
+
+    public void updateCountOfAnswerById(final Long questionId, final int countOfAnswer) {
+        jdbcTemplate.update(
+                "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?",
+                countOfAnswer, questionId);
+    }
 }

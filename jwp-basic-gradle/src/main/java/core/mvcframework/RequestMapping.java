@@ -3,7 +3,8 @@ package core.mvcframework;
 import java.util.HashMap;
 import java.util.Map;
 import next.controller.HomeController;
-import next.controller.qna.CreateQuestionController;
+import next.controller.qna.AnswerCreateController;
+import next.controller.qna.QuestionCreateController;
 import next.controller.qna.QuestionFormController;
 import next.controller.qna.ShowFormController;
 import next.controller.user.CreateUserController;
@@ -40,8 +41,9 @@ public class RequestMapping {
 
         // 질문/응답
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
-        handlerMapping.put("/qna/createQuestion", new CreateQuestionController());
+        handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
         handlerMapping.put("/qna/showForm", new ShowFormController());
+        handlerMapping.put("/qna/createAnswer", new AnswerCreateController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {
