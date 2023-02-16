@@ -16,7 +16,7 @@ public class QuestionCreateDto {
     }
 
     private void validate() {
-        if (writer.equals("") || contents.equals("")) {
+        if (title.equals("") || contents.equals("")) {
             throw new IllegalArgumentException("[ERROR] 제목 및 본문 내용을 반드시 입력해야 합니다.");
         }
     }
