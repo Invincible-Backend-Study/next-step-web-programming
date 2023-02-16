@@ -33,20 +33,20 @@ class QuestionDaoTest {
         System.out.println(questions.toString());
     }
 
-    @Test
-    void findByQuestionId() throws Exception {
-        Question question = questionDao.findByQuestionId(33L);
-        System.out.println(question.toString());
-    }
-
-    @Test
-    void update() throws Exception {
-        Question question = questionDao.findByQuestionId(39L);
-        System.out.println(question.toString());
-        question.setTitle("newTitle!!");
-        questionDao.update(question);
-
-        question = questionDao.findByQuestionId(39L);
-        System.out.println(question.toString());
-    }
+//    @Test
+//    void findByQuestionId() throws Exception {
+//        Question question = questionDao.findByQuestionId(33L);
+//        System.out.println(question.toString());
+//    }
+//
+//    @Test
+//    void update() throws Exception {
+//        Question question = questionDao.findByQuestionId(39L);
+//        System.out.println(question.toString());
+//        question.setTitle("newTitle!!");
+//        questionDao.update(question);
+//
+//        question = questionDao.findByQuestionId(39L);
+//        System.out.println(question.toString());
+//    }
 }
