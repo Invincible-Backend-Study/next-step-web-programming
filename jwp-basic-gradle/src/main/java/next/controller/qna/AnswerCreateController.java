@@ -23,7 +23,7 @@ public class AnswerCreateController implements Controller {
         return "redirect:/qna/showForm?questionId=" + answerCreateDto.getQuestionId();
     }
 
-    private static AnswerCreateDto createAnswerDto(final HttpServletRequest request, final HttpSession session) {
+    private AnswerCreateDto createAnswerDto(final HttpServletRequest request, final HttpSession session) {
         User user = (User) session.getAttribute("user");
         return new AnswerCreateDto(
                 user.getUserId(),
