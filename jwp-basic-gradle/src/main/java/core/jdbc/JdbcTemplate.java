@@ -29,7 +29,7 @@ public class JdbcTemplate {
             rs = pstmt.executeQuery();
             result = resultSetMapper.mapRow(rs);
         } catch (SQLException e) {
-            throw new DataAccessException();
+            throw new DataAccessException(e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
