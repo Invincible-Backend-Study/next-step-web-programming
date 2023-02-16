@@ -15,7 +15,7 @@ public class AnswerCreateController implements Controller {
     @Override
     public String execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
-        if (!SessionUtil.isLogin(session, "user")) {
+        if (!SessionUtil.isLogined(session, "user")) {
             return "redirect:/users/loginForm";
         }
         AnswerCreateDto answerCreateDto = createAnswerDto(request, session);
