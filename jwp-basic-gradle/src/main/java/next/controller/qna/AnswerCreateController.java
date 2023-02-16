@@ -16,8 +16,17 @@ public class AnswerCreateController implements Controller {
         if (!SessionUtil.isLogin(session, "user")) {
             return "redirect:/users/loginForm";
         }
+        AnswerCreateDto answerCreateDto = createAnswerDto(request, session);
+
         return null;
     }
 
-
+    private static AnswerCreateDto createAnswerDto(final HttpServletRequest request, final HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        return new AnswerCreateDto(
+                user.getUserId(),
+                request.getParameter("contents"),
+                Long.parseLong(request.getParameter("questionId"))
+        );
+    }
 }
