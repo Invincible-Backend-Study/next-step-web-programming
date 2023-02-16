@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import next.controller.qna.dto.QuestionCreateDto;
 import next.service.QuestionService;
 
-public class CreateQuestionController implements Controller {
+public class QuestionCreateController implements Controller {
     private final QuestionService questionService = new QuestionService();
 
     @Override
