@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.service.QuestionService;
 
-public class ShowFormController implements Controller {
+public class ShowController implements Controller {
     private final QuestionService questionService = new QuestionService();
 
     @Override
