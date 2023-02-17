@@ -42,6 +42,10 @@ public class DispatcherServlet extends HttpServlet {
             throw new IllegalArgumentException("[ERROR] No URL mapping");
         }
         String executeResult = handler.execute(request, response);
+        if (executeResult == null) {
+            log.debug("returnJsonValue: end the response");
+            return;
+        }
         log.debug("handlerExecuteResult={}", executeResult);
         resolveExecuteResult(executeResult);
     }

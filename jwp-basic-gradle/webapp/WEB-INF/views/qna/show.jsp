@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -15,7 +16,7 @@
 <jsp:include page="../navigation.jsp"/>
 
 <div class="container" id="main">
-    <div class="col-md-12 col-sm-12 col-lg-12">
+    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default">
             <header class="qna-header">
                 <h2 class="qna-title">${questionWithAnswers.question.title}</h2>
@@ -30,27 +31,27 @@
                         <div class="article-header-text">
                             <a href="/users/92/kimmunsu" class="article-author-name">${questionWithAnswers.question.writer}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                ${questionWithAnswers.question.createdDate}
+                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${questionWithAnswers.question.createdDate}"/>
                                 <i class="icon-link"></i>
                             </a>
                         </div>
                     </div>
                     <div class="article-doc">
-                        <p>${questionWithAnswers.question.contents}</p>
+                        ${questionWithAnswers.question.contents}
                     </div>
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/questions/423/form">수정</a>
+                                <a class="link-modify-article" href="#">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/questions/423" method="POST">
+                                <form class="form-delete" action="#" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
                             </li>
                             <li>
-                                <a class="link-modify-article" href="/index.html">목록</a>
+                                <a class="link-modify-article" href="/">목록</a>
                             </li>
                         </ul>
                     </div>
@@ -60,32 +61,32 @@
                     <div class="qna-comment-slipp">
                         <p class="qna-comment-count"><strong>${questionWithAnswers.question.countOfAnswer}</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
-                            <c:forEach var="answer" items="${questionWithAnswers.answers}">
-                                <article class="article" id="answer-1405">
+
+                            <c:forEach items="${questionWithAnswers.answers}" var="each">
+                                <article class="article">
                                     <div class="article-header">
                                         <div class="article-header-thumb">
                                             <img src="https://graph.facebook.com/v2.3/1324855987/picture"
                                                  class="article-author-thumb" alt="">
                                         </div>
                                         <div class="article-header-text">
-                                            <a href="/users/1/자바지기" class="article-author-name">${answer.writer}</a>
-                                            <a href="#answer-1434" class="article-header-time" title="퍼머링크">
-                                                ${answer.createdDate}
-                                            </a>
+                                                ${each.writer}
+                                            <div class="article-header-time"><fmt:formatDate
+                                                    pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/></div>
                                         </div>
                                     </div>
                                     <div class="article-doc comment-doc">
-                                        <p>${answer.contents}</p>
+                                        <p>${each.contents}</p>
                                     </div>
                                     <div class="article-util">
                                         <ul class="article-util-list">
                                             <li>
-                                                <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
+                                                <a class="link-modify-article"
+                                                   href="/api/qna/updateAnswer?answerId=${each.answerId}">수정</a>
                                             </li>
                                             <li>
-                                                <form class="form-delete" action="/questions/413/answers/1405"
-                                                      method="POST">
-                                                    <input type="hidden" name="_method" value="DELETE">
+                                                <form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
+                                                    <input type="hidden" name="answerId" value="${each.answerId}"/>
                                                     <button type="submit" class="link-delete-article">삭제</button>
                                                 </form>
                                             </li>
@@ -93,16 +94,20 @@
                                     </div>
                                 </article>
                             </c:forEach>
-                            <form class="submit-write" method="post" action="/qna/createAnswer">
-                                <div class="form-group" style="padding:14px;">
-                                    <%--추가 시작--%>
-                                    <input  id="questionId" name="questionId" value="${questionWithAnswers.question.questionId}" type="hidden" />
-                                    <textarea class="form-control" id="contents" name="contents" placeholder="Update your status"></textarea>
-                                    <%--추가 끝--%>
-                                </div>
-                                <button class="btn btn-success pull-right" type="submit">Post</button>
-                                <div class="clearfix"/>
-                            </form>
+                            <div class="answerWrite">
+                                <form name="answer" method="post">
+                                    <input type="hidden" name="questionId" value="${questionWithAnswers.question.questionId}">
+                                    <div class="form-group col-lg-4" style="padding-top:10px;">
+                                        <input class="form-control" id="writer" name="writer" placeholder="이름">
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <textarea name="contents" id="contents" class="form-control"
+                                                  placeholder=""></textarea>
+                                    </div>
+                                    <input class="btn btn-success pull-right" type="submit" value="답변하기"/>
+                                    <div class="clearfix"/>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,6 +116,35 @@
     </div>
 </div>
 
+<script type="text/template" id="answerTemplate">
+    <article class="article">
+        <div class="article-header">
+            <div class="article-header-thumb">
+                <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+            </div>
+            <div class="article-header-text">
+                {0}
+                <div class="article-header-time">{1}</div>
+            </div>
+        </div>
+        <div class="article-doc comment-doc">
+            {2}
+        </div>
+        <div class="article-util">
+            <ul class="article-util-list">
+                <li>
+                    <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
+                </li>
+                <li>
+                    <form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
+                        <input type="hidden" name="answerId" value="{4}"/>
+                        <button type="submit" class="link-delete-article">삭제</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </article>
+</script>
 <!-- script references -->
 <jsp:include page="../script.jsp"/>
 </body>

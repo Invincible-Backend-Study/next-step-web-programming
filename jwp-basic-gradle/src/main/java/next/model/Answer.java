@@ -44,4 +44,15 @@ public class Answer {
     public Long getQuestionId() {
         return questionId;
     }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "answerId=" + answerId +
+                ", writer='" + writer + '\'' +
+                ", contents='" + contents + '\'' +
+                ", createdDate=" + createdDate +
+                ", questionId=" + questionId +
+                '}';
+    }
 }

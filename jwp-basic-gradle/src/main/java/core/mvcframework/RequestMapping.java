@@ -7,6 +7,7 @@ import next.controller.qna.AnswerCreateController;
 import next.controller.qna.QuestionCreateController;
 import next.controller.qna.QuestionFormController;
 import next.controller.qna.ShowController;
+import next.controller.qna.api.AddAnswerController;
 import next.controller.user.CreateUserController;
 import next.controller.user.ListUserController;
 import next.controller.user.LoginUserController;
@@ -44,6 +45,9 @@ public class RequestMapping {
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
         handlerMapping.put("/qna/showForm", new ShowController());
         handlerMapping.put("/qna/createAnswer", new AnswerCreateController());
+
+        // ajax 질문/응답
+        handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {

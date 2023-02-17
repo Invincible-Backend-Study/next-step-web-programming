@@ -18,4 +18,14 @@ public class AnswerService {
         Question findQuestion = questionDao.findByQuestionId(questionId);
         questionDao.updateCountOfAnswerById(questionId, findQuestion.getCountOfAnswer() + 1);
     }
+
+    /**
+     * AJAX 실습 insert
+     */
+    public Answer insertAnswer(final Answer answer) {
+        if (answerDao.insert(answer) >= 1) {
+            return answer;
+        }
+        return null;
+    }
 }
