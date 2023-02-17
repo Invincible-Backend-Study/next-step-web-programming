@@ -1,15 +1,3 @@
-String.prototype.format = function () {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function (match, number) {
-        return typeof args[number] != 'undefined'
-            ? args[number]
-            : match
-            ;
-
-    });
-};
-
-
 $(document).ready(function () {/* jQuery toggle layout */
     $('#btnToggle').click(function () {
         if ($(this).hasClass('on')) {
@@ -21,6 +9,17 @@ $(document).ready(function () {/* jQuery toggle layout */
         }
     });
 });
+
+String.prototype.format = function () {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function (match, number) {
+        return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+            ;
+
+    });
+};
 
 // 답변시 AJAX 동작
 $(".answerWrite input[type=submit]").click(addAnswer);
