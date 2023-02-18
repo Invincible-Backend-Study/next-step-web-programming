@@ -10,12 +10,20 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import next.model.Answer;
+import next.model.Question;
 import next.model.User;
+import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.junit.jupiter.api.Test;
 
 public class UserDaoTest {
@@ -51,5 +59,11 @@ public class UserDaoTest {
         assertTrue(findAlluser.containsAll(expected));
     }
 
-    
+    @Test
+    public void test() {
+        AnswerDao dao = new AnswerDao();
+        dao.addAnswer(new Answer(20,"나","바보",Timestamp.valueOf(LocalDateTime.now()),6));
+    }
+
+
 }

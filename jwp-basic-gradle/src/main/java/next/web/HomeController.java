@@ -14,4 +14,5 @@ public class HomeController implements Controller {
         req.setAttribute("questions",dao.findAll());
         return "home.jsp";
     }
+
 }
