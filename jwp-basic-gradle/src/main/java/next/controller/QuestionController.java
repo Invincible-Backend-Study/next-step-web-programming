@@ -1,7 +1,9 @@
 package next.controller;
 
+import core.web.View;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
+import next.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +14,7 @@ import java.sql.SQLException;
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     @Override
-    protected String doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected View doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
         try {
             request.setAttribute("question", QuestionDao.findByQuestionId(questionId));
@@ -21,6 +23,6 @@ public class QuestionController extends AbstractController {
             log.error(e.toString());
         }
 
-        return "/qna/show.jsp";
+        return new JspView("/qna/show.jsp");
     }
 }

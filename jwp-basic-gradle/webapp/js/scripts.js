@@ -38,7 +38,23 @@ function addAnswer(e) {
   var queryString = $("form[name=answer]").serialize();
 
   $.ajax({
-    type : 'post',
+    type : 'POST',
+    url : '/answer',
+    data : queryString,
+    dataType : 'json',
+    error : onError,
+    success : onSuccess,
+  })
+}
+
+$(".article-util-list input[type=submit]").click(deleteAnswer);
+function deleteAnswer(e) {
+  e.preventDefault();  // submit 이 자동으로 동작하는 것을 막는다.
+  //form 데이터들을 자동으로 묶어준다.
+  var queryString = $("form[name=answer]").serialize();
+
+  $.ajax({
+    type : 'DELETE',
     url : '/answer',
     data : queryString,
     dataType : 'json',
