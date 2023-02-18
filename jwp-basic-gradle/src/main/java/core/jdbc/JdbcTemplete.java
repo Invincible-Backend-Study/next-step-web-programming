@@ -10,7 +10,7 @@ public class JdbcTemplete {
     public void excuteSqlUpdate(String sql, Object... parameters) throws SQLException {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             setSqlParameters(pstmt, parameters);
-            pstmt.executeUpdate(sql);
+            pstmt.executeUpdate();
         }
     }
 
