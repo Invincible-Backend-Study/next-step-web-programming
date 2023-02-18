@@ -3,6 +3,7 @@ package next.web.user;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import next.dao.UserDao;
 import next.model.User;
 import next.mvc.Controller;
@@ -15,21 +16,15 @@ public class CreateUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse res) {
-        try {
-            User user = new User(
-                    req.getParameter("userId"),
-                    req.getParameter("password"),
-                    req.getParameter("name"),
-                    req.getParameter("email")
-            );
-            UserDao userDao = new UserDao();
-            userDao.addUser(user);
-            req.setAttribute("users", new UserDao().findAllUser());
-        } catch (IllegalStateException e) {
-            log.error("공백 : { }", e);
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-        }
+        User user = new User(
+                req.getParameter("userId"),
+                req.getParameter("password"),
+                req.getParameter("name"),
+                req.getParameter("email")
+        );
+        UserDao userDao = new UserDao();
+        userDao.addUser(user);
+        req.setAttribute("users", new UserDao().findAllUser());
         return "redirect:/";
     }
 }

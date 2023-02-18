@@ -11,7 +11,7 @@ public class QuestionDao {
 
     private final JdbcTemplete template = new JdbcTemplete();
 
-    public void addQuestion(Question question) throws SQLException {
+    public void addQuestion(Question question) {
         String sql = "INSERT INTO QUESTIONS ( writer, title, contents, createdDate, countOfAnswer) VALUES (?,?,?,?,?)";
         template.excuteSqlUpdate(
                 sql,
@@ -23,7 +23,7 @@ public class QuestionDao {
         );
     }
 
-    public Question findByQuestionId(int questionId) throws SQLException {
+    public Question findByQuestionId(int questionId) {
         String sql = "SELECT * FROM QUESTIONS WHERE QUESTIONID = ?";
         return template.excuteFindDynamicData(sql,rs -> {
             if(rs.next()){
@@ -41,7 +41,7 @@ public class QuestionDao {
         },questionId);
     }
 
-    public List<Question> findAll() throws SQLException {
+    public List<Question> findAll() {
         String sql = "SELECT * FROM QUESTIONS";
         return template.excuteFindDynamicData(sql,rs -> {
             List<Question> questions = new ArrayList<>();

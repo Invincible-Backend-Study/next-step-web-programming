@@ -13,11 +13,7 @@ public class UserListController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     public String execute(HttpServletRequest req, HttpServletResponse res) {
-        try {
-            req.setAttribute("users", new UserDao().findAllUser());
-        } catch (SQLException err) {
-            log.error(err.getMessage());
-        }
+        req.setAttribute("users", new UserDao().findAllUser());
         return "/user/list.jsp";
     }
 }
