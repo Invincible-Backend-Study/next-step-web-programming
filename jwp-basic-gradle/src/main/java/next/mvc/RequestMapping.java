@@ -2,6 +2,7 @@ package next.mvc;
 
 import next.web.ForwardController;
 import next.web.HomeController;
+import next.web.question.AnswerController;
 import next.web.question.QuestionController;
 import next.web.question.QuestionFormController;
 import next.web.user.*;
@@ -22,6 +23,7 @@ public class RequestMapping {
         mappings.put("/user/list", new UserListController());
         mappings.put("/qna/show", new QuestionController());
         mappings.put("/qna/form", new QuestionFormController());
+        mappings.put("/qna/answer", new AnswerController());
     }
 
     public Controller getController(String url){
