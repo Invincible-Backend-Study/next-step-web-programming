@@ -11,14 +11,15 @@ import next.model.Question;
 public class AnswerDao {
     static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-    public static void insert(Answer answer) throws SQLException {
+    public static Answer insert(Answer answer) throws SQLException {
         String sql = "INSERT INTO ANSWERS(writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.executeUpdate(sql,
+        Long answerId = jdbcTemplate.insert(sql,
                 answer.getWriter(),
                 answer.getContents(),
                 answer.getCreatedDate(),
                 answer.getQuestionId()
         );
+        return findByAnswerId(answerId);
     }
 
     public static List<Answer> findAll() throws SQLException {

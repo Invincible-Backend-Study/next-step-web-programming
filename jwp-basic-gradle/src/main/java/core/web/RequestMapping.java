@@ -19,7 +19,7 @@ public class RequestMapping {
         controllers.put("/question/list", new ListQuestionController());
         controllers.put("/question", new QuestionController());
         controllers.put("/answer/list", null);
-        controllers.put("/answer", null);
+        controllers.put("/answer", new AnswerController());
     }
 
     public static Controller getController(String requestUri) {

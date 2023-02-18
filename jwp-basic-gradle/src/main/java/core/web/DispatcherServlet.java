@@ -26,6 +26,9 @@ public class DispatcherServlet extends HttpServlet {
         String uri = controller.execute(req, resp);
 
         logger.debug("DispatcherServlet: {} {}", controller.toString(), uri);
+        if (uri == null) {
+            return;
+        }
         if (uri.startsWith("redirect:")) {
             resp.sendRedirect(uri.split(":")[1]);
             return;

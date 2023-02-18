@@ -6,6 +6,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JdbcTemplate {
+    public long insert(String sql, PreparedStatementParameters ps) {
+        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
+            ps.setParameters(pstmt);
+            pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.toString());
+        }
+        return -1;
+    }
+
+    public long insert(String sql, Object... parameters) {
+        PreparedStatementParameters ps = getPreparedStatementParameters(parameters);
+        return insert(sql, ps);
+    }
+
     public int executeUpdate(String sql, PreparedStatementParameters ps) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             ps.setParameters(pstmt);
