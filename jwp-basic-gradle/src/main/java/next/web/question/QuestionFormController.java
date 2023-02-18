@@ -1,7 +1,6 @@
 package next.web.question;
 
 import next.dao.QuestionDao;
-import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 import next.mvc.Controller;
@@ -34,7 +33,7 @@ public class QuestionFormController implements Controller {
                 0
         );
         new QuestionDao().addQuestion(qs);
-        return "/qna/form.jsp";
+        return "redirect:/";
     }
 
     private boolean isLogined(HttpSession session) {
