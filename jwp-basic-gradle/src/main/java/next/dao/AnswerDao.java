@@ -11,10 +11,9 @@ public class AnswerDao {
     private final JdbcTemplete templete = new JdbcTemplete();
 
     public void addAnswer(Answer answer) {
-        String sql = "INSERT INTO ANSWERS ( answerId, writer, contents, createdDate, questionId) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?,?,?,?,?)";
         templete.excuteSqlUpdate(
                 sql,
-                answer.getAnswerId(),
                 answer.getWriter(),
                 answer.getContents(),
                 answer.getCreatedDate(),
