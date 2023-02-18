@@ -83,9 +83,9 @@
                           </c:forEach>
                           <form class="submit-write">
                               <div class="form-group" style="padding:14px;">
-                                  <textarea class="form-control" placeholder="Update your status"></textarea>
+                                  <textarea id="contents" name="contents" class="form-control" placeholder="Update your status"></textarea>
                               </div>
-                              <button class="btn btn-success pull-right" type="button">Post</button>
+                              <button class="btn btn-success pull-right" type="submit">Post</button>
                               <div class="clearfix" />
                           </form>
                       </div>
