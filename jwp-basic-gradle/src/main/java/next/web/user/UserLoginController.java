@@ -1,4 +1,4 @@
-package next.web;
+package next.web.user;
 
 import java.sql.SQLException;
 import java.util.Objects;

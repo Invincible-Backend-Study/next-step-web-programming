@@ -1,4 +1,4 @@
-package next.web;
+package next.web.question;
 
 import next.mvc.Controller;
 
