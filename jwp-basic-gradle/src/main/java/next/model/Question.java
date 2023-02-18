@@ -8,24 +8,24 @@ public class Question {
     private final String title;
     private final String contents;
     private final Timestamp createdDate;
-    private final int counteofAnwer;
+    private final int countOfAnswer;
 
 
-    public Question(int questionId, String writer, String title, String contents, Timestamp createdDate, int counteofAnwer) {
+    public Question(int questionId, String writer, String title, String contents, Timestamp createdDate, int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
-        this.counteofAnwer = counteofAnwer;
+        this.countOfAnswer = countOfAnswer;
     }
 
     public int getQuestionId() {
         return questionId;
     }
 
-    public int getCounteofAnwer() {
-        return counteofAnwer;
+    public int getCountOfAnswer() {
+        return countOfAnswer;
     }
 
     public Timestamp getCreatedDate() {
@@ -44,7 +44,7 @@ public class Question {
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", createdDate=" + createdDate +
-                ", counteofAnwer=" + counteofAnwer +
+                ", counteofAnwer=" + countOfAnswer +
                 '}';
     }
 

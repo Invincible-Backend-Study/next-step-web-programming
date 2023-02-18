@@ -1,11 +1,14 @@
 package next.mvc;
 
-import next.web.*;
+import next.web.ForwardController;
+import next.web.HomeController;
+import next.web.question.QuestionController;
+import next.web.user.*;
 
 import java.util.HashMap;
 
 public class RequestMapping {
-    private HashMap<String, Controller> mappings = new HashMap<>();
+    private final HashMap<String, Controller> mappings = new HashMap<>();
 
     void initMapping() {
         mappings.put("/", new HomeController());
@@ -16,6 +19,7 @@ public class RequestMapping {
         mappings.put("/user/updateForm", new UpdateUserFormController());
         mappings.put("/user/form", new ForwardController("/user/form.jsp"));
         mappings.put("/user/list", new UserListController());
+        mappings.put("/qna/show", new QuestionController());
     }
 
     public Controller getController(String url){
