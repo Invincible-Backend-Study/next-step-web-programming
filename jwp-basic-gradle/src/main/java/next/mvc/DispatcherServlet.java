@@ -28,6 +28,9 @@ public class DispatcherServlet extends HttpServlet {
             return;
         }
         String responseUri = controller.execute(req, res);
+        if(responseUri == null){
+            return;
+        }
         if (responseUri.startsWith(REDIRECT_PREFIX)) {
             res.sendRedirect(responseUri.substring(REDIRECT_PREFIX.length()));
             return;
