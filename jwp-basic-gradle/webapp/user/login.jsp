@@ -15,7 +15,7 @@
     <link href="../css/styles.css" rel="stylesheet">
 </head>
 <body>
-<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="../template/header.jsp"></jsp:include>
 
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
@@ -37,6 +37,6 @@
 </div>
 
 <!-- script references -->
-<jsp:include page="footer.jsp"></jsp:include>
+<jsp:include page="../template/footer.jsp"></jsp:include>
 	</body>
 </html>

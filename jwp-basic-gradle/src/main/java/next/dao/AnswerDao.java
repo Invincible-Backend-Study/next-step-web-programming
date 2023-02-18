@@ -40,6 +40,25 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
+    public static List<Answer> findByQuestionId(Long questionId) throws SQLException {
+        ResultSetMapper<List<Answer>> resultSetMapper = rs -> {
+            List<Answer> answers = new ArrayList<>();
+            while (rs.next()) {
+                answers.add(new Answer(
+                        rs.getLong("answerId"),
+                        rs.getString("writer"),
+                        rs.getString("contents"),
+                        rs.getTimestamp("createdDate"),
+                        rs.getLong("questionId")
+                ));
+            }
+            return answers;
+        };
+
+        String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE questionId = ?";
+        return jdbcTemplate.select(sql, resultSetMapper, questionId);
+    }
+
     public static Answer findByAnswerId(Long answerId) throws SQLException {
         ResultSetMapper<Answer> resultSetMapper = rs -> {
             if (rs.next()) {

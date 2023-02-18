@@ -1,6 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -18,19 +15,22 @@
 <jsp:include page="../template/header.jsp"></jsp:include>
 
 <div class="container" id="main">
-   <div class="col-md-6 col-md-offset-3">
+   <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default content-main">
-          <div class="alert alert-danger" role="alert">아이디 또는 비밀번호가 틀립니다. 다시 로그인 해주세요.</div>
-          <form name="question" method="post" action="/user/login">
+          <form name="question" method="post" action="/question">
               <div class="form-group">
-                  <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID">
+                  <label for="writer">글쓴이</label>
+                  <input class="form-control" id="writer" name="writer" placeholder="글쓴이"/>
               </div>
               <div class="form-group">
-                  <label for="password">비밀번호</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  <label for="title">제목</label>
+                  <input type="text" class="form-control" id="title" name="title" placeholder="제목"/>
               </div>
-              <button type="submit" class="btn btn-success clearfix pull-right">로그인</button>
+              <div class="form-group">
+                  <label for="contents">내용</label>
+                  <textarea name="contents" id="contents" rows="5" class="form-control"></textarea>
+              </div>
+              <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
               <div class="clearfix" />
           </form>
         </div>
