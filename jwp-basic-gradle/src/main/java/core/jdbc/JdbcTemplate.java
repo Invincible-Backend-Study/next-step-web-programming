@@ -11,11 +11,11 @@ import java.util.List;
 
 public class JdbcTemplate {
 
-    public void update(String sql, PreparedStatementSetter preparedStatementSetter) throws DataAccessException {
+    public int update(String sql, PreparedStatementSetter preparedStatementSetter) throws DataAccessException {
 
         try (final var connection = ConnectionManager.getConnection(); final var preparedStatement = connection.prepareStatement(sql)){
             preparedStatementSetter.setValues(preparedStatement);
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }

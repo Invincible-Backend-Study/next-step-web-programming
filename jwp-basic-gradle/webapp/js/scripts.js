@@ -21,10 +21,12 @@ function onSuccess({answer, countOfComments}, status){
       new Date(answer.createdDate).toYYYYMMDD_HHMMSS(),
       answer.contents,
       answer.answerId,
+      answer.answerId
   );
   $(".qna-comment-slipp-articles").prepend(template);
   $("#questionCount").text(countOfComments);
   $("form[name=answer]").each(function() {this.reset()});
+  app.init();
 }
 
 function onError(xhr, status) {
@@ -69,19 +71,19 @@ class App{
       error: onError,
       success: onSuccess
     })
-    this.init();
   }
 
   #deleteAnswer(e) {
     e.preventDefault();
     const queryString = $($(e)[0].target.form).serialize();
+    console.log(queryString);
     $.ajax({
       type:'post',
       url : '/api/qna/deleteAnswer',
       data:queryString,
       dataType: 'json',
       error: (e)=>{
-        console.log(e);
+        window.alert("오류 발생");
       },
       success: ({countOfComments}) =>{
         $(this).closest(".article").remove();

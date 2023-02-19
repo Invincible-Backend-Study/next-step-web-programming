@@ -3,6 +3,7 @@ package core.mvc;
 import java.util.HashMap;
 import java.util.Map;
 import next.controller.answer.AddAnswerController;
+import next.controller.answer.GetQuestionController;
 import next.controller.question.CreateQnAFormController;
 import next.controller.question.CreateQnaActionController;
 import next.controller.user.CreateUserController;
@@ -33,6 +34,7 @@ public class RequestMapping {
         //mapping.put("/user/loginFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/login_failed.jsp"));
         //mapping.put("/user/signupFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/signup_failed.jsp"));
 
+        mapping.put("/api/qna/show", new GetQuestionController());
         mapping.put("/qna/form", new CreateQnAFormController());
         mapping.put("/qna/create", new CreateQnaActionController());
         mapping.put("/api/qna/addAnswer", new AddAnswerController());

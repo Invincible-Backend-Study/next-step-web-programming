@@ -1,5 +1,10 @@
 package next.dao;
 
+import static next.dao.sql.QuestionSql.FIND_BY_ID;
+import static next.dao.sql.QuestionSql.FindAll;
+import static next.dao.sql.QuestionSql.SAVE;
+import static next.dao.sql.QuestionSql.UPDATE_QUESTION_COUNT;
+
 import core.jdbc.JdbcTemplate;
 import java.util.List;
 import next.model.Question;
@@ -7,10 +12,8 @@ import next.model.Question;
 public class QuestionDao {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     public List<Question> findAll() {
-        String sql = "SELECT questionId, writer, title, createdDate, countOfAnswer FROM QUESTIONS "
-                + "order by questionId desc";
 
-        return jdbcTemplate.query(sql,
+        return jdbcTemplate.query(FindAll,
                 preparedStatement -> {},
                 resultSet -> new Question(
                         resultSet.getLong("questionId"),
@@ -22,11 +25,7 @@ public class QuestionDao {
     }
 
     public Question findById(long questionId) {
-        String sql = "SELECT questionId, writer, title, contents, createdDate, countOfAnswer FROM QUESTIONS "
-                + "WHERE questionId = ?";
-
-
-        return jdbcTemplate.queryForObject(sql,
+        return jdbcTemplate.queryForObject(FIND_BY_ID,
                 preparedStatement -> preparedStatement.setLong(1,questionId),
                 resultSet -> new Question(
                         resultSet.getLong("questionId"),
@@ -40,10 +39,7 @@ public class QuestionDao {
     }
 
     public void save(Question question) {
-        // 분리 예정
-        String sql = "INSERT INTO QUESTIONS (writer, title, contents, createdDate) VALUES (?, ?, ?, now())";
-
-        jdbcTemplate.update(sql,
+        jdbcTemplate.update(SAVE,
                 preparedStatement -> {
                     preparedStatement.setString(1, question.getWriter());
                     preparedStatement.setString(2, question.getTitle());
@@ -53,8 +49,7 @@ public class QuestionDao {
     }
 
     public void updateQuestionCount(Question updateQuestion) {
-        String sql = "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?";
-        jdbcTemplate.update(sql, preparedStatement -> {
+        jdbcTemplate.update(UPDATE_QUESTION_COUNT, preparedStatement -> {
             preparedStatement.setLong(1, updateQuestion.getCountOfComment());
             preparedStatement.setLong(2, updateQuestion.getQuestionId());
         });

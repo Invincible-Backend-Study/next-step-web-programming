@@ -5,5 +5,5 @@ import javax.sql.DataSource;
 
 public interface Connection {
     DataSource getDataSource();
-    java.sql.Connection getConnection();
+    Connection getConnection();
 }

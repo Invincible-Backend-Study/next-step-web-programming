@@ -1,10 +1,10 @@
 package next.dao;
 
+import core.jdbc.JdbcTemplate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.sql.UserSql;
-import next.dao.template.JdbcTemplate;
 import next.model.User;
 
 @AllArgsConstructor

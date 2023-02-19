@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="kr">
 <div class="container" id="main">
-    <%--<div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
+    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
             <div class="panel panel-default">
                 <header class="qna-header">
                     <h2 class="qna-title">${question.title}</h2>
@@ -99,7 +99,7 @@
                 </div>
             </div>
         </div>
-    </div>--%>
+    </div>
 </div>
 
 <script type="text/template" id="answerTemplate">
@@ -133,7 +133,7 @@
 </script>
 
 <%@include file="../layout/footer.jsp"%>
-<script type = "module" src="../../js/question.js"></script>
+<!--<script type = "module" src="../../js/question.js"></script>-->
 <%--
 <script type="module">
     import api from "../../js/api/api.js";
