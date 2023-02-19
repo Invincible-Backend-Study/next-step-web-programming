@@ -18,6 +18,21 @@ public class JdbcTemplete {
         }
     }
 
+    public void excuteSqlUpdate(KeyHolder key, String sql, Object ...parameters){
+        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+            setSqlParameters(pstmt, parameters);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()) {
+                System.out.println();
+                key.setId(rs.getInt(1));
+            }
+            rs.close();
+        }catch (SQLException e){
+            throw new DataAcessException(e);
+        }
+    }
+
 
     public <T> T excuteFindStaticData(String sql, RawMapper<T> rm) {
         try (Connection con = ConnectionManager.getConnection(); Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(
