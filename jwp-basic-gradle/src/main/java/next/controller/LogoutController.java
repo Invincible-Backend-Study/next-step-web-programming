@@ -17,6 +17,6 @@ public class LogoutController extends AbstractController {
     protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         session.invalidate();
-        return new ModelAndView(new JspView("redirect:/index.jsp"));
+        return new ModelAndView(new JspView("redirect:/index"));
     }
 }

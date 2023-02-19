@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="navbar-header">
 
-            <a href="../qna/list.jsp" class="navbar-brand">SLiPP</a>
+            <a href="../question/list" class="navbar-brand">SLiPP</a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
                 <i class="glyphicon glyphicon-search"></i>
             </button>

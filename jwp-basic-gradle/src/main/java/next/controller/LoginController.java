@@ -27,7 +27,7 @@ public class LoginController extends AbstractController {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        return new ModelAndView(new JspView("redirect:/index.jsp"));
+        return new ModelAndView(new JspView("redirect:/index"));
     }
 
     private User getLoginUser(String id, String password) {

@@ -34,7 +34,7 @@ public class AnswerController extends AbstractController {
                     Long.parseLong(request.getParameter("questionId")));
 
             answer = AnswerDao.insert(answer);
-            return new ModelAndView(new JsonView(answer)).addModel("answer", answer);
+            return new ModelAndView(new JsonView()).addModel("answer", answer);
         }  catch (SQLException e) {
             log.error(e.toString());
         } catch (Exception e) {
