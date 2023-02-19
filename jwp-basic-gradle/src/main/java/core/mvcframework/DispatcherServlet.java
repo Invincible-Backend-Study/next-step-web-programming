@@ -16,16 +16,6 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private final RequestMapping requestMapping = new RequestMapping();
-    private String prefixViewPath = "/WEB-INF/views/";
-    private String suffixViewPath = ".jsp";
-
-    public void setPrefixViewPath(final String prefixViewPath) {
-        this.prefixViewPath = prefixViewPath;
-    }
-
-    public void setSuffixViewPath(final String suffixViewPath) {
-        this.suffixViewPath = suffixViewPath;
-    }
 
     @Override
     protected void service(final HttpServletRequest request, final HttpServletResponse response)
