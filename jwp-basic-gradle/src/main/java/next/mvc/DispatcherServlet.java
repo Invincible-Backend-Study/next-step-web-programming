@@ -24,18 +24,12 @@ public class DispatcherServlet extends HttpServlet {
     public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
-        if (controller == null) {
-            return;
+        ModelAndView mav = controller.execute(req, res);
+        View view= mav.getView();
+        try {
+            view.render(mav.getModel(),req,res);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        String responseUri = controller.execute(req, res);
-        if(responseUri == null){
-            return;
-        }
-        if (responseUri.startsWith(REDIRECT_PREFIX)) {
-            res.sendRedirect(responseUri.substring(REDIRECT_PREFIX.length()));
-            return;
-        }
-        RequestDispatcher rd = req.getRequestDispatcher(responseUri);
-        rd.forward(req, res);
     }
 }
