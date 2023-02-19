@@ -1,6 +1,7 @@
 package core.mvcframework.controller;
 
-import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
+import core.mvcframework.view.View;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +16,7 @@ public class ForwardController implements Controller {
     }
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
-        return forwardUri;
+    public View execute(final HttpServletRequest request, final HttpServletResponse response) {
+        return new JspView(forwardUri);
     }
 }
