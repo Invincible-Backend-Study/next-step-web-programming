@@ -1,23 +1,31 @@
 package next.dao;
 
 import core.jdbc.JdbcTemplete;
+import core.jdbc.KeyHolder;
 import next.model.Answer;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AnswerDao {
 
     private final JdbcTemplete templete = new JdbcTemplete();
 
-    public void addAnswer(Answer answer) {
+    public Answer addAnswer(Answer answer) {
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?,?,?,?)";
+        KeyHolder key = new KeyHolder();
         templete.excuteSqlUpdate(
+                key,
                 sql,
                 answer.getWriter(),
                 answer.getContents(),
                 answer.getCreatedDate(),
-                answer.getQuestionId());
+                answer.getQuestionId()
+        );
+        return findByAnswerId(key.getId());
     }
 
     public Answer findByAnswerId(int answerId) {
