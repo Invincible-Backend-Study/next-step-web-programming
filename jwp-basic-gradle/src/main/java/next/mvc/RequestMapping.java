@@ -2,7 +2,7 @@ package next.mvc;
 
 import next.web.controller.ForwardController;
 import next.web.controller.HomeController;
-import next.web.controller.question.AnswerController;
+import next.web.controller.question.AddAnswerController;
 import next.web.controller.question.AnswerDeleteController;
 import next.web.controller.question.QuestionController;
 import next.web.controller.question.QuestionFormController;
@@ -24,7 +24,7 @@ public class RequestMapping {
         mappings.put("/user/list", new UserListController());
         mappings.put("/qna/show", new QuestionController());
         mappings.put("/qna/form", new QuestionFormController());
-        mappings.put("/qna/answer", new AnswerController());
+        mappings.put("/qna/answer", new AddAnswerController());
         mappings.put("/qna/deleteAnswer", new AnswerDeleteController());
     }
 
