@@ -5,6 +5,7 @@ import core.web.ModelAndView;
 import core.web.View;
 import next.dao.AnswerDao;
 import next.model.Answer;
+import next.model.Result;
 import next.model.User;
 import next.view.JsonView;
 import next.view.JspView;
@@ -41,5 +42,29 @@ public class AnswerController extends AbstractController {
             log.error(e.toString());
         }
         return null;
+    }
+
+    @Override
+    protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ModelAndView(new JsonView())
+                        .addModel("result", Result.fail("답변 삭제를 위해선 로그인이 필요합니다."));
+            }
+
+            Long answerId = Long.parseLong(request.getParameter("answerId"));
+            Answer targetAnswer = AnswerDao.findByAnswerId(answerId);
+            if (!user.getName().equals(targetAnswer.getWriter())) {
+                return new ModelAndView(new JsonView())
+                        .addModel("result", Result.fail("자신이 작성한 답변만 삭제할 수 있습니다."));
+            }
+
+            AnswerDao.deleteByAnswerId(answerId);
+            return new ModelAndView(new JsonView()).addModel("result", Result.ok());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

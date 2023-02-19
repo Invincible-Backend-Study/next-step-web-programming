@@ -86,6 +86,11 @@ public class AnswerDao {
         );
     }
 
+    public static int deleteByAnswerId(Long answerId) {
+        String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
+        return jdbcTemplate.executeUpdate(sql, answerId);
+    }
+
     public static int deleteAll() throws SQLException {
         String sql = "DELETE FROM ANSWERS";
         return jdbcTemplate.executeUpdate(sql);

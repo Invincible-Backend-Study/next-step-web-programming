@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 abstract public class AbstractController implements Controller {
+    private static final String UNSUPPORTED_METHOD = "지원하지 않는 HTTP Method 입니다.";
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         HttpMethod method = HttpMethod.from(request.getMethod());
         if (method.isGet()) {
@@ -17,14 +18,28 @@ abstract public class AbstractController implements Controller {
         if (method.isPost()) {
             return doPost(request, response);
         }
+        if (method.isPut()) {
+            return doPost(request, response);
+        }
+        if (method.isDelete()) {
+            return doPost(request, response);
+        }
         throw new IllegalArgumentException("지원하지 않는 HTTP Method 입니다. (method:" + method.toString());
     }
 
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
-        throw new IllegalArgumentException("지원하지 않는 HTTP Method 입니다.");
+        throw new IllegalArgumentException(UNSUPPORTED_METHOD);
     }
 
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
-        throw new IllegalArgumentException("지원하지 않는 HTTP Method 입니다.");
+        throw new IllegalArgumentException(UNSUPPORTED_METHOD);
+    }
+
+    protected ModelAndView doPut(HttpServletRequest request, HttpServletResponse response) {
+        throw new IllegalArgumentException(UNSUPPORTED_METHOD);
+    }
+
+    protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
+        throw new IllegalArgumentException(UNSUPPORTED_METHOD);
     }
 }
