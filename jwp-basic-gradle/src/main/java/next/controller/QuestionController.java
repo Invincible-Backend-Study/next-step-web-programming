@@ -1,8 +1,12 @@
 package next.controller;
 
+import core.web.ModelAndView;
 import core.web.View;
+import java.util.List;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
+import next.model.Answer;
+import next.model.Question;
 import next.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +18,21 @@ import java.sql.SQLException;
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     @Override
-    protected View doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
+
+        Question question = null;
+        List<Answer> answers = null;
         try {
-            request.setAttribute("question", QuestionDao.findByQuestionId(questionId));
-            request.setAttribute("answers", AnswerDao.findByQuestionId(questionId));
+            question = QuestionDao.findByQuestionId(questionId);
+            answers = AnswerDao.findByQuestionId(questionId);
+
+            request.setAttribute("question", question);
+            request.setAttribute("answers", answers);
         } catch (SQLException e) {
             log.error(e.toString());
         }
 
-        return new JspView("/qna/show.jsp");
+        return new ModelAndView(new JspView("/qna/show.jsp")).addModel("question", question).addModel("answers", answers);
     }
 }

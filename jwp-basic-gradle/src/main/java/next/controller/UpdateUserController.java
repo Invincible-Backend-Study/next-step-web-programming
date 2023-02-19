@@ -1,5 +1,6 @@
 package next.controller;
 
+import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,7 @@ public class UpdateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
 
     @Override
-    protected View doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -32,6 +33,6 @@ public class UpdateUserController extends AbstractController {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        return new JspView("redirect:/user/list");
+        return new ModelAndView(new JspView("redirect:/user/list"));
     }
 }

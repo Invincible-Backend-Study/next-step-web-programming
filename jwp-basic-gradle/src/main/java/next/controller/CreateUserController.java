@@ -1,6 +1,7 @@
 package next.controller;
 
 import core.db.DataBase;
+import core.web.ModelAndView;
 import core.web.View;
 import next.dao.UserDao;
 import next.model.User;
@@ -16,7 +17,7 @@ public class CreateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     @Override
-    protected View doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -31,6 +32,6 @@ public class CreateUserController extends AbstractController {
             log.error(e.getMessage());
         }
 
-        return new JspView("redirect:/user/list");
+        return new ModelAndView(new JspView("redirect:/user/list"));
     }
 }

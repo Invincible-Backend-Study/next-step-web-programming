@@ -1,5 +1,6 @@
 package next.controller;
 
+import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,9 +14,9 @@ public class LogoutController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LogoutController.class);
 
     @Override
-    protected View doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         session.invalidate();
-        return new JspView("redirect:/index.jsp");
+        return new ModelAndView(new JspView("redirect:/index.jsp"));
     }
 }

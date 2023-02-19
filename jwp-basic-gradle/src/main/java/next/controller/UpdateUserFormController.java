@@ -1,5 +1,6 @@
 package next.controller;
 
+import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,20 +16,20 @@ public class UpdateUserFormController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserFormController.class);
 
     @Override
-    protected View doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");
         if (value == null) {
             log.debug("Only logged-in users can access.");
-            return new JspView("redirect:/user/login.jsp");
+            return new ModelAndView(new JspView("redirect:/user/login.jsp"));
         }
         User user = (User)value;
         if (!user.isSameUser(request.getParameter("userId"))) {
             log.debug("자신의 계정에만 접근할 수 있습니다.");
-            return new JspView("redirect:/user/list");
+            return new ModelAndView(new JspView("redirect:/user/list"));
         }
 
         request.setAttribute("user", user);
-        return new JspView("/user/update.jsp");
+        return new ModelAndView(new JspView("/user/update.jsp")).addModel("user", user);
     }
 }

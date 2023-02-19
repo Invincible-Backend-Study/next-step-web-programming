@@ -2,6 +2,7 @@ package next.view;
 
 import core.web.DispatcherServlet;
 import core.web.View;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class JspView implements View {
     }
 
     @Override
-    public void render(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (uri == null) {
             return;
         }

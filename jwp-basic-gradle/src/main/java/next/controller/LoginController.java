@@ -1,6 +1,7 @@
 package next.controller;
 
 import core.db.DataBase;
+import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,15 +19,15 @@ public class LoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @Override
-    protected View doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         User user = getLoginUser(request.getParameter("userId"), request.getParameter("password"));
         if (user == null) {  // login failed
-            return new JspView("redirect:/user/login_failed.jsp");
+            return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
         }
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        return new JspView("redirect:/index.jsp");
+        return new ModelAndView(new JspView("redirect:/index.jsp"));
     }
 
     private User getLoginUser(String id, String password) {

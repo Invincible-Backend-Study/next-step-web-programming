@@ -23,24 +23,11 @@ public class DispatcherServlet extends HttpServlet {
             logger.debug("DispatcherServlet: controller를 찾을 수 없습니다.");
         }
 
-        View view = controller.execute(req, resp);
+        ModelAndView modelAndView = controller.execute(req, resp);
         try {
-            view.render(req, resp);
+            modelAndView.getView().render(modelAndView.getModel(), req, resp);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-//        String uri = controller.execute(req, resp);
-//
-//        logger.debug("DispatcherServlet: {} {}", controller.toString(), uri);
-//        if (uri == null) {
-//            return;
-//        }
-//        if (uri.startsWith("redirect:")) {
-//            resp.sendRedirect(uri.split(":")[1]);
-//            return;
-//        }
-//        RequestDispatcher rd = req.getRequestDispatcher(uri);
-//        rd.forward(req, resp);
     }
 }

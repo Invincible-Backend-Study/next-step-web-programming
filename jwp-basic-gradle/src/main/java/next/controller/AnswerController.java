@@ -1,6 +1,7 @@
 package next.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import core.web.ModelAndView;
 import core.web.View;
 import next.dao.AnswerDao;
 import next.model.Answer;
@@ -20,12 +21,12 @@ import java.sql.SQLException;
 public class AnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
     @Override
-    protected View doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             if (user == null) {
-                return new JspView("redirect:/user/login_failed.jsp");
+                return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
             }
 
             Answer answer = new Answer(user.getName(),
@@ -33,8 +34,7 @@ public class AnswerController extends AbstractController {
                     Long.parseLong(request.getParameter("questionId")));
 
             answer = AnswerDao.insert(answer);
-            log.debug(answer.toString());
-            return new JsonView(answer);
+            return new ModelAndView(new JsonView(answer)).addModel("answer", answer);
         }  catch (SQLException e) {
             log.error(e.toString());
         } catch (Exception e) {

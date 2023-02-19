@@ -1,7 +1,10 @@
 package next.controller;
 
+import core.web.ModelAndView;
 import core.web.View;
+import java.util.List;
 import next.dao.QuestionDao;
+import next.model.Question;
 import next.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +16,15 @@ import java.sql.SQLException;
 public class ListQuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListQuestionController.class);
     @Override
-    protected View doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+        List<Question> questions = null;
         try {
-            request.setAttribute("questions", QuestionDao.findAll());
+            questions = QuestionDao.findAll();
+            request.setAttribute("questions", questions);
         } catch (SQLException e) {
             log.error(e.toString());
         }
 
-        return new JspView("/qna/list.jsp");
+        return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
     }
 }
