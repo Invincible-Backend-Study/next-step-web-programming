@@ -25,6 +25,9 @@ public class DispatcherServlet extends HttpServlet {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
         ModelAndView mav = controller.execute(req, res);
+        if(mav == null){
+            return;
+        }
         View view= mav.getView();
         try {
             view.render(mav.getModel(),req,res);
