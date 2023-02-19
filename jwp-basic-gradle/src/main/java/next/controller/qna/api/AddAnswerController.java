@@ -2,8 +2,6 @@ package next.controller.qna.api;
 
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
-import core.mvcframework.controller.Controller;
-import core.mvcframework.view.JsonView;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

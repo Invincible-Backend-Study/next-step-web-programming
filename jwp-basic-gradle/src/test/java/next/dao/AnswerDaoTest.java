@@ -1,7 +1,5 @@
 package next.dao;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import next.model.Answer;
 import org.junit.jupiter.api.BeforeEach;

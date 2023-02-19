@@ -21,7 +21,8 @@ public class JspView implements View {
     }
 
     @Override
-    public void render(final Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response)
+    public void render(final Map<String, Object> model, final HttpServletRequest request,
+                       final HttpServletResponse response)
             throws ServletException, IOException {
         if (viewName.startsWith("redirect:")) {
             log.debug("redirect={}", viewName);

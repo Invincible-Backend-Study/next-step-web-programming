@@ -2,8 +2,6 @@ package next.controller.qna;
 
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
-import core.mvcframework.controller.Controller;
-import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

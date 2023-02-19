@@ -14,7 +14,8 @@ public class JsonView implements View {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void render(final Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response)
+    public void render(final Map<String, Object> model, final HttpServletRequest request,
+                       final HttpServletResponse response)
             throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
