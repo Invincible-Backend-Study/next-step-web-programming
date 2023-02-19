@@ -25,9 +25,9 @@
                             <img class="media-object" src="../../../images/80-text.png">
                         </a>
                         <div class="media-body">
-                            <h4 class="media-heading">${user.name}</h4>
+                            <h4 class="media-heading">${profileUser.name}</h4>
                             <p>
-                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;${user.email}</a>
+                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;${profileUser.email}</a>
                             </p>
                         </div>
                     </div>

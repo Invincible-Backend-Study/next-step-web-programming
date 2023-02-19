@@ -1,29 +1,29 @@
 package next.controller.user;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import next.controller.user.dto.ProfileUserDto;
+import next.model.User;
 import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ProfileController implements Controller {
+public class ProfileController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
-
-    private final UserService userService = new UserService();
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        String userId = request.getParameter("userId");
-        log.debug("userId={}", userId);
-        if (userId == null || userId.equals("")) {
-            return new ModelAndView(new JspView("redirect:/users/loginForm"));
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        log.debug("loginUser={}", user);
+        if (user == null) {
+            return jspView("redirect:/users/loginForm");
         }
-        ProfileUserDto profileUser = ProfileUserDto.from(userService.findUserById(userId));
-        request.getSession().setAttribute("user", profileUser);
-        return new ModelAndView(new JspView("user/profile"));
+        return jspView("user/profile").addObject("profileUser", ProfileUserDto.from(user));
     }
 }
