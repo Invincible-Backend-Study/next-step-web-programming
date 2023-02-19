@@ -26,7 +26,7 @@ public class AddAnswerController implements Controller {
 
         Answer savedAnswer = answerService.insertAnswer(answer);
         ModelAndView modelAndView = new ModelAndView(new JsonView());
-        modelAndView.setAttribute("answer", savedAnswer);
+        modelAndView.addObject("answer", savedAnswer);
         return modelAndView;
     }
 }

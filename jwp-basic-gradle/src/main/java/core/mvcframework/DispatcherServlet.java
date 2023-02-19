@@ -1,6 +1,7 @@
 package core.mvcframework;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.View;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,8 @@ public class DispatcherServlet extends HttpServlet {
             throw new IllegalArgumentException("[ERROR] No URL mapping");
         }
         ModelAndView modelAndView = handler.execute(request, response);
-        log.debug("executeResultView={}", modelAndView);
-        modelAndView.render(request, response);
+        View view = modelAndView.getView();
+        log.debug("executeResultView={}", view);
+        view.render(modelAndView.getModel(), request, response);
     }
 }

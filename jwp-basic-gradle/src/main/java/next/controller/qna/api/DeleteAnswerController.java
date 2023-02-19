@@ -20,10 +20,10 @@ public class DeleteAnswerController implements Controller {
         int deleteResult = answerService.deleteAnswer(answerId);
         ModelAndView modelAndView = new ModelAndView(new JsonView());
         if (deleteResult <= 0) {
-            modelAndView.setAttribute("result", Result.fail("삭제 실패"));
+            modelAndView.addObject("result", Result.fail("삭제 실패"));
             return modelAndView;
         }
-        modelAndView.setAttribute("result", Result.ok());
+        modelAndView.addObject("result", Result.ok());
         return modelAndView;
     }
 }

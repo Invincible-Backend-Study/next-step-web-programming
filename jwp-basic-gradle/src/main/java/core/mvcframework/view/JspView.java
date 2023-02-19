@@ -28,7 +28,12 @@ public class JspView implements View {
             response.sendRedirect(viewName.split(":")[REDIRECT_URI]);
             return;
         }
+        addModelToRequest(model, request);
         log.debug("renderView={}", prefixViewPath + viewName + suffixViewPath);
         request.getRequestDispatcher(prefixViewPath + viewName + suffixViewPath).forward(request, response);
+    }
+
+    private void addModelToRequest(final Map<String, Object> model, final HttpServletRequest request) {
+        model.keySet().forEach(key -> request.setAttribute(key, model.get(key)));
     }
 }
