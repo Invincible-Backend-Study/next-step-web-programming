@@ -1,8 +1,7 @@
 package next.controller.qna.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import core.mvcframework.Controller;
+import core.mvcframework.controller.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;

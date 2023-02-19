@@ -1,6 +1,6 @@
 package next.controller.qna;
 
-import core.mvcframework.Controller;
+import core.mvcframework.controller.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.controller.qna.dto.QuestionCreateDto;

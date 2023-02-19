@@ -1,5 +1,6 @@
-package core.mvcframework;
+package core.mvcframework.controller;
 
+import core.mvcframework.HttpMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
