@@ -15,8 +15,6 @@ public class ShowController extends AbstractController {
         QuestionDao questionDao = new QuestionDao();
         AnswerDao answerDao = new AnswerDao();
 
-        final var question = questionDao.findById(questionId);
-        final var answers = answerDao.findAllByQuestionId(questionId);
         request.setAttribute("question", questionDao.findById(questionId));
         request.setAttribute("answers", answerDao.findAllByQuestionId(questionId));
         return this.jspView("/WEB-INF/qna/show.jsp");

@@ -1,5 +1,6 @@
 package next.controller.user;
 
+import core.jdbc.DataAccessException;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
-import next.dao.template.DataAccessException;
 import next.model.User;
 
 public class UserLoginController extends AbstractController{

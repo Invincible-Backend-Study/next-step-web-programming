@@ -1,5 +1,6 @@
 package next.controller.user;
 
+import core.jdbc.DataAccessException;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import java.util.List;
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
-import next.dao.template.DataAccessException;
 
 
 @Slf4j
