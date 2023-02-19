@@ -1,8 +1,6 @@
 package next.web.controller.user;
 
 import next.mvc.AbstractController;
-import next.mvc.Controller;
-import next.mvc.JspView;
 import next.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;

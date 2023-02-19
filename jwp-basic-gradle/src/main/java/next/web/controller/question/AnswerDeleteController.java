@@ -1,17 +1,13 @@
 package next.web.controller.question;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import next.dao.AnswerDao;
 import next.model.User;
 import next.mvc.AbstractController;
-import next.mvc.Controller;
 import next.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class AnswerDeleteController extends AbstractController {
     @Override

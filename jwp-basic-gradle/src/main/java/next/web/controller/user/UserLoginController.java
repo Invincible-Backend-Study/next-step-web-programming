@@ -1,18 +1,16 @@
 package next.web.controller.user;
 
-import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import next.dao.UserDao;
 import next.model.User;
 import next.mvc.AbstractController;
-import next.mvc.Controller;
-import next.mvc.JspView;
 import next.mvc.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 public class UserLoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
