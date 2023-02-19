@@ -1,4 +1,4 @@
-package next.controller;
+package core.jdbc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import core.mvc.ModelAndView;

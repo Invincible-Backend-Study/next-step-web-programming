@@ -1,8 +1,6 @@
 package core.mvc;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import next.controller.Controller;
+import core.jdbc.Controller;
 
 public abstract class AbstractController implements Controller {
 

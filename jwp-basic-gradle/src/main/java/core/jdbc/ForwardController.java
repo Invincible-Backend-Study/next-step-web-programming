@@ -1,4 +1,4 @@
-package next.controller;
+package core.jdbc;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
