@@ -1,6 +1,7 @@
 package core.mvcframework.view;
 
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ public class JspView implements View {
     }
 
     @Override
-    public void render(final HttpServletRequest request, final HttpServletResponse response)
+    public void render(final Map<String, Object> model, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         if (viewName.startsWith("redirect:")) {
             log.debug("redirect={}", viewName);
