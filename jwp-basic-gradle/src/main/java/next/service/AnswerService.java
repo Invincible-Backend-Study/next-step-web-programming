@@ -24,6 +24,7 @@ public class AnswerService {
      */
     public Answer insertAnswer(final Answer answer) {
         if (answerDao.insert(answer) >= 1) {
+            increaseCountOfAnswer(answer.getQuestionId());
             return answer;
         }
         return null;
