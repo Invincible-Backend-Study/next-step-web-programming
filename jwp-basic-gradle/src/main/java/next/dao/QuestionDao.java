@@ -1,9 +1,9 @@
 package next.dao;
 
 import core.jdbc.JdbcTemplete;
+import core.jdbc.KeyHolder;
 import next.model.Question;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,9 @@ public class QuestionDao {
 
     public void addQuestion(Question question) {
         String sql = "INSERT INTO QUESTIONS ( writer, title, contents, createdDate, countOfAnswer) VALUES (?,?,?,?,?)";
+        KeyHolder key = new KeyHolder();
         template.excuteSqlUpdate(
+                key,
                 sql,
                 question.getWriter(),
                 question.getTitle(),
@@ -58,5 +60,15 @@ public class QuestionDao {
             }
             return questions;
         });
+    }
+
+    public void decreaseAnswer(int questionId) {
+        String sql = "UPDATE QUESTIONS SET countOfAnswer = countOfAnswer - 1 WHERE questionId = ?";
+        template.excuteSqlUpdate(sql,questionId);
+    }
+
+    public void increaseAnswerCount(int questionId) {
+        String sql = "UPDATE QUESTIONS SET countOfAnswer= countOfAnswer + 1 WHERE questionId = ?";
+        template.excuteSqlUpdate(sql,questionId);
     }
 }

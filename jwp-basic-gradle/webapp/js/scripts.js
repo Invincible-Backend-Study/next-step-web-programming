@@ -37,7 +37,7 @@ qnaComment.addEventListener("click", (event) => {
     const formData = new FormData(event.target.closest('form'));
     const data = {
       type: "post",
-      data: formDataToJson(formData),
+      data: {...formDataToJson(formData),"questionId" : new URL(window.location.href).searchParams.get("id")},
       url: "/qna/deleteAnswer",
       dataType: "json",
     };
