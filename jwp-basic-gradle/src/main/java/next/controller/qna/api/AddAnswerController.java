@@ -2,6 +2,7 @@ package next.controller.qna.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JsonView;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class AddAnswerController implements Controller {
     private final AnswerService answerService = new AnswerService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JsonView execute(final HttpServletRequest request, final HttpServletResponse response) {
         Answer answer = new Answer(
                 request.getParameter("writer"),
                 request.getParameter("contents"),
@@ -26,14 +27,7 @@ public class AddAnswerController implements Controller {
         log.debug("answer={}", answer);
 
         Answer savedAnswer = answerService.insertAnswer(answer);
-        ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json;charset=UTF-8");
-        try {
-            PrintWriter out = response.getWriter();
-            out.print(mapper.writeValueAsString(savedAnswer));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+        request.setAttribute("answer", savedAnswer);
+        return new JsonView();
     }
 }

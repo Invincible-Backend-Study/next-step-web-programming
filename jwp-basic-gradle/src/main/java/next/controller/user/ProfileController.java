@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.controller.user.dto.ProfileUserDto;
@@ -14,14 +15,14 @@ public class ProfileController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
         String userId = request.getParameter("userId");
         log.debug("userId={}", userId);
         if (userId == null || userId.equals("")) {
-            return "redirect:/users/loginForm";
+            return new JspView("redirect:/users/loginForm");
         }
         ProfileUserDto profileUser = ProfileUserDto.from(userService.findUserById(userId));
         request.getSession().setAttribute("user", profileUser);
-        return "user/profile";
+        return new JspView("user/profile");
     }
 }

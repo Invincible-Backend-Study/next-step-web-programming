@@ -1,6 +1,7 @@
 package next.controller.qna;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -9,12 +10,12 @@ import next.utils.SessionUtil;
 public class QuestionFormController implements Controller {
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
         if (SessionUtil.isLogined(session, "user")) {
-            return "qna/form";
+            return new JspView("qna/form");
         }
-        return "redirect:/users/loginForm";
+        return new JspView("redirect:/users/loginForm");
     }
 
 }

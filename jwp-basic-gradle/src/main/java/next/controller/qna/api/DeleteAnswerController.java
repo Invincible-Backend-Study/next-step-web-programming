@@ -1,9 +1,7 @@
 package next.controller.qna.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import core.mvcframework.controller.Controller;
-import java.io.IOException;
-import java.io.PrintWriter;
+import core.mvcframework.view.JsonView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.model.Result;
@@ -16,21 +14,14 @@ public class DeleteAnswerController implements Controller {
     private final AnswerService answerService = new AnswerService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JsonView execute(final HttpServletRequest request, final HttpServletResponse response) {
         long answerId = Long.parseLong(request.getParameter("answerId"));
         int deleteResult = answerService.deleteAnswer(answerId);
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.setContentType("application/json;charset=UTF-8");
-        try {
-            PrintWriter out = response.getWriter();
-            if (deleteResult <= 0) {
-                out.print(objectMapper.writeValueAsString(Result.fail("삭제 실패")));
-                return null;
-            }
-            out.print(objectMapper.writeValueAsString(Result.ok()));
-            return null;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (deleteResult <= 0) {
+            request.setAttribute("result", Result.fail("삭제 실패"));
+            return new JsonView();
         }
+        request.setAttribute("result", Result.ok());
+        return new JsonView();
     }
 }

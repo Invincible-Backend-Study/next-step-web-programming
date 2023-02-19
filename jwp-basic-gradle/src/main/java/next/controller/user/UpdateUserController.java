@@ -1,9 +1,11 @@
 package next.controller.user;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JPanel;
 import next.model.User;
 import next.service.UserService;
 import org.slf4j.Logger;
@@ -15,7 +17,7 @@ public class UpdateUserController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
         User updatedUser = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -27,6 +29,6 @@ public class UpdateUserController implements Controller {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
-        return "redirect:/users/list";
+        return new JspView("redirect:/users/list");
     }
 }

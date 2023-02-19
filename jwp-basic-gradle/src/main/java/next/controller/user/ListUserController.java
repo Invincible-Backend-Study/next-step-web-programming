@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,10 +16,10 @@ public class ListUserController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
         List<User> users = userService.findAllUsers();
         log.debug("allUserList={}", users);
         request.setAttribute("users", users);
-        return "user/list";
+        return new JspView("user/list");
     }
 }

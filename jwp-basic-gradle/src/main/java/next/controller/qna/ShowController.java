@@ -1,6 +1,7 @@
 package next.controller.qna;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +14,11 @@ public class ShowController implements Controller {
     private final QuestionService questionService = new QuestionService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Map<String, Object> questionWithAnswers = questionService.findByQuestionIdWithAnswers(questionId);
         log.debug("questionWithAnswers={}", questionWithAnswers);
         request.setAttribute("questionWithAnswers", questionWithAnswers);
-        return "qna/show";
+        return new JspView("qna/show");
     }
 }

@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.model.User;
@@ -14,7 +15,7 @@ public class CreateUserController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -23,6 +24,6 @@ public class CreateUserController implements Controller {
         );
         userService.signUp(user);
         log.debug("createUser={}", user);
-        return "redirect:/";
+        return new JspView("redirect:/");
     }
 }

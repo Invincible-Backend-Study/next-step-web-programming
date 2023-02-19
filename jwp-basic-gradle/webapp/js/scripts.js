@@ -40,14 +40,21 @@ function addAnswer(e) {
     });
 }
 
+// 서버 응답 성공시
+function onSuccess(json, status) {
+    var answerTemplate = $("#answerTemplate").html();
+    var template = answerTemplate.format(json.answer.writer, new Date(json.answer.createdDate), json.answer.contents, json.answer.answerId);
+    $(".qna-comment-slipp-articles").prepend(template);
+}
+
 // 삭제시 AJAX 동작
 $(".link-delete-article").click(deleteAnswer);
 
 function deleteAnswer(e) {
     e.preventDefault();
 
-    var queryString = $("form[name=form-delete]").serialize();
     var deleteBtn = $(this);
+    var queryString = deleteBtn.closest('form').serialize();
 
     $.ajax({
         type: 'post',
@@ -56,18 +63,11 @@ function deleteAnswer(e) {
         dataType: 'json',
         error: onError,
         success: function (json, status) {
-            if (json.status) {
+            if (json.result.status) {
                 deleteBtn.closest('article').remove();
             }
         }
     });
-}
-
-// 서버 응답 성공시
-function onSuccess(json, status) {
-    var answerTemplate = $("#answerTemplate").html();
-    var template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId);
-    $(".qna-comment-slipp-articles").prepend(template);
 }
 
 // 서버 응답 실패시
