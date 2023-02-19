@@ -1,5 +1,7 @@
 package next.controller;
 
+import core.mvc.AbstractController;
+import java.util.AbstractCollection;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -9,7 +11,7 @@ public class RequestMapping {
     private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
     private static final String DEFAULT_VIEW_PATH = "/WEB-INF";
 
-    private final Map<String, Controller> mapping = new HashMap<>();
+    private final Map<String, AbstractController> mapping = new HashMap<>();
 
 
     public void initMapping(){
@@ -21,6 +23,8 @@ public class RequestMapping {
         //mapping.put("/user/loginFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/login_failed.jsp"));
         //mapping.put("/user/signupFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/signup_failed.jsp"));
 
+        mapping.put("/qna/form", new CreateQnAFormController());
+        mapping.put("/qna/create", new CreateQnaActionController());
         mapping.put("/api/qna/addAnswer", new AddAnswerController());
 
         mapping.put("/user/updateForm", new UpdateFormController());
@@ -35,7 +39,7 @@ public class RequestMapping {
         return mapping.get(url);
     }
 
-    private void put(String url, Controller controller){
+    private void put(String url, AbstractController controller){
         mapping.put(url,controller);
     }
 }
