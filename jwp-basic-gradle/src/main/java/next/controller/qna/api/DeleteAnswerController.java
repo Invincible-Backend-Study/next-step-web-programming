@@ -1,5 +1,6 @@
 package next.controller.qna.api;
 
+import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JsonView;
 import javax.servlet.http.HttpServletRequest;
@@ -14,14 +15,15 @@ public class DeleteAnswerController implements Controller {
     private final AnswerService answerService = new AnswerService();
 
     @Override
-    public JsonView execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         long answerId = Long.parseLong(request.getParameter("answerId"));
         int deleteResult = answerService.deleteAnswer(answerId);
+        ModelAndView modelAndView = new ModelAndView(new JsonView());
         if (deleteResult <= 0) {
-            request.setAttribute("result", Result.fail("삭제 실패"));
-            return new JsonView();
+            modelAndView.setAttribute("result", Result.fail("삭제 실패"));
+            return modelAndView;
         }
-        request.setAttribute("result", Result.ok());
-        return new JsonView();
+        modelAndView.setAttribute("result", Result.ok());
+        return modelAndView;
     }
 }
