@@ -49,7 +49,7 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong>${question.countOfComment}</strong>개의 의견</p>
+                        <p class="qna-comment-count"><strong id="questionCount">${question.countOfComment}</strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
 
                             <c:forEach items="${answers}" var="each">
@@ -59,7 +59,7 @@
                                             <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
                                         </div>
                                         <div class="article-header-text">
-                                            ${each.writer}
+                                                ${each.writer}
                                             <div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}" /></div>
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@
                                                 <a class="link-modify-article" href="/api/qna/updateAnswer?answerId=${each.answerId}">수정</a>
                                             </li>
                                             <li>
-                                                <form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
+                                                <form name = "answer-delete" class="form-delete" method="POST">
                                                     <input type="hidden" name="answerId" value="${each.answerId}" />
                                                     <button type="submit" class="link-delete-article">삭제</button>
                                                 </form>
@@ -122,7 +122,7 @@
                     <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
                 </li>
                 <li>
-                    <form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
+                    <form name = "answer-delete" class="form-delete" method="POST">
                         <input type="hidden" name="answerId" value="{4}" />
                         <button type="submit" class="link-delete-article">삭제</button>
                     </form>
@@ -131,4 +131,33 @@
         </div>
     </article>
 </script>
+
 <%@include file="../layout/footer.jsp"%>
+<%--
+<script type="module">
+    import api from "../../js/api/api.js";
+
+    class ShowApp{
+        async init (){
+            const $container = document.querySelector(".container");
+
+            const key = <%= request.getParameter("questionId") %>;
+
+            const result = await api.get(`/api/qna/${key}`)
+            this.#render($container);
+        }
+        #render($container){
+            $container.innerHTML = `
+            <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
+                <div class="panel panel-default">
+                    <header class="qna-header">
+                        <h2 class="qna-title">제목</h2>
+                    </header>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    new ShowApp().init();
+</script>--%>

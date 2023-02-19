@@ -54,4 +54,12 @@ public class QuestionDao {
                 }
         );
     }
+
+    public void updateQuestionCount(Question updateQuestion) {
+        String sql = "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?";
+        jdbcTemplate.update(sql, preparedStatement -> {
+            preparedStatement.setLong(1, updateQuestion.getCountOfComment());
+            preparedStatement.setLong(2, updateQuestion.getQuestionId());
+        });
+    }
 }

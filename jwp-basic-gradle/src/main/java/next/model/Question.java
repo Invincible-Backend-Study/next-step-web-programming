@@ -84,4 +84,26 @@ public class Question {
             return false;
         return true;
     }
+
+    public Question plusAnswerCountByOne() {
+        return new Question(
+                this.questionId,
+                this.writer,
+                this.title,
+                this.contents,
+                this.createdDate,
+                this.countOfComment + 1
+        );
+    }
+
+    public Question minusAnswerCountByOne(){
+        return new Question(
+                this.questionId,
+                this.writer,
+                this.title,
+                this.contents,
+                this.createdDate,
+                this.countOfComment -1
+        );
+    }
 }

@@ -14,19 +14,25 @@ $(document).ready(function(){/* jQuery toggle layout */
 
 
 
-function onSuccess(json, status){
+function onSuccess({answer, countOfComments}, status){
   const answerTemplate = $("#answerTemplate").html();
-  console.log(json);
-  const template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId, json.answerId);
+  const template = answerTemplate.format(
+      answer.writer,
+      new Date(answer.createdDate).toYYYYMMDD_HHMMSS(),
+      answer.contents,
+      answer.answerId,
+  );
   $(".qna-comment-slipp-articles").prepend(template);
+  $("#questionCount").text(countOfComments);
+  $("form[name=answer]").each(function() {this.reset()});
 }
 
 function onError(xhr, status) {
   alert("error");
 }
 
-String.prototype.format = function() {
-  const args = arguments;
+String.prototype.format = function(...args) {
+  console.log(args);
   return this.replace(/{(\d+)}/g, function(match, number) {
     return typeof args[number] != 'undefined'
         ? args[number]
@@ -34,14 +40,22 @@ String.prototype.format = function() {
         ;
   });
 };
+
+Date.prototype.toYYYYMMDD_HHMMSS = function(){
+  const TIME_ZONE = 9 * 60 * 60 * 1000; // 9시간
+  const date = new Date(this.getTime() + TIME_ZONE).toISOString().split('T')[0];
+  const time = this.toTimeString().split(' ')[0];
+  return `${date} ${time}`;
+}
+
 class App{
   init(){
-    const _this = this;
     // add answer button
     const addAnswerButton = $(".answerWrite input[type=submit]");
     const deleteButton = $(".link-delete-article")
 
-    addAnswerButton.click(_this.#addAnswer);
+    addAnswerButton.click(this.#addAnswer);
+    deleteButton.click(this.#deleteAnswer);
   }
 
   #addAnswer(e){
@@ -54,6 +68,25 @@ class App{
       dataType: 'json',
       error: onError,
       success: onSuccess
+    })
+    this.init();
+  }
+
+  #deleteAnswer(e) {
+    e.preventDefault();
+    const queryString = $($(e)[0].target.form).serialize();
+    $.ajax({
+      type:'post',
+      url : '/api/qna/deleteAnswer',
+      data:queryString,
+      dataType: 'json',
+      error: (e)=>{
+        console.log(e);
+      },
+      success: ({countOfComments}) =>{
+        $(this).closest(".article").remove();
+        $("#questionCount").text(countOfComments);
+      }
     })
   }
 }

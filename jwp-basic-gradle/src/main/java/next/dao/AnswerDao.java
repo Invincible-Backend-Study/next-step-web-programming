@@ -33,7 +33,6 @@ public class AnswerDao {
 
 
     public Answer findById(long answerId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
 
         return jdbcTemplate.queryForObject(sql, ( preparedStatement)-> preparedStatement.setLong(1,answerId),
@@ -42,7 +41,6 @@ public class AnswerDao {
     }
 
     public List<Answer> findAllByQuestionId(long questionId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate FROM ANSWERS WHERE questionId = ? order by answerId desc";
 
         return jdbcTemplate.query(sql, (preparedStatement -> preparedStatement.setLong(1, questionId)),
@@ -51,5 +49,13 @@ public class AnswerDao {
                         rs.getString("contents"),
                         rs.getTimestamp("createdDate"), questionId)
         );
+    }
+
+    public void deleteById(long questionId,long answerId) {
+        String sql = "DELETE FROM ANSWERS where questionId = ? and answerId = ?";
+        jdbcTemplate.update(sql, (preparedStatement -> {
+            preparedStatement.setLong(1, questionId);
+            preparedStatement.setLong(2, answerId);
+        }));
     }
 }
