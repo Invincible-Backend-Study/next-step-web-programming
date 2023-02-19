@@ -8,9 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class HomeController extends AbstractController {
+
+    private final QuestionDao dao = new QuestionDao();
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
-        QuestionDao dao = new QuestionDao();
         req.setAttribute("questions",dao.findAll());
         return jspView("home.jsp");
     }

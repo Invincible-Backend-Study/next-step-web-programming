@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class QuestionController extends AbstractController {
+
+    private final QuestionDao qsDao = new QuestionDao();
+    private final AnswerDao asDao = new AnswerDao();
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
-        QuestionDao qsDao = new QuestionDao();
-        AnswerDao asDao = new AnswerDao();
         int qsId = Integer.parseInt(req.getParameter("id"));
         Question qs = qsDao.findByQuestionId(qsId);
         List<Answer> answers = asDao.findAllByQuestonId(qsId);

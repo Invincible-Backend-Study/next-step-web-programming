@@ -1,6 +1,7 @@
 package next.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Question {
     private final int questionId;
@@ -18,6 +19,10 @@ public class Question {
         this.contents = contents;
         this.createdDate = createdDate;
         this.countOfAnswer = countOfAnswer;
+    }
+
+    public Question(String writer, String title, String contents) {
+        this(0,writer,title,contents,Timestamp.valueOf(LocalDateTime.now()),0);
     }
 
     public int getQuestionId() {

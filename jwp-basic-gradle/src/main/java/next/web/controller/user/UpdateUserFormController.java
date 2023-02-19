@@ -14,9 +14,9 @@ import java.util.Objects;
 public class UpdateUserFormController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
+    private final UserDao userDao = new UserDao();
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
-        UserDao userDao = new UserDao();
         User user = userDao.findByUserId(req.getParameter("userId"));
         if (user == null) {
             return jspView("/user/update.jsp");

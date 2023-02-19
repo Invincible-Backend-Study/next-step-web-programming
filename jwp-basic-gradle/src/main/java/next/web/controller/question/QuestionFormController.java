@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class QuestionFormController extends AbstractController {
+
+    private final QuestionDao dao= new QuestionDao();
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
@@ -22,19 +24,15 @@ public class QuestionFormController extends AbstractController {
         }
         String contents = req.getParameter("contents");
         String title = req.getParameter("title");
+        User user = (User) session.getAttribute("user");
         if(contents == null && title == null){
             return jspView("/qna/form.jsp");
         }
-        User user = (User) session.getAttribute("user");
-        Question qs = new Question(
-                0,
+        dao.addQuestion(new Question(
                 user.getName(),
                 title,
-                contents,
-                Timestamp.valueOf(LocalDateTime.now()),
-                0
-        );
-        new QuestionDao().addQuestion(qs);
+                contents
+        ));
         return jspView("redirect:/");
     }
 
