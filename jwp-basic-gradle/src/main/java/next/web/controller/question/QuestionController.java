@@ -23,8 +23,7 @@ public class QuestionController extends AbstractController {
         Question qs = qsDao.findByQuestionId(qsId);
         List<Answer> answers = asDao.findAllByQuestonId(qsId);
         ModelAndView mav = jspView("/qna/show.jsp");
-        mav.addObject("question",qs);
-        mav.addObject("answers",answers);
+        mav.addObject("question",qs).addObject("answers",answers);
         return mav;
     }
 }
