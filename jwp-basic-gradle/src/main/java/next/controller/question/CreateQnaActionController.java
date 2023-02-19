@@ -1,8 +1,7 @@
-package next.controller;
+package next.controller.question;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
-import java.awt.geom.QuadCurve2D;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.dao.QuestionDao;

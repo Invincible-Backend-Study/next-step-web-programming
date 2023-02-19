@@ -1,8 +1,7 @@
-package next.controller;
+package next.controller.user;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
-import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

@@ -1,18 +1,13 @@
-package next.controller;
+package next.controller.user;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
-import java.io.IOException;
-import java.sql.SQLException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
 import next.dao.template.DataAccessException;
-import next.model.User;
-import next.utils.UserUtils;
 
 
 @Slf4j

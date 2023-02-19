@@ -2,10 +2,8 @@ package next;
 
 import java.io.File;
 import javax.servlet.ServletException;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 
 

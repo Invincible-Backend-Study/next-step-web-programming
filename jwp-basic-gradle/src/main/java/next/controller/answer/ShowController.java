@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.answer;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;

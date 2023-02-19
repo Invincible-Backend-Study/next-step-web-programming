@@ -1,7 +1,5 @@
 package core.mvc;
 
-import core.jdbc.Controller;
-
 public abstract class AbstractController implements Controller {
 
     protected ModelAndView jspView(String forwardUrl){

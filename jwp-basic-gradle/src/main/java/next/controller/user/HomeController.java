@@ -1,10 +1,8 @@
-package next.controller;
+package next.controller.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import core.mvc.AbstractController;
-import core.mvc.JspView;
 import core.mvc.ModelAndView;
-import core.mvc.View;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.dao.QuestionDao;

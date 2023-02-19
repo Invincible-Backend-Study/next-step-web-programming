@@ -1,4 +1,4 @@
-package core.jdbc;
+package core.mvc;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;

@@ -1,15 +1,8 @@
 package next.dao;
 
-import core.jdbc.ConnectionManager;
-import core.jdbc.DataAccessException;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
-import core.jdbc.PreparedStatementCreator;
-import core.jdbc.RowMapper;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import next.model.Answer;

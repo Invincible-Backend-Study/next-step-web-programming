@@ -1,12 +1,9 @@
 package next.dao;
 
-import java.sql.SQLException;
-
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.sql.UserSql;
-import next.dao.template.DataAccessException;
 import next.dao.template.JdbcTemplate;
 import next.model.User;
 

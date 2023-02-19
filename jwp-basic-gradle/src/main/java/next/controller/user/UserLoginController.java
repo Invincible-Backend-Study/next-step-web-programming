@@ -1,9 +1,7 @@
-package next.controller;
+package next.controller.user;
 
-import core.db.DataBase;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
-import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

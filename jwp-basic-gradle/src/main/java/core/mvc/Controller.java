@@ -1,4 +1,4 @@
-package core.jdbc;
+package core.mvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import core.mvc.ModelAndView;
