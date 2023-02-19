@@ -4,15 +4,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import next.dao.UserDao;
+import next.mvc.AbstractController;
 import next.mvc.Controller;
+import next.mvc.JspView;
+import next.mvc.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserListController implements Controller {
+public class UserListController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
-    public String execute(HttpServletRequest req, HttpServletResponse res) {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         req.setAttribute("users", new UserDao().findAllUser());
-        return "/user/list.jsp";
+        ModelAndView mav = jspView("/user/list.jsp");
+        mav.addObject("users",new UserDao().findAllUser());
+        return mav;
     }
 }

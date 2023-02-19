@@ -1,17 +1,20 @@
 package next.web.controller.user;
 
+import next.mvc.AbstractController;
 import next.mvc.Controller;
+import next.mvc.JspView;
+import next.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LogoutController implements Controller {
+public class LogoutController extends AbstractController {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
         session.removeAttribute("user");
-        return "redirect:/";
+        return jspView("redirect:/");
     }
 }

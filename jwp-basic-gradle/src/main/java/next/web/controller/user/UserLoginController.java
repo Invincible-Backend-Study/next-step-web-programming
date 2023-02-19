@@ -7,22 +7,24 @@ import javax.servlet.http.HttpSession;
 
 import next.dao.UserDao;
 import next.model.User;
+import next.mvc.AbstractController;
 import next.mvc.Controller;
+import next.mvc.JspView;
+import next.mvc.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserLoginController implements Controller {
+public class UserLoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         User user = new UserDao().findByUserId(req.getParameter("userId"));
         if (user != null && Objects.equals(user.getPassword(), req.getParameter("password"))) {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            return "redirect:/";
+            return jspView("redirect:/");
         }
-        return "/user/login.jsp";
-
+        return jspView("/user/login.jsp");
     }
 }
