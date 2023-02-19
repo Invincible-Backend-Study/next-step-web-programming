@@ -18,8 +18,9 @@ submitAnswerBtn.addEventListener("click", (event) => {
 
   const answerTemplate = document.querySelector("#answerTemplate").innerHTML;
   $.ajax(data)
-    .done((data) => {
-      const template = formatAnswer(answerTemplate, data.writer, new Date(data.createdDate), data.contents, data.answerId, data.answerId);
+    .done(({answer}) => {
+    
+      const template = formatAnswer(answerTemplate, answer.writer, new Date(answer.createdDate), answer.contents, answer.answerId, answer.answerId);
       const newAnswer = document.createElement("div");
       newAnswer.innerHTML = template;
       document.querySelector(".qna-comment-slipp-articles").append(newAnswer);
