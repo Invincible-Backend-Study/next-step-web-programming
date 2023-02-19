@@ -23,17 +23,17 @@ public class AnswerController implements Controller {
         if(user == null){
             return null;
         }
-        Answer as = new Answer(0,
+        Answer as = new Answer(
                 user.getName(),req.getParameter("contents"),
-                Timestamp.valueOf(LocalDateTime.now()),
                 Integer.parseInt(req.getParameter("id"))
-        );
-        new AnswerDao().addAnswer(as);
+        );;
+        AnswerDao dao =  new AnswerDao();
+        Answer answer =  dao.addAnswer(as);
         res.setContentType("application/json;charset=UTF-8");
         try {
             PrintWriter out = res.getWriter();
             ObjectMapper mapper = new ObjectMapper();
-            out.print(mapper.writeValueAsString(as));
+            out.print(mapper.writeValueAsString(answer));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
