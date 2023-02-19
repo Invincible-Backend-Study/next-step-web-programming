@@ -1,5 +1,7 @@
 package next.controller;
 
+import core.mvc.AbstractController;
+import core.mvc.ModelAndView;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -14,11 +16,11 @@ import next.utils.UserUtils;
 
 
 @Slf4j
-public class UpdateUserController implements Controller{
+public class UpdateUserController extends AbstractController {
 
     private final UserDao userDao = UserDaoFactory.getUserDao();
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
             final var user = userDao.findByUserId(request.getParameter("userId"));
@@ -41,6 +43,6 @@ public class UpdateUserController implements Controller{
 */
 
 
-        return "redirect: /user/list";
+        return this.jspView("redirect: /user/list");
     }
 }

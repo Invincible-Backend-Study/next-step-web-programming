@@ -13,13 +13,15 @@ public class RequestMapping {
 
 
     public void initMapping(){
-        mapping.put("/",new ForwardController(DEFAULT_VIEW_PATH + "/index.jsp"));
+        mapping.put("/", new HomeController());
         mapping.put("/user/form", new ForwardController(DEFAULT_VIEW_PATH + "/user/form.jsp"));
         mapping.put("/user/loginForm", new ForwardController(DEFAULT_VIEW_PATH + "/user/login.jsp"));
+        mapping.put("/qna/show", new ShowController());
         // 고민중
         //mapping.put("/user/loginFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/login_failed.jsp"));
         //mapping.put("/user/signupFailed", new ForwardController(DEFAULT_VIEW_PATH + "/user/signup_failed.jsp"));
 
+        mapping.put("/api/qna/addAnswer", new AddAnswerController());
 
         mapping.put("/user/updateForm", new UpdateFormController());
         mapping.put("/user/list", new ListUserController());

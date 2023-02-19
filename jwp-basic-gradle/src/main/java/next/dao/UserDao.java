@@ -14,7 +14,7 @@ import next.model.User;
 @Slf4j
 public class UserDao {
     private final JdbcTemplate jdbcTemplate;
-    public void insert(User user) throws DataAccessException{
+    public void insert(User user) {
         jdbcTemplate.update(UserSql.CREATE, (preparedStatement -> {
             preparedStatement.setString(1, user.getUserId());
             preparedStatement.setString(2, user.getPassword());
@@ -22,7 +22,7 @@ public class UserDao {
             preparedStatement.setString(4, user.getEmail());
         }));
     }
-    public User findByUserId(String userId) throws DataAccessException {
+    public User findByUserId(String userId) {
         return jdbcTemplate.queryForObject(UserSql.FIND_USER_BY_ID, preparedStatement -> preparedStatement.setString(1,userId),
                 resultSet -> User.of(
                         resultSet.getString("userId"),
@@ -32,7 +32,7 @@ public class UserDao {
                 )
         );
     }
-    public List<User> findAll() throws DataAccessException{
+    public List<User> findAll() {
         return jdbcTemplate.query(UserSql.FIND_ALL, preparedStatement -> {},
                 resultSet -> User.of(
                         resultSet.getString("userId"),
@@ -42,7 +42,7 @@ public class UserDao {
                 )
         );
     }
-    public void update(final User user) throws DataAccessException{
+    public void update(final User user) {
         jdbcTemplate.update(UserSql.UPDATE, preparedStatement -> {
             preparedStatement.setString(1, user.getPassword());
             preparedStatement.setString(2, user.getName());

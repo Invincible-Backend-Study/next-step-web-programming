@@ -1,6 +1,8 @@
 package next.controller;
 
 import core.db.DataBase;
+import core.mvc.AbstractController;
+import core.mvc.ModelAndView;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +15,9 @@ import next.utils.UserUtils;
 
 
 @Slf4j
-public class ListUserController implements Controller{
+public class ListUserController extends AbstractController{
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
       /*  if(!UserUtils.isLoggedIn(request.getSession())){
             return "redirect: /user/loginForm";
         }*/
@@ -26,6 +28,6 @@ public class ListUserController implements Controller{
             request.setAttribute("users", List.of());
             log.error("{}",exception);
         }
-        return "/WEB-INF/user/list.jsp";
+        return this.jspView("/WEB-INF/user/list.jsp");
     }
 }

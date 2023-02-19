@@ -1,5 +1,7 @@
 package next.controller;
 
+import core.mvc.AbstractController;
+import core.mvc.ModelAndView;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,19 +12,18 @@ import next.dao.template.DataAccessException;
 
 
 @Slf4j
-public class UpdateFormController implements Controller{
+public class UpdateFormController extends AbstractController {
     private final UserDao userDao = UserDaoFactory.getUserDao();
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         final String userId = request.getParameter("userId");
         try {
             final var user = userDao.findByUserId(userId);
             request.setAttribute("user", user);
         } catch (DataAccessException e) {
             log.error("{}",e);
-            return "redirect: /user/list";
+            return this.jspView("redirect: /user/list");
         }
-
-        return "/WEB-INF/user/update.jsp";
+        return this.jspView("/WEB-INF/user/update.jsp");
     }
 }

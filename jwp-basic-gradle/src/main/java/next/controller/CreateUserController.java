@@ -1,10 +1,9 @@
 package next.controller;
 
-import core.db.DataBase;
-import java.sql.SQLException;
+import core.mvc.AbstractController;
+import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import next.dao.UserDao;
 import next.dao.UserDaoFactory;
@@ -12,10 +11,10 @@ import next.dao.template.DataAccessException;
 import next.model.User;
 
 @Slf4j
-public class CreateUserController implements Controller {
+public class CreateUserController extends AbstractController {
     private final UserDao userDao = UserDaoFactory.getUserDao();
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
 
         User user = User.of(
                 request.getParameter("userId"),
@@ -27,8 +26,8 @@ public class CreateUserController implements Controller {
             userDao.insert(user);
         }catch (DataAccessException exception){
             log.error(exception.getMessage());
-            return "/WEB-INF/user/signup_failed.jsp";
+            return this.jspView("/WEB-INF/user/signup_failed.jsp");
         }
-        return "redirect: /user/list";
+        return this.jspView("redirect: /user/list");
     }
 }

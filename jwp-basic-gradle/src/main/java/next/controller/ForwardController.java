@@ -1,11 +1,13 @@
 package next.controller;
 
+import core.mvc.AbstractController;
+import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
 
-public class ForwardController implements Controller{
+public class ForwardController extends AbstractController {
     private final String forwardUrl;
 
     public ForwardController(String forwardUrl) {
@@ -16,7 +18,7 @@ public class ForwardController implements Controller{
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return forwardUrl;
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+        return this.jspView(forwardUrl);
     }
 }
