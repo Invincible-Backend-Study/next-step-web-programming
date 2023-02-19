@@ -4,18 +4,15 @@ import next.dao.QuestionDao;
 import next.model.Question;
 import next.model.User;
 import next.mvc.AbstractController;
-import next.mvc.Controller;
 import next.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class QuestionFormController extends AbstractController {
 
-    private final QuestionDao dao= new QuestionDao();
+    private final QuestionDao QsDao = new QuestionDao();
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
@@ -28,7 +25,7 @@ public class QuestionFormController extends AbstractController {
         if(contents == null && title == null){
             return jspView("/qna/form.jsp");
         }
-        dao.addQuestion(new Question(
+        QsDao.addQuestion(new Question(
                 user.getName(),
                 title,
                 contents

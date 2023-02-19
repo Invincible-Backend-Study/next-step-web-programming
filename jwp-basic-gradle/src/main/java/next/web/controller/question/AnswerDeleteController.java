@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 public class AnswerDeleteController extends AbstractController {
 
-    private final AnswerDao dao =  new AnswerDao();
+    private final AnswerDao asDao =  new AnswerDao();
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
@@ -20,7 +20,7 @@ public class AnswerDeleteController extends AbstractController {
         if(user == null && answerId == null){
             return jsonView();
         }
-        dao.deleteAnswer(answerId);
+        asDao.deleteAnswer(answerId);
         return jsonView().addObject("result","성공");
     }
 }
