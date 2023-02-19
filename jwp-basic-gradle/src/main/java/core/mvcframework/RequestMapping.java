@@ -8,6 +8,7 @@ import next.controller.qna.QuestionCreateController;
 import next.controller.qna.QuestionFormController;
 import next.controller.qna.ShowController;
 import next.controller.qna.api.AddAnswerController;
+import next.controller.qna.api.DeleteAnswerController;
 import next.controller.user.CreateUserController;
 import next.controller.user.ListUserController;
 import next.controller.user.LoginUserController;
@@ -48,6 +49,7 @@ public class RequestMapping {
 
         // ajax 질문/응답
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
+        handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {

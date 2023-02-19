@@ -10,6 +10,7 @@ $(document).ready(function () {/* jQuery toggle layout */
     });
 });
 
+// html 템플릿에 값 삽입
 String.prototype.format = function () {
     var args = arguments;
     return this.replace(/{(\d+)}/g, function (match, number) {
@@ -39,6 +40,29 @@ function addAnswer(e) {
     });
 }
 
+// 삭제시 AJAX 동작
+$(".link-delete-article").click(deleteAnswer);
+
+function deleteAnswer(e) {
+    e.preventDefault();
+
+    var queryString = $("form[name=form-delete]").serialize();
+    var deleteBtn = $(this);
+
+    $.ajax({
+        type: 'post',
+        url: '/api/qna/deleteAnswer',
+        data: queryString,
+        dataType: 'json',
+        error: onError,
+        success: function (json, status) {
+            if (json.status) {
+                deleteBtn.closest('article').remove();
+            }
+        }
+    });
+}
+
 // 서버 응답 성공시
 function onSuccess(json, status) {
     var answerTemplate = $("#answerTemplate").html();
@@ -46,6 +70,7 @@ function onSuccess(json, status) {
     $(".qna-comment-slipp-articles").prepend(template);
 }
 
+// 서버 응답 실패시
 function onError(xhr, status) {
     alert("error");
 }

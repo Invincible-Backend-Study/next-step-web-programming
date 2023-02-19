@@ -28,4 +28,26 @@ public class AnswerDao {
                         + "VALUES(?, ?, ?, ?)",
                 answer.getWriter(), answer.getContents(), answer.getCreatedDate(), answer.getQuestionId());
     }
+
+    public int deleteById(final long answerId) {
+        return jdbcTemplate.update(
+                "DELETE FROM ANSWERS WHERE answerId = ?",
+                answerId
+        );
+    }
+
+    public Answer findById(final long answerId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?",
+                resultSet -> new Answer(
+                        resultSet.getLong("answerId"),
+                        resultSet.getString("writer"),
+                        resultSet.getString("contents"),
+                        resultSet.getDate("createdDate"),
+                        resultSet.getLong("questionId")
+                ),
+                answerId
+        );
+    }
+
 }

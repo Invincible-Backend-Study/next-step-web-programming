@@ -28,4 +28,15 @@ public class AnswerService {
         }
         return null;
     }
+
+    public int deleteAnswer(final long answerId) {
+        Answer answer = answerDao.findById(answerId);
+        Question question = questionDao.findByQuestionId(answer.getQuestionId());
+
+        int deleteResult = answerDao.deleteById(answerId);
+        if (deleteResult > 0) {
+            questionDao.updateCountOfAnswerById(answer.getQuestionId(), question.getCountOfAnswer() - 1);
+        }
+        return deleteResult;
+    }
 }
