@@ -1,4 +1,4 @@
-package next.web;
+package next.web.controller;
 
 import next.dao.QuestionDao;
 import next.model.User;

@@ -1,12 +1,12 @@
 package next.mvc;
 
-import next.web.ForwardController;
-import next.web.HomeController;
-import next.web.question.AnswerController;
-import next.web.question.AnswerDeleteController;
-import next.web.question.QuestionController;
-import next.web.question.QuestionFormController;
-import next.web.user.*;
+import next.web.controller.ForwardController;
+import next.web.controller.HomeController;
+import next.web.controller.question.AnswerController;
+import next.web.controller.question.AnswerDeleteController;
+import next.web.controller.question.QuestionController;
+import next.web.controller.question.QuestionFormController;
+import next.web.controller.user.*;
 
 import java.util.HashMap;
 

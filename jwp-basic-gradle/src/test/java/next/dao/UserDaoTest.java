@@ -62,7 +62,8 @@ public class UserDaoTest {
     @Test
     public void test() {
         AnswerDao dao = new AnswerDao();
-        dao.addAnswer(new Answer(20,"나","바보",Timestamp.valueOf(LocalDateTime.now()),6));
+        Answer as = new Answer("이준호","이건데",8);
+        System.out.println(dao.addAnswer(as));;
     }
 
 

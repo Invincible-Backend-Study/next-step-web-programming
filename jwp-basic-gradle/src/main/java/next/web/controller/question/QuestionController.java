@@ -1,4 +1,4 @@
-package next.web.question;
+package next.web.controller.question;
 
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;

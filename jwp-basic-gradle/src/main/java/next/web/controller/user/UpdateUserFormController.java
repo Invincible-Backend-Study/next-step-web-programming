@@ -1,6 +1,5 @@
-package next.web.user;
+package next.web.controller.user;
 
-import java.sql.SQLException;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

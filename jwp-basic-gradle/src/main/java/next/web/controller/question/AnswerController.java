@@ -1,7 +1,8 @@
-package next.web.question;
+package next.web.controller.question;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import next.dao.AnswerDao;
+import next.model.Answer;
 import next.model.User;
 import next.mvc.Controller;
 
@@ -11,25 +12,28 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class AnswerDeleteController implements Controller {
+public class AnswerController implements Controller {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        String answerId = req.getParameter("answerId");
-        AnswerDao dao =  new AnswerDao();
-        if(user == null && answerId == null){
+        if(user == null){
             return null;
         }
-        dao.deleteAnswer(answerId);
+        Answer as = new Answer(
+                user.getName(),req.getParameter("contents"),
+                Integer.parseInt(req.getParameter("id"))
+        );;
+        AnswerDao dao =  new AnswerDao();
+        Answer answer =  dao.addAnswer(as);
         res.setContentType("application/json;charset=UTF-8");
         try {
             PrintWriter out = res.getWriter();
             ObjectMapper mapper = new ObjectMapper();
-            out.print(mapper.writeValueAsString("성공"));
+            out.print(mapper.writeValueAsString(answer));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        };
+        }
         return null;
     }
 }

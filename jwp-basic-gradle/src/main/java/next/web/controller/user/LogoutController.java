@@ -1,4 +1,4 @@
-package next.web.user;
+package next.web.controller.user;
 
 import next.mvc.Controller;
 
