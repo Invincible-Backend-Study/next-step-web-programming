@@ -1,32 +1,68 @@
-document.querySelector(".submit-write .btn[type=submit]").addEventListener("click",(e)=>{
-    e.preventDefault()
-    const textArea = document.querySelector(".submit-write .form-control")
-    const data = {
-        type:"post",
-        url: "/qna/answer",
-        data : {
-            "contents" : textArea.value,
-            "id":new URL(window.location.href).searchParams.get("id")
-        },
-        dataType: "json",
-    }
+const deleteAnswerBtnClass = 'link-delete-article';
+const answerFormClass = 'form-delete-answer';
 
-    const answerTemplate = document.querySelector("#answerTemplate").innerHTML
-    $.ajax(data)
-    .done(data=>{
-        const template = format(answerTemplate,data.writer, new Date(data.createdDate), data.contents, data.answerId, data.answerId)
-        const element = document.createElement("div")
-        element.innerHTML = template
-        document.querySelector(".qna-comment-slipp-articles").append(element)
-    })
-    .fail((e,e2,e3)=>{
-        console.log(e3)
-    })
-})
+const submitAnswerBtn = document.querySelector(".submit-write .btn[type=submit]");
+submitAnswerBtn.addEventListener("click", (event) => {
+  event.preventDefault();
 
-function format() {
-    var args = Array.prototype.slice.call (arguments, 1);
-    return arguments[0].replace (/\{(\d+)\}/g, function (match, index) {
-       return args[index];
+  const textArea = document.querySelector(".submit-write .form-control");
+  const data = {
+    type: "post",
+    url: "/qna/answer",
+    data: {
+      contents: textArea.value,
+      id: new URL(window.location.href).searchParams.get("id"),
+    },
+    dataType: "json",
+  };
+
+  const answerTemplate = document.querySelector("#answerTemplate").innerHTML;
+  $.ajax(data)
+    .done((data) => {
+      const template = formatAnswer(answerTemplate, data.writer, new Date(data.createdDate), data.contents, data.answerId, data.answerId);
+      const newAnswer = document.createElement("div");
+      newAnswer.innerHTML = template;
+      document.querySelector(".qna-comment-slipp-articles").append(newAnswer);
+    })
+    .fail((error) => {
+      console.log(error);
     });
- }
+});
+
+const qnaComment = document.querySelector(".qna-comment");
+qnaComment.addEventListener("click", (event) => {
+  if (event.target.classList.contains(deleteAnswerBtnClass)) {
+    event.preventDefault();
+    const formData = new FormData(event.target.closest('form'));
+    const data = {
+      type: "post",
+      data: formDataToJson(formData),
+      url: "/qna/deleteAnswer",
+      dataType: "json",
+    };
+    $.ajax(data)
+      .done(() => {
+        event.target.closest("article").remove();
+      })
+      .fail((error) => {
+        console.log(error);
+      });
+  }
+});
+
+function formDataToJson(formData) {
+  const jsonObj = {};
+  for (const [key, value] of formData.entries()) {
+    jsonObj[key] = value;
+  }
+  return jsonObj;
+}
+
+function formatAnswer() {
+  const args = Array.prototype.slice.call(arguments, 1);
+  return arguments[0].replace(/\{(\d+)\}/g, function (match, index) {
+    return args[index];
+  });
+}
+
+

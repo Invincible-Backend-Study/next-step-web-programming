@@ -24,7 +24,6 @@ public class JdbcTemplete {
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
             if(rs.next()) {
-                System.out.println();
                 key.setId(rs.getInt(1));
             }
             rs.close();

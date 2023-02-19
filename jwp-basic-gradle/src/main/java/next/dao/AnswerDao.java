@@ -62,4 +62,8 @@ public class AnswerDao {
         }, questionId);
     }
 
+    public void deleteAnswer(String  id) {
+        String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
+        templete.excuteSqlUpdate(sql,id);
+    }
 }
