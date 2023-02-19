@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import next.model.User;
 
-public class UpdateUserFormController implements Controller {
+public class UpdateUserFormController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
@@ -16,11 +17,11 @@ public class UpdateUserFormController implements Controller {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return new ModelAndView(new JspView("redirect:/users/loginForm"));
+            return jspView("redirect:/users/loginForm");
         }
         if (!userId.equals(user.getUserId())) {
             throw new IllegalArgumentException("[ERROR] 다른 사용자의 정보를 수정할 수 없습니다.");
         }
-        return new ModelAndView(new JspView("user/update"));
+        return jspView("user/update");
     }
 }

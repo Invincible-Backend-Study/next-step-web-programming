@@ -1,7 +1,9 @@
 package next.controller.qna;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
+import core.mvcframework.view.JsonView;
 import core.mvcframework.view.JspView;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,7 @@ import next.service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShowController implements Controller {
+public class ShowController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
     private final QuestionService questionService = new QuestionService();
 
@@ -19,7 +21,6 @@ public class ShowController implements Controller {
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Map<String, Object> questionWithAnswers = questionService.findByQuestionIdWithAnswers(questionId);
         log.debug("questionWithAnswers={}", questionWithAnswers);
-        request.setAttribute("questionWithAnswers", questionWithAnswers);
-        return new ModelAndView(new JspView("qna/show"));
+        return jspView("qna/show").addObject("questionWithAnswers", questionWithAnswers);
     }
 }

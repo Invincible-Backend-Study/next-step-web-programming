@@ -1,6 +1,7 @@
 package next.controller.qna.api;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JsonView;
 import java.util.Date;
@@ -11,7 +12,7 @@ import next.service.AnswerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddAnswerController implements Controller {
+public class AddAnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AddAnswerController.class);
     private final AnswerService answerService = new AnswerService();
 
@@ -25,8 +26,7 @@ public class AddAnswerController implements Controller {
         log.debug("answer={}", answer);
 
         Answer savedAnswer = answerService.insertAnswer(answer);
-        ModelAndView modelAndView = new ModelAndView(new JsonView());
-        modelAndView.addObject("answer", savedAnswer);
-        return modelAndView;
+        return jsonView().addObject("answer", savedAnswer);
     }
+
 }

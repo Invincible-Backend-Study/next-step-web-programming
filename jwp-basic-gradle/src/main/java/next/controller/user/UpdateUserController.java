@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UpdateUserController implements Controller {
+public class UpdateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
 
     private final UserService userService = new UserService();
@@ -30,6 +31,6 @@ public class UpdateUserController implements Controller {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
-        return new ModelAndView(new JspView("redirect:/users/list"));
+        return jspView("redirect:/users/list");
     }
 }

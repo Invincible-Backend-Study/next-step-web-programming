@@ -1,6 +1,7 @@
 package next.controller.qna;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
@@ -11,18 +12,18 @@ import next.model.User;
 import next.service.AnswerService;
 import next.utils.SessionUtil;
 
-public class AnswerCreateController implements Controller {
+public class AnswerCreateController extends AbstractController {
     private final AnswerService answerService = new AnswerService();
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
         if (!SessionUtil.isLogined(session, "user")) {
-            return new ModelAndView(new JspView("redirect:/users/loginForm"));
+            return jspView("redirect:/users/loginForm");
         }
         AnswerCreateDto answerCreateDto = createAnswerDto(request, session);
         answerService.insertNewAnswer(answerCreateDto.toModel());
-        return new ModelAndView(new JspView("redirect:/qna/showForm?questionId=" + answerCreateDto.getQuestionId()));
+        return jspView("redirect:/qna/showForm?questionId=" + answerCreateDto.getQuestionId());
     }
 
     private AnswerCreateDto createAnswerDto(final HttpServletRequest request, final HttpSession session) {

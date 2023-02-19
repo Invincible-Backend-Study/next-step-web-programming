@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.mvcframework.ModelAndView;
+import core.mvcframework.controller.AbstractController;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import java.util.List;
@@ -11,7 +12,7 @@ import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ListUserController implements Controller {
+public class ListUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListUserController.class);
 
     private final UserService userService = new UserService();
@@ -21,6 +22,6 @@ public class ListUserController implements Controller {
         List<User> users = userService.findAllUsers();
         log.debug("allUserList={}", users);
         request.setAttribute("users", users);
-        return new ModelAndView(new JspView("user/list"));
+        return jspView("user/list");
     }
 }

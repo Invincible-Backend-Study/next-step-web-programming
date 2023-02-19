@@ -13,8 +13,9 @@ public class ModelAndView {
         this.view = view;
     }
 
-    public void addObject(final String name, final Object object) {
-        model.put(name, object);
+    public ModelAndView addObject(final String objectName, final Object object) {
+        model.put(objectName, object);
+        return this;
     }
 
     public Map<String, Object> getModel() {
