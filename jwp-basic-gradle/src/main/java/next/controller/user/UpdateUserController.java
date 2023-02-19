@@ -1,5 +1,6 @@
 package next.controller.user;
 
+import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ public class UpdateUserController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         User updatedUser = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -29,6 +30,6 @@ public class UpdateUserController implements Controller {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
-        return new JspView("redirect:/users/list");
+        return new ModelAndView(new JspView("redirect:/users/list"));
     }
 }

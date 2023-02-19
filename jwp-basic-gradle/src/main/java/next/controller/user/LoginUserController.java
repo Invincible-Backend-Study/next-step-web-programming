@@ -1,5 +1,6 @@
 package next.controller.user;
 
+import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
@@ -16,18 +17,18 @@ public class LoginUserController implements Controller {
     private final UserService userService = new UserService();
 
     @Override
-    public JspView execute(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
         try {
             User loginedUser = userService.loginUser(request.getParameter("userId"), request.getParameter("password"));
             if (loginedUser == null) {
-                return new JspView("redirect:/users/loginFailed");
+                return new ModelAndView(new JspView("redirect:/users/loginFailed"));
             }
             session.setAttribute("user", loginedUser);
-            return new JspView("redirect:/");
+            return new ModelAndView(new JspView("redirect:/"));
         } catch (IllegalArgumentException exception) {
             log.error(exception.getMessage());
-            return new JspView("redirect:/users/loginFailed");
+            return new ModelAndView(new JspView("redirect:/users/loginFailed"));
         }
     }
 }
