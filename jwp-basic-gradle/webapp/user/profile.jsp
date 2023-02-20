@@ -6,7 +6,7 @@
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
-            <div class="panel-heading"><h4>Profiles</h4></div>
+            <div class="panel-heading"><h4>프로필</h4></div>
             <div class="panel-body">
                 <div class="well well-sm">
                     <div class="media">

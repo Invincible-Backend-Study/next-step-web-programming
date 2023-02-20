@@ -16,7 +16,7 @@ public class RequestMapping {
     void initMapping() {
         mappings.put("/", new HomeController());
         mappings.put("/user/login", new UserLoginController());
-        mappings.put("/user/profile", new ForwardController("/user/profile.jsp"));
+        mappings.put("/user/profile", new ProfileController());
         mappings.put("/user/logout", new LogoutController());
         mappings.put("/user/create", new CreateUserController());
         mappings.put("/user/updateForm", new UpdateUserFormController());
