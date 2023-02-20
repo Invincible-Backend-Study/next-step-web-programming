@@ -17,6 +17,7 @@ public class DeleteAnswerController extends AbstractController {
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         long answerId = Long.parseLong(request.getParameter("answerId"));
         int deleteResult = answerService.deleteAnswer(answerId);
+        log.debug("deleteResult={}", deleteResult);
         if (deleteResult <= 0) {
             return jsonView().addObject("result", Result.fail("삭제 실패"));
         }
