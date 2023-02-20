@@ -24,10 +24,10 @@ public class DispatcherServlet extends HttpServlet {
     public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
-        ModelAndView mav = controller.execute(req, res);
-        if(mav == null){
+        if(controller == null){
             return;
         }
+        ModelAndView mav = controller.execute(req, res);
         View view= mav.getView();
         try {
             view.render(mav.getModel(),req,res);
