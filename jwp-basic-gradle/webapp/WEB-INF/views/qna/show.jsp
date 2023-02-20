@@ -86,7 +86,7 @@
                                             <li>
                                                 <form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
                                                     <input type="hidden" name="answerId" value="${each.answerId}"/>
-                                   ª                 <button type="submit" class="link-delete-article">삭제</button>
+                                                    <button type="submit" class="link-delete-article">삭제</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -109,7 +109,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>z
             </div>
         </div>
     </div>
