@@ -1,6 +1,6 @@
 const deleteAnswerBtnClass = 'link-delete-article';
 const answerFormClass = 'form-delete-answer';
-
+const commentCount = document.querySelector(".qna-comment-count")
 const submitAnswerBtn = document.querySelector(".submit-write .btn[type=submit]");
 submitAnswerBtn.addEventListener("click", (event) => {
   event.preventDefault();
@@ -19,11 +19,13 @@ submitAnswerBtn.addEventListener("click", (event) => {
   const answerTemplate = document.querySelector("#answerTemplate").innerHTML;
   $.ajax(data)
     .done(({answer}) => {
-    
       const template = formatAnswer(answerTemplate, answer.writer, new Date(answer.createdDate), answer.contents, answer.answerId, answer.answerId);
       const newAnswer = document.createElement("div");
       newAnswer.innerHTML = template;
       document.querySelector(".qna-comment-slipp-articles").append(newAnswer);
+      commentCount.textContent = commentCount.textContent.replace(/[0-9]/g,(match,index)=>{
+        return Number(match) + 1
+      })
     })
     .fail((error) => {
       console.log(error);
@@ -43,6 +45,9 @@ qnaComment.addEventListener("click", (event) => {
     };
     $.ajax(data)
       .done(() => {
+        commentCount.textContent = commentCount.textContent.replace(/[0-9]/g,(match,index)=>{
+          return Number(match) -1
+        }) 
         event.target.closest("article").remove();
       })
       .fail((error) => {
