@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class ShowController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
+
     private final QuestionService questionService = new QuestionService();
 
     @Override

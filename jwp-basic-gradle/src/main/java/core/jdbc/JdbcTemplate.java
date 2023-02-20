@@ -7,11 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JdbcTemplate {
-    private static final Logger log = LoggerFactory.getLogger(JdbcTemplate.class);
 
     public int update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();
