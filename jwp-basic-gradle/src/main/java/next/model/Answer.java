@@ -19,7 +19,6 @@ public class Answer {
     }
 
     public Answer(String writer, String contents, long questionId) {
-        //TODO 무허ㅏ는 생성자인지 잘 모르겟으니 정적팩토리
         this.writer = writer;
         this.contents = contents;
         this.createdDate = Timestamp.from(Instant.now());

@@ -18,7 +18,7 @@ public class JdbcTemplate {
         } catch (SQLException e) {
             throw new DataAccessException(e.toString());
         }
-        return -1;
+        return 0;
     }
 
     public long insert(String sql, Object... parameters) {
