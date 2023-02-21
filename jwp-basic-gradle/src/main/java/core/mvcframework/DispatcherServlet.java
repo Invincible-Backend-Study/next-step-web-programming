@@ -15,7 +15,13 @@ import org.slf4j.LoggerFactory;
 public class DispatcherServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
-    private final RequestMapping requestMapping = new RequestMapping();
+    private RequestMapping requestMapping;
+
+    @Override
+    public void init()  {
+        requestMapping = new RequestMapping();
+        requestMapping.initMapping();
+    }
 
     @Override
     protected void service(final HttpServletRequest request, final HttpServletResponse response)

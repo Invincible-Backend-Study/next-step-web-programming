@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 
 public class RequestMapping {
     private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
-    private static final Map<String, Controller> handlerMapping = new HashMap<>();
+    private final Map<String, Controller> handlerMapping = new HashMap<>();
 
-    static {
+    public void initMapping() {
         // 홈
         handlerMapping.put("/", new HomeController());
 
@@ -52,6 +52,7 @@ public class RequestMapping {
         // ajax 질문/응답
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
         handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
+
     }
 
     public Controller getHandlerMapping(final String requestURI) {
