@@ -18,6 +18,7 @@ import java.sql.SQLException;
 
 public class ListUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListUserController.class);
+    private final UserDao userDao = new UserDao();
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -30,7 +31,7 @@ public class ListUserController extends AbstractController {
 
         List<User> users = null;
         try {
-            users = UserDao.findAll();
+            users = userDao.findAll();
             request.setAttribute("users", users);
         } catch (SQLException e) {
             log.error(e.toString());

@@ -15,11 +15,13 @@ import java.sql.SQLException;
 
 public class ListQuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListQuestionController.class);
+    private final QuestionDao questionDao = new QuestionDao();
+
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         List<Question> questions = null;
         try {
-            questions = QuestionDao.findAll();
+            questions = questionDao.findAll();
             request.setAttribute("questions", questions);
         } catch (SQLException e) {
             log.error(e.toString());

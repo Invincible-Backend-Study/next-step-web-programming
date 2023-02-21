@@ -17,6 +17,9 @@ import java.sql.SQLException;
 
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
+    private final QuestionDao questionDao = new QuestionDao();
+    private final AnswerDao answerDao = new AnswerDao();
+
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
@@ -24,8 +27,8 @@ public class QuestionController extends AbstractController {
         Question question = null;
         List<Answer> answers = null;
         try {
-            question = QuestionDao.findByQuestionId(questionId);
-            answers = AnswerDao.findByQuestionId(questionId);
+            question = questionDao.findByQuestionId(questionId);
+            answers = answerDao.findByQuestionId(questionId);
 
             request.setAttribute("question", question);
             request.setAttribute("answers", answers);

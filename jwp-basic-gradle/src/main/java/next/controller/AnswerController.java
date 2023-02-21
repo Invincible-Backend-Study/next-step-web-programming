@@ -21,6 +21,8 @@ import java.sql.SQLException;
 
 public class AnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
+    private final AnswerDao answerDao = new AnswerDao();
+
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -34,7 +36,7 @@ public class AnswerController extends AbstractController {
                     request.getParameter("contents"),
                     Long.parseLong(request.getParameter("questionId")));
 
-            answer = AnswerDao.insert(answer);
+            answer = answerDao.insert(answer);
             return new ModelAndView(new JsonView()).addModel("answer", answer);
         }  catch (SQLException e) {
             log.error(e.toString());
@@ -55,13 +57,13 @@ public class AnswerController extends AbstractController {
             }
 
             Long answerId = Long.parseLong(request.getParameter("answerId"));
-            Answer targetAnswer = AnswerDao.findByAnswerId(answerId);
+            Answer targetAnswer = answerDao.findByAnswerId(answerId);
             if (!user.getName().equals(targetAnswer.getWriter())) {
                 return new ModelAndView(new JsonView())
                         .addModel("result", Result.fail("자신이 작성한 답변만 삭제할 수 있습니다."));
             }
 
-            AnswerDao.deleteByAnswerId(answerId);
+            answerDao.deleteByAnswerId(answerId);
             return new ModelAndView(new JsonView()).addModel("result", Result.ok());
         } catch (SQLException e) {
             throw new RuntimeException(e);

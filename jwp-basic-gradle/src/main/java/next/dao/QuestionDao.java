@@ -11,7 +11,7 @@ import next.model.User;
 public class QuestionDao {
     static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-    public static void insert(Question question) throws SQLException {
+    public void insert(Question question) throws SQLException {
         String sql = "INSERT INTO QUESTIONS(writer, title, contents, createdDate, countOfAnswer) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.executeUpdate(sql,
                 question.getWriter(),
@@ -21,7 +21,7 @@ public class QuestionDao {
                 question.getCountOfAnswer());
     }
 
-    public static List<Question> findAll() throws SQLException {
+    public List<Question> findAll() throws SQLException {
         ResultSetMapper<List<Question>> resultSetMapper = rs -> {
             List<Question> questions = new ArrayList<>();
             while (rs.next()) {
@@ -41,7 +41,7 @@ public class QuestionDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
-    public static Question findByQuestionId(Long questionId) throws SQLException {
+    public Question findByQuestionId(Long questionId) throws SQLException {
         ResultSetMapper<Question> resultSetMapper = rs -> {
             if (rs.next()) {
                 return new Question(
@@ -60,7 +60,7 @@ public class QuestionDao {
         return jdbcTemplate.select(sql, resultSetMapper, questionId);
     }
 
-    public static int update(Question question) throws SQLException {
+    public int update(Question question) throws SQLException {
         String sql = "UPDATE QUESTIONS SET title=?, contents=?, countOfAnswer=? WHERE questionId = ?";
         return jdbcTemplate.executeUpdate(sql,
                 question.getTitle(),
@@ -69,7 +69,7 @@ public class QuestionDao {
                 question.getQuestionId());
     }
 
-    public static int deleteAll() throws SQLException {
+    public int deleteAll() throws SQLException {
         String sql = "DELETE FROM QUESTIONS";
         return jdbcTemplate.executeUpdate(sql);
     }

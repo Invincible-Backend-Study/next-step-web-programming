@@ -11,7 +11,7 @@ import next.model.Question;
 public class AnswerDao {
     static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-    public static Answer insert(Answer answer) throws SQLException {
+    public Answer insert(Answer answer) throws SQLException {
         String sql = "INSERT INTO ANSWERS(writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
         Long answerId = jdbcTemplate.insert(sql,
                 answer.getWriter(),
@@ -22,7 +22,7 @@ public class AnswerDao {
         return findByAnswerId(answerId);
     }
 
-    public static List<Answer> findAll() throws SQLException {
+    public List<Answer> findAll() throws SQLException {
         ResultSetMapper<List<Answer>> resultSetMapper = rs -> {
             List<Answer> answers = new ArrayList<>();
             while (rs.next()) {
@@ -41,7 +41,7 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
-    public static List<Answer> findByQuestionId(Long questionId) throws SQLException {
+    public List<Answer> findByQuestionId(Long questionId) throws SQLException {
         ResultSetMapper<List<Answer>> resultSetMapper = rs -> {
             List<Answer> answers = new ArrayList<>();
             while (rs.next()) {
@@ -60,7 +60,7 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper, questionId);
     }
 
-    public static Answer findByAnswerId(Long answerId) throws SQLException {
+    public Answer findByAnswerId(Long answerId) throws SQLException {
         ResultSetMapper<Answer> resultSetMapper = rs -> {
             if (rs.next()) {
                 return new Answer(
@@ -78,7 +78,7 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper, answerId);
     }
 
-    public static int update(Answer answer) throws SQLException {
+    public int update(Answer answer) throws SQLException {
         String sql = "UPDATE ANSWERS SET contents=? WHERE answerId = ?";
         return jdbcTemplate.executeUpdate(sql,
                 answer.getContents(),
@@ -86,12 +86,12 @@ public class AnswerDao {
         );
     }
 
-    public static int deleteByAnswerId(Long answerId) {
+    public int deleteByAnswerId(Long answerId) {
         String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
         return jdbcTemplate.executeUpdate(sql, answerId);
     }
 
-    public static int deleteAll() throws SQLException {
+    public int deleteAll() throws SQLException {
         String sql = "DELETE FROM ANSWERS";
         return jdbcTemplate.executeUpdate(sql);
     }

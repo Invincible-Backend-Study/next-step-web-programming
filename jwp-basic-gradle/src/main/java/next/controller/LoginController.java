@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 public class LoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+    private final UserDao userDao = new UserDao();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -33,7 +34,7 @@ public class LoginController extends AbstractController {
     private User getLoginUser(String id, String password) {
         User user = null;
         try {
-            user = UserDao.findByUserId(id);
+            user = userDao.findByUserId(id);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
