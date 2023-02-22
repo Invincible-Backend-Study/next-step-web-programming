@@ -1,6 +1,7 @@
 package next;
 
 import java.io.File;
+import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
@@ -14,6 +15,7 @@ public class WebServerLauncher {
     public static void main(String[] args) throws Exception {
         String webappDirLocation = "webapp/";
         Tomcat tomcat = new Tomcat();
+        addShutdouwnHook(tomcat);
         tomcat.setPort(8080);
 
         StandardContext context = (StandardContext) tomcat.addWebapp("/",
@@ -29,5 +31,18 @@ public class WebServerLauncher {
 
         tomcat.start();
         tomcat.getServer().await();
+    }
+
+    private static void addShutdouwnHook(final Tomcat tomcat) {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    tomcat.stop();
+                } catch (LifecycleException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
