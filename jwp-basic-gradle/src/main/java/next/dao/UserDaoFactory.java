@@ -1,6 +1,7 @@
 package next.dao;
 
-import next.dao.template.JdbcTemplate;
+
+import core.jdbc.JdbcTemplate;
 
 public class UserDaoFactory {
 

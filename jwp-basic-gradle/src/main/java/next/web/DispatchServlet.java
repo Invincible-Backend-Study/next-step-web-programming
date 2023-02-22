@@ -1,14 +1,13 @@
 package next.web;
 
 
+import core.mvc.RequestMapping;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.controller.Controller;
-import next.controller.RequestMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +33,8 @@ public class DispatchServlet extends HttpServlet {
         var controller = requestMapping.findController(request.getRequestURI());
 
         try{
-            final var viewName = controller.execute(request,response);
-            move(viewName, request,response);
+            final var abstractView = controller.execute(request,response);
+            abstractView.getView().render(abstractView.getModel(), request, response);
         }catch (Throwable e){
             log.error("Exception : {} ", e);
             throw new ServletException(e.getMessage());
@@ -49,7 +48,6 @@ public class DispatchServlet extends HttpServlet {
         }
         final var requestDispatcher = req.getRequestDispatcher(viewName);
         requestDispatcher.forward(req, resp);
-
     }
 }
 

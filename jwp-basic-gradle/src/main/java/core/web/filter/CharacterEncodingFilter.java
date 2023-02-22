@@ -24,7 +24,7 @@ public class CharacterEncodingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        log.info(">>> filter, {}", request.getServerName());
+        log.info(">>> filter, remote port {} server port {} local port {}", request.getRemotePort(), request.getServerPort(), request.getLocalPort());
         request.setCharacterEncoding(DEFAULT_ENCODING);
         response.setCharacterEncoding(DEFAULT_ENCODING);
         chain.doFilter(request, response);
