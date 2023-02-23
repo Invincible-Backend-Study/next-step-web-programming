@@ -2,7 +2,8 @@ const deleteAnswerBtnClass = 'link-delete-article';
 const answerFormClass = 'form-delete-answer';
 const commentCount = document.querySelector(".qna-comment-count")
 const submitAnswerBtn = document.querySelector(".submit-write .btn[type=submit]");
-submitAnswerBtn?.addEventListener("click", (event) => {
+
+submitAnswerBtn?.addEventListener("click",(event) => {
   event.preventDefault();
 
   const textArea = document.querySelector(".submit-write .form-control");
@@ -32,6 +33,7 @@ submitAnswerBtn?.addEventListener("click", (event) => {
     });
 });
 
+
 const qnaComment = document.querySelector(".qna-comment");
 qnaComment?.addEventListener("click", (event) => {
   if (event.target.classList.contains(deleteAnswerBtnClass)) {
@@ -56,6 +58,8 @@ qnaComment?.addEventListener("click", (event) => {
   }
 });
 
+
+
 function formDataToJson(formData) {
   const jsonObj = {};
   for (const [key, value] of formData.entries()) {
@@ -70,5 +74,3 @@ function formatAnswer() {
     return args[index];
   });
 }
-
-

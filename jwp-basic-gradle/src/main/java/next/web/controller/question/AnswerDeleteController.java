@@ -23,7 +23,7 @@ public class AnswerDeleteController extends AbstractController {
         if(user == null && answerId == null){
             return jsonView();
         }
-        asDao.deleteAnswer(answerId);
+        asDao.deleteAnswer(Integer.parseInt(answerId));
         qsDao.decreaseAnswer(Integer.parseInt(questionId));
         return jsonView().addObject("result","성공");
     }
