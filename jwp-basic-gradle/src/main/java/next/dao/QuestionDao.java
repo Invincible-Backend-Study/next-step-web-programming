@@ -9,7 +9,7 @@ import java.util.List;
 
 public class QuestionDao {
 
-    private final JdbcTemplete template = new JdbcTemplete();
+    private final JdbcTemplete template = JdbcTemplete.getInstance();
 
     public void addQuestion(Question question) {
         String sql = "INSERT INTO QUESTIONS ( writer, title, contents, createdDate, countOfAnswer) VALUES (?,?,?,?,?)";
