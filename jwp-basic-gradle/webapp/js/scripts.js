@@ -51,7 +51,7 @@ $(".article-util-list input[type=submit]").click(deleteAnswer);
 function deleteAnswer(e) {
   e.preventDefault();  // submit 이 자동으로 동작하는 것을 막는다.
   //form 데이터들을 자동으로 묶어준다.
-  var queryString = $("form[name=answer]").serialize();
+  var queryString = $("form[name=form-delete]").serialize();
 
   $.ajax({
     type : 'DELETE',
