@@ -21,7 +21,7 @@ public class JsonView implements View {
 
     @Override
     public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        log.debug("JsonView Model: {}", model.toString());
+        // log.debug("JsonView Model: {}", model.toString());
 
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=UTF-8");

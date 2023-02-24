@@ -21,7 +21,7 @@ public class JspView implements View {
 
     @Override
     public void render(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        logger.debug("JspView Model: {}", model.toString());
+        // logger.debug("JspView Model: {}", model.toString());
 
         if (uri == null) {
             return;

@@ -47,7 +47,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../qna/list.jsp">Posts</a></li>
+                <li class="active"><a href="../question/list">Posts</a></li>
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
