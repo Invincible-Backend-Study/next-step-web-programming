@@ -11,12 +11,12 @@ import java.util.List;
 public class UserDao {
     static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-    public static void insert(User user) throws SQLException {
+    public void insert(User user) throws SQLException {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         jdbcTemplate.executeUpdate(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
-    public static List<User> findAll() throws SQLException {
+    public List<User> findAll() throws SQLException {
         ResultSetMapper<List<User>> resultSetMapper = rs -> {
             List<User> users = new ArrayList<User>();
             while (rs.next()) {
@@ -33,7 +33,7 @@ public class UserDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
-    public static User findByUserId(String userId) throws SQLException {
+    public User findByUserId(String userId) throws SQLException {
         ResultSetMapper<User> resultSetMapper = rs -> {
             if (rs.next()) {
                 return new User(
@@ -50,12 +50,12 @@ public class UserDao {
         return jdbcTemplate.select(sql, resultSetMapper, userId);
     }
 
-    public static int update(User user) throws SQLException {
+    public int update(User user) throws SQLException {
         String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
         return jdbcTemplate.executeUpdate(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
-    public static int deleteAll() throws SQLException {
+    public int deleteAll() throws SQLException {
         String sql = "DELETE FROM USERS";
         return jdbcTemplate.executeUpdate(sql);
     }

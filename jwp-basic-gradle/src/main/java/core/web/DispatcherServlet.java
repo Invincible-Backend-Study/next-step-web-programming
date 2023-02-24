@@ -1,6 +1,5 @@
 package core.web;
 
-import next.controller.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +22,12 @@ public class DispatcherServlet extends HttpServlet {
         if (controller == null) {
             logger.debug("DispatcherServlet: controller를 찾을 수 없습니다.");
         }
-        String uri = controller.execute(req, resp);
 
-        logger.debug("DispatcherServlet: {} {}", controller.toString(), uri);
-        if (uri.startsWith("redirect:")) {
-            resp.sendRedirect(uri.split(":")[1]);
-            return;
+        ModelAndView modelAndView = controller.execute(req, resp);
+        try {
+            modelAndView.getView().render(modelAndView.getModel(), req, resp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        RequestDispatcher rd = req.getRequestDispatcher(uri);
-        rd.forward(req, resp);
     }
 }

@@ -40,3 +40,21 @@
     * https://www.youtube.com/watch?v=0ax9jxfW9x4&ab_channel=%EB%B0%95%EC%9E%AC%EC%84%B1
     * RowMapper에 FunctionalInterface 어노테이션 설정
     * RowMapper를 사용할 때 람도 표현식을 사용하도록 리팩토링
+
+## AJAX를 활용해 새로고침 없이 데이터 갱신하기
+### 8.1 질문 답변 게시판 구현
+- 질문 답변 관련 객체 및 DAO 구현
+- 질문
+  - GET - Read 질문 리스트
+  - GET - Read 질문
+  - GET - Read 질문 작성 Form
+  - POST - Create 질문 생성
+  - PUT - Update 질문 수정
+  - DELETE - Delete 질문 삭제
+- 답변
+  - GET - Read 답변 리스트
+  - GET - Read 답변
+  - GET - Read 답변 작성 Form
+  - POST - Create 답변 생성
+  - PUT - Update 답변 수정
+  - DELETE - Delete 답변 삭제
