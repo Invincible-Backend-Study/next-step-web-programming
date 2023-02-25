@@ -16,6 +16,7 @@ public class RequestMapping {
         controllers.put("/user/update", new UpdateUserController());
         controllers.put("/question/list", new ListQuestionController());
         controllers.put("/question", new QuestionController());
+        controllers.put("/question/form", new QuestionFormController());
         controllers.put("/answer", new AnswerController());
         controllers.put("/index", new HomeController());
     }

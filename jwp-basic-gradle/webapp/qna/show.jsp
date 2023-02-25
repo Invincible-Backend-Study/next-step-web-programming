@@ -43,7 +43,7 @@
                   <div class="article-util">
                       <ul class="article-util-list">
                           <li>
-                              <a class="link-modify-article" href="/questions/423">수정</a>
+                              <a class="link-modify-article" href="/question/form?questionId=${question.questionId}">수정</a>
                           </li>
                           <li>
                               <form class="form-delete" action="/questions/423" method="POST">
@@ -97,7 +97,7 @@
 
                           <div class="answerWrite">
                               <form name="answer" class="submit-write">
-                                  <input type="text" name="questionId" value="${question.questionId}">
+                                  <input type="hidden" name="questionId" value="${question.questionId}">
                                   <div class="form-group" style="padding:14px;">
                                       <textarea class="form-control" name="contents" placeholder="Update your status"></textarea>
                                   </div>

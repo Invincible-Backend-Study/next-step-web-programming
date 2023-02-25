@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
@@ -51,11 +52,23 @@ public class QuestionController extends AbstractController {
                 return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
             }
 
-            Question question = new Question(user.getName(),
-                    request.getParameter("title"),
-                    request.getParameter("contents"));
+            Question question = null;
+            String title = request.getParameter("title");
+            String contents = request.getParameter("contents");
+            String questionIdParam = request.getParameter("questionId");
 
-            question = questionDao.insert(question);
+            if (questionIdParam == null || questionIdParam.isEmpty()) {
+                // 게시글 신규 등록
+                question = new Question(user.getName(), title, contents);
+                questionDao.insert(question);
+            } else {
+                // 게시글 수정
+                Long questionId = Long.parseLong(questionIdParam);
+                question = questionDao.findByQuestionId(questionId);  //TODO User 객체가 명확해진다면 Form뿐만 아니라 이곳에서도 동일유저인지 검증
+                question.putTitleAndContents(title, contents);
+                questionDao.update(question);
+            }
+
             return new ModelAndView(new JspView("redirect:/question/list"));
         }  catch (SQLException e) {
             log.error(e.toString());

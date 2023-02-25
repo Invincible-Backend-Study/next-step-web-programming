@@ -30,6 +30,11 @@ public class Question {
         this.createdDate = Timestamp.from(Instant.now());
     }
 
+    public void putTitleAndContents(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+
     public void increaseCountOfAnswer() {
         countOfAnswer++;
     }
