@@ -1,4 +1,4 @@
-package next.controller.user;
+package next.user.controller;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;

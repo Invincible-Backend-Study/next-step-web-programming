@@ -3,18 +3,18 @@ package core.mvc;
 import java.util.HashMap;
 import java.util.Map;
 import next.controller.answer.AddAnswerController;
+import next.controller.answer.DeleteAnswerController;
 import next.controller.answer.GetQuestionController;
+import next.controller.answer.ShowController;
 import next.controller.question.CreateQnAFormController;
 import next.controller.question.CreateQnaActionController;
-import next.controller.user.CreateUserController;
-import next.controller.answer.DeleteAnswerController;
-import next.controller.user.HomeController;
-import next.controller.user.ListUserController;
-import next.controller.answer.ShowController;
-import next.controller.user.UpdateFormController;
-import next.controller.user.UpdateUserController;
-import next.controller.user.UserLoginController;
-import next.controller.user.UserLogoutController;
+import next.user.controller.CreateUserController;
+import next.user.controller.HomeController;
+import next.user.controller.ListUserController;
+import next.user.controller.UpdateFormController;
+import next.user.controller.UpdateUserController;
+import next.user.controller.UserLoginController;
+import next.user.controller.UserLogoutController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class RequestMapping {
     private final Map<String, AbstractController> mapping = new HashMap<>();
 
 
-    public void initMapping(){
+    public void initMapping() {
         mapping.put("/", new HomeController());
         mapping.put("/user/form", new ForwardController(DEFAULT_VIEW_PATH + "/user/form.jsp"));
         mapping.put("/user/loginForm", new ForwardController(DEFAULT_VIEW_PATH + "/user/login.jsp"));
@@ -43,16 +43,16 @@ public class RequestMapping {
         mapping.put("/user/updateForm", new UpdateFormController());
         mapping.put("/user/list", new ListUserController());
         mapping.put("/user/create", new CreateUserController());
-        mapping.put("/user/update" , new UpdateUserController());
+        mapping.put("/user/update", new UpdateUserController());
         mapping.put("/user/login", new UserLoginController());
         mapping.put("/user/logout", new UserLogoutController());
     }
 
-    public Controller findController(String url){
+    public Controller findController(String url) {
         return mapping.get(url);
     }
 
-    private void put(String url, AbstractController controller){
-        mapping.put(url,controller);
+    private void put(String url, AbstractController controller) {
+        mapping.put(url, controller);
     }
 }

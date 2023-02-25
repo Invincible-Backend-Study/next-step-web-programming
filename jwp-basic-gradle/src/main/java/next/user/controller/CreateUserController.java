@@ -1,33 +1,29 @@
-package next.controller.user;
+package next.user.controller;
 
-import core.jdbc.DataAccessException;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import next.dao.UserDao;
-import next.dao.UserDaoFactory;
-import next.model.User;
+import next.user.payload.request.CreateUserDto;
+import next.user.service.CreateUserService;
 
 @Slf4j
 public class CreateUserController extends AbstractController {
-    private final UserDao userDao = UserDaoFactory.getUserDao();
+    private final CreateUserService createUserService = new CreateUserService();
+
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+        createUserService.execute(this.convertHttpRequestToDto(request));
+        return this.jspView("redirect: /user/list");
+    }
 
-        User user = User.of(
+    private CreateUserDto convertHttpRequestToDto(final HttpServletRequest request) {
+        return new CreateUserDto(
                 request.getParameter("userId"),
                 request.getParameter("password"),
                 request.getParameter("name"),
                 request.getParameter("email")
         );
-        try {
-            userDao.insert(user);
-        }catch (DataAccessException exception){
-            log.error(exception.getMessage());
-            return this.jspView("/WEB-INF/user/signup_failed.jsp");
-        }
-        return this.jspView("redirect: /user/list");
     }
 }
