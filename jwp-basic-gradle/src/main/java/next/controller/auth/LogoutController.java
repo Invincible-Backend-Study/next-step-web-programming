@@ -1,11 +1,11 @@
-package next.controller;
+package next.controller.auth;
 
 import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import core.web.View;
+import next.controller.AbstractController;
 import next.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

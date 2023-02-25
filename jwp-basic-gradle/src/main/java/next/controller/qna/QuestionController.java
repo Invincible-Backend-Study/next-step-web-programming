@@ -1,15 +1,16 @@
-package next.controller;
+package next.controller.qna;
 
 import core.web.ModelAndView;
-import core.web.View;
+
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import next.controller.AbstractController;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
 import next.model.Question;
 import next.model.User;
-import next.view.JsonView;
 import next.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);

@@ -1,8 +1,7 @@
-package next.controller;
+package next.controller.qna;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import core.web.ModelAndView;
-import core.web.View;
+import next.controller.AbstractController;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;

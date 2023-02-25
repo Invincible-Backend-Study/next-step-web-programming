@@ -1,8 +1,8 @@
-package next.controller;
+package next.controller.qna;
 
 import core.web.ModelAndView;
+import next.controller.AbstractController;
 import next.dao.QuestionDao;
-import next.model.Answer;
 import next.model.Question;
 import next.model.Result;
 import next.model.User;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.List;
 
 public class QuestionFormController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionFormController.class);

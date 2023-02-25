@@ -1,6 +1,16 @@
 package core.web;
 
 import next.controller.*;
+import next.controller.auth.LoginController;
+import next.controller.auth.LogoutController;
+import next.controller.qna.AnswerController;
+import next.controller.qna.ListQuestionController;
+import next.controller.qna.QuestionController;
+import next.controller.qna.QuestionFormController;
+import next.controller.user.CreateUserController;
+import next.controller.user.ListUserController;
+import next.controller.user.UpdateUserController;
+import next.controller.user.UpdateUserFormController;
 
 import java.util.HashMap;
 import java.util.Map;

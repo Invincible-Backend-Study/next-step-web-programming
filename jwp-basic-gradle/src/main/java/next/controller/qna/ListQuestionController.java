@@ -1,8 +1,10 @@
-package next.controller;
+package next.controller.qna;
 
 import core.web.ModelAndView;
-import core.web.View;
+
 import java.util.List;
+
+import next.controller.AbstractController;
 import next.dao.QuestionDao;
 import next.model.Question;
 import next.view.JspView;

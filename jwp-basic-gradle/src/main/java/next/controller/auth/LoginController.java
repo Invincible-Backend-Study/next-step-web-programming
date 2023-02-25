@@ -1,12 +1,11 @@
-package next.controller;
+package next.controller.auth;
 
-import core.db.DataBase;
 import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import core.web.View;
+import next.controller.AbstractController;
 import next.dao.UserDao;
 import next.model.User;
 import next.view.JspView;
