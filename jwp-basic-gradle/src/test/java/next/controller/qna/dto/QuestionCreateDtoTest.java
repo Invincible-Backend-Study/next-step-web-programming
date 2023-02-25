@@ -14,10 +14,10 @@ class QuestionCreateDtoTest {
         // then
         Assertions.assertAll(() -> {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new QuestionCreateDto("testId", "", "testContents"))
+                    .isThrownBy(() -> QuestionCreateDto.createDto("testId", "", "testContents"))
                     .withMessageContaining("[ERROR] 제목 및 본문 내용을 반드시 입력해야 합니다.");
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new QuestionCreateDto("testId", "testTitle", ""))
+                    .isThrownBy(() -> QuestionCreateDto.createDto("testId", "testTitle", ""))
                     .withMessageContaining("[ERROR] 제목 및 본문 내용을 반드시 입력해야 합니다.");
         });
     }

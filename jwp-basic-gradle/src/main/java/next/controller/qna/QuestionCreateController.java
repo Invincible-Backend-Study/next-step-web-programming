@@ -12,7 +12,7 @@ public class QuestionCreateController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        QuestionCreateDto questionCreateDto = new QuestionCreateDto(
+        QuestionCreateDto questionCreateDto = QuestionCreateDto.createDto(
                 request.getParameter("writer"),
                 request.getParameter("title"),
                 request.getParameter("contents")
