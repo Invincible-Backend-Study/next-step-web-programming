@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.service.QuestionService;
+import next.utils.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,9 @@ public class ShowController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
+        if (!SessionUtil.isLogined(request.getSession(), "user")) {
+            return jspView("redirect:/loginForm");
+        }
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Map<String, Object> questionWithAnswers = questionService.findByQuestionIdWithAnswers(questionId);
         log.debug("questionWithAnswers={}", questionWithAnswers);
