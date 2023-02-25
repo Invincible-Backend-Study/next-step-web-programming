@@ -18,7 +18,7 @@ public class DispatcherServlet extends HttpServlet {
     private RequestMapping requestMapping;
 
     @Override
-    public void init()  {
+    public void init() {
         requestMapping = new RequestMapping();
         requestMapping.initMapping();
     }

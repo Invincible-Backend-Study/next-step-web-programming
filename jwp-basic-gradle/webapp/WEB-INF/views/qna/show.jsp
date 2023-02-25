@@ -29,9 +29,11 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name">${questionWithAnswers.question.writer}</a>
+                            <a href="/users/92/kimmunsu"
+                               class="article-author-name">${questionWithAnswers.question.writer}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${questionWithAnswers.question.createdDate}"/>
+                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+                                                value="${questionWithAnswers.question.createdDate}"/>
                                 <i class="icon-link"></i>
                             </a>
                         </div>
@@ -59,7 +61,8 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong>${questionWithAnswers.question.countOfAnswer}</strong>개의 의견</p>
+                        <p class="qna-comment-count"><strong>${questionWithAnswers.question.countOfAnswer}</strong>개의 의견
+                        </p>
                         <div class="qna-comment-slipp-articles">
 
                             <c:forEach items="${questionWithAnswers.answers}" var="each">
@@ -71,7 +74,8 @@
                                         </div>
                                         <div class="article-header-text">
                                                 ${each.writer}
-                                            <div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/></div>
+                                            <div class="article-header-time"><fmt:formatDate
+                                                    pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/></div>
                                         </div>
                                     </div>
                                     <div class="article-doc comment-doc">
@@ -95,7 +99,8 @@
                             </c:forEach>
                             <div class="answerWrite">
                                 <form name="answer" method="post">
-                                    <input type="hidden" name="questionId" value="${questionWithAnswers.question.questionId}">
+                                    <input type="hidden" name="questionId"
+                                           value="${questionWithAnswers.question.questionId}">
                                     <div class="form-group col-lg-12">
                                         <textarea name="contents" id="contents" class="form-control"
                                                   placeholder=""></textarea>

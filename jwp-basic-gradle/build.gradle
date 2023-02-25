@@ -10,7 +10,7 @@ plugins {
 mainClassName = 'webserver.WebServerLauncher'
 
 repositories {
-   mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
