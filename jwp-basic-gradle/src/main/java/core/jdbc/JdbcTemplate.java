@@ -7,25 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JdbcTemplate {
-    private static final Logger log = LoggerFactory.getLogger(JdbcTemplate.class);
 
-    public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
+    public int update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatementSetter.setValue(preparedStatement);
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new DataAccessException(exception);
         }
     }
 
-    public void update(final String query, final Object... values) {
-        update(query, createPreparedStatementSetter(values));
+    public int update(final String query, final Object... values) {
+        return update(query, createPreparedStatementSetter(values));
     }
 
     public <T> List<T> query(
@@ -59,7 +56,6 @@ public class JdbcTemplate {
     }
 
     public <T> List<T> query(final String query, final RowMapper<T> rowMapper, final Object... values) {
-        log.debug("valuesNullCheck={}", values == null);
         return query(query, rowMapper, createPreparedStatementSetter(values));
     }
 
