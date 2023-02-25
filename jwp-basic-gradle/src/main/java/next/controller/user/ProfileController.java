@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import next.controller.user.dto.ProfileUserDto;
 import next.model.User;
+import next.utils.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +16,11 @@ public class ProfileController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        log.debug("loginUser={}", user);
-        if (user == null) {
+        if (!SessionUtil.isLogined(request.getSession(), "user")) {
             return jspView("redirect:/users/loginForm");
         }
-        return jspView("user/profile").addObject("profileUser", ProfileUserDto.from(user));
+        return jspView("user/profile").addObject("profileUser",
+                ProfileUserDto.from(SessionUtil.getLoginObject(request.getSession(), "user"))
+        );
     }
 }
