@@ -57,8 +57,8 @@
                         <li><a href="/users/updateForm?userId=${sessionScope.user.userId}" role="button">개인정보수정</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/users/loginForm" role="button">로그인</a></li>
-                        <li><a href="/users/form" role="button">회원가입</a></li>
+                        <li><a href="/loginForm" role="button">로그인</a></li>
+                        <li><a href="/signUpForm" role="button">회원가입</a></li>
                     </c:otherwise>
                 </c:choose>
             </ul>

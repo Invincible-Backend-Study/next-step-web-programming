@@ -28,21 +28,21 @@ public class RequestMapping {
     public void initMapping() {
         // 로그인 필요없음
         handlerMapping.put("/", new HomeController());
-        handlerMapping.put("/users/form", new ForwardController("user/form"));
-        handlerMapping.put("/users/loginForm", new ForwardController("user/login"));
-        handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
-        handlerMapping.put("/users/login", new LoginUserController());
-        handlerMapping.put("/users/logout", new LogoutUserController());
-        handlerMapping.put("/users/create", new CreateUserController());
-        handlerMapping.put("/qna/showForm", new ShowController());
+        handlerMapping.put("/signUpForm", new ForwardController("user/form"));
+        handlerMapping.put("/signUp", new CreateUserController());
+        handlerMapping.put("/loginForm", new ForwardController("user/login"));
+        handlerMapping.put("/login", new LoginUserController());
+        handlerMapping.put("/loginFailed", new ForwardController("user/login_failed"));
 
         // 로그인 필요
         handlerMapping.put("/users", new ListUserController());
+        handlerMapping.put("/users/logout", new LogoutUserController());
         handlerMapping.put("/users/profile", new ProfileController());
         handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
+        handlerMapping.put("/qna/showForm", new ShowController());
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
         handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
 
@@ -55,3 +55,5 @@ public class RequestMapping {
         return handlerMapping.get(requestURI);
     }
 }
+
+

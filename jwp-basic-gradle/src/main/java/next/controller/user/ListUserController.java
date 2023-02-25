@@ -19,7 +19,7 @@ public class ListUserController extends AbstractController {
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         if (!SessionUtil.isLogined(request.getSession(), "user")) {
-            return jspView("redirect:/users/loginForm");
+            return jspView("redirect:/loginForm");
         }
         List<User> users = userService.findAllUsers();
         log.debug("allUserList={}", users);

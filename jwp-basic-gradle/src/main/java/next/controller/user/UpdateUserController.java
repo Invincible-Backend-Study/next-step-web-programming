@@ -28,6 +28,6 @@ public class UpdateUserController extends AbstractController {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
-        return jspView("redirect:/users/list");
+        return jspView("redirect:/users");
     }
 }

@@ -15,6 +15,6 @@ public class QuestionFormController extends AbstractController {
         if (SessionUtil.isLogined(session, "user")) {
             return jspView("qna/form");
         }
-        return jspView("redirect:/users/loginForm");
+        return jspView("redirect:/loginForm");
     }
 }

@@ -17,7 +17,7 @@ public class AnswerCreateController extends AbstractController {
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         HttpSession session = request.getSession();
         if (!SessionUtil.isLogined(session, "user")) {
-            return jspView("redirect:/users/loginForm");
+            return jspView("redirect:/loginForm");
         }
         AnswerCreateDto answerCreateDto = createAnswerDto(request, session);
         answerService.insertNewAnswer(answerCreateDto.toModel());

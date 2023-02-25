@@ -17,7 +17,7 @@ public class ProfileController extends AbstractController {
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         if (!SessionUtil.isLogined(request.getSession(), "user")) {
-            return jspView("redirect:/users/loginForm");
+            return jspView("redirect:/loginForm");
         }
         return jspView("user/profile").addObject("profileUser",
                 ProfileUserDto.from(SessionUtil.getLoginObject(request.getSession(), "user"))
