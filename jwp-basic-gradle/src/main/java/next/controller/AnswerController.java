@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import core.web.ModelAndView;
 import core.web.View;
 import next.dao.AnswerDao;
+import next.dao.QuestionDao;
 import next.model.Answer;
+import next.model.Question;
 import next.model.Result;
 import next.model.User;
 import next.view.JsonView;
@@ -20,6 +22,7 @@ import java.sql.SQLException;
 public class AnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
     private final AnswerDao answerDao = new AnswerDao();
+    private final QuestionDao questionDao = new QuestionDao();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -35,6 +38,9 @@ public class AnswerController extends AbstractController {
                     Long.parseLong(request.getParameter("questionId")));
 
             answer = answerDao.insert(answer);
+            Question question = questionDao.findByQuestionId(answer.getQuestionId());
+            question.increaseCountOfAnswer();
+            questionDao.update(question);
             return new ModelAndView(new JsonView()).addModel("answer", answer);
         }  catch (SQLException e) {
             log.error(e.toString());
@@ -62,6 +68,9 @@ public class AnswerController extends AbstractController {
             }
 
             answerDao.deleteByAnswerId(answerId);
+            Question question = questionDao.findByQuestionId(targetAnswer.getQuestionId());
+            question.decreaseCountOfAnswer();
+            questionDao.update(question);
             return new ModelAndView(new JsonView()).addModel("result", Result.ok());
         } catch (SQLException e) {
             throw new RuntimeException(e);

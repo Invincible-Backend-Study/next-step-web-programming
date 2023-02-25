@@ -30,6 +30,14 @@ public class Question {
         this.createdDate = Timestamp.from(Instant.now());
     }
 
+    public void increaseCountOfAnswer() {
+        countOfAnswer++;
+    }
+
+    public void decreaseCountOfAnswer() {
+        countOfAnswer--;
+    }
+
     public long getQuestionId() {
         return questionId;
     }
@@ -77,14 +85,6 @@ public class Question {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
-//    public Timestamp getCreatedDateTimestamp() {
-//        return Timestamp.valueOf(createdDate);
-//    }
-//
-//    public void setCreatedDateFrom(Timestamp timestamp) {
-//        createdDate = timestamp.toLocalDateTime();
-//    }
-
     @Override
     public String toString() {
         return "\n[" + questionId + "] " + writer + "/" + title + "\n" + contents + "\n" + countOfAnswer + " " + createdDate;
