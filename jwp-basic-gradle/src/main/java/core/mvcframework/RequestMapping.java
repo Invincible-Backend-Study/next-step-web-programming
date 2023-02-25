@@ -44,9 +44,6 @@ public class RequestMapping {
         handlerMapping.put("/qna/show", new ShowController());
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
         handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
-
-
-
     }
 
     public Controller getHandlerMapping(final String requestURI) {
