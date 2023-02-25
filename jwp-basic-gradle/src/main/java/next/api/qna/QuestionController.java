@@ -2,6 +2,7 @@ package next.api.qna;
 
 import core.web.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,8 @@ import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Answer;
 import next.api.qna.model.Question;
 import next.api.user.model.User;
+import next.common.model.Result;
+import next.common.view.JsonView;
 import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,5 +79,34 @@ public class QuestionController extends AbstractController {
             log.error(e.toString());
         }
         return new ModelAndView(new JspView("redirect:/question/list"));
+    }
+
+    @Override
+    protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ModelAndView(new JsonView())
+                        .addModel("result", Result.fail("질문 삭제를 위해선 로그인이 필요합니다."));
+            }
+
+            log.debug("=============>" + request.getParameterMap().toString());
+            log.debug(request.getParameter("questionId"));
+            request.getReader();
+            Long questionId = Long.parseLong(request.getParameter("questionId"));
+            Question question = questionDao.findByQuestionId(questionId);
+            if (!user.getName().equals(question.getWriter())) {
+                return new ModelAndView(new JsonView())
+                        .addModel("result", Result.fail("자신이 작성한 질문만 삭제할 수 있습니다."));
+            }
+
+            questionDao.deleteByQuestionId(questionId);
+            return new ModelAndView(new JsonView()).addModel("result", Result.ok());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

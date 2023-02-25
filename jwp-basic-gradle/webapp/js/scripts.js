@@ -63,3 +63,17 @@ function deleteAnswer(e) {
   })
 }
 
+function deleteQuestion(questionId) {
+  if (confirm(questionId + '번글을 정말 삭제하시겠습니까?')) {
+    fetch(`/question?questionId=` + questionId, {method: 'DELETE'})
+        .then(response => {
+          if (response.ok) {
+            alert('삭제되었습니다.');
+            location.href = '/question/list';
+          } else {
+            alert('삭제에 실패했습니다.');
+          }
+        })
+        .catch(error => console.error(error));
+  }
+}

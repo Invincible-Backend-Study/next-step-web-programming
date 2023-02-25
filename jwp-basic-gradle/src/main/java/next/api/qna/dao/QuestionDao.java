@@ -60,7 +60,7 @@ public class QuestionDao {
         return jdbcTemplate.select(sql, resultSetMapper, questionId);
     }
 
-    public int update(Question question) throws SQLException {
+    public int update(Question question) {
         String sql = "UPDATE QUESTIONS SET title=?, contents=?, countOfAnswer=? WHERE questionId = ?";
         return jdbcTemplate.executeUpdate(sql,
                 question.getTitle(),
@@ -69,7 +69,12 @@ public class QuestionDao {
                 question.getQuestionId());
     }
 
-    public int deleteAll() throws SQLException {
+    public int deleteByQuestionId(Long questionId) {
+        String sql = "DELETE FROM QUESTIONS WHERE questionId = ?";
+        return jdbcTemplate.executeUpdate(sql, questionId);
+    }
+
+    public int deleteAll() {
         String sql = "DELETE FROM QUESTIONS";
         return jdbcTemplate.executeUpdate(sql);
     }

@@ -19,10 +19,10 @@ abstract public class AbstractController implements Controller {
             return doPost(request, response);
         }
         if (method.isPut()) {
-            return doPost(request, response);
+            return doPut(request, response);
         }
         if (method.isDelete()) {
-            return doPost(request, response);
+            return doDelete(request, response);
         }
         throw new IllegalArgumentException("지원하지 않는 HTTP Method 입니다. (method:" + method.toString());
     }
