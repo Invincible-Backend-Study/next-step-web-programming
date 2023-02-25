@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.model.User;
 import next.service.UserService;
+import next.utils.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,9 @@ public class ListUserController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
+        if (!SessionUtil.isLogined(request.getSession(), "user")) {
+            return jspView("redirect:/users/loginForm");
+        }
         List<User> users = userService.findAllUsers();
         log.debug("allUserList={}", users);
         request.setAttribute("users", users);

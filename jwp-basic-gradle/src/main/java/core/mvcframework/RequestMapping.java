@@ -26,32 +26,27 @@ public class RequestMapping {
     private final Map<String, Controller> handlerMapping = new HashMap<>();
 
     public void initMapping() {
-        // 홈
+        // 로그인 필요없음
         handlerMapping.put("/", new HomeController());
-
-        // 유저 단순 포워딩
         handlerMapping.put("/users/form", new ForwardController("user/form"));
         handlerMapping.put("/users/loginForm", new ForwardController("user/login"));
         handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
-
-        // 유저
-        handlerMapping.put("/users/create", new CreateUserController());
-        handlerMapping.put("/users", new ListUserController());
         handlerMapping.put("/users/login", new LoginUserController());
         handlerMapping.put("/users/logout", new LogoutUserController());
+        handlerMapping.put("/users/create", new CreateUserController());
+        handlerMapping.put("/qna/showForm", new ShowController());
+
+        // 로그인 필요
+        handlerMapping.put("/users", new ListUserController());
         handlerMapping.put("/users/profile", new ProfileController());
         handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
-
-        // 질문/응답
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
-        handlerMapping.put("/qna/showForm", new ShowController());
-        handlerMapping.put("/qna/createAnswer", new AnswerCreateController());
-
-        // ajax 질문/응답
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
         handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
+
+
 
     }
 
