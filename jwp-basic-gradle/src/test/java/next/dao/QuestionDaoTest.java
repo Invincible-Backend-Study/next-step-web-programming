@@ -1,10 +1,9 @@
 package next.dao;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.sql.SQLException;
 import java.util.List;
-import next.model.Question;
+
+import next.api.qna.dao.QuestionDao;
+import next.api.qna.model.Question;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

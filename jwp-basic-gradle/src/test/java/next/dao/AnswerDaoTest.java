@@ -1,8 +1,9 @@
 package next.dao;
 
 import java.util.List;
-import next.model.Answer;
-import next.model.Question;
+
+import next.api.qna.dao.AnswerDao;
+import next.api.qna.model.Answer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

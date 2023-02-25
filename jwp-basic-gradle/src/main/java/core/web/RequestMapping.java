@@ -1,16 +1,17 @@
 package core.web;
 
+import next.common.controller.HomeController;
 import next.controller.*;
-import next.controller.auth.LoginController;
-import next.controller.auth.LogoutController;
-import next.controller.qna.AnswerController;
-import next.controller.qna.ListQuestionController;
-import next.controller.qna.QuestionController;
-import next.controller.qna.QuestionFormController;
-import next.controller.user.CreateUserController;
-import next.controller.user.ListUserController;
-import next.controller.user.UpdateUserController;
-import next.controller.user.UpdateUserFormController;
+import next.api.auth.LoginController;
+import next.api.auth.LogoutController;
+import next.api.qna.AnswerController;
+import next.api.qna.ListQuestionController;
+import next.api.qna.QuestionController;
+import next.api.qna.QuestionFormController;
+import next.api.user.CreateUserController;
+import next.api.user.ListUserController;
+import next.api.user.UpdateUserController;
+import next.api.user.UpdateUserFormController;
 
 import java.util.HashMap;
 import java.util.Map;

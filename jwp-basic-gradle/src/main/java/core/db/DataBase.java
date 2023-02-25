@@ -1,12 +1,11 @@
 package core.db;
 
-import java.io.InvalidClassException;
 import java.util.Collection;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import next.model.User;
+import next.api.user.model.User;
 
 public class DataBase {
     private static Map<String, User> users = Maps.newHashMap();
