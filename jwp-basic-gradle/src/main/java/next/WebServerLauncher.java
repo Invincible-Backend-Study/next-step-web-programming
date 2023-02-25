@@ -34,15 +34,12 @@ public class WebServerLauncher {
     }
 
     private static void addShutdouwnHook(final Tomcat tomcat) {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                try {
-                    tomcat.stop();
-                } catch (LifecycleException e) {
-                    e.printStackTrace();
-                }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                tomcat.stop();
+            } catch (LifecycleException e) {
+                e.printStackTrace();
             }
-        });
+        }));
     }
 }

@@ -42,9 +42,13 @@ function addAnswer(e) {
 
 // 서버 응답 성공시
 function onSuccess(json, status) {
-    var answerTemplate = $("#answerTemplate").html();
-    var template = answerTemplate.format(json.answer.writer, new Date(json.answer.createdDate), json.answer.contents, json.answer.answerId);
-    $(".qna-comment-slipp-articles").prepend(template);
+    if (json.result.status) {
+        var answerTemplate = $("#answerTemplate").html();
+        var template = answerTemplate.format(json.answer.writer, new Date(json.answer.createdDate), json.answer.contents, json.answer.answerId);
+        $(".qna-comment-slipp-articles").prepend(template);
+        return;
+    }
+    alert(json.result.message);
 }
 
 // 삭제시 AJAX 동작

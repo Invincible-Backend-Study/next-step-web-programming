@@ -96,9 +96,6 @@
                             <div class="answerWrite">
                                 <form name="answer" method="post">
                                     <input type="hidden" name="questionId" value="${questionWithAnswers.question.questionId}">
-                                    <div class="form-group col-lg-4" style="padding-top:10px;">
-                                        <input class="form-control" id="writer" name="writer" placeholder="이름">
-                                    </div>
                                     <div class="form-group col-lg-12">
                                         <textarea name="contents" id="contents" class="form-control"
                                                   placeholder=""></textarea>
