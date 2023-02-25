@@ -5,24 +5,25 @@ import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.dao.AnswerDao;
-import next.dao.QuestionDao;
 import next.model.Result;
+import next.qna.dao.QuestionDao;
 
 public class DeleteAnswerController extends AbstractController {
     private final AnswerDao answerDao = new AnswerDao();
     private final QuestionDao questionDao = new QuestionDao();
+
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         final var answerId = Long.parseLong(request.getParameter("answerId"));
         final var answer = answerDao.findById(answerId);
 
-        if(answer == null){
+        if (answer == null) {
             return this.jsonView()
                     .addObject("result", Result.fail("질문이 존재하지 않습니다."))
                     .addObject("answer", null);
         }
         final var question = questionDao.findById(answer.getQuestionId());
-        if(question == null){
+        if (question == null) {
             return this.jsonView()
                     .addObject("result", Result.fail("없음"))
                     .addObject("answer", null);
@@ -34,6 +35,6 @@ public class DeleteAnswerController extends AbstractController {
 
         return this.jsonView()
                 .addObject("result", Result.ok())
-                .addObject("countOfComments",  updateQuestion.getCountOfComment());
+                .addObject("countOfComments", updateQuestion.getCountOfComment());
     }
 }

@@ -5,7 +5,7 @@ import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.dao.AnswerDao;
-import next.dao.QuestionDao;
+import next.qna.dao.QuestionDao;
 
 public class ShowController extends AbstractController {
 
