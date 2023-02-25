@@ -53,7 +53,7 @@
                 <li class="active"><a href="/">Posts</a></li>
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <li><a href="/users/logout" role="button">로그아웃</a></li>
+                        <li><a href="/users/signOut" role="button">로그아웃</a></li>
                         <li><a href="/users/updateForm?userId=${sessionScope.user.userId}" role="button">개인정보수정</a></li>
                     </c:when>
                     <c:otherwise>

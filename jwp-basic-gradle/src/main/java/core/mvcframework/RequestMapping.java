@@ -5,16 +5,15 @@ import core.mvcframework.controller.ForwardController;
 import java.util.HashMap;
 import java.util.Map;
 import next.controller.HomeController;
-import next.controller.qna.AnswerCreateController;
 import next.controller.qna.QuestionCreateController;
 import next.controller.qna.QuestionFormController;
 import next.controller.qna.ShowController;
 import next.controller.qna.api.AddAnswerController;
 import next.controller.qna.api.DeleteAnswerController;
-import next.controller.user.CreateUserController;
-import next.controller.user.ListUserController;
-import next.controller.user.LoginUserController;
-import next.controller.user.LogoutUserController;
+import next.controller.user.SignUpController;
+import next.controller.user.UserListController;
+import next.controller.user.LoginController;
+import next.controller.user.SignOutController;
 import next.controller.user.ProfileController;
 import next.controller.user.UpdateUserController;
 import next.controller.user.UpdateUserFormController;
@@ -29,20 +28,20 @@ public class RequestMapping {
         // 로그인 필요없음
         handlerMapping.put("/", new HomeController());
         handlerMapping.put("/signUpForm", new ForwardController("user/form"));
-        handlerMapping.put("/signUp", new CreateUserController());
+        handlerMapping.put("/signUp", new SignUpController());
         handlerMapping.put("/loginForm", new ForwardController("user/login"));
-        handlerMapping.put("/login", new LoginUserController());
+        handlerMapping.put("/login", new LoginController());
         handlerMapping.put("/loginFailed", new ForwardController("user/login_failed"));
 
         // 로그인 필요
-        handlerMapping.put("/users", new ListUserController());
-        handlerMapping.put("/users/logout", new LogoutUserController());
+        handlerMapping.put("/users", new UserListController());
+        handlerMapping.put("/users/signOut", new SignOutController());
         handlerMapping.put("/users/profile", new ProfileController());
         handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
-        handlerMapping.put("/qna/showForm", new ShowController());
+        handlerMapping.put("/qna/show", new ShowController());
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
         handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
 

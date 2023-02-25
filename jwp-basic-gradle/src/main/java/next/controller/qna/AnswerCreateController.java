@@ -21,7 +21,7 @@ public class AnswerCreateController extends AbstractController {
         }
         AnswerCreateDto answerCreateDto = createAnswerDto(request, session);
         answerService.insertNewAnswer(answerCreateDto.toModel());
-        return jspView("redirect:/qna/showForm?questionId=" + answerCreateDto.getQuestionId());
+        return jspView("redirect:/qna/show?questionId=" + answerCreateDto.getQuestionId());
     }
 
     private AnswerCreateDto createAnswerDto(final HttpServletRequest request, final HttpSession session) {
