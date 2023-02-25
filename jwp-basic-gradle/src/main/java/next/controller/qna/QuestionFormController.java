@@ -11,10 +11,6 @@ public class QuestionFormController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        if (SessionUtil.isLogined(session, "user")) {
-            return jspView("qna/form");
-        }
         return jspView("redirect:/loginForm");
     }
 }

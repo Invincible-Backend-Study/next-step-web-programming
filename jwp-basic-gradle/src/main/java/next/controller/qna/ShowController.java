@@ -17,9 +17,6 @@ public class ShowController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        if (!SessionUtil.isLogined(request.getSession(), "user")) {
-            return jspView("redirect:/loginForm");
-        }
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Map<String, Object> questionWithAnswers = questionService.findByQuestionIdWithAnswers(questionId);
         log.debug("questionWithAnswers={}", questionWithAnswers);

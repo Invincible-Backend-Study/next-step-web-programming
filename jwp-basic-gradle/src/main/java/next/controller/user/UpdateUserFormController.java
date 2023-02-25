@@ -12,9 +12,6 @@ public class UpdateUserFormController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        if (!SessionUtil.isLogined(request.getSession(), "user")) {
-            return jspView("redirect:/loginForm");
-        }
         String userId = request.getParameter("userId");
         User loginedUser = SessionUtil.getLoginObject(request.getSession(), "user");
         if (!userId.equals(loginedUser.getUserId())) {

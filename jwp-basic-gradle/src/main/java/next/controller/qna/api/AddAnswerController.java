@@ -19,9 +19,6 @@ public class AddAnswerController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        if (!SessionUtil.isLogined(request.getSession(), "user")) {
-            return jsonView().addObject("result", Result.fail("로그인을 해야 합니다."));
-        }
         User user = SessionUtil.getLoginObject(request.getSession(), "user");
         Answer answer = new Answer(
                 user.getUserId(),
