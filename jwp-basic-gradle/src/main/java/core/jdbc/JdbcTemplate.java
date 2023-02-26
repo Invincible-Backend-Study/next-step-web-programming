@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class JdbcTemplate {
     private static JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private JdbcTemplate();
+    private JdbcTemplate() {};
     public static JdbcTemplate getInstance() {
         return jdbcTemplate;
     }
