@@ -1,17 +1,17 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="../layout/header.jsp"%>
-<%@include file="../layout/nav.jsp"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="../layout/header.jsp" %>
+<%@include file="../layout/nav.jsp" %>
 
 <!DOCTYPE html>
 <html lang="kr">
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
-            <div class="panel panel-default">
-                <header class="qna-header">
-                    <h2 class="qna-title">${question.title}</h2>
-                </header>
+        <div class="panel panel-default">
+            <header class="qna-header">
+                <h2 class="qna-title">${question.title}</h2>
+            </header>
             <div class="content-main">
                 <article class="article">
                     <div class="article-header">
@@ -21,7 +21,7 @@
                         <div class="article-header-text">
                             <a href="/users/92/kimmunsu" class="article-author-name">${question.writer}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${question.createdDate}" />
+                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${question.createdDate}"/>
                                 <i class="icon-link"></i>
                             </a>
                         </div>
@@ -32,12 +32,12 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="#">수정</a>
+                                <a class="link-modify-article" href="/qna/update/form?questionId=${question.questionId}">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="#" method="POST">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="link-delete-article" type="submit">삭제</button>
+                                <form class="form-delete" action="/qna/delete" method="POST">
+                                    <input type="hidden" name="questionId" value="${question.questionId}">
+                                    <button class="link-delete-post" type="submit">삭제</button>
                                 </form>
                             </li>
                             <li>
@@ -60,7 +60,8 @@
                                         </div>
                                         <div class="article-header-text">
                                                 ${each.writer}
-                                            <div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}" /></div>
+                                            <div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+                                                                                             value="${each.createdDate}"/></div>
                                         </div>
                                     </div>
                                     <div class="article-doc comment-doc">
@@ -72,8 +73,8 @@
                                                 <a class="link-modify-article" href="/api/qna/updateAnswer?answerId=${each.answerId}">수정</a>
                                             </li>
                                             <li>
-                                                <form name = "answer-delete" class="form-delete" method="POST">
-                                                    <input type="hidden" name="answerId" value="${each.answerId}" />
+                                                <form name="answer-delete" class="form-delete" method="POST">
+                                                    <input type="hidden" name="answerId" value="${each.answerId}"/>
                                                     <button type="submit" class="link-delete-article">삭제</button>
                                                 </form>
                                             </li>
@@ -81,20 +82,22 @@
                                     </div>
                                 </article>
                             </c:forEach>
+                            <c:if test="${isLoggedIn}">
                             <div class="answerWrite">
                                 <form name="answer" method="post">
                                     <input type="hidden" name="questionId" value="${question.questionId}">
                                     <div class="form-group col-lg-4" style="padding-top:10px;">
-                                        <input class="form-control" id="writer" name="writer" placeholder="이름">
+                                        <!--  <input class="form-control" id="writer" name="writer" placeholder="이름"> -->
                                     </div>
                                     <div class="form-group col-lg-12">
-                                        <textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
+                                        <textarea name="contents" id="contents" class="form-control" placeholder="답변"></textarea>
                                     </div>
-                                    <input class="btn btn-success pull-right" type="submit" value="답변하기" />
-                                    <div class="clearfix" />
+                                    <input class="btn btn-success pull-right" type="submit" value="답변하기"/>
+                                    <div class="clearfix"/>
                                 </form>
                             </div>
                         </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -122,8 +125,8 @@
                     <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
                 </li>
                 <li>
-                    <form name = "answer-delete" class="form-delete" method="POST">
-                        <input type="hidden" name="answerId" value="{4}" />
+                    <form name="answer-delete" class="form-delete" method="POST">
+                        <input type="hidden" name="answerId" value="{4}"/>
                         <button type="submit" class="link-delete-article">삭제</button>
                     </form>
                 </li>
@@ -132,7 +135,7 @@
     </article>
 </script>
 
-<%@include file="../layout/footer.jsp"%>
+<%@include file="../layout/footer.jsp" %>
 <!--<script type = "module" src="../../js/question.js"></script>-->
 <%--
 <script type="module">

@@ -1,12 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="layout/header.jsp"%>
-<%@include file="layout/nav.jsp"%>
-
-
+<%@include file="layout/header.jsp" %>
+<%@include file="layout/nav.jsp" %>
 
 <div class="container" id="main">
+    <div class="alert alert-danger" role="alert">${errorMessage}</div>
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
             <ul class="list">
@@ -20,7 +19,7 @@
                                 </strong>
                                 <div class="auth-info">
                                     <i class="icon-add-comment"></i>
-                                    <span class="time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}" /></span>
+                                    <span class="time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/></span>
                                     <a href="#" class="author">${each.writer}</a>
                                 </div>
                                 <div class="reply" title="댓글">
@@ -45,12 +44,15 @@
                         <li><a href="#">»</a></li>
                     </ul>
                 </div>
+
                 <div class="col-md-3 qna-write">
-                    <a href="/qna/form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <c:if test="${isLoggedIn}">
+                        <a href="/qna/form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    </c:if>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<%@ include file="layout/footer.jsp"%>
+<%@ include file="layout/footer.jsp" %>
