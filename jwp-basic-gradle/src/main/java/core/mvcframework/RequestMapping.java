@@ -24,7 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RequestMapping {
+
     private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
+
     private final Map<String, Controller> handlerMapping = new HashMap<>();
 
     public void initMapping() {
@@ -56,6 +58,7 @@ public class RequestMapping {
         log.debug("requestURI={}", requestURI);
         return handlerMapping.get(requestURI);
     }
+
 }
 
 

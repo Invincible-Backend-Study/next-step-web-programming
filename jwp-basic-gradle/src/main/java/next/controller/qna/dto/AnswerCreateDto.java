@@ -1,9 +1,9 @@
 package next.controller.qna.dto;
 
-import java.util.Date;
 import next.model.Answer;
 
 public class AnswerCreateDto {
+
     private final String writer;
     private final String contents;
     private final Long questionId;
@@ -36,4 +36,5 @@ public class AnswerCreateDto {
     public Answer toModel() {
         return new Answer(writer, contents, questionId);
     }
+
 }

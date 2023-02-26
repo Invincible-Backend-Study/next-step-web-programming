@@ -18,4 +18,5 @@ public class UpdateUserFormController extends AbstractController {
         }
         return jspView("user/update");
     }
+
 }

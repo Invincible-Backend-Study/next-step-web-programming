@@ -5,6 +5,7 @@ import java.util.List;
 import next.model.Question;
 
 public class QuestionDao {
+
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     public List<Question> findAll() {
@@ -74,4 +75,5 @@ public class QuestionDao {
                 question.getTitle(), question.getContents(), question.getQuestionId()
         );
     }
+
 }

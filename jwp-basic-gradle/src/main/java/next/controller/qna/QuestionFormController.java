@@ -11,4 +11,5 @@ public class QuestionFormController extends AbstractController {
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         return jspView("qna/form");
     }
+
 }

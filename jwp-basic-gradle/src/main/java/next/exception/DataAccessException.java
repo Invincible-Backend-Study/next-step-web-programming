@@ -1,6 +1,7 @@
 package next.exception;
 
 public class DataAccessException extends RuntimeException {
+
     public DataAccessException() {
     }
 
@@ -20,4 +21,5 @@ public class DataAccessException extends RuntimeException {
                                final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
 }

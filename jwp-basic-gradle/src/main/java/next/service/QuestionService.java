@@ -8,6 +8,7 @@ import next.dao.QuestionDao;
 import next.model.Question;
 
 public class QuestionService {
+
     private final QuestionDao questionDao = new QuestionDao();
     private final AnswerDao answerDao = new AnswerDao();
 
@@ -37,4 +38,5 @@ public class QuestionService {
     public Question findById(final Long questionId) {
         return questionDao.findById(questionId);
     }
+
 }

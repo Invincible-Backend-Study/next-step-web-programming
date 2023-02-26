@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserListController extends AbstractController {
+
     private static final Logger log = LoggerFactory.getLogger(UserListController.class);
 
     private final UserService userService = new UserService();
@@ -22,4 +23,5 @@ public class UserListController extends AbstractController {
         request.setAttribute("users", users);
         return jspView("user/list");
     }
+
 }

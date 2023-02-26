@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 @WebFilter("/*")
 public class CharacterEncodingFilter implements Filter {
+
     private static final Logger log = LoggerFactory.getLogger(CharacterEncodingFilter.class);
     private static final String DEFAULT_ENCODING = "UTF-8";
 

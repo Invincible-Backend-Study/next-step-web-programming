@@ -4,6 +4,7 @@ import java.util.Date;
 import next.model.Question;
 
 public class QuestionCreateDto {
+
     private final String writer;
     private final String title;
     private final String contents;
@@ -24,4 +25,5 @@ public class QuestionCreateDto {
     public Question toModel() {
         return new Question(writer, title, contents, new Date(), 0);
     }
+
 }

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LoginController extends AbstractController {
+
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService = new UserService();
@@ -30,4 +31,5 @@ public class LoginController extends AbstractController {
             return jspView("redirect:/loginFailed");
         }
     }
+
 }

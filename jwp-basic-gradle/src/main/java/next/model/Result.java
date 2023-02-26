@@ -1,6 +1,7 @@
 package next.model;
 
 public class Result {
+
     private boolean status;
     private String message;
 
@@ -33,4 +34,5 @@ public class Result {
     public String toString() {
         return "Result [status=" + status + ", message=" + message + "]";
     }
+
 }

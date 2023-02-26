@@ -8,6 +8,7 @@ import next.controller.qna.dto.QuestionCreateDto;
 import next.service.QuestionService;
 
 public class QuestionCreateController extends AbstractController {
+
     private final QuestionService questionService = new QuestionService();
 
     @Override

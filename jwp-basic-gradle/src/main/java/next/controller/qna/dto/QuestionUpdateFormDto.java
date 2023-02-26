@@ -3,6 +3,7 @@ package next.controller.qna.dto;
 import next.model.Question;
 
 public class QuestionUpdateFormDto {
+
     private final Long questionId;
     private final String writer;
     private final String title;

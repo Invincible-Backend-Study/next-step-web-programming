@@ -6,6 +6,7 @@ import java.util.Map;
 import next.model.User;
 
 public class DataBase {
+
     private static Map<String, User> users = Maps.newHashMap();
 
     public static void addUser(User user) {
@@ -23,4 +24,5 @@ public class DataBase {
     public static void deleteUserById(final String userId) {
         users.remove(userId);
     }
+
 }

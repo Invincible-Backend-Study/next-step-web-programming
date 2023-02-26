@@ -34,4 +34,5 @@ public class QuestionUpdateFormController extends AbstractController {
             throw new IllegalArgumentException("[ERROR] 잘못된 접근입니다.");
         }
     }
+
 }

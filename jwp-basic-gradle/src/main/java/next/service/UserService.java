@@ -3,8 +3,6 @@ package next.service;
 import java.util.List;
 import next.dao.UserDao;
 import next.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UserService {
 
@@ -35,4 +33,5 @@ public class UserService {
     public void signUp(final User user) {
         userDao.insert(user);
     }
+
 }

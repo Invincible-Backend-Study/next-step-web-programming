@@ -2,7 +2,6 @@ package next.controller.qna.api;
 
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
-import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.model.Answer;

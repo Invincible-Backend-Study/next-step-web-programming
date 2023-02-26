@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModelAndView {
+
     private final View view;
     private final Map<String, Object> model = new HashMap<>();
 
@@ -25,4 +26,5 @@ public class ModelAndView {
     public View getView() {
         return view;
     }
+
 }

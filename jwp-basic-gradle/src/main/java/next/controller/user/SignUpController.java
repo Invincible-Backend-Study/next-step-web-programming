@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SignUpController extends AbstractController {
+
     private static final Logger log = LoggerFactory.getLogger(SignUpController.class);
 
     private final UserService userService = new UserService();
@@ -26,4 +27,5 @@ public class SignUpController extends AbstractController {
         log.debug("createUser={}", user);
         return jspView("redirect:/");
     }
+
 }

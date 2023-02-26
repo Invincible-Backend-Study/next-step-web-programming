@@ -12,4 +12,5 @@ public class SignOutController extends AbstractController {
         request.getSession().invalidate();
         return jspView("redirect:/");
     }
+
 }

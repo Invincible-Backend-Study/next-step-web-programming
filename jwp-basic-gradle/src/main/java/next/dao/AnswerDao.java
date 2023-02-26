@@ -5,6 +5,7 @@ import java.util.List;
 import next.model.Answer;
 
 public class AnswerDao {
+
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     public List<Answer> findAllByQuestionId(final long questionId) {
