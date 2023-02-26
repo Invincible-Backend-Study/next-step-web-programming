@@ -1,4 +1,4 @@
-package next.model;
+package next.user.entity;
 
 import java.util.Objects;
 import lombok.Getter;
@@ -7,6 +7,18 @@ import lombok.Getter;
 public class User {
     private final String userId;
     private String password;
+    private String name;
+    private String email;
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    public static User of(String userId, String password, String name, String email) {
+        return new User(userId, password, name, email);
+    }
 
     @Override
     public String toString() {
@@ -16,19 +28,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
-    }
-
-    private String name;
-    private String email;
-
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
-    public static User of(String userId, String password, String name, String email){
-        return new User(userId, password, name, email);
     }
 
     @Override
@@ -43,27 +42,35 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         User other = (User) obj;
         if (email == null) {
-            if (other.email != null)
+            if (other.email != null) {
                 return false;
-        } else if (!email.equals(other.email))
+            }
+        } else if (!email.equals(other.email)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (userId == null) {
             return other.userId == null;
-        } else
+        } else {
             return userId.equals(other.userId);
+        }
     }
 
     public void updateUserInformation(String password, String name, String email) {

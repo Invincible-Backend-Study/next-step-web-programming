@@ -2,7 +2,7 @@ package next.user.payload.request;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import next.model.User;
+import next.user.entity.User;
 
 
 @Getter

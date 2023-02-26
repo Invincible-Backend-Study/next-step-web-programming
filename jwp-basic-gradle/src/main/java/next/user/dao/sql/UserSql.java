@@ -1,4 +1,4 @@
-package next.dao.sql;
+package next.user.dao.sql;
 
 public class UserSql {
 
@@ -13,4 +13,5 @@ public class UserSql {
             + "name = ?,"
             + "email = ? "
             + "WHERE userid = ?";
+    public static final String FIND_USER_BY_NAME = "SELECT userId, password, name, email From USERS WHERE userid=?";
 }

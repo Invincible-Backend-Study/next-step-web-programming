@@ -2,14 +2,14 @@ package next.user.dao;
 
 import core.jdbc.JdbcTemplate;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import next.dao.sql.UserSql;
-import next.model.User;
+import next.user.dao.sql.UserSql;
+import next.user.entity.User;
 
 @Slf4j
 public class UserDao {
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
+    private final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public void insert(User user) {
         jdbcTemplate.update(UserSql.CREATE, (preparedStatement -> {
@@ -53,4 +53,18 @@ public class UserDao {
     }
 
 
+    public Optional<User> findById(String userId) {
+        return Optional.ofNullable(this.findByUserId(userId));
+    }
+
+    public Optional<User> findByName(String username) {
+        return Optional.ofNullable(jdbcTemplate.queryForObject(UserSql.FIND_USER_BY_NAME, preparedStatement -> {
+            preparedStatement.setString(1, username);
+        }, resultSet -> User.of(
+                resultSet.getString("userId"),
+                resultSet.getString("password"),
+                resultSet.getString("name"),
+                resultSet.getString("email")
+        )));
+    }
 }
