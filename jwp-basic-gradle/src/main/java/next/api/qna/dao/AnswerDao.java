@@ -8,7 +8,7 @@ import java.util.List;
 import next.api.qna.model.Answer;
 
 public class AnswerDao {
-    static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public Answer insert(Answer answer) throws SQLException {
         String sql = "INSERT INTO ANSWERS(writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
