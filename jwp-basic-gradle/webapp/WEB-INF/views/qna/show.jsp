@@ -22,6 +22,9 @@
                 <h2 class="qna-title">${questionWithAnswers.question.title}</h2>
             </header>
             <div class="content-main">
+                <c:if test="${errorMessage != null}">
+                    <div class="alert alert-danger" role="alert">${errorMessage}</div>
+                </c:if>
                 <article class="article">
                     <div class="article-header">
                         <div class="article-header-thumb">
@@ -48,9 +51,11 @@
                                    href="/qna/updateQuestionForm?questionId=${questionWithAnswers.question.questionId}&writer=${questionWithAnswers.question.writer}">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="#" method="POST">
+                                <form class="form-delete"
+                                      action="/qna/deleteQuestion?questionId=${questionWithAnswers.question.questionId}"
+                                      method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button class="link-delete-article" type="submit">삭제</button>
+                                    <button class="link-delete-article-form" type="submit">삭제</button>
                                 </form>
                             </li>
                             <li>

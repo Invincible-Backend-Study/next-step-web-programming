@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
+import next.exception.CannotDeleteQuestionException;
+import next.model.Answer;
 import next.model.Question;
+import next.model.User;
 
 public class QuestionService {
 
@@ -37,6 +40,33 @@ public class QuestionService {
 
     public Question findById(final Long questionId) {
         return questionDao.findById(questionId);
+    }
+
+    /**
+     * - 답변이 없는 경우 질문 삭제가 가능
+     * <br>
+     * - 질문자와 답변자가 모두 같은 경우 질문 삭제가 가능
+     */
+    public void deleteQuestion(final Long questionId, final User user) {
+        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
+        Question question = findById(questionId);
+        validateDelete(user, answers, question);
+        answerDao.deleteAllByQuestionId(questionId);
+        questionDao.deleteById(questionId);
+    }
+
+    private void validateDelete(final User user, final List<Answer> answers, final Question question) {
+        if (!user.getUserId().equals(question.getWriter())) {
+            throw new CannotDeleteQuestionException("다른 사용자의 글은 삭제할 수 없습니다.");
+        }
+        if (answers.size() > 0 && !isAllSameWriter(question.getWriter(), answers)) {
+            throw new CannotDeleteQuestionException("질문에 다른 사용자의 답변이 달려있으므로 삭제할 수 없습니다.");
+        }
+    }
+
+    private boolean isAllSameWriter(final String questionWriter, final List<Answer> answers) {
+        return answers.stream()
+                .allMatch(answer -> answer.isWriter(questionWriter));
     }
 
 }

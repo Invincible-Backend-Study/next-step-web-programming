@@ -51,4 +51,10 @@ public class AnswerDao {
         );
     }
 
+    public int deleteAllByQuestionId(final Long questionId) {
+        return jdbcTemplate.update(
+                "DELETE FROM ANSWERS WHERE questionId = ?",
+                questionId
+        );
+    }
 }

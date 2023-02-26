@@ -76,4 +76,10 @@ public class QuestionDao {
         );
     }
 
+    public int deleteById(final Long questionId) {
+        return jdbcTemplate.update(
+                "DELETE FROM QUESTIONS WHERE questionId = ?",
+                questionId
+        );
+    }
 }

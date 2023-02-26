@@ -46,6 +46,10 @@ public class Answer {
         return questionId;
     }
 
+    public boolean isWriter(final String questionWriter) {
+        return writer.equals(questionWriter);
+    }
+
     @Override
     public String toString() {
         return "Answer{" +
@@ -56,5 +60,4 @@ public class Answer {
                 ", questionId=" + questionId +
                 '}';
     }
-
 }
