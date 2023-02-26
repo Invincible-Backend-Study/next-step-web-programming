@@ -5,6 +5,7 @@ import core.mvcframework.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.controller.qna.dto.QuestionUpdateFormDto;
+import next.exception.CannotUpdateQuestionException;
 import next.service.QuestionService;
 import next.utils.SessionUtil;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class QuestionUpdateController extends AbstractController {
                             "user")
             );
             return jspView("redirect:/qna/show?questionId=" + requestDto.getQuestionId());
-        } catch (RuntimeException exception) {
+        } catch (CannotUpdateQuestionException exception) {
             log.error(exception.getMessage());
             return jspView("redirect:/");
         }

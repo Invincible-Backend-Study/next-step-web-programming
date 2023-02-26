@@ -1,5 +1,6 @@
 package next.controller.qna.dto;
 
+import next.exception.CannotUpdateQuestionException;
 import next.model.Question;
 
 public class QuestionUpdateFormDto {
@@ -30,7 +31,7 @@ public class QuestionUpdateFormDto {
                                                          final String title,
                                                          final String contents) {
         if (title.equals("") || contents.equals("")) {
-            throw new IllegalArgumentException("[ERROR] 제목과 본문은 반드시 입력해야 합니다.");
+            throw new CannotUpdateQuestionException("제목과 본문은 반드시 입력해야 합니다.");
         }
         return new QuestionUpdateFormDto(Long.parseLong(questionId), writer, title, contents);
     }
