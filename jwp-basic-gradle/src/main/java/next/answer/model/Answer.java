@@ -1,17 +1,18 @@
-package next.model;
+package next.answer.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Answer {
-    private long answerId;
+    private final long answerId;
 
-    private String writer;
+    private final String writer;
 
-    private String contents;
+    private final String contents;
 
-    private Date createdDate;
+    private final Date createdDate;
 
-    private long questionId;
+    private final long questionId;
 
     public Answer(String writer, String contents, long questionId) {
         this(0, writer, contents, new Date(), questionId);
@@ -59,21 +60,26 @@ public class Answer {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Answer other = (Answer) obj;
-        if (answerId != other.answerId)
-            return false;
-        return true;
+        return answerId == other.answerId;
     }
 
     @Override
     public String toString() {
         return "Answer [answerId=" + answerId + ", writer=" + writer + ", contents=" + contents + ", createdDate="
                 + createdDate + ", questionId=" + questionId + "]";
+    }
+
+    public boolean compareSameWriter(String writer) {
+        return Objects.equals(this.writer, writer);
     }
 }
