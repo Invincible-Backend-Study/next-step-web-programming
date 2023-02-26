@@ -8,8 +8,12 @@ import next.controller.qna.dto.QuestionUpdateFormDto;
 import next.exception.CannotUpdateQuestionException;
 import next.service.QuestionService;
 import next.utils.SessionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class QuestionUpdateFormController extends AbstractController {
+
+    private static final Logger log = LoggerFactory.getLogger(QuestionUpdateFormController.class);
 
     private final QuestionService questionService = new QuestionService();
 
@@ -24,6 +28,7 @@ public class QuestionUpdateFormController extends AbstractController {
                                     writer,
                                     SessionUtil.getLoginObject(request.getSession(), "user"))));
         } catch (CannotUpdateQuestionException exception) {
+            log.error(exception.getMessage());
             return jspView("redirect:/");
         }
     }
