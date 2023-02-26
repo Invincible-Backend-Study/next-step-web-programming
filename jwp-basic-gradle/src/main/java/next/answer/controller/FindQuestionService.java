@@ -1,7 +1,7 @@
-package next.controller.answer;
+package next.answer.controller;
 
+import next.answer.dao.AnswerDao;
 import next.answer.payload.response.FindQuestionResponse;
-import next.dao.AnswerDao;
 import next.qna.dao.QuestionDao;
 
 public class FindQuestionService {

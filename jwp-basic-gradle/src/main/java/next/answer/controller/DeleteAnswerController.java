@@ -1,11 +1,11 @@
-package next.controller.answer;
+package next.answer.controller;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.dao.AnswerDao;
-import next.model.Result;
+import next.answer.dao.AnswerDao;
+import next.common.model.Result;
 import next.qna.dao.QuestionDao;
 
 public class DeleteAnswerController extends AbstractController {

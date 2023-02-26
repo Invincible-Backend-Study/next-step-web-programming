@@ -1,11 +1,11 @@
-package next.controller.answer;
+package next.answer.controller;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import next.model.Result;
+import next.common.model.Result;
 
 
 @Slf4j
