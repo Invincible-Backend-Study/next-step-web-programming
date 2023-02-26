@@ -1,16 +1,17 @@
-package next.dao;
+package next.answer.dao;
 
-import static next.dao.sql.AnswerSql.DELETE;
-import static next.dao.sql.AnswerSql.FIND_ALL_BY_QUESTION_ID;
-import static next.dao.sql.AnswerSql.FIND_BY_ID;
-import static next.dao.sql.AnswerSql.INSERT;
+import static next.answer.dao.sql.AnswerSql.DELETE;
+import static next.answer.dao.sql.AnswerSql.FIND_ALL_BY_QUESTION_ID;
+import static next.answer.dao.sql.AnswerSql.FIND_BY_ID;
+import static next.answer.dao.sql.AnswerSql.INSERT;
 
 import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
-import next.model.Answer;
+import next.answer.dao.sql.AnswerSql;
+import next.answer.model.Answer;
 
 public class AnswerDao {
     private final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
@@ -65,6 +66,11 @@ public class AnswerDao {
             preparedStatement.setLong(1, questionId);
             preparedStatement.setLong(2, answerId);
         }));
+    }
+
+    public void deleteByIds(List<Long> ids) {
+        jdbcTemplate.update(AnswerSql.DELETE_ID_List(ids), preparedStatement -> {
+        });
     }
 
     private static class AnswerDaoHolder {
