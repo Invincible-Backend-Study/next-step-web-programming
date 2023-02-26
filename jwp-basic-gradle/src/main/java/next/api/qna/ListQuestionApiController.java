@@ -1,6 +1,7 @@
 package next.api.qna;
 
 import core.web.ModelAndView;
+import next.api.qna.dao.AnswerDao;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Question;
 import next.common.controller.AbstractController;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class ListQuestionApiController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListQuestionApiController.class);
-    private final QuestionDao questionDao = new QuestionDao();
+    private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {

@@ -20,8 +20,8 @@ import java.sql.SQLException;
 
 public class AnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
-    private final AnswerDao answerDao = new AnswerDao();
-    private final QuestionDao questionDao = new QuestionDao();
+    private final AnswerDao answerDao = AnswerDao.getInstance();
+    private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {

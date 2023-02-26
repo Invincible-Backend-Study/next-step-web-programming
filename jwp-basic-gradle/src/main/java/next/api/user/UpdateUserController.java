@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 public class UpdateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
-    private final UserDao userDao = new UserDao();
+    private final UserDao userDao = UserDao.getInstance();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {

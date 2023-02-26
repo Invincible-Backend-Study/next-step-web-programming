@@ -3,13 +3,15 @@ package next.dao;
 import java.util.List;
 
 import next.api.qna.dao.AnswerDao;
+import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Answer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AnswerDaoTest {
-    AnswerDao answerDao = new AnswerDao();
+    private final AnswerDao answerDao = AnswerDao.getInstance();
+
     @BeforeEach
     void beforeEach() throws Exception {
         Answer q1 = new Answer("john", "helloworld", 1L);

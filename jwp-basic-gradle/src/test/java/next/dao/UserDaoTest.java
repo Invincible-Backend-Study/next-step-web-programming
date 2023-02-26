@@ -17,7 +17,7 @@ public class UserDaoTest {
 
     @Before
     public void beforeEach() throws Exception {
-        userDao = new UserDao();
+        userDao = UserDao.getInstance();
     }
 
     @After

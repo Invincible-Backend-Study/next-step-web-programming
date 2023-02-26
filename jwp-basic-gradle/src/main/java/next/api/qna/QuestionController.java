@@ -24,8 +24,8 @@ import java.sql.SQLException;
 
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
-    private final QuestionDao questionDao = new QuestionDao();
-    private final AnswerDao answerDao = new AnswerDao();
+    private final AnswerDao answerDao = AnswerDao.getInstance();
+    private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
