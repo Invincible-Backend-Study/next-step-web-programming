@@ -14,4 +14,5 @@ public class QuestionListApiController extends AbstractController {
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         return jsonView().addObject("questions", questionService.findAll());
     }
+
 }

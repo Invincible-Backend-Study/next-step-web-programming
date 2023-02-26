@@ -25,4 +25,5 @@ public class QuestionDeleteApiController extends AbstractController {
             return jsonView().addObject("result", Result.fail(exception.getMessage()));
         }
     }
+
 }

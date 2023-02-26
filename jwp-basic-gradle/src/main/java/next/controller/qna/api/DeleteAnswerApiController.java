@@ -23,4 +23,5 @@ public class DeleteAnswerApiController extends AbstractController {
         }
         return jsonView().addObject("result", Result.ok());
     }
+
 }
