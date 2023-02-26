@@ -1,7 +1,6 @@
 package next.utils;
 
 import javax.servlet.http.HttpSession;
-import next.model.User;
 
 public class SessionUtil {
 

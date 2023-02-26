@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AddAnswerApiController extends AbstractController {
+
     private static final Logger log = LoggerFactory.getLogger(AddAnswerApiController.class);
+
     private final AnswerService answerService = new AnswerService();
 
     @Override

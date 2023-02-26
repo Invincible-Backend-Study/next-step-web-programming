@@ -24,9 +24,9 @@ public class QuestionUpdateFormController extends AbstractController {
         try {
             return jspView("qna/update").addObject("question",
                     QuestionUpdateFormDto.from(questionService.findToUpdateQuestion(
-                                    questionId,
-                                    writer,
-                                    SessionUtil.getLoginObject(request.getSession(), "user"))));
+                            questionId,
+                            writer,
+                            SessionUtil.getLoginObject(request.getSession(), "user"))));
         } catch (CannotUpdateQuestionException exception) {
             log.error(exception.getMessage());
             return jspView("redirect:/");

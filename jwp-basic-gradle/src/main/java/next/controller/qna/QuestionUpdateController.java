@@ -28,8 +28,7 @@ public class QuestionUpdateController extends AbstractController {
             );
             questionService.updateQuestion(
                     requestDto.toModel(),
-                    SessionUtil.getLoginObject(request.getSession(),
-                            "user")
+                    SessionUtil.getLoginObject(request.getSession(), "user")
             );
             return jspView("redirect:/qna/show?questionId=" + requestDto.getQuestionId());
         } catch (CannotUpdateQuestionException exception) {
