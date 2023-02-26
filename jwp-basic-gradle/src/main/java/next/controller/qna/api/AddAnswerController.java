@@ -23,7 +23,6 @@ public class AddAnswerController extends AbstractController {
         Answer answer = new Answer(
                 user.getUserId(),
                 request.getParameter("contents"),
-                new Date(),
                 Long.parseLong(request.getParameter("questionId")));
         log.debug("answer={}", answer);
 

@@ -34,6 +34,6 @@ public class AnswerCreateDto {
     }
 
     public Answer toModel() {
-        return new Answer(writer, contents, new Date(), questionId);
+        return new Answer(writer, contents, questionId);
     }
 }
