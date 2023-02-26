@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.service.QuestionService;
 
-public class QuestionListController extends AbstractController {
+public class QuestionListApiController extends AbstractController {
 
     private final QuestionService questionService = new QuestionService();
 
