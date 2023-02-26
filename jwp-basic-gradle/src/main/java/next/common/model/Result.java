@@ -1,4 +1,4 @@
-package next.model;
+package next.common.model;
 
 import lombok.Getter;
 

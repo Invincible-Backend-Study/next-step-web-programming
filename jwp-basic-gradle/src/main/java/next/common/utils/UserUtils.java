@@ -1,8 +1,8 @@
-package next.utils;
+package next.common.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import next.model.User;
+import next.user.entity.User;
 
 public class UserUtils {
 

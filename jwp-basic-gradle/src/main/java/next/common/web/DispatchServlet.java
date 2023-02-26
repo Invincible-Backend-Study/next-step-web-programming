@@ -1,4 +1,4 @@
-package next.web;
+package next.common.web;
 
 
 import core.mvc.RequestMapping;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 public class DispatchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(DispatchServlet.class);
-    private static final String DEFAULT_REDIRECT_PREFIX = "redirect: ";
     private RequestMapping requestMapping;
 
     @Override
@@ -50,15 +49,6 @@ public class DispatchServlet extends HttpServlet {
             log.error("Exception : {} ", e);
             throw new ServletException(e.getMessage());
         }
-    }
-
-    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        if (viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
-            resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
-            return;
-        }
-        final var requestDispatcher = req.getRequestDispatcher(viewName);
-        requestDispatcher.forward(req, resp);
     }
 }
 
