@@ -10,15 +10,19 @@ import core.jdbc.KeyHolder;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.List;
-import next.dao.sql.AnswerSql;
 import next.model.Answer;
 
 public class AnswerDao {
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
+    public static AnswerDao getInstance() {
+        return AnswerDaoHolder.ANSWER_DAO;
+    }
+
     public Answer insert(Answer answer) {
         final var keyHolder = new KeyHolder();
 
-        jdbcTemplate.update((connection) ->{
+        jdbcTemplate.update((connection) -> {
             // PreparedStatement.Return_GeneratedKey를 붙혀주지 않으면 오류가 발생함
             PreparedStatement pstmt = connection.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, answer.getWriter());
@@ -31,10 +35,9 @@ public class AnswerDao {
         return this.findById(keyHolder.getId());
     }
 
-
     public Answer findById(long answerId) {
         return jdbcTemplate.queryForObject(FIND_BY_ID,
-                preparedStatement-> preparedStatement.setLong(1,answerId),
+                preparedStatement -> preparedStatement.setLong(1, answerId),
                 resultSet -> new Answer(
                         resultSet.getLong("answerId"),
                         resultSet.getString("writer"),
@@ -57,10 +60,14 @@ public class AnswerDao {
         );
     }
 
-    public int deleteById(long questionId,long answerId) {
+    public int deleteById(long questionId, long answerId) {
         return jdbcTemplate.update(DELETE, (preparedStatement -> {
             preparedStatement.setLong(1, questionId);
             preparedStatement.setLong(2, answerId);
         }));
+    }
+
+    private static class AnswerDaoHolder {
+        private static final AnswerDao ANSWER_DAO = new AnswerDao();
     }
 }

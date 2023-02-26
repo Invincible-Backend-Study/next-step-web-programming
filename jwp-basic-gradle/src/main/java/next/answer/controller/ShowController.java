@@ -4,19 +4,19 @@ import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.dao.AnswerDao;
-import next.qna.dao.QuestionDao;
 
 public class ShowController extends AbstractController {
+    private final FindQuestionService questionService = FindQuestionService.getInstance();
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Long questionId = Long.parseLong(request.getParameter("questionId"));
-        QuestionDao questionDao = new QuestionDao();
-        AnswerDao answerDao = new AnswerDao();
+        final var questionId = Long.parseLong(request.getParameter("questionId"));
 
-        request.setAttribute("question", questionDao.findById(questionId));
-        request.setAttribute("answers", answerDao.findAllByQuestionId(questionId));
+        final var findQuestionResponse = questionService.execute(questionId);
+
+        request.setAttribute("question", findQuestionResponse.getQuestion());
+        request.setAttribute("answers", findQuestionResponse.getAnswers());
+        
         return this.jspView("/WEB-INF/qna/show.jsp");
     }
 }

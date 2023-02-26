@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import next.common.controller.GlobalControllerAdvice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,19 +33,29 @@ public class DispatchServlet extends HttpServlet {
 
         var controller = requestMapping.findController(request.getRequestURI());
 
-        try{
-            final var abstractView = controller.execute(request,response);
+        try {
+            final var abstractView = controller.execute(request, response);
             abstractView.getView().render(abstractView.getModel(), request, response);
-        }catch (Throwable e){
+        } catch (Exception exception) {
+            final var abstractView = GlobalControllerAdvice.process(exception);
+            if (abstractView == null) {
+                return;
+            }
+            try {
+                abstractView.getView().render(null, request, response);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } catch (Throwable e) {
             log.error("Exception : {} ", e);
             throw new ServletException(e.getMessage());
         }
     }
 
     private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        if(viewName.startsWith(DEFAULT_REDIRECT_PREFIX)){
+        if (viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
             resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
-            return ;
+            return;
         }
         final var requestDispatcher = req.getRequestDispatcher(viewName);
         requestDispatcher.forward(req, resp);

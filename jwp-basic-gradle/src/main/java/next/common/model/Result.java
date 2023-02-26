@@ -1,8 +1,11 @@
 package next.model;
 
+import lombok.Getter;
+
+@Getter
 public class Result {
-    private boolean status;
-    private String message;
+    private final boolean status;
+    private final String message;
 
     private Result(boolean status) {
         this(status, "");
@@ -19,14 +22,6 @@ public class Result {
 
     public static Result fail(String message) {
         return new Result(false, message);
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     @Override
