@@ -25,4 +25,8 @@ public class QuestionService {
         questionWithAnswers.put("answers", answerDao.findAllByQuestionId(questionId));
         return questionWithAnswers;
     }
+
+    public List<Question> findAll() {
+        return questionDao.findAll();
+    }
 }

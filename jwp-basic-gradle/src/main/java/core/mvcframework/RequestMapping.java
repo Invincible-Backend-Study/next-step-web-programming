@@ -10,6 +10,7 @@ import next.controller.qna.QuestionFormController;
 import next.controller.qna.ShowController;
 import next.controller.qna.api.AddAnswerController;
 import next.controller.qna.api.DeleteAnswerController;
+import next.controller.qna.api.QuestionListController;
 import next.controller.user.LoginController;
 import next.controller.user.ProfileController;
 import next.controller.user.SignOutController;
@@ -44,6 +45,7 @@ public class RequestMapping {
         handlerMapping.put("/qna/show", new ShowController());
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
         handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
+        handlerMapping.put("/api/qna/list", new QuestionListController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {
