@@ -35,15 +35,20 @@ public class QuestionService {
         return questionDao.findAll();
     }
 
-    public void updateQuestion(final Question question) {
+    public void updateQuestion(final Question question, final User user) {
+        validateUpdateQuestion(question.getWriter(), user);
         questionDao.update(question);
     }
 
     public Question findToUpdateQuestion(final Long questionId, final String writer, final User user) {
+        validateUpdateQuestion(writer, user);
+        return questionDao.findById(questionId);
+    }
+
+    private void validateUpdateQuestion(final String writer, final User user) {
         if (!user.containUserId(writer)) {
             throw new CannotUpdateQuestionException("다른 사용자의 글은 수정할 수 없습니다.");
         }
-        return questionDao.findById(questionId);
     }
 
     /**
