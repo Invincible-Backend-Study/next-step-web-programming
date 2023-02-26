@@ -44,7 +44,8 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="#">수정</a>
+                                <a class="link-modify-article"
+                                   href="/qna/updateQuestionForm?questionId=${questionWithAnswers.question.questionId}&writer=${questionWithAnswers.question.writer}">수정</a>
                             </li>
                             <li>
                                 <form class="form-delete" action="#" method="POST">

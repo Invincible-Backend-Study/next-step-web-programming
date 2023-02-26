@@ -7,6 +7,8 @@ import java.util.Map;
 import next.controller.HomeController;
 import next.controller.qna.QuestionCreateController;
 import next.controller.qna.QuestionFormController;
+import next.controller.qna.QuestionUpdateController;
+import next.controller.qna.QuestionUpdateFormController;
 import next.controller.qna.ShowController;
 import next.controller.qna.api.AddAnswerController;
 import next.controller.qna.api.DeleteAnswerController;
@@ -41,6 +43,8 @@ public class RequestMapping {
         handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
+        handlerMapping.put("/qna/updateQuestionForm", new QuestionUpdateFormController());
+        handlerMapping.put("/qna/updateQuestion", new QuestionUpdateController());
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
         handlerMapping.put("/qna/show", new ShowController());
         handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());

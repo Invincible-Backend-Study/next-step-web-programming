@@ -29,4 +29,12 @@ public class QuestionService {
     public List<Question> findAll() {
         return questionDao.findAll();
     }
+
+    public void updateQuestion(final Question question) {
+        questionDao.updateQuestion(question);
+    }
+
+    public Question findById(final Long questionId) {
+        return questionDao.findByQuestionId(questionId);
+    }
 }

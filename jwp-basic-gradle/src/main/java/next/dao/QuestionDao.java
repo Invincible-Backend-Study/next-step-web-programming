@@ -67,4 +67,11 @@ public class QuestionDao {
                 "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?",
                 countOfAnswer, questionId);
     }
+
+    public int updateQuestion(final Question question) {
+        return jdbcTemplate.update(
+                "UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?",
+                question.getTitle(), question.getContents(), question.getQuestionId()
+        );
+    }
 }
