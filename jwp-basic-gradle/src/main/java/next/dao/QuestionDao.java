@@ -6,7 +6,7 @@ import next.model.Question;
 
 public class QuestionDao {
 
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public List<Question> findAll() {
         return jdbcTemplate.query(
