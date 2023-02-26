@@ -1,4 +1,4 @@
-package next.model;
+package next.qna.domain;
 
 import java.util.Date;
 import lombok.EqualsAndHashCode;
@@ -22,7 +22,7 @@ public class Question {
 
     private final int countOfComment;
 
-    public Question(String writer, String title, String contents) {
+    private Question(String writer, String title, String contents) {
         this(0, writer, title, contents, new Date(), 0);
     }
 
@@ -34,6 +34,14 @@ public class Question {
         this.contents = contents;
         this.createdDate = createdDate;
         this.countOfComment = countOfComment;
+    }
+
+    public Question(Long questionId, String writer, String title, String contents) {
+        this(questionId, writer, title, contents, new Date(), 0);
+    }
+
+    public static Question of(String writer, String title, String contents) {
+        return new Question(writer, title, contents);
     }
 
     public long getTimeFromCreateDate() {

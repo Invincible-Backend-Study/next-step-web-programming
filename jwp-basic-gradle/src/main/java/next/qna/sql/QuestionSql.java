@@ -1,4 +1,4 @@
-package next.dao.sql;
+package next.qna.sql;
 
 public class QuestionSql {
 
@@ -11,4 +11,6 @@ public class QuestionSql {
     public static final String SAVE = "INSERT INTO QUESTIONS (writer, title, contents, createdDate) VALUES (?, ?, ?, now())";
 
     public static final String UPDATE_QUESTION_COUNT = "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?";
+    public static final String DELETE_BY_ID = "DELETE FROM questions WHERE questionId= ?";
+    public static final String UPDATE_QUESTION = "UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?";
 }

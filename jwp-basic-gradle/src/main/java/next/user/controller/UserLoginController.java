@@ -6,9 +6,9 @@ import core.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import next.model.User;
 import next.user.dao.UserDao;
 import next.user.dao.UserDaoFactory;
+import next.user.entity.User;
 
 public class UserLoginController extends AbstractController {
     private final UserDao userDao = UserDaoFactory.getUserDao();
