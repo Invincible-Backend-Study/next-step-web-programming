@@ -1,4 +1,4 @@
-package next.support.context;
+package next.common.context;
 
 import core.jdbc.ConnectionManager;
 import javax.servlet.ServletContextEvent;
