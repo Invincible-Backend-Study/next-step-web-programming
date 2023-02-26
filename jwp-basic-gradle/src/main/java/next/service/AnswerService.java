@@ -19,13 +19,13 @@ public class AnswerService {
     }
 
     private void increaseCountOfAnswer(final Long questionId) {
-        Question findQuestion = questionDao.findByQuestionId(questionId);
+        Question findQuestion = questionDao.findById(questionId);
         questionDao.updateCountOfAnswerById(questionId, findQuestion.getCountOfAnswer() + 1);
     }
 
     public int deleteAnswer(final long answerId) {
         Answer answer = answerDao.findById(answerId);
-        Question question = questionDao.findByQuestionId(answer.getQuestionId());
+        Question question = questionDao.findById(answer.getQuestionId());
 
         int deleteResult = answerDao.deleteById(answerId);
         if (deleteResult > 0) {

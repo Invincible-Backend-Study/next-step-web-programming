@@ -20,7 +20,7 @@ public class QuestionDao {
         );
     }
 
-    public Question findByQuestionId(final long questionId) {
+    public Question findById(final long questionId) {
         return jdbcTemplate.queryForObject(
                 "SELECT "
                         + "questionId, writer, title, contents, createdDate, countOfAnswer "
@@ -68,7 +68,7 @@ public class QuestionDao {
                 countOfAnswer, questionId);
     }
 
-    public int updateQuestion(final Question question) {
+    public int update(final Question question) {
         return jdbcTemplate.update(
                 "UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?",
                 question.getTitle(), question.getContents(), question.getQuestionId()

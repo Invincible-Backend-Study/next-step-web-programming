@@ -21,7 +21,7 @@ public class QuestionService {
 
     public Map<String, Object> findByQuestionIdWithAnswers(final long questionId) {
         HashMap<String, Object> questionWithAnswers = new HashMap<>();
-        questionWithAnswers.put("question", questionDao.findByQuestionId(questionId));
+        questionWithAnswers.put("question", questionDao.findById(questionId));
         questionWithAnswers.put("answers", answerDao.findAllByQuestionId(questionId));
         return questionWithAnswers;
     }
@@ -31,10 +31,10 @@ public class QuestionService {
     }
 
     public void updateQuestion(final Question question) {
-        questionDao.updateQuestion(question);
+        questionDao.update(question);
     }
 
     public Question findById(final Long questionId) {
-        return questionDao.findByQuestionId(questionId);
+        return questionDao.findById(questionId);
     }
 }

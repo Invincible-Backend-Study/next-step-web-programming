@@ -16,7 +16,7 @@ public class UserDaoTest {
         UserDao userDao = new UserDao();
         userDao.insert(expected);
 
-        User actual = userDao.findByUserId(expected.getUserId());
+        User actual = userDao.findById(expected.getUserId());
         assertThat(actual).isEqualTo(expected);
     }
 
