@@ -9,6 +9,6 @@ public class QuestionFormController extends AbstractController {
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        return jspView("redirect:/loginForm");
+        return jspView("qna/form");
     }
 }

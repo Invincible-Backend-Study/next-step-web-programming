@@ -24,6 +24,6 @@ public class SignUpController extends AbstractController {
         );
         userService.signUp(user);
         log.debug("createUser={}", user);
-        return jspView("redirect/");
+        return jspView("redirect:/");
     }
 }
