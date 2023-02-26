@@ -42,6 +42,10 @@ public class User {
         return this.password.equals(password);
     }
 
+    public boolean containUserId(final String writer) {
+        return this.userId.equals(writer);
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,5 +101,4 @@ public class User {
         }
         return true;
     }
-
 }

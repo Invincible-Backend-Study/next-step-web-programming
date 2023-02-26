@@ -1,6 +1,7 @@
 package next.utils;
 
 import javax.servlet.http.HttpSession;
+import next.model.User;
 
 public class SessionUtil {
 
@@ -12,4 +13,5 @@ public class SessionUtil {
     public static <T> T getLoginObject(final HttpSession session, final String objectName) {
         return (T) session.getAttribute(objectName);
     }
+
 }

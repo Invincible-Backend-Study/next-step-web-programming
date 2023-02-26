@@ -6,6 +6,7 @@ import java.util.Map;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.exception.CannotDeleteQuestionException;
+import next.exception.CannotUpdateQuestionException;
 import next.model.Answer;
 import next.model.Question;
 import next.model.User;
@@ -38,7 +39,10 @@ public class QuestionService {
         questionDao.update(question);
     }
 
-    public Question findById(final Long questionId) {
+    public Question findToUpdateQuestion(final Long questionId, final String writer, final User user) {
+        if (!user.containUserId(writer)) {
+            throw new CannotUpdateQuestionException("다른 사용자의 글은 수정할 수 없습니다.");
+        }
         return questionDao.findById(questionId);
     }
 
@@ -49,7 +53,7 @@ public class QuestionService {
      */
     public void deleteQuestion(final Long questionId, final User user) {
         List<Answer> answers = answerDao.findAllByQuestionId(questionId);
-        Question question = findById(questionId);
+        Question question = questionDao.findById(questionId);
         validateDelete(user, answers, question);
         answerDao.deleteAllByQuestionId(questionId);
         questionDao.deleteById(questionId);
