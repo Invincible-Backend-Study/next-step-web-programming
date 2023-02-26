@@ -5,11 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 import next.dao.template.DataTest;
-import next.model.User;
+import next.user.dao.UserDao;
+import next.user.dao.UserDaoFactory;
+import next.user.entity.User;
 import org.junit.jupiter.api.Test;
 
 public class UserDaoTest extends DataTest {
     private final UserDao userDao = UserDaoFactory.getUserDao();
+
     @Test
     public void crud() throws Exception {
         User expected = new User("userId", "password", "name", "javajigi@email.com");

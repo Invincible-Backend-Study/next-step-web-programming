@@ -1,12 +1,7 @@
 package next.dao;
 
-import core.jdbc.ConnectionManager;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +10,6 @@ import java.util.concurrent.Executors;
 import org.junit.jupiter.api.Test;
 
 public class ConcurrenceTest {
-
 
 
     @Test
@@ -29,7 +23,6 @@ public class ConcurrenceTest {
         while (!executor.isTerminated()) {
         }
 
-        System.out.println(ConnectionManager.connectionCodes);
     }
 
     class WorkerThread implements Runnable {
@@ -46,7 +39,6 @@ public class ConcurrenceTest {
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("POST");
                 con.setDoOutput(true);
-
 
                 String builder = "userId=" + URLEncoder.encode(String.valueOf(Math.round(Math.random() * 100000000)), StandardCharsets.UTF_8)
                         + "&password=" + URLEncoder.encode("value2", StandardCharsets.UTF_8)
