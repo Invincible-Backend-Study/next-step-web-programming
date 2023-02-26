@@ -18,6 +18,7 @@ public class QuestionUpdateFormController extends AbstractController {
         String writer = request.getParameter("writer");
         Long questionId = Long.parseLong(request.getParameter("questionId"));
         validateWriter(writer);
+
         User user = SessionUtil.getLoginObject(request.getSession(), "user");
         if (writer.equals(user.getUserId())) {
             return jspView("qna/update").addObject(
