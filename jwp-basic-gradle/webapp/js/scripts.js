@@ -69,12 +69,13 @@ questionDeleteBtn?.addEventListener("click", (e) => {
   };
 
   $.ajax(data)
-    .done(({fail,result}) => {
+    .done(({fail,success}) => {
       if(fail){
         alert(fail)
       }
-      if(result){
-        alert(result)
+      if(success){
+        alert(success)
+        window.location.href = "http://localhost:8080/"
       }
     })
     .fail((error) => {

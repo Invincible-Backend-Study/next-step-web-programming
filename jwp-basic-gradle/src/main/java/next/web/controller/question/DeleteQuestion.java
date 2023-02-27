@@ -24,7 +24,6 @@ public class DeleteQuestion extends AbstractController {
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-
         Question question = questionService.findByQuestionId(Integer.parseInt(req.getParameter("questionId")));
         if (question == null) {
             return jsonView().addObject("fail", "해당 게시물이 존재하지 않습니다.");
@@ -40,7 +39,7 @@ public class DeleteQuestion extends AbstractController {
 
         boolean questionDeleteResult = questionService.deleteQuestion(user, question);
         if (questionDeleteResult) {
-            return jsonView().addObject("result", "삭제 완료");
+            return jsonView().addObject("success", "삭제 완료");
         }
         return jsonView().addObject("fail", "질문에 게시자 외의 답변이 존재합니다.");
     }
