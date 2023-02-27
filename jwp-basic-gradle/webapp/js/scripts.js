@@ -3,7 +3,7 @@ const answerFormClass = 'form-delete-answer';
 const commentCount = document.querySelector(".qna-comment-count")
 const submitAnswerBtn = document.querySelector(".submit-write .btn[type=submit]");
 
-submitAnswerBtn?.addEventListener("click",(event) => {
+submitAnswerBtn?.addEventListener("click", (event) => {
   event.preventDefault();
 
   const textArea = document.querySelector(".submit-write .form-control");
@@ -19,12 +19,12 @@ submitAnswerBtn?.addEventListener("click",(event) => {
 
   const answerTemplate = document.querySelector("#answerTemplate").innerHTML;
   $.ajax(data)
-    .done(({answer}) => {
+    .done(({ answer }) => {
       const template = formatAnswer(answerTemplate, answer.writer, new Date(answer.createdDate), answer.contents, answer.answerId, answer.answerId);
       const newAnswer = document.createElement("div");
       newAnswer.innerHTML = template;
       document.querySelector(".qna-comment-slipp-articles").append(newAnswer);
-      commentCount.textContent = commentCount.textContent.replace(/[0-9]/g,(match,index)=>{
+      commentCount.textContent = commentCount.textContent.replace(/[0-9]/g, (match, index) => {
         return Number(match) + 1
       })
     })
@@ -41,15 +41,15 @@ qnaComment?.addEventListener("click", (event) => {
     const formData = new FormData(event.target.closest('form'));
     const data = {
       type: "post",
-      data: {...formDataToJson(formData),"questionId" : new URL(window.location.href).searchParams.get("id")},
+      data: { ...formDataToJson(formData), "questionId": new URL(window.location.href).searchParams.get("id") },
       url: "/qna/deleteAnswer",
       dataType: "json",
     };
     $.ajax(data)
       .done(() => {
-        commentCount.textContent = commentCount.textContent.replace(/[0-9]/g,(match,index)=>{
-          return Number(match) -1
-        }) 
+        commentCount.textContent = commentCount.textContent.replace(/[0-9]/g, (match, index) => {
+          return Number(match) - 1
+        })
         event.target.closest("article").remove();
       })
       .fail((error) => {
@@ -57,6 +57,30 @@ qnaComment?.addEventListener("click", (event) => {
       });
   }
 });
+
+const questionDeleteBtn = document.querySelector(".form-delete .link-delete-article")
+questionDeleteBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const data = {
+    type: "post",
+    data: { "questionId": new URL(window.location.href).searchParams.get("id") },
+    url: "/qna/deleteQuestion",
+    dataType: "json",
+  };
+
+  $.ajax(data)
+    .done(({fail,result}) => {
+      if(fail){
+        alert(fail)
+      }
+      if(result){
+        alert(result)
+      }
+    })
+    .fail((error) => {
+      console.log(error);
+    });
+})
 
 
 
