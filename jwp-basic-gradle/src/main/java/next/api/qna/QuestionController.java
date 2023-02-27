@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
+import next.api.qna.service.QuestionService;
 import next.common.controller.AbstractController;
 import next.api.qna.dao.AnswerDao;
 import next.api.qna.dao.QuestionDao;
@@ -26,6 +27,7 @@ public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     private final AnswerDao answerDao = AnswerDao.getInstance();
     private final QuestionDao questionDao = QuestionDao.getInstance();
+    private final QuestionService questionService = QuestionService.getInstance();
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -91,22 +93,22 @@ public class QuestionController extends AbstractController {
                         .addModel("result", Result.fail("질문 삭제를 위해선 로그인이 필요합니다."));
             }
 
-            log.debug("=============>" + request.getParameterMap().toString());
-            log.debug(request.getParameter("questionId"));
-            request.getReader();
             Long questionId = Long.parseLong(request.getParameter("questionId"));
-            Question question = questionDao.findByQuestionId(questionId);
-            if (!user.getName().equals(question.getWriter())) {
-                return new ModelAndView(new JsonView())
-                        .addModel("result", Result.fail("자신이 작성한 질문만 삭제할 수 있습니다."));
-            }
+            log.debug(user.toString() + " "  + questionId);
+            questionService.deleteQuestion(questionId, user);
 
-            questionDao.deleteByQuestionId(questionId);
+//            Question question = questionDao.findByQuestionId(questionId);
+//            if (!user.getName().equals(question.getWriter())) {
+//                return new ModelAndView(new JsonView())
+//                        .addModel("result", Result.fail("자신이 작성한 질문만 삭제할 수 있습니다."));
+//            }
+//
+//            questionDao.deleteByQuestionId(questionId);
             return new ModelAndView(new JsonView()).addModel("result", Result.ok());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.debug("QuestionController: {}", e.toString());
+            e.printStackTrace();
+            return new ModelAndView(new JsonView()).addModel("result", Result.fail(""));
         }
     }
 }
