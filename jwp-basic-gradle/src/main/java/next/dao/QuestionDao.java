@@ -76,4 +76,9 @@ public class QuestionDao {
         String sql = "DELETE FROM QUESTIONS WHERE questionId = ?";
         template.excuteSqlUpdate(sql,id);
     }
+
+    public void update(String contents , String title,String id) {
+        String sql = "UPDATE QUESTIONS SET CONTENTS = ?,TITLE =? WHERE questionId = ? ";
+        template.excuteSqlUpdate(sql,contents,title,id);
+    }
 }

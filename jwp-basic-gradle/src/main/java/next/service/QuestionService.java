@@ -36,4 +36,8 @@ public class QuestionService {
     public void addQuestion(Question question) {
         questionDao.addQuestion(question);
     }
+
+    public void updateQuestion(String contents, String title, String id) {
+        questionDao.update(contents, title,id);
+    }
 }
