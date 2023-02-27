@@ -12,18 +12,25 @@ import next.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import next.service.AnswerService;
+import next.service.QuestionService;
 
 public class QuestionController extends AbstractController {
 
     private final QuestionDao qsDao = new QuestionDao();
     private final AnswerDao asDao = new AnswerDao();
+
+    private final QuestionService questionService = new QuestionService();
+    private final AnswerService answerService = new AnswerService();
+
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
-        int qsId = Integer.parseInt(req.getParameter("id"));
-        Question qs = qsDao.findByQuestionId(qsId);
-        List<Answer> answers = asDao.findAllByQuestonId(qsId);
-        ModelAndView mav = jspView("/qna/show.jsp");
-        mav.addObject("question",qs).addObject("answers",answers);
-        return mav;
+        int questionId = Integer.parseInt(req.getParameter("id"));
+        Question question = questionService.findByQuestionId(questionId);
+        List<Answer> answers = answerService.findAllbyQuestionId(questionId);
+
+        return jspView("/qna/show.jsp")
+                .addObject("question", question)
+                .addObject("answers", answers);
     }
 }

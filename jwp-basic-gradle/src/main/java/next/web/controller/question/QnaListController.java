@@ -9,13 +9,15 @@ import next.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import next.service.QuestionService;
 
 public class QnaListController extends AbstractController {
 
-    private final QuestionDao questionDao= new QuestionDao();
+    private final QuestionService  questionService= new QuestionService();
+
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response){
-        List<Question> questions = questionDao.findAll();
-        return jsonView().addObject("questions",questions);
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+        List<Question> questions = questionService.findAll();
+        return jsonView().addObject("questions", questions);
     }
 }

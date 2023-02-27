@@ -9,22 +9,21 @@ import next.mvc.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import next.service.AnswerService;
 
 public class AnswerDeleteController extends AbstractController {
 
-    private final AnswerDao asDao =  new AnswerDao();
-    private final QuestionDao qsDao =  new QuestionDao();
+    private final AnswerService answerService = new AnswerService();
+
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         String answerId = req.getParameter("answerId");
-        String questionId = req.getParameter("questionId");
-        if(user == null && answerId == null){
+        if (user == null && answerId == null) {
             return jsonView();
         }
-        asDao.deleteAnswer(Integer.parseInt(answerId));
-        qsDao.decreaseAnswer(Integer.parseInt(questionId));
-        return jsonView().addObject("result","성공");
+        answerService.deleteAnswer(Integer.parseInt(answerId));
+        return jsonView().addObject("result", "성공");
     }
 }
