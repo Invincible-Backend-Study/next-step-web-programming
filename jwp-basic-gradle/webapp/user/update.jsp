@@ -10,7 +10,7 @@
             <h2>개인 정보 수정</h2>
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID">
+                  <input class="form-control" id="userId" name="userId" placeholder="User ID" disabled/>
               </div>
               <div class="form-group">
                   <label for="password">비밀번호</label>

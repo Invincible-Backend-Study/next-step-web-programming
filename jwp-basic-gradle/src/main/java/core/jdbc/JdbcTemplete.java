@@ -1,5 +1,7 @@
 package core.jdbc;
 
+import next.exception.DataAcessException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,25 +9,45 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class JdbcTemplete {
-    public void excuteSqlUpdate(String sql, Object... parameters) throws SQLException {
+    public void excuteSqlUpdate(String sql, Object... parameters) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             setSqlParameters(pstmt, parameters);
-            pstmt.executeUpdate(sql);
+            pstmt.executeUpdate();
+        }catch (SQLException e){
+            throw new DataAcessException(e);
+        }
+    }
+
+    public void excuteSqlUpdate(KeyHolder key, String sql, Object ...parameters){
+        try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+            setSqlParameters(pstmt, parameters);
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()) {
+                key.setId(rs.getInt(1));
+            }
+            rs.close();
+        }catch (SQLException e){
+            throw new DataAcessException(e);
         }
     }
 
 
-    public <T> T excuteFindStaticData(String sql, RawMapper<T> rm) throws SQLException {
+    public <T> T excuteFindStaticData(String sql, RawMapper<T> rm) {
         try (Connection con = ConnectionManager.getConnection(); Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(
                 sql);) {
             return rm.mapRow(rs);
+        }catch (SQLException e){
+            throw new DataAcessException(e);
         }
     }
 
-    public <T> T excuteFindDynamicData(String sql, RawMapper<T> rm, Object... parameters) throws SQLException {
+    public <T> T excuteFindDynamicData(String sql, RawMapper<T> rm, Object... parameters) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             setSqlParameters(pstmt, parameters);
             return getResultSet(rm, pstmt);
+        }catch (SQLException e){
+            throw new DataAcessException(e);
         }
     }
 
@@ -36,9 +58,11 @@ public class JdbcTemplete {
 //        }
 //    }
 
-    private static <T> T getResultSet(RawMapper<T> rm, PreparedStatement pstmt) throws SQLException {
+    private static <T> T getResultSet(RawMapper<T> rm, PreparedStatement pstmt) {
         try (ResultSet rs = pstmt.executeQuery()) {
             return rm.mapRow(rs);
+        }catch (SQLException e){
+            throw new DataAcessException(e);
         }
     }
 

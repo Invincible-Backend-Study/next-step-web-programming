@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "dispatcher", urlPatterns = "/")
+@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String REDIRECT_PREFIX = "redirect:";
@@ -24,15 +24,15 @@ public class DispatcherServlet extends HttpServlet {
     public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         String url = req.getRequestURI();
         Controller controller = requestMapping.getController(url);
-        if (controller == null) {
+        if(controller == null){
             return;
         }
-        String responseUri = controller.execute(req, res);
-        if (responseUri.startsWith(REDIRECT_PREFIX)) {
-            res.sendRedirect(responseUri.substring(REDIRECT_PREFIX.length()));
-            return;
+        ModelAndView mav = controller.execute(req, res);
+        View view= mav.getView();
+        try {
+            view.render(mav.getModel(),req,res);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        RequestDispatcher rd = req.getRequestDispatcher(responseUri);
-        rd.forward(req, res);
     }
 }

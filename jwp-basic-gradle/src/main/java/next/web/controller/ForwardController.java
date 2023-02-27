@@ -1,11 +1,12 @@
-package next.web;
+package next.web.controller;
 
-import next.mvc.Controller;
+import next.mvc.AbstractController;
+import next.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ForwardController implements Controller {
+public class ForwardController extends AbstractController {
 
     private final String url;
 
@@ -17,8 +18,8 @@ public class ForwardController implements Controller {
     }
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) {
-        return url;
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
+        return jspView(url);
     }
 
 }
