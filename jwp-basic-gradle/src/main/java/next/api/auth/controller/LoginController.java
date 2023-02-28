@@ -1,4 +1,4 @@
-package next.api.auth;
+package next.api.auth.controller;
 
 import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;

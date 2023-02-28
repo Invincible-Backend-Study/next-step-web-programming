@@ -1,13 +1,13 @@
 package core.web;
 
-import next.api.qna.*;
+import next.api.qna.controller.*;
 import next.common.controller.HomeController;
-import next.api.auth.LoginController;
-import next.api.auth.LogoutController;
-import next.api.user.CreateUserController;
-import next.api.user.ListUserController;
-import next.api.user.UpdateUserController;
-import next.api.user.UpdateUserFormController;
+import next.api.auth.controller.LoginController;
+import next.api.auth.controller.LogoutController;
+import next.api.user.controller.CreateUserController;
+import next.api.user.controller.ListUserController;
+import next.api.user.controller.UpdateUserController;
+import next.api.user.controller.UpdateUserFormController;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,10 +1,6 @@
-package next.api.user;
+package next.api.user.controller;
 
 import core.web.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import next.common.controller.AbstractController;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
@@ -12,10 +8,12 @@ import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
-public class UpdateUserController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
+public class CreateUserController extends AbstractController {
+    private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
     private final UserDao userDao = UserDao.getInstance();
 
     @Override
@@ -24,16 +22,15 @@ public class UpdateUserController extends AbstractController {
                 request.getParameter("userId"),
                 request.getParameter("password"),
                 request.getParameter("name"),
-                request.getParameter("email"));
-        log.debug("updateUser : {}", user);
+                request.getParameter("email")
+        );
+
         try {
-            userDao.update(user);
+            userDao.insert(user);
         } catch (SQLException e) {
-            log.error(e.toString());
+            log.error(e.getMessage());
         }
 
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
         return new ModelAndView(new JspView("redirect:/user/list"));
     }
 }

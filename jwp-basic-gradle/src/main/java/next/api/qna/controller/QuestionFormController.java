@@ -1,4 +1,4 @@
-package next.api.qna;
+package next.api.qna.controller;
 
 import core.web.ModelAndView;
 import next.common.controller.AbstractController;

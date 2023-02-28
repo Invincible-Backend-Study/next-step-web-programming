@@ -1,8 +1,7 @@
-package next.api.qna;
+package next.api.qna.controller;
 
 import core.web.ModelAndView;
 
-import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
