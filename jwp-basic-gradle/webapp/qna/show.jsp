@@ -47,12 +47,9 @@
                                 <a class="link-modify-article" href="/question/form?questionId=${question.questionId}">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/question" method="POST">
-                                    <input type="hidden" name="questionId" value="${question.questionId}">
-                                    <button class="link-delete-article" type="button"
-                                            onclick="deleteQuestion('${question.questionId}')">삭제
-                                    </button>
-                                </form>
+                                <button class="link-delete-article" type="button"
+                                        onclick="deleteQuestion('${question.questionId}')">삭제
+                                </button>
                             </li>
                             <li>
                                 <a class="link-modify-article" href="/question/list">목록</a>
@@ -83,17 +80,31 @@
                                     <div class="article-doc comment-doc">
                                         <p>${answer.contents}</p>
                                     </div>
+
+
+
+<%--                                    <div class="article-util">--%>
+<%--                                        <ul class="article-util-list">--%>
+<%--                                            <li>--%>
+<%--                                                <a class="link-modify-article" href="">수정</a>--%>
+<%--                                            </li>--%>
+<%--                                            <li>--%>
+<%--                                                <form name="form-delete" class="form-delete" method="POST">--%>
+<%--                                                    <input type="hidden" name="_method" value="DELETE">--%>
+<%--                                                    <button type="submit" class="link-delete-article" onclick="deleteAnswer('${answer.answerId}')">삭제</button>--%>
+<%--                                                </form>--%>
+<%--                                            </li>--%>
+<%--                                        </ul>--%>
+<%--                                    </div>--%>
+
+
                                     <div class="article-util">
                                         <ul class="article-util-list">
                                             <li>
-                                                <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
+                                                <a class="link-modify-article" href="">수정</a>
                                             </li>
                                             <li>
-                                                <form name="form-delete" class="form-delete"
-                                                      action="/answer?answerId=${answer.answerId}" method="POST">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="link-delete-article">삭제</button>
-                                                </form>
+                                                <button type="submit" class="link-delete-article" onclick="deleteAnswer(this, '${answer.answerId}')">삭제</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -140,10 +151,7 @@
                     <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
                 </li>
                 <li>
-                    <form name="form-delete" class="form-delete" action="/answer?" method="POST">
-                        <input type="hidden" name="answerId" value="{4}"/>
-                        <button type="submit" class="link-delete-article">삭제</button>
-                    </form>
+                    <button type="submit" class="link-delete-article" onclick="deleteAnswer(this, '{3}')">삭제</button>
                 </li>
             </ul>
         </div>

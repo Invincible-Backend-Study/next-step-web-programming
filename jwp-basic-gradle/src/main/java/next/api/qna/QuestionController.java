@@ -97,18 +97,10 @@ public class QuestionController extends AbstractController {
             log.debug(user.toString() + " "  + questionId);
             questionService.deleteQuestion(questionId, user);
 
-//            Question question = questionDao.findByQuestionId(questionId);
-//            if (!user.getName().equals(question.getWriter())) {
-//                return new ModelAndView(new JsonView())
-//                        .addModel("result", Result.fail("자신이 작성한 질문만 삭제할 수 있습니다."));
-//            }
-//
-//            questionDao.deleteByQuestionId(questionId);
+            questionDao.deleteByQuestionId(questionId);
             return new ModelAndView(new JsonView()).addModel("result", Result.ok());
-        } catch (Exception e) {
-            log.debug("QuestionController: {}", e.toString());
-            e.printStackTrace();
-            return new ModelAndView(new JsonView()).addModel("result", Result.fail(""));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
