@@ -1,6 +1,7 @@
 package next.api.user.controller;
 
 import core.web.ModelAndView;
+import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 
 public class CreateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
-    private final UserDao userDao = UserDao.getInstance();
+    private final UserService userService = UserService.getInstance();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -26,11 +27,12 @@ public class CreateUserController extends AbstractController {
         );
 
         try {
-            userDao.insert(user);
+            userService.addUser(user);
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
 
         return new ModelAndView(new JspView("redirect:/user/list"));
     }
+
 }

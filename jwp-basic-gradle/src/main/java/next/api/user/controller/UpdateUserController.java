@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 
 public class UpdateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
-    private final UserDao userDao = UserDao.getInstance();
+    private final UserService userService = UserService.getInstance();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -25,9 +26,8 @@ public class UpdateUserController extends AbstractController {
                 request.getParameter("password"),
                 request.getParameter("name"),
                 request.getParameter("email"));
-        log.debug("updateUser : {}", user);
         try {
-            userDao.update(user);
+            userService.updateUser(user);
         } catch (SQLException e) {
             log.error(e.toString());
         }
@@ -36,4 +36,6 @@ public class UpdateUserController extends AbstractController {
         session.setAttribute("user", user);
         return new ModelAndView(new JspView("redirect:/user/list"));
     }
+
+
 }

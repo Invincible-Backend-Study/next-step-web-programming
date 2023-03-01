@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 
 public class ListUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListUserController.class);
-    private final UserDao userDao = UserDao.getInstance();
+    private final UserService userService = UserService.getInstance();
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -30,10 +31,11 @@ public class ListUserController extends AbstractController {
 
         List<User> users = null;
         try {
-            users = userDao.findAll();
+            users = userService.getUsers();
         } catch (SQLException e) {
             log.error(e.toString());
         }
         return new ModelAndView(new JspView("/user/list.jsp")).addModel("users", users);
     }
+
 }

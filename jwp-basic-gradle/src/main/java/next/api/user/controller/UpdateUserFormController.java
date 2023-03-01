@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
 import next.api.user.model.User;
 import next.common.view.JspView;
