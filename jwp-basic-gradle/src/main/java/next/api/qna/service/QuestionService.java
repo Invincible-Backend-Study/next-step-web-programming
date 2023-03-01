@@ -43,6 +43,7 @@ public class QuestionService {
         if (result != 1) {
             throw new IllegalArgumentException("정상적으로 반영되지 않았습니다. (변동:" + result + "건)");
         }
+        answerDao.deleteByQuestionId(questionId);
     }
 
     public List<Question> getQuestions() {
@@ -64,15 +65,15 @@ public class QuestionService {
         }
     }
 
-    public List<Answer> getAnswersByQuestionId(Long questionId) {
-        return answerDao.findByQuestionId(questionId);
-    }
-
     public Question getQuestionByQuestionId(Long questionId) {
         return questionDao.findByQuestionId(questionId);
     }
 
     // ANSWER
+    public List<Answer> getAnswersByQuestionId(Long questionId) {
+        return answerDao.findByQuestionId(questionId);
+    }
+
     public Answer addAnswer(Answer answer) {
         answer = answerDao.insert(answer);
         Question question = questionDao.findByQuestionId(answer.getQuestionId());

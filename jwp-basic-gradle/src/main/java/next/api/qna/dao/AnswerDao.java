@@ -95,6 +95,11 @@ public class AnswerDao {
         return jdbcTemplate.executeUpdate(sql, answerId);
     }
 
+    public int deleteByQuestionId(Long questionId) {
+        String sql = "DELETE FROM ANSWERS WHERE questionId = ?";
+        return jdbcTemplate.executeUpdate(sql, questionId);
+    }
+
     public int deleteAll() {
         String sql = "DELETE FROM ANSWERS";
         return jdbcTemplate.executeUpdate(sql);
