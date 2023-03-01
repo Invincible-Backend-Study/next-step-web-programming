@@ -23,13 +23,7 @@ public class ListQuestionController extends AbstractController {
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
-        List<Question> questions = null;
-        try {
-            questions = questionService.getQuestions();
-        } catch (SQLException e) {
-            log.error(e.toString());
-        }
-
+        List<Question> questions = questionService.getQuestions();
         return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
     }
 }

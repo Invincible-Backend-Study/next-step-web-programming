@@ -15,7 +15,7 @@ public class AnswerDao {
         return answerDao;
     }
 
-    public Answer insert(Answer answer) throws SQLException {
+    public Answer insert(Answer answer) {
         String sql = "INSERT INTO ANSWERS(writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
         Long answerId = jdbcTemplate.insert(sql,
                 answer.getWriter(),
@@ -26,7 +26,7 @@ public class AnswerDao {
         return findByAnswerId(answerId);
     }
 
-    public List<Answer> findAll() throws SQLException {
+    public List<Answer> findAll() {
         ResultSetMapper<List<Answer>> resultSetMapper = rs -> {
             List<Answer> answers = new ArrayList<>();
             while (rs.next()) {
@@ -45,7 +45,7 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
-    public List<Answer> findByQuestionId(Long questionId) throws SQLException {
+    public List<Answer> findByQuestionId(Long questionId) {
         ResultSetMapper<List<Answer>> resultSetMapper = rs -> {
             List<Answer> answers = new ArrayList<>();
             while (rs.next()) {
@@ -64,7 +64,7 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper, questionId);
     }
 
-    public Answer findByAnswerId(Long answerId) throws SQLException {
+    public Answer findByAnswerId(Long answerId) {
         ResultSetMapper<Answer> resultSetMapper = rs -> {
             if (rs.next()) {
                 return new Answer(
@@ -82,7 +82,7 @@ public class AnswerDao {
         return jdbcTemplate.select(sql, resultSetMapper, answerId);
     }
 
-    public int update(Answer answer) throws SQLException {
+    public int update(Answer answer) {
         String sql = "UPDATE ANSWERS SET contents=? WHERE answerId = ?";
         return jdbcTemplate.executeUpdate(sql,
                 answer.getContents(),
@@ -95,7 +95,7 @@ public class AnswerDao {
         return jdbcTemplate.executeUpdate(sql, answerId);
     }
 
-    public int deleteAll() throws SQLException {
+    public int deleteAll() {
         String sql = "DELETE FROM ANSWERS";
         return jdbcTemplate.executeUpdate(sql);
     }

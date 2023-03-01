@@ -26,11 +26,8 @@ public class UpdateUserController extends AbstractController {
                 request.getParameter("password"),
                 request.getParameter("name"),
                 request.getParameter("email"));
-        try {
-            userService.updateUser(user);
-        } catch (SQLException e) {
-            log.error(e.toString());
-        }
+
+        userService.updateUser(user);
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);

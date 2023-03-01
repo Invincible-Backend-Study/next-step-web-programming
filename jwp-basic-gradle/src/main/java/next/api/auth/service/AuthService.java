@@ -19,16 +19,12 @@ public class AuthService {
 
     public User getUser(final String id, final String password) {
         User user;
-        try {
-            user = userDao.findByUserId(id);
-            if (user == null) {
-                return null;
-            }
-            if (user.isAuthWith(id, password)) {
-                return user;
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+        user = userDao.findByUserId(id);
+        if (user == null) {
+            return null;
+        }
+        if (user.isAuthWith(id, password)) {
+            return user;
         }
 
         return null;

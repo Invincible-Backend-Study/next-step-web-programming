@@ -22,7 +22,7 @@ public class QuestionService {
     private final AnswerDao answerDao = AnswerDao.getInstance();
     private final QuestionDao questionDao = QuestionDao.getInstance();
 
-    public void deleteQuestion(long questionId, User user) throws SQLException {
+    public void deleteQuestion(long questionId, User user) {
         Question question = questionDao.findByQuestionId(questionId);
         if (question == null) {
             throw new IllegalArgumentException("해당 번호의 질문이 없습니다.");
@@ -45,11 +45,11 @@ public class QuestionService {
         }
     }
 
-    public List<Question> getQuestions() throws SQLException {
+    public List<Question> getQuestions() {
         return questionDao.findAll();
     }
 
-    public void putArticle(User user, String title, String contents, String questionIdParam) throws SQLException {
+    public void putArticle(User user, String title, String contents, String questionIdParam) {
         Question question = null;
         if (questionIdParam == null || questionIdParam.isEmpty()) {
             // 게시글 신규 등록
@@ -64,16 +64,16 @@ public class QuestionService {
         }
     }
 
-    public List<Answer> getAnswersByQuestionId(Long questionId) throws SQLException {
+    public List<Answer> getAnswersByQuestionId(Long questionId) {
         return answerDao.findByQuestionId(questionId);
     }
 
-    public Question getQuestionByQuestionId(Long questionId) throws SQLException {
+    public Question getQuestionByQuestionId(Long questionId) {
         return questionDao.findByQuestionId(questionId);
     }
 
     // ANSWER
-    public Answer addAnswer(Answer answer) throws SQLException {
+    public Answer addAnswer(Answer answer) {
         answer = answerDao.insert(answer);
         Question question = questionDao.findByQuestionId(answer.getQuestionId());
         question.increaseCountOfAnswer();
@@ -81,7 +81,7 @@ public class QuestionService {
         return answer;
     }
 
-    public boolean deleteAnswer(HttpServletRequest request, User user) throws SQLException {
+    public boolean deleteAnswer(HttpServletRequest request, User user) {
         Long answerId = Long.parseLong(request.getParameter("answerId"));
         Answer targetAnswer = answerDao.findByAnswerId(answerId);
         if (!user.getName().equals(targetAnswer.getWriter())) {

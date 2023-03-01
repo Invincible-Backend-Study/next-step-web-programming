@@ -29,12 +29,7 @@ public class ListUserController extends AbstractController {
             return new ModelAndView(new JspView("redirect:/user/login.jsp"));
         }
 
-        List<User> users = null;
-        try {
-            users = userService.getUsers();
-        } catch (SQLException e) {
-            log.error(e.toString());
-        }
+        List<User> users = userService.getUsers();
         return new ModelAndView(new JspView("/user/list.jsp")).addModel("users", users);
     }
 

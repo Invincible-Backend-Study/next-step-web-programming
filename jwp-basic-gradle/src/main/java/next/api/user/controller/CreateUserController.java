@@ -26,12 +26,7 @@ public class CreateUserController extends AbstractController {
                 request.getParameter("email")
         );
 
-        try {
-            userService.addUser(user);
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-        }
-
+        userService.addUser(user);
         return new ModelAndView(new JspView("redirect:/user/list"));
     }
 

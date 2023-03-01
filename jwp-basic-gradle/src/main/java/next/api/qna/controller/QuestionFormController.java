@@ -31,15 +31,10 @@ public class QuestionFormController extends AbstractController {
         }
 
         Long questionId = Long.parseLong(request.getParameter("questionId"));
-        Question question = null;
-        try {
-            question = questionService.getQuestionByQuestionId(questionId);
-            if (!user.getName().equals(question.getWriter())) {
-                return new ModelAndView(new JsonView())
-                        .addModel("result", Result.fail("자신이 작성한 질문만 수정할 수 있습니다."));
-            }
-        } catch (SQLException e) {
-            log.error(e.toString());
+        Question question = questionService.getQuestionByQuestionId(questionId);
+        if (!user.getName().equals(question.getWriter())) {
+            return new ModelAndView(new JsonView())
+                    .addModel("result", Result.fail("자신이 작성한 질문만 수정할 수 있습니다."));
         }
 
         return new ModelAndView(new JspView("/qna/form.jsp")).addModel("question", question);

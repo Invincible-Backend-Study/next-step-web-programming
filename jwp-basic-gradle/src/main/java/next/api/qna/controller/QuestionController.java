@@ -30,21 +30,14 @@ public class QuestionController extends AbstractController {
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
 
-        Question question = null;
-        List<Answer> answers = null;
-        try {
-            question = questionService.getQuestionByQuestionId(questionId);
-            answers = questionService.getAnswersByQuestionId(questionId);
-        } catch (SQLException e) {
-            log.error(e.toString());
-        }
+        Question question = questionService.getQuestionByQuestionId(questionId);
+        List<Answer> answers = questionService.getAnswersByQuestionId(questionId);
 
         return new ModelAndView(new JspView("/qna/show.jsp")).addModel("question", question).addModel("answers", answers);
     }
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             if (user == null) {
@@ -58,12 +51,6 @@ public class QuestionController extends AbstractController {
             questionService.putArticle(user, title, contents, questionIdParam);
 
             return new ModelAndView(new JspView("redirect:/question/list"));
-        }  catch (SQLException e) {
-            log.error(e.toString());
-        } catch (Exception e) {
-            log.error(e.toString());
-        }
-        return new ModelAndView(new JspView("redirect:/question/list"));
     }
 
     @Override
@@ -80,8 +67,6 @@ public class QuestionController extends AbstractController {
             questionService.deleteQuestion(questionId, user);
 
             return new ModelAndView(new JsonView()).addModel("result", Result.ok());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         } catch (IllegalArgumentException e) {
             return new ModelAndView(new JsonView())
                     .addModel("result", Result.fail(e.getMessage()));

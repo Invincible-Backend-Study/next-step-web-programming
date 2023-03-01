@@ -14,15 +14,15 @@ public class UserService {
     }
     private final UserDao userDao = UserDao.getInstance();
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) {
         userDao.insert(user);
     }
 
-    public void updateUser(User user) throws SQLException {
+    public void updateUser(User user) {
         userDao.update(user);
     }
 
-    public List<User> getUsers() throws SQLException {
+    public List<User> getUsers() {
         List<User> users;
         users = userDao.findAll();
         return users;

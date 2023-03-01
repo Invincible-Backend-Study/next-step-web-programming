@@ -16,12 +16,12 @@ public class UserDao {
         return userDao;
     }
 
-    public void insert(User user) throws SQLException {
+    public void insert(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         jdbcTemplate.executeUpdate(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() {
         ResultSetMapper<List<User>> resultSetMapper = rs -> {
             List<User> users = new ArrayList<User>();
             while (rs.next()) {
@@ -38,7 +38,7 @@ public class UserDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
-    public User findByUserId(String userId) throws SQLException {
+    public User findByUserId(String userId) {
         ResultSetMapper<User> resultSetMapper = rs -> {
             if (rs.next()) {
                 return new User(
@@ -55,12 +55,12 @@ public class UserDao {
         return jdbcTemplate.select(sql, resultSetMapper, userId);
     }
 
-    public int update(User user) throws SQLException {
+    public int update(User user) {
         String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
         return jdbcTemplate.executeUpdate(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
-    public int deleteAll() throws SQLException {
+    public int deleteAll() {
         String sql = "DELETE FROM USERS";
         return jdbcTemplate.executeUpdate(sql);
     }

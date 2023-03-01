@@ -33,21 +33,4 @@ class AnswerDaoTest {
         List<Answer> answers = answerDao.findAll();
         System.out.println(answers.toString());
     }
-
-//    @Test
-//    void findByAnswerId() throws Exception {
-//        Answer answer = answerDao.findByAnswerId(21L);
-//        System.out.println(answer.toString());
-//    }
-//
-//    @Test
-//    void update() throws Exception {
-//        Answer answer = answerDao.findByAnswerId(28L);
-//        System.out.println(answer.toString());
-//        answer.setContents("content changed!!!");
-//        answerDao.update(answer);
-//
-//        answer = answerDao.findByAnswerId(28L);
-//        System.out.println(answer.toString());
-//    }
 }

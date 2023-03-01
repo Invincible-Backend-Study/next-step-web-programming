@@ -15,7 +15,7 @@ public class QuestionDao {
         return questionDao;
     }
 
-    public Question insert(Question question) throws SQLException {
+    public Question insert(Question question) {
         String sql = "INSERT INTO QUESTIONS(writer, title, contents, createdDate, countOfAnswer) VALUES (?, ?, ?, ?, ?)";
         Long questionId = jdbcTemplate.insert(sql,
                 question.getWriter(),
@@ -26,7 +26,7 @@ public class QuestionDao {
         return findByQuestionId(questionId);
     }
 
-    public List<Question> findAll() throws SQLException {
+    public List<Question> findAll() {
         ResultSetMapper<List<Question>> resultSetMapper = rs -> {
             List<Question> questions = new ArrayList<>();
             while (rs.next()) {
@@ -46,7 +46,7 @@ public class QuestionDao {
         return jdbcTemplate.select(sql, resultSetMapper);
     }
 
-    public Question findByQuestionId(Long questionId) throws SQLException {
+    public Question findByQuestionId(Long questionId) {
         ResultSetMapper<Question> resultSetMapper = rs -> {
             if (rs.next()) {
                 return new Question(
