@@ -1,18 +1,13 @@
 package next.web.controller.question;
 
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
-import next.model.Answer;
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import next.model.Question;
 import next.model.User;
 import next.mvc.AbstractController;
 import next.mvc.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Objects;
 import next.service.QuestionService;
 
 public class DeleteQuestion extends AbstractController {

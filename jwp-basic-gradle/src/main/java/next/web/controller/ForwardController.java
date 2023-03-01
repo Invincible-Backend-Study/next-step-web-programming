@@ -1,17 +1,16 @@
 package next.web.controller;
 
-import next.mvc.AbstractController;
-import next.mvc.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import next.mvc.AbstractController;
+import next.mvc.ModelAndView;
 
 public class ForwardController extends AbstractController {
 
     private final String url;
 
     public ForwardController(String url) {
-        if(url == null){
+        if (url == null) {
             throw new NullPointerException("[ERROR]url을 입력하세요");
         }
         this.url = url;

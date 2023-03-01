@@ -63,7 +63,6 @@ public class UserDaoTest {
     public void test() {
         AnswerDao dao = new AnswerDao();
         Answer as = new Answer("이준호","이건데",8);
-        System.out.println(dao.addAnswer(as));;
     }
 
 
