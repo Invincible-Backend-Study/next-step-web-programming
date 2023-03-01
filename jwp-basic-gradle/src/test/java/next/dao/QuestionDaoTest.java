@@ -1,16 +1,15 @@
 package next.dao;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.sql.SQLException;
 import java.util.List;
-import next.model.Question;
+
+import next.api.qna.dao.QuestionDao;
+import next.api.qna.model.Question;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class QuestionDaoTest {
-    QuestionDao questionDao = new QuestionDao();
+    private final QuestionDao questionDao = QuestionDao.getInstance();
     @BeforeEach
     void beforeEach() throws Exception {
         Question q1 = new Question("john", "helloworld", "this is contents");
@@ -32,21 +31,4 @@ class QuestionDaoTest {
         List<Question> questions = questionDao.findAll();
         System.out.println(questions.toString());
     }
-
-//    @Test
-//    void findByQuestionId() throws Exception {
-//        Question question = questionDao.findByQuestionId(33L);
-//        System.out.println(question.toString());
-//    }
-//
-//    @Test
-//    void update() throws Exception {
-//        Question question = questionDao.findByQuestionId(39L);
-//        System.out.println(question.toString());
-//        question.setTitle("newTitle!!");
-//        questionDao.update(question);
-//
-//        question = questionDao.findByQuestionId(39L);
-//        System.out.println(question.toString());
-//    }
 }

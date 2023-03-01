@@ -1,5 +1,6 @@
 package next.model;
 
+import next.api.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

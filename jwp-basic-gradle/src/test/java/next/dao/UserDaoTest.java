@@ -1,6 +1,7 @@
 package next.dao;
 
-import next.model.User;
+import next.api.user.dao.UserDao;
+import next.api.user.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class UserDaoTest {
 
     @Before
     public void beforeEach() throws Exception {
-        userDao = new UserDao();
+        userDao = UserDao.getInstance();
     }
 
     @After
