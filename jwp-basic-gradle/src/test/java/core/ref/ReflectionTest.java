@@ -1,5 +1,6 @@
 package core.ref;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -55,8 +56,16 @@ public class ReflectionTest {
 
 
     @Test
-    public void newInstanceWithConstructorArgs() {
+    public void newInstanceWithConstructorArgs()
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Class<User> clazz = User.class;
+
+        //String userId, String password, String name, String email
+        final var user = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class)
+                .newInstance("id1", "password", "name", "email");
+
+        logger.info("{}", user);
+
         logger.debug(clazz.getName());
     }
 
