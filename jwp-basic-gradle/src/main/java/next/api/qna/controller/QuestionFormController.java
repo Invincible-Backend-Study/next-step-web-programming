@@ -1,6 +1,7 @@
 package next.api.qna.controller;
 
 import core.web.ModelAndView;
+import next.api.qna.service.QuestionService;
 import next.common.controller.AbstractController;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Question;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 
 public class QuestionFormController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionFormController.class);
-    private final QuestionDao questionDao = QuestionDao.getInstance();
+    private final QuestionService questionService = QuestionService.getInstance();
 
     @Override
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -32,12 +33,11 @@ public class QuestionFormController extends AbstractController {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
         Question question = null;
         try {
-            question = questionDao.findByQuestionId(questionId);
+            question = questionService.getQuestionByQuestionId(questionId);
             if (!user.getName().equals(question.getWriter())) {
                 return new ModelAndView(new JsonView())
                         .addModel("result", Result.fail("자신이 작성한 질문만 수정할 수 있습니다."));
             }
-            request.setAttribute("question", question);
         } catch (SQLException e) {
             log.error(e.toString());
         }

@@ -31,7 +31,6 @@ public class ListUserController extends AbstractController {
         List<User> users = null;
         try {
             users = userDao.findAll();
-            request.setAttribute("users", users);
         } catch (SQLException e) {
             log.error(e.toString());
         }

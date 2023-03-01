@@ -24,8 +24,6 @@ import java.sql.SQLException;
 
 public class QuestionController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
-    private final AnswerDao answerDao = AnswerDao.getInstance();
-    private final QuestionDao questionDao = QuestionDao.getInstance();
     private final QuestionService questionService = QuestionService.getInstance();
 
     @Override
@@ -35,11 +33,8 @@ public class QuestionController extends AbstractController {
         Question question = null;
         List<Answer> answers = null;
         try {
-            question = questionDao.findByQuestionId(questionId);
-            answers = answerDao.findByQuestionId(questionId);
-
-            request.setAttribute("question", question);
-            request.setAttribute("answers", answers);
+            question = questionService.getQuestionByQuestionId(questionId);
+            answers = questionService.getAnswersByQuestionId(questionId);
         } catch (SQLException e) {
             log.error(e.toString());
         }
@@ -56,22 +51,11 @@ public class QuestionController extends AbstractController {
                 return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
             }
 
-            Question question = null;
             String title = request.getParameter("title");
             String contents = request.getParameter("contents");
             String questionIdParam = request.getParameter("questionId");
 
-            if (questionIdParam == null || questionIdParam.isEmpty()) {
-                // 게시글 신규 등록
-                question = new Question(user.getName(), title, contents);
-                questionDao.insert(question);
-            } else {
-                // 게시글 수정
-                Long questionId = Long.parseLong(questionIdParam);
-                question = questionDao.findByQuestionId(questionId);  //TODO User 객체가 명확해진다면 Form뿐만 아니라 이곳에서도 동일유저인지 검증
-                question.putTitleAndContents(title, contents);
-                questionDao.update(question);
-            }
+            questionService.putArticle(user, title, contents, questionIdParam);
 
             return new ModelAndView(new JspView("redirect:/question/list"));
         }  catch (SQLException e) {
@@ -93,13 +77,14 @@ public class QuestionController extends AbstractController {
             }
 
             Long questionId = Long.parseLong(request.getParameter("questionId"));
-            log.debug(user.toString() + " "  + questionId);
             questionService.deleteQuestion(questionId, user);
 
-            questionDao.deleteByQuestionId(questionId);
             return new ModelAndView(new JsonView()).addModel("result", Result.ok());
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            return new ModelAndView(new JsonView())
+                    .addModel("result", Result.fail(e.getMessage()));
         }
     }
 }
