@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import next.api.auth.service.AuthService;
 import next.common.controller.AbstractController;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 
 public class LoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-    private final UserDao userDao = UserDao.getInstance();
+    private final AuthService authService = AuthService.getInstance();
 
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -31,19 +32,6 @@ public class LoginController extends AbstractController {
     }
 
     private User getLoginUser(String id, String password) {
-        User user = null;
-        try {
-            user = userDao.findByUserId(id);
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        if (user == null) {
-            return null;
-        }
-        if (user.isAuthWith(id, password)) {
-            return user;
-        }
-        return null;
+        return authService.getUser(id, password);
     }
 }
