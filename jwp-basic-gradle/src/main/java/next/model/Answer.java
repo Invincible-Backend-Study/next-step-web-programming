@@ -42,6 +42,10 @@ public class Answer {
         return createdDate;
     }
 
+    public long getTimeFromCreatedDate() {
+        return createdDate.getTime();
+    }
+
     public Long getQuestionId() {
         return questionId;
     }
@@ -60,4 +64,5 @@ public class Answer {
                 ", questionId=" + questionId +
                 '}';
     }
+
 }

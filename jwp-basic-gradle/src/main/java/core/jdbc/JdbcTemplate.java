@@ -37,6 +37,30 @@ public class JdbcTemplate {
         return update(query, createPreparedStatementSetter(values));
     }
 
+    public int update(final PreparedStatementCreator preparedStatementCreator, final KeyHolder keyHolder) {
+        ResultSet keyResultSet = null;
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = preparedStatementCreator.createPreparedStatement(connection)) {
+            int result = preparedStatement.executeUpdate();
+            keyResultSet = preparedStatement.getGeneratedKeys();
+
+            if (keyResultSet.next()) {
+                keyHolder.setId(keyResultSet.getLong(1));
+            }
+            return result;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception);
+        } finally {
+            if (keyResultSet != null) {
+                try {
+                    keyResultSet.close();
+                } catch (SQLException exception) {
+                    throw new DataAccessException(exception);
+                }
+            }
+        }
+    }
+
     public <T> List<T> query(
             final String query,
             final RowMapper<T> rowMapper,

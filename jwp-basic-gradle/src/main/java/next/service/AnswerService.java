@@ -11,9 +11,10 @@ public class AnswerService {
     private final QuestionDao questionDao = new QuestionDao();
 
     public Answer insertAnswer(final Answer answer) {
-        if (answerDao.insert(answer) >= 1) {
+        Answer insertedAnswer = answerDao.insert(answer);
+        if (insertedAnswer != null) {
             increaseCountOfAnswer(answer.getQuestionId());
-            return answer;
+            return insertedAnswer;
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package next.dao;
 
 import core.jdbc.JdbcTemplate;
+import java.sql.Timestamp;
 import java.util.List;
 import next.model.Question;
 
@@ -16,7 +17,7 @@ public class QuestionDao {
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
-                        resultSet.getDate("createdDate"),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getInt("countOfAnswer"))
         );
     }
@@ -32,7 +33,7 @@ public class QuestionDao {
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
-                        resultSet.getDate("createdDate"),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getInt("countOfAnswer")),
                 questionId
         );
@@ -46,7 +47,7 @@ public class QuestionDao {
                         resultSet.getString("writer"),
                         resultSet.getString("title"),
                         resultSet.getString("contents"),
-                        resultSet.getDate("createdDate"),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getInt("countOfAnswer"))
         );
     }
@@ -59,7 +60,7 @@ public class QuestionDao {
                 question.getWriter(),
                 question.getTitle(),
                 question.getContents(),
-                question.getCreatedDate(),
+                new Timestamp(question.getTimeFromCreatedDate()),
                 question.getCountOfAnswer());
     }
 

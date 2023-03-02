@@ -50,6 +50,10 @@ public class Question {
         return createdDate;
     }
 
+    public long getTimeFromCreatedDate() {
+        return createdDate.getTime();
+    }
+
     public int getCountOfAnswer() {
         return countOfAnswer;
     }
