@@ -1,6 +1,8 @@
 package next.api.qna.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.web.ModelAndView;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class QuestionController extends AbstractController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @Override
+    @RequestMapping("/question")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
 
@@ -39,6 +42,7 @@ public class QuestionController extends AbstractController {
     }
 
     @Override
+    @RequestMapping(value = "/question", method = RequestMethod.POST)
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
@@ -56,6 +60,7 @@ public class QuestionController extends AbstractController {
     }
 
     @Override
+    @RequestMapping(value = "/question", method = RequestMethod.DELETE)
     protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();

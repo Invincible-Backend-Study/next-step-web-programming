@@ -1,6 +1,8 @@
 package next.api.user.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ public class UpdateUserController extends AbstractController {
     private final UserService userService = UserService.getInstance();
 
     @Override
+    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),

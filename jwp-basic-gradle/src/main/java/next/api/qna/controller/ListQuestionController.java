@@ -1,6 +1,7 @@
 package next.api.qna.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
 import core.web.ModelAndView;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ListQuestionController extends AbstractController {
     private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
+    @RequestMapping(value = "/user/list")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         List<Question> questions = questionService.getQuestions();
         return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);

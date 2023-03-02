@@ -1,6 +1,8 @@
 package next.api.user.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.web.ModelAndView;
 import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
@@ -20,6 +22,7 @@ public class CreateUserController extends AbstractController {
     private final UserService userService = UserService.getInstance();
 
     @Override
+    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),

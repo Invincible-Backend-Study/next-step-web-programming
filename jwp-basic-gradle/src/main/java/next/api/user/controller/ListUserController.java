@@ -1,6 +1,7 @@
 package next.api.user.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
 import core.web.ModelAndView;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ public class ListUserController extends AbstractController {
     private final UserService userService = UserService.getInstance();
 
     @Override
+    @RequestMapping("/user/list")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");

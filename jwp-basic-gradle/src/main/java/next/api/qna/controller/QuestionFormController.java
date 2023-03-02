@@ -1,6 +1,7 @@
 package next.api.qna.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
 import core.web.ModelAndView;
 import next.api.qna.service.QuestionService;
 import next.common.controller.AbstractController;
@@ -24,6 +25,7 @@ public class QuestionFormController extends AbstractController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @Override
+    @RequestMapping("/question/form")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");

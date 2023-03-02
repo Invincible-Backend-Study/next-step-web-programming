@@ -1,6 +1,7 @@
 package next.api.qna.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
 import core.web.ModelAndView;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Question;
@@ -21,6 +22,7 @@ public class ListQuestionApiController extends AbstractController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @Override
+    @RequestMapping(value = "/api/qna/list")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         List<Question> questions = questionService.getQuestions();
         return new ModelAndView(new JsonView()).addModel("questions", questions);

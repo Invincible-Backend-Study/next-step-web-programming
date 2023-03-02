@@ -1,6 +1,7 @@
 package next.api.auth.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
 import core.web.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ public class LoginController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final AuthService authService = AuthService.getInstance();
 
+    @RequestMapping("/user/login")
     @Override
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         User user = getLoginUser(request.getParameter("userId"), request.getParameter("password"));
