@@ -4,14 +4,15 @@ import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
 import next.api.user.model.User;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao {
     static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
     private static UserDao userDao = new UserDao();
-    private UserDao() {};
+
+    private UserDao() {}
+
     public static UserDao getInstance() {
         return userDao;
     }

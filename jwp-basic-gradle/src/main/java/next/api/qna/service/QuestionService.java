@@ -1,23 +1,22 @@
 package next.api.qna.service;
 
-import core.web.ModelAndView;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import next.api.qna.dao.AnswerDao;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Answer;
 import next.api.qna.model.Question;
 import next.api.user.model.User;
-import next.common.model.Result;
-import next.common.view.JsonView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public class QuestionService {
     private static QuestionService questionService = new QuestionService();
-    private QuestionService() {};
-    public static QuestionService getInstance() {return questionService;};
+
+    private QuestionService() {}
+
+    public static QuestionService getInstance() {
+        return questionService;
+    }
 
     private final AnswerDao answerDao = AnswerDao.getInstance();
     private final QuestionDao questionDao = QuestionDao.getInstance();

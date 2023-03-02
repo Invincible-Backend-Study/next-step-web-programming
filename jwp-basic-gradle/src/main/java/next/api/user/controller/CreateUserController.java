@@ -4,17 +4,15 @@ import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.web.ModelAndView;
+import next.api.user.model.User;
 import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
-import next.api.user.dao.UserDao;
-import next.api.user.model.User;
 import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 
 @Controller
 public class CreateUserController extends AbstractController {

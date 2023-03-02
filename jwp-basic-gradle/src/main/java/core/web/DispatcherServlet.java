@@ -22,26 +22,18 @@ public class DispatcherServlet extends HttpServlet {
     public void init() {
         annotationHandlerMapping = new AnnotationHandlerMapping(API_PATH_PREFIX);
         annotationHandlerMapping.initialize();
-        System.out.println("ahandler: " + annotationHandlerMapping.toString());
-
-        LegacyHandlerMapping legacyHandlerMapping = new LegacyHandlerMapping();
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) {
         logger.debug("DispatcherServlet: {} {}", req.getMethod(), req.getRequestURI());
-        HandlerExecution handlerExecution = annotationHandlerMapping.getHandler(req);
-        ModelAndView modelAndView = handlerExecution.handle(req, resp);
-
-//        Controller controller = LegacyHandlerMapping.getController(req.getRequestURI());
-//        if (controller == null) {
-//            logger.debug("DispatcherServlet: controller를 찾을 수 없습니다.");
-//        }
-//        ModelAndView modelAndView = controller.execute(req, resp);
-
         try {
+            HandlerExecution handlerExecution = annotationHandlerMapping.getHandler(req);
+            ModelAndView modelAndView = handlerExecution.handle(req, resp);
+
             modelAndView.getView().render(modelAndView.getModel(), req, resp);
         } catch (Exception e) {
+            logger.error("DispatcherServlet: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -3,11 +3,7 @@ package core.nmvc;
 import com.google.common.collect.Maps;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.web.Controller;
-import core.web.DispatcherServlet;
 import org.reflections.ReflectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -27,9 +23,8 @@ public class AnnotationHandlerMapping implements HandlerMapping {
         ControllerScanner cs = new ControllerScanner();
         Map<Class<?>, Object> controllers = cs.getControllers(basePackage);
 
-        for (Class<?> controllerClass : controllers.keySet()) {  // for -> stream
-            addHandlerExecutions(controllerClass);
-        }
+        controllers.keySet().stream()
+                .forEach(clazz -> addHandlerExecutions(clazz));
     }
 
     private void addHandlerExecutions(Class<?> controllerClass) {
@@ -54,7 +49,6 @@ public class AnnotationHandlerMapping implements HandlerMapping {
     public HandlerExecution getHandler(HttpServletRequest request) {
         String requestUri = request.getRequestURI();
         RequestMethod rm = RequestMethod.valueOf(request.getMethod().toUpperCase());
-        System.out.println( rm.toString() + " " + requestUri);
 
         return handlerExecutions.get(new HandlerKey(requestUri, rm));
     }

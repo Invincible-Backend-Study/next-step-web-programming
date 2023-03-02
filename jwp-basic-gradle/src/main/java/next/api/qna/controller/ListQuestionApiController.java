@@ -3,7 +3,6 @@ package next.api.qna.controller;
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.web.ModelAndView;
-import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Question;
 import next.api.qna.service.QuestionService;
 import next.common.controller.AbstractController;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller

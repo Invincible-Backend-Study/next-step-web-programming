@@ -2,8 +2,6 @@ package next.api.qna.model;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import org.apache.tomcat.jni.Time;
 
 public class Question {
     private long questionId;
@@ -90,6 +88,7 @@ public class Question {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
+
     @Override
     public String toString() {
         return "\n[" + questionId + "] " + writer + "/" + title + "\n" + contents + "\n" + countOfAnswer + " " + createdDate;

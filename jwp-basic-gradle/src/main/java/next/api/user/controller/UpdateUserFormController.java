@@ -2,16 +2,15 @@ package next.api.user.controller;
 
 import core.annotation.Controller;
 import core.web.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import next.api.user.service.UserService;
-import next.common.controller.AbstractController;
 import next.api.user.model.User;
+import next.common.controller.AbstractController;
 import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class UpdateUserFormController extends AbstractController {
@@ -26,7 +25,7 @@ public class UpdateUserFormController extends AbstractController {
             log.debug("Only logged-in users can access.");
             return new ModelAndView(new JspView("redirect:/user/login.jsp"));
         }
-        User user = (User)value;
+        User user = (User) value;
         if (!user.isSameUser(request.getParameter("userId"))) {
             log.debug("자신의 계정에만 접근할 수 있습니다.");
             return new ModelAndView(new JspView("redirect:/user/list"));

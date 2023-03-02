@@ -4,17 +4,11 @@ import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.web.ModelAndView;
-
-import java.util.List;
-import javax.servlet.http.HttpSession;
-
-import next.api.qna.service.QuestionService;
-import next.common.controller.AbstractController;
-import next.api.qna.dao.AnswerDao;
-import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Answer;
 import next.api.qna.model.Question;
+import next.api.qna.service.QuestionService;
 import next.api.user.model.User;
+import next.common.controller.AbstractController;
 import next.common.model.Result;
 import next.common.view.JsonView;
 import next.common.view.JspView;
@@ -23,7 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class QuestionController extends AbstractController {
@@ -44,19 +39,19 @@ public class QuestionController extends AbstractController {
     @Override
     @RequestMapping(value = "/question", method = RequestMethod.POST)
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            if (user == null) {
-                return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
-            }
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
+        }
 
-            String title = request.getParameter("title");
-            String contents = request.getParameter("contents");
-            String questionIdParam = request.getParameter("questionId");
+        String title = request.getParameter("title");
+        String contents = request.getParameter("contents");
+        String questionIdParam = request.getParameter("questionId");
 
-            questionService.putArticle(user, title, contents, questionIdParam);
+        questionService.putArticle(user, title, contents, questionIdParam);
 
-            return new ModelAndView(new JspView("redirect:/question/list"));
+        return new ModelAndView(new JspView("redirect:/question/list"));
     }
 
     @Override

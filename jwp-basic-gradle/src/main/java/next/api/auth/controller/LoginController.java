@@ -4,19 +4,16 @@ import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.web.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import next.api.auth.service.AuthService;
-import next.common.controller.AbstractController;
-import next.api.user.dao.UserDao;
 import next.api.user.model.User;
+import next.common.controller.AbstractController;
 import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController extends AbstractController {
