@@ -18,13 +18,12 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
             <ul class="list">
-
                 <c:forEach var="questions" items="${requestScope.questions}">
                     <li>
                         <div class="wrap">
                             <div class="main">
                                 <strong class="subject">
-                                    <a href="/qna/showForm?questionId=${questions.questionId}">${questions.title}</a>
+                                    <a href="/qna/show?questionId=${questions.questionId}">${questions.title}</a>
                                 </strong>
                                 <div class="auth-info">
                                     <i class="icon-add-comment"></i>

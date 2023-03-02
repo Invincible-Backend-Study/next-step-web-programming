@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class JsonView implements View {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -18,4 +19,5 @@ public class JsonView implements View {
         PrintWriter out = response.getWriter();
         out.write(objectMapper.writeValueAsString(model));
     }
+
 }

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WebServerLauncher {
+
     private static final Logger logger = LoggerFactory.getLogger(WebServerLauncher.class);
 
     public static void main(String[] args) throws Exception {
@@ -34,15 +35,13 @@ public class WebServerLauncher {
     }
 
     private static void addShutdouwnHook(final Tomcat tomcat) {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                try {
-                    tomcat.stop();
-                } catch (LifecycleException e) {
-                    e.printStackTrace();
-                }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                tomcat.stop();
+            } catch (LifecycleException e) {
+                e.printStackTrace();
             }
-        });
+        }));
     }
+
 }

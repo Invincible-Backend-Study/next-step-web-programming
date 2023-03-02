@@ -15,26 +15,25 @@
 <jsp:include page="../navigation.jsp"/>
 
 <div class="container" id="main">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default content-main">
-            <form name="question" method="post" action="/signUp">
+            <form name="question" method="post" action="/qna/updateQuestion">
                 <div class="form-group">
-                    <label for="userId">사용자 아이디</label>
-                    <input class="form-control" id="userId" name="userId" placeholder="User ID">
+                    <label for="writer">글쓴이</label>
+                    <input type="hidden" name="questionId" value="${question.questionId}"/>
+                    <input class="form-control" id="writer" name="writer" value="${question.writer}" readonly/>
                 </div>
                 <div class="form-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <label for="title">제목</label>
+                    <input type="text" class="form-control" id="title" name="title" value="${question.title}"
+                           placeholder="제목"/>
                 </div>
                 <div class="form-group">
-                    <label for="name">이름</label>
-                    <input class="form-control" id="name" name="name" placeholder="Name">
+                    <label for="contents">내용</label>
+                    <textarea name="contents" id="contents" rows="5"
+                              class="form-control">${question.contents}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-                </div>
-                <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
+                <button type="submit" class="btn btn-success clearfix pull-right">수정하기</button>
                 <div class="clearfix"/>
             </form>
         </div>
@@ -43,5 +42,6 @@
 
 <!-- script references -->
 <jsp:include page="../script.jsp"/>
+
 </body>
 </html>

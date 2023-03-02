@@ -1,6 +1,7 @@
 package next.model;
 
 public class User {
+
     private String userId;
     private String password;
     private String name;
@@ -39,6 +40,10 @@ public class User {
 
     public boolean containPassword(final String password) {
         return this.password.equals(password);
+    }
+
+    public boolean containUserId(final String writer) {
+        return this.userId.equals(writer);
     }
 
     @Override

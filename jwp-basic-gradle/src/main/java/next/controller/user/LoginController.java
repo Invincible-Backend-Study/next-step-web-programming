@@ -10,8 +10,9 @@ import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoginUserController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(LoginUserController.class);
+public class LoginController extends AbstractController {
+
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private final UserService userService = new UserService();
 
@@ -21,13 +22,14 @@ public class LoginUserController extends AbstractController {
         try {
             User loginedUser = userService.loginUser(request.getParameter("userId"), request.getParameter("password"));
             if (loginedUser == null) {
-                return jspView("redirect:/users/loginFailed");
+                return jspView("redirect:/loginFailed");
             }
             session.setAttribute("user", loginedUser);
             return jspView("redirect:/");
         } catch (IllegalArgumentException exception) {
             log.error(exception.getMessage());
-            return jspView("redirect:/users/loginFailed");
+            return jspView("redirect:/loginFailed");
         }
     }
+
 }

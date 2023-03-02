@@ -3,6 +3,7 @@ package next.model;
 import java.util.Date;
 
 public class Answer {
+
     private Long answerId;
     private final String writer;
     private final String contents;
@@ -18,10 +19,10 @@ public class Answer {
         this.questionId = questionId;
     }
 
-    public Answer(final String writer, final String contents, final Date createdDate, final Long questionId) {
+    public Answer(final String writer, final String contents, final Long questionId) {
         this.writer = writer;
         this.contents = contents;
-        this.createdDate = createdDate;
+        this.createdDate = new Date();
         this.questionId = questionId;
     }
 
@@ -43,6 +44,10 @@ public class Answer {
 
     public Long getQuestionId() {
         return questionId;
+    }
+
+    public boolean isWriter(final String questionWriter) {
+        return writer.equals(questionWriter);
     }
 
     @Override

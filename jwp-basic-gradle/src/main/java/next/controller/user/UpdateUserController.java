@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UpdateUserController extends AbstractController {
+
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
 
     private final UserService userService = new UserService();
@@ -28,6 +29,7 @@ public class UpdateUserController extends AbstractController {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         session.setAttribute("user", updatedUser);
-        return jspView("redirect:/users/list");
+        return jspView("redirect:/users");
     }
+
 }

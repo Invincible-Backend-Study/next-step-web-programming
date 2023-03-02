@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ShowController extends AbstractController {
+
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
 
     private final QuestionService questionService = new QuestionService();
@@ -21,4 +22,5 @@ public class ShowController extends AbstractController {
         log.debug("questionWithAnswers={}", questionWithAnswers);
         return jspView("qna/show").addObject("questionWithAnswers", questionWithAnswers);
     }
+
 }

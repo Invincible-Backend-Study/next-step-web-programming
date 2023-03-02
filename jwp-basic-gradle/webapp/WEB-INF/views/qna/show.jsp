@@ -22,6 +22,9 @@
                 <h2 class="qna-title">${questionWithAnswers.question.title}</h2>
             </header>
             <div class="content-main">
+                <c:if test="${errorMessage != null}">
+                    <div class="alert alert-danger" role="alert">${errorMessage}</div>
+                </c:if>
                 <article class="article">
                     <div class="article-header">
                         <div class="article-header-thumb">
@@ -29,9 +32,11 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name">${questionWithAnswers.question.writer}</a>
+                            <a href="/users/92/kimmunsu"
+                               class="article-author-name">${questionWithAnswers.question.writer}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${questionWithAnswers.question.createdDate}"/>
+                                <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+                                                value="${questionWithAnswers.question.createdDate}"/>
                                 <i class="icon-link"></i>
                             </a>
                         </div>
@@ -42,12 +47,15 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="#">수정</a>
+                                <a class="link-modify-article"
+                                   href="/qna/updateQuestionForm?questionId=${questionWithAnswers.question.questionId}&writer=${questionWithAnswers.question.writer}">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="#" method="POST">
+                                <form class="form-delete"
+                                      action="/qna/deleteQuestion?questionId=${questionWithAnswers.question.questionId}"
+                                      method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button class="link-delete-article" type="submit">삭제</button>
+                                    <button class="link-delete-article-form" type="submit">삭제</button>
                                 </form>
                             </li>
                             <li>
@@ -59,7 +67,8 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong>${questionWithAnswers.question.countOfAnswer}</strong>개의 의견</p>
+                        <p class="qna-comment-count"><strong>${questionWithAnswers.question.countOfAnswer}</strong>개의 의견
+                        </p>
                         <div class="qna-comment-slipp-articles">
 
                             <c:forEach items="${questionWithAnswers.answers}" var="each">
@@ -71,7 +80,8 @@
                                         </div>
                                         <div class="article-header-text">
                                                 ${each.writer}
-                                            <div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/></div>
+                                            <div class="article-header-time"><fmt:formatDate
+                                                    pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}"/></div>
                                         </div>
                                     </div>
                                     <div class="article-doc comment-doc">
@@ -95,10 +105,8 @@
                             </c:forEach>
                             <div class="answerWrite">
                                 <form name="answer" method="post">
-                                    <input type="hidden" name="questionId" value="${questionWithAnswers.question.questionId}">
-                                    <div class="form-group col-lg-4" style="padding-top:10px;">
-                                        <input class="form-control" id="writer" name="writer" placeholder="이름">
-                                    </div>
+                                    <input type="hidden" name="questionId"
+                                           value="${questionWithAnswers.question.questionId}">
                                     <div class="form-group col-lg-12">
                                         <textarea name="contents" id="contents" class="form-control"
                                                   placeholder=""></textarea>

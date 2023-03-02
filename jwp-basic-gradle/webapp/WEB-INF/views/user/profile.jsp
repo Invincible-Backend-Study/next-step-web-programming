@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <jsp:include page="../head.jsp"/>
     <title>SLiPP Java Web Programming</title>
- </head>
+</head>
 <body>
 
 <jsp:include page="../navigation.jsp"/>
@@ -27,7 +27,8 @@
                         <div class="media-body">
                             <h4 class="media-heading">${profileUser.name}</h4>
                             <p>
-                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;${profileUser.email}</a>
+                                <a href="#" class="btn btn-xs btn-default"><span
+                                        class="glyphicon glyphicon-envelope"></span>&nbsp;${profileUser.email}</a>
                             </p>
                         </div>
                     </div>
@@ -39,5 +40,5 @@
 
 <!-- script references -->
 <jsp:include page="../script.jsp"/>
-	</body>
+</body>
 </html>

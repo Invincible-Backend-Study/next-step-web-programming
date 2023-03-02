@@ -3,6 +3,7 @@ package next.controller.user.dto;
 import next.model.User;
 
 public class ProfileUserDto {
+
     private final String userId;
     private final String name;
     private final String email;
@@ -28,4 +29,5 @@ public class ProfileUserDto {
     public String getEmail() {
         return email;
     }
+
 }

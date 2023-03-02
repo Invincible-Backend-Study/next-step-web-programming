@@ -5,7 +5,8 @@ import java.util.List;
 import next.model.Question;
 
 public class QuestionDao {
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+    private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public List<Question> findAll() {
         return jdbcTemplate.query(
@@ -20,7 +21,7 @@ public class QuestionDao {
         );
     }
 
-    public Question findByQuestionId(final long questionId) {
+    public Question findById(final long questionId) {
         return jdbcTemplate.queryForObject(
                 "SELECT "
                         + "questionId, writer, title, contents, createdDate, countOfAnswer "
@@ -66,5 +67,19 @@ public class QuestionDao {
         jdbcTemplate.update(
                 "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?",
                 countOfAnswer, questionId);
+    }
+
+    public int update(final Question question) {
+        return jdbcTemplate.update(
+                "UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?",
+                question.getTitle(), question.getContents(), question.getQuestionId()
+        );
+    }
+
+    public int deleteById(final Long questionId) {
+        return jdbcTemplate.update(
+                "DELETE FROM QUESTIONS WHERE questionId = ?",
+                questionId
+        );
     }
 }

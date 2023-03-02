@@ -5,58 +5,64 @@ import core.mvcframework.controller.ForwardController;
 import java.util.HashMap;
 import java.util.Map;
 import next.controller.HomeController;
-import next.controller.qna.AnswerCreateController;
 import next.controller.qna.QuestionCreateController;
+import next.controller.qna.QuestionDeleteController;
 import next.controller.qna.QuestionFormController;
+import next.controller.qna.QuestionUpdateController;
+import next.controller.qna.QuestionUpdateFormController;
 import next.controller.qna.ShowController;
-import next.controller.qna.api.AddAnswerController;
-import next.controller.qna.api.DeleteAnswerController;
-import next.controller.user.CreateUserController;
-import next.controller.user.ListUserController;
-import next.controller.user.LoginUserController;
-import next.controller.user.LogoutUserController;
+import next.controller.qna.api.AddAnswerApiController;
+import next.controller.qna.api.DeleteAnswerApiController;
+import next.controller.qna.api.QuestionDeleteApiController;
+import next.controller.qna.api.QuestionListApiController;
+import next.controller.user.LoginController;
 import next.controller.user.ProfileController;
+import next.controller.user.SignOutController;
+import next.controller.user.SignUpController;
 import next.controller.user.UpdateUserController;
 import next.controller.user.UpdateUserFormController;
+import next.controller.user.UserListController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RequestMapping {
+
     private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
+
     private final Map<String, Controller> handlerMapping = new HashMap<>();
 
     public void initMapping() {
-        // 홈
+        // 로그인 필요없음
         handlerMapping.put("/", new HomeController());
+        handlerMapping.put("/signUpForm", new ForwardController("user/form"));
+        handlerMapping.put("/signUp", new SignUpController());
+        handlerMapping.put("/loginForm", new ForwardController("user/login"));
+        handlerMapping.put("/login", new LoginController());
+        handlerMapping.put("/loginFailed", new ForwardController("user/login_failed"));
 
-        // 유저 단순 포워딩
-        handlerMapping.put("/users/form", new ForwardController("user/form"));
-        handlerMapping.put("/users/loginForm", new ForwardController("user/login"));
-        handlerMapping.put("/users/loginFailed", new ForwardController("user/login_failed"));
-
-        // 유저
-        handlerMapping.put("/users/create", new CreateUserController());
-        handlerMapping.put("/users", new ListUserController());
-        handlerMapping.put("/users/login", new LoginUserController());
-        handlerMapping.put("/users/logout", new LogoutUserController());
+        // 로그인 필요
+        handlerMapping.put("/users", new UserListController());
+        handlerMapping.put("/users/signOut", new SignOutController());
         handlerMapping.put("/users/profile", new ProfileController());
         handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
-
-        // 질문/응답
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
-        handlerMapping.put("/qna/showForm", new ShowController());
-        handlerMapping.put("/qna/createAnswer", new AnswerCreateController());
-
-        // ajax 질문/응답
-        handlerMapping.put("/api/qna/addAnswer", new AddAnswerController());
-        handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
-
+        handlerMapping.put("/qna/updateQuestionForm", new QuestionUpdateFormController());
+        handlerMapping.put("/qna/updateQuestion", new QuestionUpdateController());
+        handlerMapping.put("/qna/deleteQuestion", new QuestionDeleteController());
+        handlerMapping.put("/qna/show", new ShowController());
+        handlerMapping.put("/api/qna/deleteQuestion", new QuestionDeleteApiController());
+        handlerMapping.put("/api/qna/addAnswer", new AddAnswerApiController());
+        handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerApiController());
+        handlerMapping.put("/api/qna/list", new QuestionListApiController());
     }
 
     public Controller getHandlerMapping(final String requestURI) {
         log.debug("requestURI={}", requestURI);
         return handlerMapping.get(requestURI);
     }
+
 }
+
+

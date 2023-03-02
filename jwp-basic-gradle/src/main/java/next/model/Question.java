@@ -3,6 +3,7 @@ package next.model;
 import java.util.Date;
 
 public class Question {
+
     private Long questionId;
     private final String writer;
     private final String title;
@@ -52,4 +53,5 @@ public class Question {
     public int getCountOfAnswer() {
         return countOfAnswer;
     }
+
 }

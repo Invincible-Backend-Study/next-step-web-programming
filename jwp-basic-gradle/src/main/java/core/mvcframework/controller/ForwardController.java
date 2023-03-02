@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ForwardController implements Controller {
+
     private final String forwardUri;
 
     public ForwardController(final String forwardUri) {
@@ -19,4 +20,5 @@ public class ForwardController implements Controller {
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
         return new ModelAndView(new JspView(forwardUri));
     }
+
 }

@@ -13,12 +13,13 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
+
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private RequestMapping requestMapping;
 
     @Override
-    public void init()  {
+    public void init() {
         requestMapping = new RequestMapping();
         requestMapping.initMapping();
     }
@@ -35,4 +36,5 @@ public class DispatcherServlet extends HttpServlet {
         log.debug("executeResultView={}", view);
         view.render(modelAndView.getModel(), request, response);
     }
+
 }

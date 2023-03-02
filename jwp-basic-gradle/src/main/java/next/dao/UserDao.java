@@ -5,7 +5,8 @@ import java.util.List;
 import next.model.User;
 
 public class UserDao {
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+    private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public void insert(User user) {
         jdbcTemplate.update(
@@ -31,7 +32,7 @@ public class UserDao {
         );
     }
 
-    public User findByUserId(String userId) {
+    public User findById(String userId) {
         return jdbcTemplate.queryForObject(
                 "SELECT userId, password, name, email FROM USERS WHERE userId = ?",
                 resultSet -> new User(
@@ -54,4 +55,5 @@ public class UserDao {
                 )
         );
     }
+
 }

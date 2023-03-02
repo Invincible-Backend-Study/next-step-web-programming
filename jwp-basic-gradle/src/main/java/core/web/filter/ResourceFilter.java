@@ -24,6 +24,6 @@ public class ResourceFilter implements Filter {
 
     @Override
     public void destroy() {
-
     }
+
 }

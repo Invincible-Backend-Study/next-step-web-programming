@@ -8,11 +8,12 @@ import next.controller.qna.dto.QuestionCreateDto;
 import next.service.QuestionService;
 
 public class QuestionCreateController extends AbstractController {
+
     private final QuestionService questionService = new QuestionService();
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
-        QuestionCreateDto questionCreateDto = new QuestionCreateDto(
+        QuestionCreateDto questionCreateDto = QuestionCreateDto.createDto(
                 request.getParameter("writer"),
                 request.getParameter("title"),
                 request.getParameter("contents")

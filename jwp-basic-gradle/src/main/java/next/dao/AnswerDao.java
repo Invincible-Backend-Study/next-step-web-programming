@@ -5,7 +5,8 @@ import java.util.List;
 import next.model.Answer;
 
 public class AnswerDao {
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+    private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public List<Answer> findAllByQuestionId(final long questionId) {
         return jdbcTemplate.query(
@@ -50,4 +51,10 @@ public class AnswerDao {
         );
     }
 
+    public int deleteAllByQuestionId(final Long questionId) {
+        return jdbcTemplate.update(
+                "DELETE FROM ANSWERS WHERE questionId = ?",
+                questionId
+        );
+    }
 }

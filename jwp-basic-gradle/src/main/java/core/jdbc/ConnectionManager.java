@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class ConnectionManager {
+
     private static final String DB_DRIVER = "org.h2.Driver";
     private static final String DB_URL = "jdbc:h2:~/jwp-basic;AUTO_SERVER=TRUE";
     private static final String DB_USERNAME = "sa";
@@ -27,4 +28,5 @@ public class ConnectionManager {
             throw new IllegalStateException(e);
         }
     }
+
 }

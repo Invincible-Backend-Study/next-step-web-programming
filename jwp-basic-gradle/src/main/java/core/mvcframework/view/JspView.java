@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JspView implements View {
+
     private static final Logger log = LoggerFactory.getLogger(JspView.class);
     private static final int REDIRECT_URI = 1;
 
@@ -37,4 +38,5 @@ public class JspView implements View {
     private void addModelToRequest(final Map<String, Object> model, final HttpServletRequest request) {
         model.keySet().forEach(key -> request.setAttribute(key, model.get(key)));
     }
+
 }

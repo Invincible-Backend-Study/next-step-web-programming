@@ -31,7 +31,7 @@ class QuestionDaoTest {
 
     @Test
     void findByQuestionId() {
-        Question question = questionDao.findByQuestionId(1L);
+        Question question = questionDao.findById(1L);
         log.info("question = {}", question);
     }
 }

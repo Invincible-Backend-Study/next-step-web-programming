@@ -9,8 +9,10 @@ import next.service.AnswerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DeleteAnswerController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(DeleteAnswerController.class);
+public class DeleteAnswerApiController extends AbstractController {
+
+    private static final Logger log = LoggerFactory.getLogger(DeleteAnswerApiController.class);
+
     private final AnswerService answerService = new AnswerService();
 
     @Override
@@ -23,4 +25,5 @@ public class DeleteAnswerController extends AbstractController {
         }
         return jsonView().addObject("result", Result.ok());
     }
+
 }

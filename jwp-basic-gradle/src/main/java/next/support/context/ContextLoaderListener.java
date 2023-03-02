@@ -12,6 +12,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
+
     private static final Logger log = LoggerFactory.getLogger(ContextLoaderListener.class);
 
     @Override
@@ -26,4 +27,5 @@ public class ContextLoaderListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
     }
+
 }

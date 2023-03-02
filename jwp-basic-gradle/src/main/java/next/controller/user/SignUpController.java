@@ -9,8 +9,9 @@ import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateUserController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
+public class SignUpController extends AbstractController {
+
+    private static final Logger log = LoggerFactory.getLogger(SignUpController.class);
 
     private final UserService userService = new UserService();
 
@@ -24,6 +25,7 @@ public class CreateUserController extends AbstractController {
         );
         userService.signUp(user);
         log.debug("createUser={}", user);
-        return jspView("redirect/");
+        return jspView("redirect:/");
     }
+
 }
