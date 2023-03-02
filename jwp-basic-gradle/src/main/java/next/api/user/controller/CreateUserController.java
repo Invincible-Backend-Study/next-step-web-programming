@@ -1,5 +1,6 @@
 package next.api.user.controller;
 
+import core.annotation.Controller;
 import core.web.ModelAndView;
 import next.api.user.service.UserService;
 import next.common.controller.AbstractController;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
+@Controller
 public class CreateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
     private final UserService userService = UserService.getInstance();

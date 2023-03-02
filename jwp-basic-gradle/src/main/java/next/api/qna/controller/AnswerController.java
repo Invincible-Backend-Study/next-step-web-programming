@@ -1,5 +1,6 @@
 package next.api.qna.controller;
 
+import core.annotation.Controller;
 import core.web.ModelAndView;
 import next.api.qna.service.QuestionService;
 import next.common.controller.AbstractController;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
+@Controller
 public class AnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
     private final QuestionService questionService = QuestionService.getInstance();

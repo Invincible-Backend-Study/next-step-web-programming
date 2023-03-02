@@ -1,5 +1,6 @@
 package next.api.qna.controller;
 
+import core.annotation.Controller;
 import core.web.ModelAndView;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Question;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 
+@Controller
 public class ListQuestionApiController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(ListQuestionApiController.class);
     private final QuestionService questionService = QuestionService.getInstance();
