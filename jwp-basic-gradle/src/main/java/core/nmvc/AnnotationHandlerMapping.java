@@ -9,7 +9,9 @@ import com.google.common.collect.Maps;
 import core.annotation.RequestMethod;
 
 public class AnnotationHandlerMapping {
+
     private Object[] basePackage;
+    private final ControllerScanner controllerScanner = new ControllerScanner("next");
 
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
 
@@ -18,7 +20,7 @@ public class AnnotationHandlerMapping {
     }
 
     public void initialize() {
-
+        controllerScanner.scanController();
     }
 
     public HandlerExecution getHandler(HttpServletRequest request) {
