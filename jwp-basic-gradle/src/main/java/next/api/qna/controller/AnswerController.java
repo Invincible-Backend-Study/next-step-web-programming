@@ -45,7 +45,7 @@ public class AnswerController extends AbstractController {
     }
 
     @Override
-    @RequestMapping(value = "/user/login", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/answer", method = RequestMethod.DELETE)
     protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");

@@ -1,7 +1,8 @@
 package core.web;
 
+import core.nmvc.HandlerMapping;
 import next.api.qna.controller.*;
-import next.common.controller.HomeController;
+import next.api.web.HomeController;
 import next.api.auth.controller.LoginController;
 import next.api.auth.controller.LogoutController;
 import next.api.user.controller.CreateUserController;
@@ -9,10 +10,11 @@ import next.api.user.controller.ListUserController;
 import next.api.user.controller.UpdateUserController;
 import next.api.user.controller.UpdateUserFormController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestMapping {
+public class LegacyHandlerMapping implements HandlerMapping {
     private static final Map<String, Controller> controllers = new HashMap<>();
     static {
         // auth
@@ -37,6 +39,11 @@ public class RequestMapping {
     }
 
     public static Controller getController(String requestUri) {
+        return controllers.get(requestUri);
+    }
+
+    public Controller getHandler(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
         return controllers.get(requestUri);
     }
 }

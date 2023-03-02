@@ -24,7 +24,7 @@ public class ListUserController extends AbstractController {
     private final UserService userService = UserService.getInstance();
 
     @Override
-    @RequestMapping("/user/list")
+    @RequestMapping("/users")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");

@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 public class LogoutController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(LogoutController.class);
 
-    @RequestMapping("/user/logout")
     @Override
+    @RequestMapping("/user/logout")
     protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         session.invalidate();

@@ -25,7 +25,7 @@ public class ListQuestionController extends AbstractController {
     private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
-    @RequestMapping(value = "/user/list")
+    @RequestMapping(value = "/question/list")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         List<Question> questions = questionService.getQuestions();
         return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
