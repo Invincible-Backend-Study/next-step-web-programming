@@ -34,4 +34,5 @@ public class QuestionController extends AbstractAnnotationController {
     public ModelAndView list(final HttpServletRequest request, final HttpServletResponse response) {
         return jsonView().addObject("questions", questionService.findAll());
     }
+
 }

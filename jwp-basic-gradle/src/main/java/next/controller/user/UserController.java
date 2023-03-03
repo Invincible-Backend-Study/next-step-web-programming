@@ -70,4 +70,5 @@ public class UserController extends AbstractAnnotationController {
         session.setAttribute("user", updatedUser);
         return jspView("redirect:/users");
     }
+
 }
