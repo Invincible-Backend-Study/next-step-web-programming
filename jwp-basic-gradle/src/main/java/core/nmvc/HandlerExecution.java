@@ -24,7 +24,12 @@ public class HandlerExecution {
         }
     }
 
-    public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return (ModelAndView) method.invoke(declaredObject, request, response);
+    public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            return (ModelAndView) method.invoke(declaredObject, request, response);
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
     }
+
 }
