@@ -14,7 +14,7 @@ import next.utils.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebFilter(urlPatterns = {"/api/*", "/users/*", "/qna/*"})
+@WebFilter(urlPatterns = {"/api/*", "/users/*", "/questions/*", "/answers/*", "/qna/*"})
 public class LoginCheckFilter implements Filter {
 
     private static final Logger log = LoggerFactory.getLogger(LoginCheckFilter.class);

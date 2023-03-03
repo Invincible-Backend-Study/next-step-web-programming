@@ -1,4 +1,4 @@
-package next.controller.qna;
+package next.controller.qna.legacy;
 
 import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
