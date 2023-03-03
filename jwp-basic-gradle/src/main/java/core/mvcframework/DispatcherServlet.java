@@ -2,10 +2,11 @@ package core.mvcframework;
 
 import com.google.common.collect.Lists;
 import core.mvcframework.controller.Controller;
+import core.mvcframework.mapping.legacy.LegacyHandlerMapping;
 import core.mvcframework.view.View;
-import core.nmvc.AnnotationHandlerMapping;
-import core.nmvc.HandlerExecution;
-import core.nmvc.HandlerMapping;
+import core.mvcframework.mapping.annotation.AnnotationHandlerMapping;
+import core.mvcframework.mapping.annotation.HandlerExecution;
+import core.mvcframework.mapping.HandlerMapping;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;

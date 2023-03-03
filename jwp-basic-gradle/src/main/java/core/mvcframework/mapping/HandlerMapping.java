@@ -1,4 +1,4 @@
-package core.nmvc;
+package core.mvcframework.mapping;
 
 import javax.servlet.http.HttpServletRequest;
 

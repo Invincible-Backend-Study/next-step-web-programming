@@ -1,4 +1,4 @@
-package core.nmvc;
+package core.mvcframework.mapping.annotation;
 
 import core.annotation.RequestMethod;
 
@@ -43,4 +43,5 @@ public class HandlerKey {
             return false;
         return true;
     }
+
 }

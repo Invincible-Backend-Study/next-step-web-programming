@@ -1,8 +1,8 @@
-package core.mvcframework;
+package core.mvcframework.mapping.legacy;
 
 import core.mvcframework.controller.Controller;
 import core.mvcframework.controller.ForwardController;
-import core.nmvc.HandlerMapping;
+import core.mvcframework.mapping.HandlerMapping;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;

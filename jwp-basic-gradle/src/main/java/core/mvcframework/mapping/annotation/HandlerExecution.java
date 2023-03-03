@@ -1,4 +1,4 @@
-package core.nmvc;
+package core.mvcframework.mapping.annotation;
 
 import core.mvcframework.ModelAndView;
 import java.lang.reflect.Method;

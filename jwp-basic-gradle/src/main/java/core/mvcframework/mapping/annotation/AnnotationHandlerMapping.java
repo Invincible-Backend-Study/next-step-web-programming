@@ -1,6 +1,7 @@
-package core.nmvc;
+package core.mvcframework.mapping.annotation;
 
 import core.annotation.RequestMapping;
+import core.mvcframework.mapping.HandlerMapping;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnnotationHandlerMapping implements HandlerMapping{
+public class AnnotationHandlerMapping implements HandlerMapping {
 
     private static final Logger log = LoggerFactory.getLogger(AnnotationHandlerMapping.class);
 
