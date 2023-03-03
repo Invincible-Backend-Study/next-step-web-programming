@@ -1,6 +1,9 @@
 package core.mvcframework;
 
 import com.google.common.collect.Lists;
+import core.mvcframework.adapter.ControllerHandlerAdapter;
+import core.mvcframework.adapter.HandlerAdapter;
+import core.mvcframework.adapter.HandlerExecutionHandlerAdapter;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.mapping.legacy.LegacyHandlerMapping;
 import core.mvcframework.view.View;
@@ -23,12 +26,23 @@ public class DispatcherServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
+    private final List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
     private final List<HandlerMapping> handlerMappings = Lists.newArrayList();
 
     @Override
     public void init() {
-        handlerMappings.add(new LegacyHandlerMapping());
+        initializeHandlerAdapters();
+        initializeHandlerMappings();
+    }
+
+    private void initializeHandlerAdapters() {
+        handlerAdapters.add(new ControllerHandlerAdapter());
+        handlerAdapters.add(new HandlerExecutionHandlerAdapter());
+    }
+
+    private void initializeHandlerMappings() {
         handlerMappings.add(new AnnotationHandlerMapping("next"));
+        handlerMappings.add(new LegacyHandlerMapping());
         for (HandlerMapping handlerMapping : handlerMappings) {
             handlerMapping.initialize();
         }
@@ -45,13 +59,11 @@ public class DispatcherServlet extends HttpServlet {
 
     private ModelAndView getExecuteResult(final HttpServletRequest request, final HttpServletResponse response) {
         Object handler = getHandler(request);
-        if (handler instanceof Controller) {
-            return ((Controller) handler).execute(request, response);
-        }
-        if (handler instanceof HandlerExecution) {
-            return ((HandlerExecution) handler).handle(request, response);
-        }
-        throw new IllegalArgumentException("Can not find execute handler");
+        return handlerAdapters.stream()
+                .filter(handlerAdapter -> handlerAdapter.support(handler))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Can not find execute handler"))
+                .execute(request, response, handler);
     }
 
     private Object getHandler(final HttpServletRequest request) {
