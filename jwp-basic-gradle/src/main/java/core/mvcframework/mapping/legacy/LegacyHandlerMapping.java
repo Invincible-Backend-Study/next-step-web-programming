@@ -42,7 +42,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
         handlerMapping.put("/login", new LoginController());
         handlerMapping.put("/loginFailed", new ForwardController("user/login_failed"));
 
-        // 로그인 필요
+//         로그인 필요
         handlerMapping.put("/users", new UserListController());
         handlerMapping.put("/users/signOut", new SignOutController());
         handlerMapping.put("/users/profile", new ProfileController());
