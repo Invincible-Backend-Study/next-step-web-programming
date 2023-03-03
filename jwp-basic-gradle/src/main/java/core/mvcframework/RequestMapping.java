@@ -58,7 +58,7 @@ public class RequestMapping {
         handlerMapping.put("/api/qna/list", new QuestionListApiController());
     }
 
-    public Controller getHandlerMapping(final String requestURI) {
+    public Controller getHandler(final String requestURI) {
         log.debug("requestURI={}", requestURI);
         return handlerMapping.get(requestURI);
     }

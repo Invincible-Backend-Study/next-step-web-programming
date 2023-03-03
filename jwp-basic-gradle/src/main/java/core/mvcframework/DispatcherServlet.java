@@ -27,7 +27,7 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void service(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        Controller handler = requestMapping.getHandlerMapping(request.getRequestURI());
+        Controller handler = requestMapping.getHandler(request.getRequestURI());
         if (handler == null) {
             throw new IllegalArgumentException("[ERROR] No URL mapping");
         }
