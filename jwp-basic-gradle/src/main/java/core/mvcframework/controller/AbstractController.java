@@ -7,7 +7,7 @@ import core.mvcframework.view.JspView;
 public abstract class AbstractController implements Controller {
 
     protected ModelAndView jspView(String forwardUri) {
-        return new ModelAndView(new JspView(forwardUri));
+        return new ModelAndView(new JspView(forwardUri, "/WEB-INF/views/", ".jsp"));
     }
 
     protected ModelAndView jsonView() {
