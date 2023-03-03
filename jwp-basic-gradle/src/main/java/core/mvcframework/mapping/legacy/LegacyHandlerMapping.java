@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import next.controller.HomeController;
-import next.controller.qna.QuestionCreateController;
-import next.controller.qna.QuestionDeleteController;
-import next.controller.qna.QuestionFormController;
-import next.controller.qna.QuestionUpdateController;
-import next.controller.qna.QuestionUpdateFormController;
-import next.controller.qna.ShowController;
+import next.controller.qna.legacy.QuestionCreateController;
+import next.controller.qna.legacy.QuestionDeleteController;
+import next.controller.qna.legacy.QuestionFormController;
+import next.controller.qna.legacy.QuestionUpdateController;
+import next.controller.qna.legacy.QuestionUpdateFormController;
+import next.controller.qna.legacy.ShowController;
 import next.controller.qna.api.legacy.AddAnswerApiController;
 import next.controller.qna.api.legacy.DeleteAnswerApiController;
 import next.controller.qna.api.legacy.QuestionDeleteApiController;
@@ -36,7 +36,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
     @Override
     public void initialize() {
         // 로그인 필요없음
-        handlerMapping.put("/", new HomeController());
+//        handlerMapping.put("/", new HomeController());
         handlerMapping.put("/signUpForm", new ForwardController("user/form"));
         handlerMapping.put("/signUp", new SignUpController());
         handlerMapping.put("/loginForm", new ForwardController("user/login"));
