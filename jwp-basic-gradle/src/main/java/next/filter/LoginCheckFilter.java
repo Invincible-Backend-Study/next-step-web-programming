@@ -30,7 +30,7 @@ public class LoginCheckFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         if (!SessionUtil.isLogined(httpServletRequest.getSession(), "user")) {
             log.debug("needLoginUri={}", httpServletRequest.getRequestURI());
-            httpServletResponse.sendRedirect("/loginForm");
+            httpServletResponse.sendRedirect("/signIn");
             return;
         }
         chain.doFilter(request, response);
