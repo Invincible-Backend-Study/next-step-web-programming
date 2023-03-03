@@ -36,13 +36,13 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void service(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        ModelAndView modelAndView = getHandlerResult(request, response);
+        ModelAndView modelAndView = getExecuteResult(request, response);
         View view = modelAndView.getView();
         log.debug("executeResultView={}", view);
         view.render(modelAndView.getModel(), request, response);
     }
 
-    private ModelAndView getHandlerResult(final HttpServletRequest request, final HttpServletResponse response) {
+    private ModelAndView getExecuteResult(final HttpServletRequest request, final HttpServletResponse response) {
         Object handler = getHandler(request);
         if (handler instanceof Controller) {
             return ((Controller) handler).execute(request, response);
