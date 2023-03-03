@@ -53,7 +53,7 @@ public class QuestionUpdateFormDto {
     }
 
     public Question toModel() {
-        return new Question(questionId, null, title, contents, null, 0);
+        return new Question(questionId, writer, title, contents, null, 0);
     }
 
 }
