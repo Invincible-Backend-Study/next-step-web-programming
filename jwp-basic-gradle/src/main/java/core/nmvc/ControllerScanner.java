@@ -19,7 +19,9 @@ public class ControllerScanner {
     public Map<Class<?>, Object> getControllers() {
         Map<Class<?>, Object> controllers = Maps.newHashMap();
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
-        annotated.forEach(clazz -> controllers.put(clazz, instantiateController(clazz)));
+        for (Class<?> clazz : annotated) {
+            controllers.put(clazz, instantiateController(clazz));
+        }
         return controllers;
     }
 
@@ -30,7 +32,6 @@ public class ControllerScanner {
             throw new RuntimeException(exception);
         }
     }
-
 
 }
 
