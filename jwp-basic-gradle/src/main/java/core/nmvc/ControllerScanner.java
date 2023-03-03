@@ -1,39 +1,36 @@
 package core.nmvc;
 
+import com.google.common.collect.Maps;
 import core.annotation.Controller;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.reflections.Reflections;
 
 public class ControllerScanner {
 
-    public String scanPath;
-    public final List<core.mvcframework.controller.Controller> controllers = Collections.emptyList();
+    private final Reflections reflections;
 
-    public ControllerScanner(final String scanPath) {
-        this.scanPath = scanPath;
+    public ControllerScanner(final Object... basePackage) {
+        reflections = new Reflections(basePackage);
     }
 
-    @SuppressWarnings("unchecked")
-    public void scanController() {
-        Reflections reflections = new Reflections(scanPath);
-        Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(Controller.class);
-        controllers.addAll((List<core.mvcframework.controller.Controller>) typesAnnotatedWith.stream()
-                .map(typeClass -> {
-                    try {
-                        return typeClass.getConstructor().newInstance();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }).collect(Collectors.toList()));
+    public Map<Class<?>, Object> getControllers() {
+        Map<Class<?>, Object> controllers = Maps.newHashMap();
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
+        annotated.forEach(clazz -> controllers.put(clazz, instantiateController(clazz)));
+        return controllers;
+    }
 
-        for (Object controller : controllers) {
-            core.mvcframework.controller.Controller controllerInstance = (core.mvcframework.controller.Controller) controller;
-            System.out.println(controllerInstance);
+    private Object instantiateController(final Class<?> clazz) {
+        try {
+            return clazz.getConstructor().newInstance();
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
         }
     }
+
 
 }
 
