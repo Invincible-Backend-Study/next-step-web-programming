@@ -1,12 +1,15 @@
 package core.nmvc;
 
 import core.mvcframework.ModelAndView;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HandlerExecution {
+
+    private static final Logger log = LoggerFactory.getLogger(HandlerExecution.class);
 
     private final Object declaredObject;
     private final Method method;
@@ -28,6 +31,7 @@ public class HandlerExecution {
         try {
             return (ModelAndView) method.invoke(declaredObject, request, response);
         } catch (Exception exception) {
+            log.error(exception.getMessage());
             throw new RuntimeException();
         }
     }
