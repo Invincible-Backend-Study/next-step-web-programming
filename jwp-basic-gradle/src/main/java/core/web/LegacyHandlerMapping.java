@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class LegacyHandlerMapping implements HandlerMapping {
     private static final Map<String, Controller> controllers = new HashMap<>();
     static {

@@ -2,6 +2,7 @@ package core.web;
 
 import java.util.Arrays;
 
+@Deprecated
 public enum HttpMethod {
     GET("GET"),
     POST("POST"),

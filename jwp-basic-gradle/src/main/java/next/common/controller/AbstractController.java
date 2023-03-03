@@ -8,6 +8,7 @@ import core.web.View;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Deprecated
 abstract public class AbstractController implements Controller {
     private static final String UNSUPPORTED_METHOD = "지원하지 않는 HTTP Method 입니다.";
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
