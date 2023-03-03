@@ -1,9 +1,10 @@
 package next.api.user.controller;
 
 import core.annotation.Controller;
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.web.ModelAndView;
 import next.api.user.model.User;
-import next.common.controller.AbstractController;
 import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class UpdateUserFormController extends AbstractController {
+public class UpdateUserFormController {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(UpdateUserFormController.class);
 
-    @Override
+    @RequestMapping(value = "/user/update")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");

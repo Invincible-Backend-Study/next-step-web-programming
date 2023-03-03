@@ -6,7 +6,6 @@ import core.web.ModelAndView;
 import next.api.qna.model.Question;
 import next.api.qna.service.QuestionService;
 import next.api.user.model.User;
-import next.common.controller.AbstractController;
 import next.common.model.Result;
 import next.common.view.JsonView;
 import next.common.view.JspView;
@@ -18,11 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class QuestionFormController extends AbstractController {
+public class QuestionFormController {
     private static final Logger log = LoggerFactory.getLogger(QuestionFormController.class);
     private final QuestionService questionService = QuestionService.getInstance();
 
-    @Override
     @RequestMapping("/question/form")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();

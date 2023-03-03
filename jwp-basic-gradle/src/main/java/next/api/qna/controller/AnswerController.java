@@ -7,7 +7,6 @@ import core.web.ModelAndView;
 import next.api.qna.model.Answer;
 import next.api.qna.service.QuestionService;
 import next.api.user.model.User;
-import next.common.controller.AbstractController;
 import next.common.model.Result;
 import next.common.view.JsonView;
 import next.common.view.JspView;
@@ -19,11 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class AnswerController extends AbstractController {
+public class AnswerController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
     private final QuestionService questionService = QuestionService.getInstance();
 
-    @Override
     @RequestMapping(value = "/answer", method = RequestMethod.POST)
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -40,7 +38,6 @@ public class AnswerController extends AbstractController {
         return new ModelAndView(new JsonView()).addModel("answer", answer);
     }
 
-    @Override
     @RequestMapping(value = "/answer", method = RequestMethod.DELETE)
     protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();

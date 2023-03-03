@@ -8,7 +8,6 @@ import next.api.qna.model.Answer;
 import next.api.qna.model.Question;
 import next.api.qna.service.QuestionService;
 import next.api.user.model.User;
-import next.common.controller.AbstractController;
 import next.common.model.Result;
 import next.common.view.JsonView;
 import next.common.view.JspView;
@@ -21,11 +20,10 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class QuestionController extends AbstractController {
+public class QuestionController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService = QuestionService.getInstance();
 
-    @Override
     @RequestMapping("/question")
     protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
@@ -36,7 +34,6 @@ public class QuestionController extends AbstractController {
         return new ModelAndView(new JspView("/qna/show.jsp")).addModel("question", question).addModel("answers", answers);
     }
 
-    @Override
     @RequestMapping(value = "/question", method = RequestMethod.POST)
     protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -54,7 +51,6 @@ public class QuestionController extends AbstractController {
         return new ModelAndView(new JspView("redirect:/question/list"));
     }
 
-    @Override
     @RequestMapping(value = "/question", method = RequestMethod.DELETE)
     protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
         try {
