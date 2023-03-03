@@ -23,7 +23,7 @@ public class AnnotationHandlerMappingTest {
     @Test
     public void list() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/users");
-        HandlerExecution execution = handlerMapping.getHandler(request);
+        HandlerExecution execution = (HandlerExecution) handlerMapping.getHandler(request);
         ModelAndView mav = execution.handle(request, response);
         mav.getView().render(mav.getModel(), request, response);
         assertThat(response.getForwardedUrl()).isEqualTo("user/list.jsp");
@@ -32,7 +32,7 @@ public class AnnotationHandlerMappingTest {
     @Test
     public void show() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/users/show");
-        HandlerExecution execution = handlerMapping.getHandler(request);
+        HandlerExecution execution = (HandlerExecution) handlerMapping.getHandler(request);
         ModelAndView mav = execution.handle(request, response);
         mav.getView().render(mav.getModel(), request, response);
         assertThat(response.getForwardedUrl()).isEqualTo("user/show.jsp");
@@ -41,7 +41,7 @@ public class AnnotationHandlerMappingTest {
     @Test
     public void create() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/users");
-        HandlerExecution execution = handlerMapping.getHandler(request);
+        HandlerExecution execution = (HandlerExecution) handlerMapping.getHandler(request);
         ModelAndView mav = execution.handle(request, response);
         mav.getView().render(mav.getModel(), request, response);
         assertThat(response.getRedirectedUrl()).isEqualTo("/users");

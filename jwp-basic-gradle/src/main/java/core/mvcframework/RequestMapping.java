@@ -2,8 +2,10 @@ package core.mvcframework;
 
 import core.mvcframework.controller.Controller;
 import core.mvcframework.controller.ForwardController;
+import core.nmvc.HandlerMapping;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import next.controller.HomeController;
 import next.controller.qna.QuestionCreateController;
 import next.controller.qna.QuestionDeleteController;
@@ -25,7 +27,7 @@ import next.controller.user.UserListController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RequestMapping {
+public class RequestMapping implements HandlerMapping {
 
     private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
 
@@ -58,11 +60,11 @@ public class RequestMapping {
         handlerMapping.put("/api/qna/list", new QuestionListApiController());
     }
 
-    public Controller getHandler(final String requestURI) {
-        log.debug("requestURI={}", requestURI);
-        return handlerMapping.get(requestURI);
+    @Override
+    public Object getHandler(final HttpServletRequest request) {
+        log.debug("requestURI={}", request.getRequestURI());
+        return handlerMapping.get(request.getRequestURI());
     }
-
 }
 
 
