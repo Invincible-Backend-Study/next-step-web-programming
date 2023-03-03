@@ -27,13 +27,14 @@ import next.controller.user.UserListController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RequestMapping implements HandlerMapping {
+public class LegacyHandlerMapping implements HandlerMapping {
 
-    private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
+    private static final Logger log = LoggerFactory.getLogger(LegacyHandlerMapping.class);
 
     private final Map<String, Controller> handlerMapping = new HashMap<>();
 
-    public void initMapping() {
+    @Override
+    public void initialize() {
         // 로그인 필요없음
         handlerMapping.put("/", new HomeController());
         handlerMapping.put("/signUpForm", new ForwardController("user/form"));
