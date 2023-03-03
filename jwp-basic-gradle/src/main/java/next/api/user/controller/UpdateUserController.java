@@ -20,7 +20,7 @@ public class UpdateUserController {
     private final UserService userService = UserService.getInstance();
 
     @RequestMapping(value = "/user/update", method = RequestMethod.POST)
-    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView userUpdate(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -33,6 +33,4 @@ public class UpdateUserController {
         session.setAttribute("user", user);
         return new ModelAndView(new JspView("redirect:/user/list"));
     }
-
-
 }

@@ -20,7 +20,7 @@ public class LoginController {
     private final AuthService authService = AuthService.getInstance();
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView authSessionLogin(HttpServletRequest request, HttpServletResponse response) {
         User user = getLoginUser(request.getParameter("userId"), request.getParameter("password"));
         if (user == null) {  // login failed
             return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));

@@ -19,9 +19,8 @@ public class ListQuestionApiController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @RequestMapping(value = "/api/qna/list")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView questionList(HttpServletRequest request, HttpServletResponse response) {
         List<Question> questions = questionService.getQuestions();
         return new ModelAndView(new JsonView()).addModel("questions", questions);
     }
-
 }

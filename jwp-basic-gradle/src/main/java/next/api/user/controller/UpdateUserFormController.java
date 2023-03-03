@@ -2,7 +2,6 @@ package next.api.user.controller;
 
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
-import core.annotation.RequestMethod;
 import core.web.ModelAndView;
 import next.api.user.model.User;
 import next.common.view.JspView;
@@ -19,7 +18,7 @@ public class UpdateUserFormController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserFormController.class);
 
     @RequestMapping(value = "/user/update")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView userGetUpdateForm(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");
         if (value == null) {

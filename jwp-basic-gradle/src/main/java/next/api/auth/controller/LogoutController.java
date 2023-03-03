@@ -16,7 +16,7 @@ public class LogoutController {
     private static final Logger log = LoggerFactory.getLogger(LogoutController.class);
 
     @RequestMapping("/user/logout")
-    protected ModelAndView doGet(HttpServletRequest req, HttpServletResponse resp) {
+    public ModelAndView authSessionLogout(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         session.invalidate();
         return new ModelAndView(new JspView("redirect:/index"));

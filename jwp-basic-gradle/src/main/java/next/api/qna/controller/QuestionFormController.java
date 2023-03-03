@@ -22,7 +22,7 @@ public class QuestionFormController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @RequestMapping("/question/form")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView questionGetForm(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null) {

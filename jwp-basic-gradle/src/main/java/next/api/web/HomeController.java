@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class HomeController {
     @RequestMapping("/index")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         return new ModelAndView(new JspView("redirect:/question/list"));
     }
 }

@@ -18,7 +18,6 @@ public class HandlerExecution {
 
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) {
         try {
-            method.setAccessible(true);  //TODO 현재 abstractController 구현으로 인해 method가 protected로 되어있음! public으로 변경되면 해당라인 삭제
             return (ModelAndView) method.invoke(controller.newInstance(), request, response);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             //

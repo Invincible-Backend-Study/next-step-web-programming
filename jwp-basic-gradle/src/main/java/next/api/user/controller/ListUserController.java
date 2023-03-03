@@ -20,7 +20,7 @@ public class ListUserController {
     private final UserService userService = UserService.getInstance();
 
     @RequestMapping("/user/list")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView userList(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");
         if (value == null) {
@@ -31,5 +31,4 @@ public class ListUserController {
         List<User> users = userService.getUsers();
         return new ModelAndView(new JspView("/user/list.jsp")).addModel("users", users);
     }
-
 }

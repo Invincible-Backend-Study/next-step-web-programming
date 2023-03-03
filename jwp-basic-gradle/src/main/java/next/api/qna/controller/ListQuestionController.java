@@ -21,7 +21,7 @@ public class ListQuestionController {
     private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @RequestMapping(value = "/question/list")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView questionList(HttpServletRequest request, HttpServletResponse response) {
         List<Question> questions = questionService.getQuestions();
         return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
     }

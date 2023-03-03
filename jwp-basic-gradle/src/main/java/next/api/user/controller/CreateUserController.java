@@ -19,7 +19,7 @@ public class CreateUserController {
     private final UserService userService = UserService.getInstance();
 
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView userAdd(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -30,5 +30,4 @@ public class CreateUserController {
         userService.addUser(user);
         return new ModelAndView(new JspView("redirect:/user/list"));
     }
-
 }

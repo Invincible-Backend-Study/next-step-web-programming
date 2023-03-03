@@ -25,7 +25,7 @@ public class QuestionController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @RequestMapping("/question")
-    protected ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
 
         Question question = questionService.getQuestionByQuestionId(questionId);
@@ -35,7 +35,7 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/question", method = RequestMethod.POST)
-    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView questionAdd(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -52,7 +52,7 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/question", method = RequestMethod.DELETE)
-    protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView questionRemove(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");

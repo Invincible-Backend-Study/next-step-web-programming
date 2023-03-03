@@ -23,7 +23,7 @@ public class AnswerController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @RequestMapping(value = "/answer", method = RequestMethod.POST)
-    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView answerAdd(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -39,7 +39,7 @@ public class AnswerController {
     }
 
     @RequestMapping(value = "/answer", method = RequestMethod.DELETE)
-    protected ModelAndView doDelete(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView answerRemove(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null) {
