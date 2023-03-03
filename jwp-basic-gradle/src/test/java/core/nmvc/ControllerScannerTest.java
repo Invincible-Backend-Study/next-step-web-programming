@@ -27,7 +27,8 @@ public class ControllerScannerTest {
         // then
         Assertions.assertAll(
                 () -> assertThat(controllers.size()).isEqualTo(1),
-                () -> assertThat(controllers.get(MyController.class).toString().contains("core.nmvc.MyController")).isTrue()
+                () -> assertThat(
+                        controllers.get(MyController.class).toString().contains("core.nmvc.MyController")).isTrue()
         );
 
     }

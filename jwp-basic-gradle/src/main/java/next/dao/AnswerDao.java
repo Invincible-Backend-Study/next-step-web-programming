@@ -2,12 +2,7 @@ package next.dao;
 
 import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
-import core.jdbc.PreparedStatementCreator;
-import core.jdbc.PreparedStatementSetter;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import next.model.Answer;
