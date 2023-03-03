@@ -32,7 +32,7 @@ function addAnswer(e) {
 
     $.ajax({
         type: 'post',
-        url: '/api/qna/addAnswer',
+        url: '/api/answers/add',
         data: queryString,
         dataType: 'json',
         error: onError,
@@ -62,7 +62,7 @@ function deleteAnswer(e) {
 
     $.ajax({
         type: 'post',
-        url: '/api/qna/deleteAnswer',
+        url: '/api/answers/delete',
         data: queryString,
         dataType: 'json',
         error: onError,
