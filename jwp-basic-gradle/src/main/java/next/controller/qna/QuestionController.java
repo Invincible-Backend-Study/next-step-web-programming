@@ -78,7 +78,7 @@ public class QuestionController extends AbstractAnnotationController {
                     requestDto.toModel(),
                     SessionUtil.getLoginObject(request.getSession(), "user")
             );
-            return jspView("redirect:/qna/show?questionId=" + requestDto.getQuestionId());
+            return jspView("redirect:/questions/show?questionId=" + requestDto.getQuestionId());
         } catch (CannotUpdateQuestionException exception) {
             log.error(exception.getMessage());
             return jspView("redirect:/");

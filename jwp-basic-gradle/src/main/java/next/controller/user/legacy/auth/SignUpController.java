@@ -1,4 +1,4 @@
-package next.controller.user;
+package next.controller.user.legacy.auth;
 
 import core.annotation.Controller;
 import core.mvcframework.ModelAndView;

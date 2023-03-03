@@ -34,7 +34,7 @@
                         <td>${users.userId}</td>
                         <td>${users.name}</td>
                         <td>${users.email}</td>
-                        <td><a href="/users/updateForm?userId=${users.userId}" class="btn btn-success"
+                        <td><a href="/users/update?userId=${users.userId}" class="btn btn-success"
                                role="button">수정</a>
                         </td>
                     </tr>

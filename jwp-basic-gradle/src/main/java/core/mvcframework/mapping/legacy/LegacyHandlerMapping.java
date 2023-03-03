@@ -6,24 +6,23 @@ import core.mvcframework.mapping.HandlerMapping;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import next.controller.HomeController;
+import next.controller.qna.api.legacy.AddAnswerApiController;
+import next.controller.qna.api.legacy.DeleteAnswerApiController;
+import next.controller.qna.api.legacy.QuestionDeleteApiController;
+import next.controller.qna.api.legacy.QuestionListApiController;
 import next.controller.qna.legacy.QuestionCreateController;
 import next.controller.qna.legacy.QuestionDeleteController;
 import next.controller.qna.legacy.QuestionFormController;
 import next.controller.qna.legacy.QuestionUpdateController;
 import next.controller.qna.legacy.QuestionUpdateFormController;
 import next.controller.qna.legacy.ShowController;
-import next.controller.qna.api.legacy.AddAnswerApiController;
-import next.controller.qna.api.legacy.DeleteAnswerApiController;
-import next.controller.qna.api.legacy.QuestionDeleteApiController;
-import next.controller.qna.api.legacy.QuestionListApiController;
-import next.controller.user.LoginController;
-import next.controller.user.ProfileController;
-import next.controller.user.SignOutController;
-import next.controller.user.SignUpController;
-import next.controller.user.UpdateUserController;
-import next.controller.user.UpdateUserFormController;
-import next.controller.user.UserListController;
+import next.controller.user.legacy.ProfileController;
+import next.controller.user.legacy.SignOutController;
+import next.controller.user.legacy.UpdateUserController;
+import next.controller.user.legacy.UpdateUserFormController;
+import next.controller.user.legacy.UserListController;
+import next.controller.user.legacy.auth.LoginController;
+import next.controller.user.legacy.auth.SignUpController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +46,8 @@ public class LegacyHandlerMapping implements HandlerMapping {
         handlerMapping.put("/users", new UserListController());
         handlerMapping.put("/users/signOut", new SignOutController());
         handlerMapping.put("/users/profile", new ProfileController());
-        handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
+        handlerMapping.put("/users/update", new UpdateUserController());
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
         handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
         handlerMapping.put("/qna/updateQuestionForm", new QuestionUpdateFormController());
@@ -63,7 +62,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
 
     @Override
     public Object getHandler(final HttpServletRequest request) {
-        log.debug("requestURI={}", request.getRequestURI());
+        log.debug("requestUri={}", request.getRequestURI());
         return handlerMapping.get(request.getRequestURI());
     }
 }
