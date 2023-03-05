@@ -20,7 +20,7 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="question" method="post" action="/user/update">
+          <form name="user" method="post" action="/user/update">
                   <div class="form-group">
                       <label for="userId">사용자 아이디</label>
                       <input type="hidden" class="form-control" id="userId" name="userId" placeholder="User ID" value="${user.userId}">

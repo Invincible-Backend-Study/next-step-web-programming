@@ -25,7 +25,7 @@ public class QuestionController {
     private final QuestionService questionService = QuestionService.getInstance();
 
     @RequestMapping("/question")
-    public ModelAndView doGet(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView questionGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
 
         Question question = questionService.getQuestionByQuestionId(questionId);
