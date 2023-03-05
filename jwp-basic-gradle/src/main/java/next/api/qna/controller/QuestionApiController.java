@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-public class ListQuestionApiController {
-    private static final Logger log = LoggerFactory.getLogger(ListQuestionApiController.class);
+public class QuestionApiController {
+    private static final Logger log = LoggerFactory.getLogger(QuestionApiController.class);
     private final QuestionService questionService = QuestionService.getInstance();
 
     @RequestMapping(value = "/api/qna/list")

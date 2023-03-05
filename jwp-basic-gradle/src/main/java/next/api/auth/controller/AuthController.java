@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class LoginController {
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+public class AuthController {
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService = AuthService.getInstance();
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
@@ -28,6 +28,13 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
+        return new ModelAndView(new JspView("redirect:/index"));
+    }
+
+    @RequestMapping("/user/logout")
+    public ModelAndView authSessionLogout(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        session.invalidate();
         return new ModelAndView(new JspView("redirect:/index"));
     }
 

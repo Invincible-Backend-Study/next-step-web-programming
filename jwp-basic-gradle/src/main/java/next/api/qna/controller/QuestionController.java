@@ -70,4 +70,29 @@ public class QuestionController {
                     .addModel("result", Result.fail(e.getMessage()));
         }
     }
+
+    @RequestMapping("/question/form")
+    public ModelAndView questionGetForm(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ModelAndView(new JsonView())
+                    .addModel("result", Result.fail("질문 수정을 위해선 로그인이 필요합니다."));
+        }
+
+        Long questionId = Long.parseLong(request.getParameter("questionId"));
+        Question question = questionService.getQuestionByQuestionId(questionId);
+        if (!user.getName().equals(question.getWriter())) {
+            return new ModelAndView(new JsonView())
+                    .addModel("result", Result.fail("자신이 작성한 질문만 수정할 수 있습니다."));
+        }
+
+        return new ModelAndView(new JspView("/qna/form.jsp")).addModel("question", question);
+    }
+
+    @RequestMapping(value = "/question/list")
+    public ModelAndView questionList(HttpServletRequest request, HttpServletResponse response) {
+        List<Question> questions = questionService.getQuestions();
+        return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
+    }
 }
