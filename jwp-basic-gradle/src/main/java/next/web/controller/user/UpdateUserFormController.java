@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UpdateUserFormController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UpdateUserFormController.class);
 
     private final UserService userService = new UserService();
 

@@ -21,7 +21,6 @@ public class ControllerScannerTest {
     @Test
     void getControllers() {
         Map<Class<?>, Object> controllers = cf.getController();
-        String g = "hy";
         for (Class<?> controller : controllers.keySet()) {
             logger.debug("{}",controller);
         }

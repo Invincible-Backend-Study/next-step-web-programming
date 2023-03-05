@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserLoginController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserLoginController.class);
     private final UserService userService = new UserService();
 
     @Override
