@@ -30,7 +30,6 @@ public class AnnoationHandlerMapping implements HandlerMapping {
     public HandlerExecution getHandler(HttpServletRequest req) {
         String requestUri = req.getRequestURI();
         RequestMethod rm = RequestMethod.valueOf(req.getMethod().toUpperCase());
-        //핸들러 가져오기
         return handlerExecutions.get(new HandlerKey(requestUri, rm));
     }
 

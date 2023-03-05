@@ -2,10 +2,11 @@ package next.mvc;
 
 import com.google.common.collect.Lists;
 import next.nmvc.HandlerMapping;
+import next.nmvc.adapter.ControllerHandlerAdapter;
+import next.nmvc.adapter.HandlerAdapter;
+import next.nmvc.adapter.HandlerExecutionHandlerAdapter;
 import next.nmvc.mappging.AnnoationHandlerMapping;
-import next.nmvc.mappging.HandlerExecution;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,22 +21,27 @@ public class DispatcherServlet extends HttpServlet {
     private static final String REDIRECT_PREFIX = "redirect:";
     private RequestMapping requestMapping;
 
-    private final List<HandlerMapping> mappings = Lists.newArrayList();
+    private final List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
+    private final List<HandlerMapping> handlerMappings = Lists.newArrayList();
 
     @Override
     public void init() {
         RequestMapping legacyHandlerMapping = new RequestMapping();
         legacyHandlerMapping.initMapping();
         AnnoationHandlerMapping annoationHandlerMapping = new AnnoationHandlerMapping("next");
+
         annoationHandlerMapping.initialize();
-        mappings.add(legacyHandlerMapping);
-        mappings.add(annoationHandlerMapping);
+
+        handlerMappings.add(legacyHandlerMapping);
+        handlerMappings.add(annoationHandlerMapping);
+
+        handlerAdapters.add(new ControllerHandlerAdapter());
+        handlerAdapters.add(new HandlerExecutionHandlerAdapter());
     }
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         Object handler = getHandler(req);
-        System.out.println(handler);
         if (handler == null) {
             throw new IllegalArgumentException("[ERROR] 존재하지 않는 URL");
         }
@@ -49,7 +55,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private Object getHandler(HttpServletRequest req) {
-        for (HandlerMapping handlerMapping : mappings) {
+        for (HandlerMapping handlerMapping : handlerMappings) {
             Object handler = handlerMapping.getHandler(req);
             if (handler != null) {
                 return handler;
@@ -59,9 +65,11 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private ModelAndView execute(Object handler, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        if (handler instanceof Controller) {
-            return ((Controller) handler).execute(req, res);
+        for (HandlerAdapter handlerAdapter : handlerAdapters) {
+            if (handlerAdapter.supports(handler)) {
+                handlerAdapter.handle(req, res, handler);
+            }
         }
-        return ((HandlerExecution) handler).handle(req, res);
+        return null;
     }
 }
