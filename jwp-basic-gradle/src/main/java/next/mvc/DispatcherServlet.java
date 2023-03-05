@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
@@ -42,9 +43,6 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         Object handler = getHandler(req);
-        if (handler == null) {
-            throw new IllegalArgumentException("[ERROR] 존재하지 않는 URL");
-        }
         try {
             ModelAndView mav = execute(handler, req, res);
             View view = mav.getView();
@@ -55,21 +53,18 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private Object getHandler(HttpServletRequest req) {
-        for (HandlerMapping handlerMapping : handlerMappings) {
-            Object handler = handlerMapping.getHandler(req);
-            if (handler != null) {
-                return handler;
-            }
-        }
-        return null;
+        return handlerMappings.stream()
+                .map(handlerMapping -> handlerMapping.getHandler(req))
+                .filter(Objects::nonNull)
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] URL이 존재하지 않습니다."));
     }
 
     private ModelAndView execute(Object handler, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        for (HandlerAdapter handlerAdapter : handlerAdapters) {
-            if (handlerAdapter.supports(handler)) {
-                handlerAdapter.handle(req, res, handler);
-            }
-        }
-        return null;
+        return handlerAdapters.stream()
+                .filter(handlerAdapter -> handlerAdapter.supports(handler))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 핸들러를 찾을 수 없습니다."))
+                .handle(req, res, handler);
     }
 }
