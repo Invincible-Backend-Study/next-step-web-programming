@@ -1,17 +1,19 @@
 package next.user.payload.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import next.user.entity.User;
 
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateUserDto {
-    private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
 
     public User toEntity() {
         return User.of(userId, password, name, email);

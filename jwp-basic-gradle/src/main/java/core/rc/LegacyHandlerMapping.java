@@ -40,12 +40,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
         mapping.put("/api/qna/addAnswer", new AddAnswerController());
         mapping.put("/api/qna/deleteAnswer", new DeleteAnswerController());
 
-        //mapping.put("/user/updateForm", new UpdateFormController());
-        //mapping.put("/user/list", new ListUserController());
-        //mapping.put("/user/create", new CreateUserController());
-        //mapping.put("/user/update", new UpdateUserController());
-        /*mapping.put("/user/login", new UserLoginController());
-        mapping.put("/user/logout", new UserLogoutController());*/
+
     }
 
     @Override
