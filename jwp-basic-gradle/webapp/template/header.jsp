@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="navbar-header">
 
-            <a href="../question/list" class="navbar-brand">SLiPP</a>
+            <a href="../questions/list" class="navbar-brand">SLiPP</a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
                 <i class="glyphicon glyphicon-search"></i>
             </button>
@@ -47,7 +47,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../question/list">Posts</a></li>
+                <li class="active"><a href="../questions/list">Posts</a></li>
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">

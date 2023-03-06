@@ -24,7 +24,7 @@ function deleteAnswer(obj, answerId) {
 
 function deleteQuestion(questionId) {
     if (confirm(questionId + '번글을 정말 삭제하시겠습니까?')) {
-        fetch(`/question?questionId=` + questionId, {method: 'DELETE'})
+        fetch(`/questions?questionId=` + questionId, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -37,7 +37,7 @@ function deleteQuestion(questionId) {
                 var result = json.result;
                 if (result.status) {
                     alert('삭제되었습니다.');
-                    location.href = '/question/list';
+                    location.href = '/questions/list';
                 } else {
                     alert('삭제에 실패했습니다. ' + result.message);
                 }

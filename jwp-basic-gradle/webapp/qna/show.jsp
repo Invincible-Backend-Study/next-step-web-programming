@@ -44,7 +44,7 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/question/form?questionId=${question.questionId}">수정</a>
+                                <a class="link-modify-article" href="/questions/form?questionId=${question.questionId}">수정</a>
                             </li>
                             <li>
                                 <button class="link-delete-article" type="button"
@@ -52,7 +52,7 @@
                                 </button>
                             </li>
                             <li>
-                                <a class="link-modify-article" href="/question/list">목록</a>
+                                <a class="link-modify-article" href="/questions/list">목록</a>
                             </li>
                         </ul>
                     </div>

@@ -24,7 +24,7 @@ public class QuestionController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService = QuestionService.getInstance();
 
-    @RequestMapping("/question")
+    @RequestMapping("/questions")
     public ModelAndView questionGet(HttpServletRequest request, HttpServletResponse response) {
         Long questionId = Long.parseLong(request.getParameter("questionId"));
 
@@ -34,7 +34,13 @@ public class QuestionController {
         return new ModelAndView(new JspView("/qna/show.jsp")).addModel("question", question).addModel("answers", answers);
     }
 
-    @RequestMapping(value = "/question", method = RequestMethod.POST)
+    @RequestMapping("/questions/list")  //TODO pathVariable 적용 후 "/questions"로 변경
+    public ModelAndView questionList(HttpServletRequest request, HttpServletResponse response) {
+        List<Question> questions = questionService.getQuestions();
+        return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
+    }
+
+    @RequestMapping(value = "/questions", method = RequestMethod.POST)
     public ModelAndView questionAdd(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -48,10 +54,10 @@ public class QuestionController {
 
         questionService.putArticle(user, title, contents, questionIdParam);
 
-        return new ModelAndView(new JspView("redirect:/question/list"));
+        return new ModelAndView(new JspView("redirect:/questions/list"));
     }
 
-    @RequestMapping(value = "/question", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/questions", method = RequestMethod.DELETE)
     public ModelAndView questionRemove(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
@@ -71,7 +77,7 @@ public class QuestionController {
         }
     }
 
-    @RequestMapping("/question/form")
+    @RequestMapping("/questions/form")
     public ModelAndView questionGetForm(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -88,11 +94,5 @@ public class QuestionController {
         }
 
         return new ModelAndView(new JspView("/qna/form.jsp")).addModel("question", question);
-    }
-
-    @RequestMapping(value = "/question/list")
-    public ModelAndView questionList(HttpServletRequest request, HttpServletResponse response) {
-        List<Question> questions = questionService.getQuestions();
-        return new ModelAndView(new JspView("/qna/list.jsp")).addModel("questions", questions);
     }
 }
