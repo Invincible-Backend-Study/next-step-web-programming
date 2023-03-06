@@ -9,6 +9,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class JdbcTemplete {
+
+    private static JdbcTemplete instance = null;
+
+    private JdbcTemplete() {}
+
+    public static synchronized JdbcTemplete getInstance() {
+        if (instance == null) {
+            instance = new JdbcTemplete();
+        }
+        return instance;
+    }
     public void excuteSqlUpdate(String sql, Object... parameters) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             setSqlParameters(pstmt, parameters);

@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class AnswerDao {
 
-    private final JdbcTemplete templete = new JdbcTemplete();
+    private final JdbcTemplete templete = JdbcTemplete.getInstance();
 
     public Answer addAnswer(Answer answer) {
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?,?,?,?)";
@@ -62,7 +62,7 @@ public class AnswerDao {
         }, questionId);
     }
 
-    public void deleteAnswer(String  id) {
+    public void deleteAnswer(int  id) {
         String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
         templete.excuteSqlUpdate(sql,id);
     }

@@ -2,13 +2,11 @@ package next.mvc;
 
 import next.web.controller.ForwardController;
 import next.web.controller.HomeController;
-import next.web.controller.question.AddAnswerController;
-import next.web.controller.question.AnswerDeleteController;
-import next.web.controller.question.QuestionController;
-import next.web.controller.question.QuestionFormController;
+import next.web.controller.question.*;
 import next.web.controller.user.*;
 
 import java.util.HashMap;
+
 
 public class RequestMapping {
     private final HashMap<String, Controller> mappings = new HashMap<>();
@@ -26,6 +24,9 @@ public class RequestMapping {
         mappings.put("/qna/form", new QuestionFormController());
         mappings.put("/qna/answer", new AddAnswerController());
         mappings.put("/qna/deleteAnswer", new AnswerDeleteController());
+        mappings.put("/qna/deleteQuestion", new DeleteQuestion());
+        mappings.put("/api/qna/list", new QnaListController());
+        mappings.put("/qna/updateQuestion", new QnaUpdateController());
     }
 
     public Controller getController(String url){

@@ -10,7 +10,7 @@ import next.model.User;
 
 public class UserDao {
 
-    private final JdbcTemplete templete = new JdbcTemplete();
+    private final JdbcTemplete templete = JdbcTemplete.getInstance();
 
     //INSERT
     public void addUser(User user) {

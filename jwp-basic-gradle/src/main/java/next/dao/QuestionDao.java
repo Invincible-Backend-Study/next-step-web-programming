@@ -9,7 +9,7 @@ import java.util.List;
 
 public class QuestionDao {
 
-    private final JdbcTemplete template = new JdbcTemplete();
+    private final JdbcTemplete template = JdbcTemplete.getInstance();
 
     public void addQuestion(Question question) {
         String sql = "INSERT INTO QUESTIONS ( writer, title, contents, createdDate, countOfAnswer) VALUES (?,?,?,?,?)";
@@ -70,5 +70,15 @@ public class QuestionDao {
     public void increaseAnswerCount(int questionId) {
         String sql = "UPDATE QUESTIONS SET countOfAnswer= countOfAnswer + 1 WHERE questionId = ?";
         template.excuteSqlUpdate(sql,questionId);
+    }
+
+    public void deleteAnswer(int id) {
+        String sql = "DELETE FROM QUESTIONS WHERE questionId = ?";
+        template.excuteSqlUpdate(sql,id);
+    }
+
+    public void update(String contents , String title,String id) {
+        String sql = "UPDATE QUESTIONS SET CONTENTS = ?,TITLE =? WHERE questionId = ? ";
+        template.excuteSqlUpdate(sql,contents,title,id);
     }
 }

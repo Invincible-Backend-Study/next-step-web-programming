@@ -1,17 +1,19 @@
 package next.web.controller.user;
 
-import next.dao.UserDao;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import next.model.User;
 import next.mvc.AbstractController;
 import next.mvc.ModelAndView;
+import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 public class CreateUserController extends AbstractController {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
+
+    private final UserService userService = new UserService();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
@@ -21,8 +23,8 @@ public class CreateUserController extends AbstractController {
                 req.getParameter("name"),
                 req.getParameter("email")
         );
-        UserDao userDao = new UserDao();
-        userDao.addUser(user);
+        userService.addUser(user);
+
         return jspView("redirect:/");
     }
 }
