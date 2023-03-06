@@ -28,7 +28,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="../user/list"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="../users"><i class="glyphicon glyphicon-user"></i></a></li>
                 <li><a href="../user/profile"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
@@ -51,8 +51,8 @@
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <li><a href="../user/logout" role="button">로그아웃</a></li>
-                        <li><a href="../user/update.jsp" role="button">개인정보수정</a></li>
+                        <li><a href="../auth/logout" role="button">로그아웃</a></li>
+                        <li><a href="../user/updateform.jsp" role="button">개인정보수정</a></li>
                     </c:when>
                     <c:otherwise>
                         <li><a href="../user/login.jsp" role="button">로그인</a></li>

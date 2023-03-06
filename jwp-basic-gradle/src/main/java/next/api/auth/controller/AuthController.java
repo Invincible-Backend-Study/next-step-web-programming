@@ -19,7 +19,7 @@ public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService = AuthService.getInstance();
 
-    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     public ModelAndView authSessionLogin(HttpServletRequest request, HttpServletResponse response) {
         User user = getLoginUser(request.getParameter("userId"), request.getParameter("password"));
         if (user == null) {  // login failed
@@ -31,7 +31,7 @@ public class AuthController {
         return new ModelAndView(new JspView("redirect:/index"));
     }
 
-    @RequestMapping("/user/logout")
+    @RequestMapping("/auth/logout")
     public ModelAndView authSessionLogout(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         session.invalidate();

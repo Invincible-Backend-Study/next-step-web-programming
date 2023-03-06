@@ -44,3 +44,27 @@ function deleteQuestion(questionId) {
             })
     }
 }
+
+function updateUser(event) {
+    var form = event.target.closest('form');
+    var formData = new FormData(form);
+    var query = new URLSearchParams(formData).toString();
+
+    fetch(`/users?${query}`, {method: 'PATCH'})
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                alert('실패했습니다..!');
+            }
+        })
+        .then(json => {
+            console.table(json);
+            var result = json.result;
+            if (result.status) {
+                alert('성공했습니다.');
+            } else {
+                alert('실패했습니다. ' + result.message);
+            }
+        })
+}

@@ -33,7 +33,7 @@
                         <td>${user.userId}</td>
                         <td>${user.name}</td>
                         <td>${user.email}</td>
-                        <td><a href="http://localhost:8080/user/form?userId=${user.userId}" class="btn btn-success" role="button">수정</a>
+                        <td><a href="http://localhost:8080/users/form?userId=${user.userId}" class="btn btn-success" role="button">수정</a>
                         </td>
                     </tr>
                 </c:forEach>

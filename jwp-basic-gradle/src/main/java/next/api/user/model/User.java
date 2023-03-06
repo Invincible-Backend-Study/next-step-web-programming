@@ -47,6 +47,13 @@ public class User {
         return this.getUserId().equals(id);
     }
 
+    public boolean isEmpty() {
+        if (getName().isEmpty() || getEmail().isEmpty() || getPassword().isEmpty() || getUserId().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
