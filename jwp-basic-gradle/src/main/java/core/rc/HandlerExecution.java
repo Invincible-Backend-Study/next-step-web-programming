@@ -13,10 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 public class HandlerExecution {
     private final Object declaredObject;
     private final Method method;
+    private final ExecutionMapper executionMapper = ExecutionMapper.getInstance();
 
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return (ModelAndView) method.invoke(declaredObject, request, response);
+
+            return (ModelAndView) method.invoke(declaredObject, executionMapper.doMapping(method, request, response));
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
