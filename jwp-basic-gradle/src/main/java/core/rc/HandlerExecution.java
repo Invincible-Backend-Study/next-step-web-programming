@@ -19,7 +19,6 @@ public class HandlerExecution {
 
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) {
         try {
-
             final var result = ExecutionRunner.getInstance().execute(method, request, response);
             if (!result) {
                 return null;

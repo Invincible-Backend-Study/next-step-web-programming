@@ -6,7 +6,7 @@ import next.user.payload.request.CreateUserDto;
 
 public class CreateUserService {
 
-    private final UserDao userDao = new UserDao();
+    private final UserDao userDao = UserDao.getInstance();
 
 
     public synchronized void execute(final CreateUserDto createUserDto) { // 동시에 서로 다른 쓰레드가 해당 메서드에 접근하는 것을 막음 (트랜잭션을 구현하지 못해서 lock 처리함)

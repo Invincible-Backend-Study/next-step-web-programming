@@ -71,7 +71,7 @@ class DeleteQnaServiceTest {
         BDDMockito.given(questionDao.findOptionalById(1L)).willReturn(Optional.of(question));
         BDDMockito.given(answerDao.findAllByQuestionId(1L)).willReturn(answer);
 
-        deleteQnaService.execute(1L);
+        deleteQnaService.execute(1L);  // 삭제되는 값을 리턴함
     }
 
 }

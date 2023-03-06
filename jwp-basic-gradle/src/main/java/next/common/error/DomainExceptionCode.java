@@ -23,7 +23,8 @@ public enum DomainExceptionCode {
 
     QUESTION(4000),
     DID_NOT_EXISTS_QUESTION_ID(QUESTION.code + 1, "해당 질문이 존재하지 않습니다."),
-    DID_NOT_DELETE_QUESTION(QUESTION.code + 2, "작성자 본인이 작성하지 않은 답변이 %s건 있어 해당 질문을 삭제할 수 없습니다.");
+    DID_NOT_DELETE_QUESTION(QUESTION.code + 2, "작성자 본인이 작성하지 않은 답변이 %s건 있어 해당 질문을 삭제할 수 없습니다."),
+    ACCESS_ONLY_AUTHENTICATION_USER(USER.code + 6, "로그인 하지 않는 경우 접근할 수 없습니다.");
 
 
     private static final String ERROR_FORMAT = "[ERROR] [CODE: %s] message:%s";

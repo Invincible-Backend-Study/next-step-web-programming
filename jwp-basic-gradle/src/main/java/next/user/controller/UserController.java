@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import next.common.filter.LoginOnly;
 import next.user.dao.UserDao;
 import next.user.dao.UserDaoFactory;
 import next.user.entity.User;
@@ -31,17 +32,19 @@ public class UserController {
     private final UpdateUserService updateUserService = UpdateUserService.getInstance();
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
-    public ModelAndView findUser(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView findUser() {
         return new ModelAndView(new JspView("/WEB-INF/user/list.jsp"))
                 .addObject("users", findUserService.findAll());
     }
 
     @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    public ModelAndView execute(@RequestBody CreateUserDto createUserDto) {
+    public ModelAndView createUser(@RequestBody CreateUserDto createUserDto) {
         createUserService.execute(createUserDto);
         return new ModelAndView(new JspView("redirect: /user/list"));
     }
 
+
+    @LoginOnly
     @RequestMapping(value = "/user/updateForm", method = RequestMethod.GET)
     public ModelAndView renderUpdateForm(@RequestBody("userId") String userId, HttpServletResponse response) {
         try {
@@ -54,6 +57,7 @@ public class UserController {
     }
 
 
+    @LoginOnly
     @RequestMapping(value = "/user/update", method = RequestMethod.POST)
     public ModelAndView updateUser(@RequestBody UpdateUserRequest updateUserRequest) {
         try {
@@ -83,7 +87,8 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+    @LoginOnly
+    @RequestMapping(value = "/user/logout", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request) {
         request.getSession().invalidate();
         return new ModelAndView(new JspView("redirect: /"));

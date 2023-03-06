@@ -2,6 +2,7 @@ package next.common.web;
 
 
 import com.google.common.collect.Lists;
+import core.mvc.JspView;
 import core.mvc.ModelAndView;
 import core.rc.AnnotationHandlerMapping;
 import core.rc.ControllerHandlerAdapter;
@@ -12,11 +13,14 @@ import core.rc.LegacyHandlerMapping;
 import core.rc.filter.ExecutionRunner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
+import next.common.error.DomainException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,11 +51,12 @@ public class DispatchServlet extends HttpServlet {
         handlerAdapters.add(new ControllerHandlerAdapter());
         handlerAdapters.add(new HandlerExecutionHandlerAdapter());
 
-        ExecutionRunner.getInstance().initialize();
+        ExecutionRunner.getInstance().initialize("next");
         log.info("initialize method execution setup");
 
     }
 
+    @SneakyThrows
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final Object handler = getHandler(request);
@@ -60,7 +65,12 @@ public class DispatchServlet extends HttpServlet {
 
         try {
             ModelAndView modelAndView = execute(handler, request, response);
-            modelAndView.getView().render(modelAndView.getModel(), request, response);
+            if (modelAndView != null) {
+                modelAndView.getView().render(modelAndView.getModel(), request, response);
+            }
+        } catch (DomainException domainException) {
+            log.info("{}", domainException.getMessage());
+            new JspView("redirect: /user/loginForm").render(null, request, response);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         } catch (Throwable e) {
@@ -70,13 +80,10 @@ public class DispatchServlet extends HttpServlet {
     }
 
     private Object getHandler(HttpServletRequest request) {
-        for (final var handlerMapping : mappings) {
-            Object handler = handlerMapping.getHandler(request);
-            if (handler != null) {
-                return handler;
-            }
-        }
-        return null;
+        return mappings.stream()
+                .map(handlerMapping -> handlerMapping.getHandler(request))
+                .filter(Objects::nonNull)
+                .findAny().orElse(null);
     }
 
     private ModelAndView execute(Object handler, HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -20,7 +20,9 @@ public class ExecutionMapper {
     }
 
     public Object[] doMapping(Method method, HttpServletRequest request, HttpServletResponse response) {
-        return Arrays.stream(method.getParameters()).map(parameter -> doMapping(request, response, parameter)).toArray();
+        return Arrays.stream(method.getParameters())
+                .map(parameter -> doMapping(request, response, parameter))
+                .toArray();
     }
 
     private Object doMapping(HttpServletRequest request, HttpServletResponse response, Parameter parameter) {
@@ -34,7 +36,7 @@ public class ExecutionMapper {
         final var paramterAnnotation = parameter.getAnnotations();
         return Arrays.stream(paramterAnnotation)
                 .filter(annotation -> annotation.annotationType() == RequestBody.class)
-                .map(annotation -> (RequestBody) annotation)
+                .map(RequestBody.class::cast)
                 .map(annotation -> createRequestBodyInstance(annotation, request, parameterType))
                 .findAny()
                 .orElse(null);
@@ -42,7 +44,6 @@ public class ExecutionMapper {
 
     private Object createRequestBodyInstance(RequestBody requestBody, HttpServletRequest request, Class<?> parameterType) {
         try {
-
             // 클래스 매핑의 경우
             if (requestBody.value().isEmpty()) {
                 final var constructor = parameterType.getDeclaredConstructor();
@@ -54,19 +55,19 @@ public class ExecutionMapper {
                 return instance;
             }
 
-            if (parameterType.isPrimitive()) {
-                throw new IllegalArgumentException("이름으로 매핑하는 경우 원시 타입 매핑만 가능합니다.");
+            if (!parameterType.getTypeName().equals(String.class.getName())) {
+                throw new IllegalArgumentException("단일 매핑에서는 String 타입만 선언 가능합니다.");
             }
             // 단일 매핑의 경우
-
             return request.getParameter(requestBody.value());
 
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
             log.error("{}의 기본 생성자를 필수로 작성해주세요.", parameterType);
+            e.printStackTrace();
             return null;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             log.error("{}", e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
