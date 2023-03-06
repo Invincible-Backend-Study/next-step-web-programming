@@ -34,20 +34,33 @@ public class ExecutionMapper {
         final var paramterAnnotation = parameter.getAnnotations();
         return Arrays.stream(paramterAnnotation)
                 .filter(annotation -> annotation.annotationType() == RequestBody.class)
-                .map(annotation -> createRequestBodyInstance(request, parameterType))
+                .map(annotation -> (RequestBody) annotation)
+                .map(annotation -> createRequestBodyInstance(annotation, request, parameterType))
                 .findAny()
                 .orElse(null);
     }
 
-    private Object createRequestBodyInstance(HttpServletRequest request, Class<?> parameterType) {
+    private Object createRequestBodyInstance(RequestBody requestBody, HttpServletRequest request, Class<?> parameterType) {
         try {
-            final var constructor = parameterType.getDeclaredConstructor();
-            final var instance = constructor.newInstance();
-            for (final var field : parameterType.getDeclaredFields()) {
-                final var type = field.getType();
-                Primitive.of(type).setField(instance, field, request.getParameter(field.getName()));
+
+            // 클래스 매핑의 경우
+            if (requestBody.value().isEmpty()) {
+                final var constructor = parameterType.getDeclaredConstructor();
+                final var instance = constructor.newInstance();
+                for (final var field : parameterType.getDeclaredFields()) {
+                    final var type = field.getType();
+                    Primitive.of(type).setField(instance, field, request.getParameter(field.getName()));
+                }
+                return instance;
             }
-            return instance;
+
+            if (parameterType.isPrimitive()) {
+                throw new IllegalArgumentException("이름으로 매핑하는 경우 원시 타입 매핑만 가능합니다.");
+            }
+            // 단일 매핑의 경우
+
+            return request.getParameter(requestBody.value());
+
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
             log.error("{}의 기본 생성자를 필수로 작성해주세요.", parameterType);
