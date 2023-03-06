@@ -2,12 +2,14 @@ package next.common.web;
 
 
 import com.google.common.collect.Lists;
-import core.mvc.Controller;
 import core.mvc.ModelAndView;
 import core.rc.AnnotationHandlerMapping;
-import core.rc.HandlerExecution;
+import core.rc.ControllerHandlerAdapter;
+import core.rc.HandlerAdapter;
+import core.rc.HandlerExecutionHandlerAdapter;
 import core.rc.HandlerMapping;
 import core.rc.LegacyHandlerMapping;
+import core.rc.filter.ExecutionRunner;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -23,6 +25,7 @@ public class DispatchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(DispatchServlet.class);
     private final List<HandlerMapping> mappings = Lists.newArrayList();
+    private final List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
 
     @Override
     public void init() throws ServletException {
@@ -41,6 +44,11 @@ public class DispatchServlet extends HttpServlet {
         mappings.add(annotationHandlerMapping);
         mappings.add(legacyHandlerMapping);
 
+        handlerAdapters.add(new ControllerHandlerAdapter());
+        handlerAdapters.add(new HandlerExecutionHandlerAdapter());
+
+        ExecutionRunner.getInstance().initialize();
+        log.info("initialize method execution setup");
 
     }
 
@@ -72,10 +80,13 @@ public class DispatchServlet extends HttpServlet {
     }
 
     private ModelAndView execute(Object handler, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (handler instanceof Controller) {
-            return ((Controller) handler).execute(request, response);
+        final var findHandlerAdapter = handlerAdapters.stream()
+                .filter(handlerAdapter -> handlerAdapter.supports(handler))
+                .findAny();
+        if (findHandlerAdapter.isPresent()) {
+            return findHandlerAdapter.get().handle(request, response, handler);
         }
-        return ((HandlerExecution) handler).handle(request, response);
+        return null;
     }
 }
 
