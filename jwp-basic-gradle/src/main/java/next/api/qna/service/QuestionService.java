@@ -10,16 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class QuestionService {
-    private static QuestionService questionService = new QuestionService();
+    private final AnswerDao answerDao;
+    private final QuestionDao questionDao;
 
-    private QuestionService() {}
-
-    public static QuestionService getInstance() {
-        return questionService;
+    public QuestionService(QuestionDao questionDao, AnswerDao answerDao) {
+        this.answerDao = answerDao;
+        this.questionDao = questionDao;
     }
-
-    private final AnswerDao answerDao = AnswerDao.getInstance();
-    private final QuestionDao questionDao = QuestionDao.getInstance();
 
     public void deleteQuestion(long questionId, User user) {
         Question question = questionDao.findByQuestionId(questionId);

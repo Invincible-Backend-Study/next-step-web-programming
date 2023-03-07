@@ -20,7 +20,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AnswerController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
-    private final QuestionService questionService = QuestionService.getInstance();
+
+    private final QuestionService questionService;
+    public AnswerController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping(value = "/answer", method = RequestMethod.POST)
     public ModelAndView answerAdd(HttpServletRequest request, HttpServletResponse response) {

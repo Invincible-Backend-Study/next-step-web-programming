@@ -22,7 +22,10 @@ import java.util.List;
 @Controller
 public class QuestionController {
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
-    private final QuestionService questionService = QuestionService.getInstance();
+    private final QuestionService questionService;
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping("/questions")
     public ModelAndView questionGet(HttpServletRequest request, HttpServletResponse response) {

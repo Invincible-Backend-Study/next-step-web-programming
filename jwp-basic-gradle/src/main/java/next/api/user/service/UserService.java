@@ -6,15 +6,10 @@ import next.api.user.model.User;
 import java.util.List;
 
 public class UserService {
-    private static UserService userService = new UserService();
-
-    private UserService() {}
-
-    public static UserService getInstance() {
-        return userService;
+    private final UserDao userDao;
+    private UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
-
-    private final UserDao userDao = UserDao.getInstance();
 
     public void addUser(User user) {
         userDao.insert(user);

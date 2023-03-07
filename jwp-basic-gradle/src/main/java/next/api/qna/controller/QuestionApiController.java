@@ -16,7 +16,10 @@ import java.util.List;
 @Controller
 public class QuestionApiController {
     private static final Logger log = LoggerFactory.getLogger(QuestionApiController.class);
-    private final QuestionService questionService = QuestionService.getInstance();
+    private final QuestionService questionService;
+    public QuestionApiController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping(value = "/api/qna/list")
     public ModelAndView questionList(HttpServletRequest request, HttpServletResponse response) {

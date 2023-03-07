@@ -7,15 +7,12 @@ import org.slf4j.LoggerFactory;
 
 public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
-    private static AuthService authService = new AuthService();
+    private final UserDao userDao;
 
-    private AuthService() {}
-
-    public static AuthService getInstance() {
-        return authService;
+    private AuthService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    private final UserDao userDao = UserDao.getInstance();
 
     public User getUser(final String id, final String password) {
         User user;
