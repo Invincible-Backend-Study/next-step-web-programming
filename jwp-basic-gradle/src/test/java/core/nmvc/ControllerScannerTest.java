@@ -12,6 +12,6 @@ class ControllerScannerTest {
     void init() throws Exception {
         ControllerScanner cs = new ControllerScanner();
         Map<Class<?>, Object> controllers = cs.getControllers("next.api");
-        System.out.println(controllers.toString());
+        assertTrue(controllers.toString().contains("class next.api.qna.controller.QuestionApiController"));
     }
 }

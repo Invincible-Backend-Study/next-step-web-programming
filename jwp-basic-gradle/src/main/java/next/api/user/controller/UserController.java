@@ -32,6 +32,7 @@ public class UserController {
         );
 
         userService.addUser(user);
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         return new ModelAndView(new JspView("redirect:/users"));
     }
 
@@ -46,6 +47,15 @@ public class UserController {
 
         List<User> users = userService.getUsers();
         return new ModelAndView(new JspView("/user/list.jsp")).addModel("users", users);
+    }
+
+    @RequestMapping(value = "/users/profile", method = RequestMethod.GET)
+    public ModelAndView userProfile(HttpServletRequest request, HttpServletResponse response) {
+        // String userId = request.getParameter("userId");
+        String name = request.getParameter("name");
+
+        User user = userService.getUserByUserId(name);
+        return new ModelAndView(new JspView("/user/profile.jsp")).addModel("user", user);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PATCH)

@@ -24,6 +24,14 @@ public class UserService {
         userDao.update(user);
     }
 
+    public User getUserByUserId(String userId) {
+        return userDao.findByUserId(userId);
+    }
+
+    public User getUserByName(String name) {
+        return userDao.findByName(name);
+    }
+
     public List<User> getUsers() {
         List<User> users;
         users = userDao.findAll();

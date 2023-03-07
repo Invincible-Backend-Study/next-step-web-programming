@@ -31,7 +31,7 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name">${question.writer}</a>
+                            <a href="/users/profile?name=${question.writer}" class="article-author-name">${question.writer}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
                                 ${question.createdDate}
                                 <i class="icon-link"></i>
@@ -71,7 +71,7 @@
                                                  class="article-author-thumb" alt="">
                                         </div>
                                         <div class="article-header-text">
-                                            <a href="/users/1/자바지기" class="article-author-name">${answer.writer}</a>
+                                            <a href="/users/profile?name=${answer.writer}" class="article-author-name">${answer.writer}</a>
                                             <a href="#answer-1434" class="article-header-time" title="퍼머링크">
                                                     ${answer.createdDate}
                                             </a>
@@ -80,23 +80,6 @@
                                     <div class="article-doc comment-doc">
                                         <p>${answer.contents}</p>
                                     </div>
-
-
-
-<%--                                    <div class="article-util">--%>
-<%--                                        <ul class="article-util-list">--%>
-<%--                                            <li>--%>
-<%--                                                <a class="link-modify-article" href="">수정</a>--%>
-<%--                                            </li>--%>
-<%--                                            <li>--%>
-<%--                                                <form name="form-delete" class="form-delete" method="POST">--%>
-<%--                                                    <input type="hidden" name="_method" value="DELETE">--%>
-<%--                                                    <button type="submit" class="link-delete-article" onclick="deleteAnswer('${answer.answerId}')">삭제</button>--%>
-<%--                                                </form>--%>
-<%--                                            </li>--%>
-<%--                                        </ul>--%>
-<%--                                    </div>--%>
-
 
                                     <div class="article-util">
                                         <ul class="article-util-list">
