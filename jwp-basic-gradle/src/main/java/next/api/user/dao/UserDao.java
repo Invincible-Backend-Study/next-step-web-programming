@@ -4,14 +4,15 @@ import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
 import next.api.user.model.User;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao {
     static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
     private static UserDao userDao = new UserDao();
-    private UserDao() {};
+
+    private UserDao() {}
+
     public static UserDao getInstance() {
         return userDao;
     }
@@ -53,6 +54,23 @@ public class UserDao {
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
         return jdbcTemplate.select(sql, resultSetMapper, userId);
+    }
+
+    public User findByName(String name) {
+        ResultSetMapper<User> resultSetMapper = rs -> {
+            if (rs.next()) {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
+            }
+            return null;
+        };
+
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE name=?";
+        return jdbcTemplate.select(sql, resultSetMapper, name);
     }
 
     public int update(User user) {

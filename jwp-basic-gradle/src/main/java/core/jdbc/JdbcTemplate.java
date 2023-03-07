@@ -48,17 +48,15 @@ public class JdbcTemplate {
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper, PreparedStatementParameters ps) {
-        ResultSet rs = null;
-        T result = null;
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             ps.setParameters(pstmt);
-            rs = pstmt.executeQuery();
-            result = resultSetMapper.mapRow(rs);
-            rs.close();
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return resultSetMapper.mapRow(rs);
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e.toString());
         }
-        return result;
     }
 
     public <T> T select(String sql, ResultSetMapper<T> resultSetMapper, Object... parameters) {

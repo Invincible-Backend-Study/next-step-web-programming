@@ -1,26 +1,26 @@
 package next.api.auth.controller;
 
+import core.annotation.Controller;
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.web.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import next.api.auth.service.AuthService;
-import next.common.controller.AbstractController;
-import next.api.user.dao.UserDao;
 import next.api.user.model.User;
 import next.common.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-public class LoginController extends AbstractController {
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+@Controller
+public class AuthController {
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService = AuthService.getInstance();
 
-    @Override
-    protected ModelAndView doPost(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
+    public ModelAndView authSessionLogin(HttpServletRequest request, HttpServletResponse response) {
         User user = getLoginUser(request.getParameter("userId"), request.getParameter("password"));
         if (user == null) {  // login failed
             return new ModelAndView(new JspView("redirect:/user/login_failed.jsp"));
@@ -28,6 +28,13 @@ public class LoginController extends AbstractController {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
+        return new ModelAndView(new JspView("redirect:/index"));
+    }
+
+    @RequestMapping("/auth/logout")
+    public ModelAndView authSessionLogout(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        session.invalidate();
         return new ModelAndView(new JspView("redirect:/index"));
     }
 

@@ -2,15 +2,17 @@ package next.api.qna.dao;
 
 import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
-import java.sql.SQLException;
+import next.api.qna.model.Question;
+
 import java.util.ArrayList;
 import java.util.List;
-import next.api.qna.model.Question;
 
 public class QuestionDao {
     static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
     private static QuestionDao questionDao = new QuestionDao();
-    private QuestionDao() {};
+
+    private QuestionDao() {}
+
     public static QuestionDao getInstance() {
         return questionDao;
     }

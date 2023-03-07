@@ -68,6 +68,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "\n[" + questionId + "/" + answerId + "] " + writer + ": " + contents + "\n"  + createdDate;
+        return "\n[" + questionId + "/" + answerId + "] " + writer + ": " + contents + "\n" + createdDate;
     }
 }
