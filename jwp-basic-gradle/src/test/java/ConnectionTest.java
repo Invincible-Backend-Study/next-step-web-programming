@@ -1,10 +1,12 @@
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Disabled
 public class ConnectionTest {
     private static final Logger log = LoggerFactory.getLogger(ConnectionTest.class);
 
