@@ -26,7 +26,7 @@ public class QuestionController extends AbstractAnnotationController {
     private final QuestionService questionService = new QuestionService();
 
     @RequestMapping(value = "/questions/show", method = RequestMethod.GET)
-    public ModelAndView show(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView questionList(final HttpServletRequest request, final HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Map<String, Object> questionWithAnswers = questionService.findByQuestionIdWithAnswers(questionId);
         log.debug("questionWithAnswers={}", questionWithAnswers);
@@ -34,12 +34,12 @@ public class QuestionController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/questions/new", method = RequestMethod.GET)
-    public ModelAndView createForm(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView createQuestionForm(final HttpServletRequest request, final HttpServletResponse response) {
         return jspView("qna/form");
     }
 
     @RequestMapping(value = "/questions/new", method = RequestMethod.POST)
-    public ModelAndView create(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView createQuestion(final HttpServletRequest request, final HttpServletResponse response) {
         QuestionCreateDto questionCreateDto = QuestionCreateDto.createDto(
                 request.getParameter("writer"),
                 request.getParameter("title"),
@@ -50,7 +50,7 @@ public class QuestionController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/questions/update", method = RequestMethod.GET)
-    public ModelAndView updateForm(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView updateQuestionForm(final HttpServletRequest request, final HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
         String writer = request.getParameter("writer");
         try {
@@ -66,7 +66,7 @@ public class QuestionController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/questions/update", method = RequestMethod.POST)
-    public ModelAndView update(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView updateQuestion(final HttpServletRequest request, final HttpServletResponse response) {
         try {
             QuestionUpdateFormDto requestDto = QuestionUpdateFormDto.createRequestDto(
                     request.getParameter("questionId"),
@@ -86,7 +86,7 @@ public class QuestionController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/questions/delete", method = RequestMethod.POST)
-    public ModelAndView delete(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView deleteQuestion(final HttpServletRequest request, final HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
         User user = SessionUtil.getLoginObject(request.getSession(), "user");
         try {

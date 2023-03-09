@@ -19,7 +19,7 @@ public class QuestionController extends AbstractAnnotationController {
     private final QuestionService questionService = new QuestionService();
 
     @RequestMapping(value = "/api/questions/delete", method = RequestMethod.POST)
-    public ModelAndView delete(final HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView deleteQuestion(final HttpServletRequest request, HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
         User user = SessionUtil.getLoginObject(request.getSession(), "user");
         try {
@@ -31,7 +31,7 @@ public class QuestionController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/api/questions", method = RequestMethod.GET)
-    public ModelAndView list(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView questionList(final HttpServletRequest request, final HttpServletResponse response) {
         return jsonView().addObject("questions", questionService.findAll());
     }
 

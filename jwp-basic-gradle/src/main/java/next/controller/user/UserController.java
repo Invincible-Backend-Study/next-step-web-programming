@@ -38,7 +38,7 @@ public class UserController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView list(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView userList(final HttpServletRequest request, final HttpServletResponse response) {
         List<User> users = userService.findAllUsers();
         log.debug("allUserList={}", users);
         request.setAttribute("users", users);
@@ -46,7 +46,7 @@ public class UserController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/users/update", method = RequestMethod.GET)
-    public ModelAndView updateForm(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView updateUserForm(final HttpServletRequest request, final HttpServletResponse response) {
         String userId = request.getParameter("userId");
         User loginedUser = SessionUtil.getLoginObject(request.getSession(), "user");
         if (!userId.equals(loginedUser.getUserId())) {
@@ -56,7 +56,7 @@ public class UserController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/users/update", method = RequestMethod.POST)
-    public ModelAndView update(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView updateUser(final HttpServletRequest request, final HttpServletResponse response) {
         User updatedUser = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),

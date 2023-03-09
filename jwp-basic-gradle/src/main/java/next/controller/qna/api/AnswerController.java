@@ -23,7 +23,7 @@ public class AnswerController extends AbstractAnnotationController {
     private final AnswerService answerService = new AnswerService();
 
     @RequestMapping(value = "/api/answers/add", method = RequestMethod.POST)
-    public ModelAndView create(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView createAnswer(final HttpServletRequest request, final HttpServletResponse response) {
         User user = SessionUtil.getLoginObject(request.getSession(), "user");
         Answer answer = new Answer(
                 user.getUserId(),
@@ -38,7 +38,7 @@ public class AnswerController extends AbstractAnnotationController {
     }
 
     @RequestMapping(value = "/api/answers/delete", method = RequestMethod.POST)
-    public ModelAndView delete(final HttpServletRequest request, final HttpServletResponse response) {
+    public ModelAndView deleteAnswer(final HttpServletRequest request, final HttpServletResponse response) {
         long answerId = Long.parseLong(request.getParameter("answerId"));
         int deleteResult = answerService.deleteAnswer(answerId);
         log.debug("deleteResult={}", deleteResult);
