@@ -25,6 +25,13 @@ public class Answer {
         this.questionId = questionId;
     }
 
+    public boolean canDelete(Question question) {
+        if (!getWriter().equals(question.getWriter())) {
+            return false;
+        }
+        return true;
+    }
+
     public long getAnswerId() {
         return answerId;
     }

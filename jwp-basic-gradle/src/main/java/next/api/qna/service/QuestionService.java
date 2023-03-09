@@ -23,17 +23,7 @@ public class QuestionService {
         if (question == null) {
             throw new IllegalArgumentException("해당 번호의 질문이 없습니다.");
         }
-        if (!user.getName().equals(question.getWriter())) {
-            throw new IllegalArgumentException("자신이 작성한 질문만 삭제할 수 있습니다.");
-        }
-
-        List<Answer> answers = answerDao.findByQuestionId(questionId);
-        if (!answers.isEmpty()) {
-            boolean anotherUserAnswer = answers.stream().anyMatch(answer -> !answer.getWriter().equals(question.getWriter()));
-            if (anotherUserAnswer) {
-                throw new IllegalArgumentException("다른사람에 답변이 있으면 제거할 수 없습니다.");
-            }
-        }
+        question.canDelete(user, answerDao.findByQuestionId(questionId));
 
         int result = questionDao.deleteByQuestionId(questionId);
         if (result != 1) {

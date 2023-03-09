@@ -22,6 +22,7 @@ public class DispatcherServlet extends HttpServlet {
     public void init() {
         annotationHandlerMapping = new AnnotationHandlerMapping(API_PATH_PREFIX);
         annotationHandlerMapping.initialize();
+        System.out.println(annotationHandlerMapping.toString());
     }
 
     @Override
