@@ -3,13 +3,23 @@ package next.user.dao;
 import core.jdbc.JdbcTemplate;
 import java.util.List;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.user.dao.sql.UserSql;
 import next.user.entity.User;
 
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class UserDao {
+
+
     private final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
+    public static UserDao getInstance() {
+        return UserDaoHolder.USER_DAO;
+    }
 
     public void insert(User user) {
         jdbcTemplate.update(UserSql.CREATE, (preparedStatement -> {
@@ -52,7 +62,6 @@ public class UserDao {
         });
     }
 
-
     public Optional<User> findById(String userId) {
         return Optional.ofNullable(this.findByUserId(userId));
     }
@@ -66,5 +75,9 @@ public class UserDao {
                 resultSet.getString("name"),
                 resultSet.getString("email")
         )));
+    }
+
+    private static class UserDaoHolder {
+        public static final UserDao USER_DAO = new UserDao();
     }
 }
