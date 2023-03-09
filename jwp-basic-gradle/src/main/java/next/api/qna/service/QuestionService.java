@@ -1,5 +1,6 @@
 package next.api.qna.service;
 
+import core.annotation.Service;
 import next.api.qna.dao.AnswerDao;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Answer;
@@ -9,6 +10,7 @@ import next.api.user.model.User;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Service
 public class QuestionService {
     private final AnswerDao answerDao;
     private final QuestionDao questionDao;

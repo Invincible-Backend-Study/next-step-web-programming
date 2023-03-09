@@ -1,5 +1,6 @@
 package next.api.qna.dao;
 
+import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
 import next.api.qna.model.Question;
@@ -7,6 +8,7 @@ import next.api.qna.model.Question;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class QuestionDao {
     static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
     private static QuestionDao questionDao = new QuestionDao();
