@@ -1,6 +1,7 @@
 package next.api.user.controller;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.web.ModelAndView;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    @Inject
     public UserController(UserService userService) {
         this.userService = userService;
     }

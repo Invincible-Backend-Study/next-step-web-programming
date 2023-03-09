@@ -11,13 +11,11 @@ import java.util.List;
 @Repository
 public class QuestionDao {
     static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-    private static QuestionDao questionDao = new QuestionDao();
-
-    private QuestionDao() {}
-
-    public static QuestionDao getInstance() {
-        return questionDao;
-    }
+//    private static QuestionDao questionDao = new QuestionDao();
+//    private QuestionDao() {}
+//    public static QuestionDao getInstance() {
+//        return questionDao;
+//    }
 
     public Question insert(Question question) {
         String sql = "INSERT INTO QUESTIONS(writer, title, contents, createdDate, countOfAnswer) VALUES (?, ?, ?, ?, ?)";

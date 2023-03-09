@@ -1,5 +1,6 @@
 package next.api.auth.service;
 
+import core.annotation.Inject;
 import core.annotation.Service;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
@@ -11,10 +12,10 @@ public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
     private final UserDao userDao;
 
+    @Inject
     private AuthService(UserDao userDao) {
         this.userDao = userDao;
     }
-
 
     public User getUser(final String id, final String password) {
         User user;

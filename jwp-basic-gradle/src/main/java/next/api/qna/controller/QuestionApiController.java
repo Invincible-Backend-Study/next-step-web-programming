@@ -1,6 +1,7 @@
 package next.api.qna.controller;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.web.ModelAndView;
 import next.api.qna.model.Question;
@@ -17,6 +18,7 @@ import java.util.List;
 public class QuestionApiController {
     private static final Logger log = LoggerFactory.getLogger(QuestionApiController.class);
     private final QuestionService questionService;
+    @Inject
     public QuestionApiController(QuestionService questionService) {
         this.questionService = questionService;
     }
