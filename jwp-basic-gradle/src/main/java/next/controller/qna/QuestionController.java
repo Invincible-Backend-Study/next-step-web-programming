@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.controller.qna.dto.QuestionCreateDto;
 import next.controller.qna.dto.QuestionUpdateFormDto;
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
 import next.exception.CannotDeleteQuestionException;
 import next.exception.CannotUpdateQuestionException;
 import next.model.User;
@@ -25,7 +23,11 @@ public class QuestionController extends AbstractAnnotationController {
 
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
 
-    private final QuestionService questionService = new QuestionService(new QuestionDao(), new AnswerDao());
+    private final QuestionService questionService;
+
+    public QuestionController(final QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping(value = "/questions/show", method = RequestMethod.GET)
     public ModelAndView questionList(final HttpServletRequest request, final HttpServletResponse response) {
