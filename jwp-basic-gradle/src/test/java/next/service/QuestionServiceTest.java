@@ -1,6 +1,8 @@
 package next.service;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
 import java.util.Date;
@@ -95,7 +97,6 @@ class QuestionServiceTest {
         // then
         Assertions.assertThatNoException().isThrownBy(
                 () -> questionService.deleteQuestion(1L, new User("test", "1234", "name", "test@test.com")));
-
     }
 
 }
