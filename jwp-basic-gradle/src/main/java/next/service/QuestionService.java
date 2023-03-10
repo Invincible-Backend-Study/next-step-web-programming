@@ -70,6 +70,9 @@ public class QuestionService {
     }
 
     private void validateDelete(final User user, final List<Answer> answers, final Question question) {
+        if (question == null) {
+            throw new CannotDeleteQuestionException("존재하지 않는 질문글은 삭제할 수 없습니다.");
+        }
         if (!user.getUserId().equals(question.getWriter())) {
             throw new CannotDeleteQuestionException("다른 사용자의 글은 삭제할 수 없습니다.");
         }
