@@ -64,26 +64,13 @@ public class QuestionService {
     public void deleteQuestion(final Long questionId, final User user) {
         List<Answer> answers = answerDao.findAllByQuestionId(questionId);
         Question question = questionDao.findById(questionId);
-        validateDelete(user, answers, question);
-        answerDao.deleteAllByQuestionId(questionId);
-        questionDao.deleteById(questionId);
-    }
-
-    private void validateDelete(final User user, final List<Answer> answers, final Question question) {
         if (question == null) {
             throw new CannotDeleteQuestionException("존재하지 않는 질문글은 삭제할 수 없습니다.");
         }
-        if (!user.getUserId().equals(question.getWriter())) {
-            throw new CannotDeleteQuestionException("다른 사용자의 글은 삭제할 수 없습니다.");
+        if (question.canDelete(user, answers)) {
+            answerDao.deleteAllByQuestionId(questionId);
+            questionDao.deleteById(questionId);
         }
-        if (answers.size() > 0 && !isAllSameWriter(question.getWriter(), answers)) {
-            throw new CannotDeleteQuestionException("질문에 다른 사용자의 답변이 달려있으므로 삭제할 수 없습니다.");
-        }
-    }
-
-    private boolean isAllSameWriter(final String questionWriter, final List<Answer> answers) {
-        return answers.stream()
-                .allMatch(answer -> answer.isWriter(questionWriter));
     }
 
 }

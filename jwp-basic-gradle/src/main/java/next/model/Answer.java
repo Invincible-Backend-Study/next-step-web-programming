@@ -54,6 +54,10 @@ public class Answer {
         return writer.equals(questionWriter);
     }
 
+    public boolean canDelete(final User user) {
+        return user.containUserId(writer);
+    }
+
     @Override
     public String toString() {
         return "Answer{" +
@@ -64,5 +68,4 @@ public class Answer {
                 ", questionId=" + questionId +
                 '}';
     }
-
 }

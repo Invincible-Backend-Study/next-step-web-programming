@@ -1,6 +1,8 @@
 package next.model;
 
 import java.util.Date;
+import java.util.List;
+import next.exception.CannotDeleteQuestionException;
 
 public class Question {
 
@@ -58,4 +60,15 @@ public class Question {
         return countOfAnswer;
     }
 
+    public boolean canDelete(final User user, final List<Answer> answers) {
+        if (!user.containUserId(writer)) {
+            throw new CannotDeleteQuestionException("다른 사용자의 글은 삭제할 수 없습니다.");
+        }
+        for (Answer answer : answers) {
+            if (!answer.canDelete(user)) {
+                throw new CannotDeleteQuestionException("질문에 다른 사용자의 답변이 달려있으므로 삭제할 수 없습니다.");
+            }
+        }
+        return true;
+    }
 }
