@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import next.controller.user.dto.ProfileUserDto;
-import next.controller.user.legacy.UserListController;
 import next.model.User;
 import next.service.UserService;
 import next.utils.SessionUtil;
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class UserController extends AbstractAnnotationController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserListController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService = new UserService();
 

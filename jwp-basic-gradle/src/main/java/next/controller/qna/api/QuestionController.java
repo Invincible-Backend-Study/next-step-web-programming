@@ -7,6 +7,8 @@ import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractAnnotationController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import next.dao.AnswerDao;
+import next.dao.QuestionDao;
 import next.exception.CannotDeleteQuestionException;
 import next.model.Result;
 import next.model.User;
@@ -16,7 +18,7 @@ import next.utils.SessionUtil;
 @Controller
 public class QuestionController extends AbstractAnnotationController {
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService = new QuestionService(new QuestionDao(), new AnswerDao());
 
     @RequestMapping(value = "/api/questions/delete", method = RequestMethod.POST)
     public ModelAndView deleteQuestion(final HttpServletRequest request, HttpServletResponse response) {

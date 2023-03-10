@@ -13,8 +13,13 @@ import next.model.User;
 
 public class QuestionService {
 
-    private final QuestionDao questionDao = new QuestionDao();
-    private final AnswerDao answerDao = new AnswerDao();
+    private final QuestionDao questionDao;
+    private final AnswerDao answerDao;
+
+    public QuestionService(final QuestionDao questionDao, final AnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
+    }
 
     public List<Question> findAllOrderByCreatedDate() {
         return questionDao.findAllOrderByCreatedDate();
