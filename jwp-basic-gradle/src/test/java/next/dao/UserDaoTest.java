@@ -13,12 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDaoTest {
-    UserDao userDao;
-
-    @Before
-    public void beforeEach() throws Exception {
-        userDao = UserDao.getInstance();
-    }
+    UserDao userDao = new UserDao();
 
     @After
     public void afterEach() throws Exception {

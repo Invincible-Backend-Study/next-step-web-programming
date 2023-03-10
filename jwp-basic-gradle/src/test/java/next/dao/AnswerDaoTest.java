@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AnswerDaoTest {
-    private final AnswerDao answerDao = AnswerDao.getInstance();
+    private final AnswerDao answerDao= new AnswerDao();
 
     @BeforeEach
     void beforeEach() throws Exception {
