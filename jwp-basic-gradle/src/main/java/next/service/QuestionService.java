@@ -62,11 +62,11 @@ public class QuestionService {
      * - 질문자와 답변자가 모두 같은 경우 질문 삭제가 가능
      */
     public void deleteQuestion(final Long questionId, final User user) {
-        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
         Question question = questionDao.findById(questionId);
         if (question == null) {
             throw new CannotDeleteQuestionException("존재하지 않는 질문글은 삭제할 수 없습니다.");
         }
+        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
         if (question.canDelete(user, answers)) {
             answerDao.deleteAllByQuestionId(questionId);
             questionDao.deleteById(questionId);
