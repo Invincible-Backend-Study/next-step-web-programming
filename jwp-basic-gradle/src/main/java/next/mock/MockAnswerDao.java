@@ -9,7 +9,7 @@ import next.model.Answer;
 
 public class MockAnswerDao implements AnswerDao {
 
-    private Map<Integer, Answer> answers = Maps.newHashMap();
+    private final Map<Integer, Answer> answers = Maps.newHashMap();
 
     @Override
     public Answer addAnswer(Answer answer) {

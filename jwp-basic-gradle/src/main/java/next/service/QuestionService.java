@@ -12,7 +12,7 @@ import next.model.User;
 public class QuestionService {
 
     private final JdbcQuestionDao jdbcQuestionDao = JdbcQuestionDao.getInstance();
-    private final JdbcAnswerDao jdbcAnswerDao = JdbcAnswerDao.getInstance();
+    private final JdbcAnswerDao jdbcAnswerDao = JdbcAnswerDao.getInstance()Q;
 
 
 
