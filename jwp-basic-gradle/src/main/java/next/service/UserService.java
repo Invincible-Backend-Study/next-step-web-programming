@@ -1,12 +1,12 @@
 package next.service;
 
 import java.util.List;
-import next.dao.UserDao;
+import next.dao.JdbcUserDao;
 import next.model.User;
 
 public class UserService {
 
-    private final UserDao userDao = new UserDao();
+    private final JdbcUserDao userDao = new JdbcUserDao();
 
     public void updateUserInformation(final User updatedUser) {
         userDao.update(updatedUser);

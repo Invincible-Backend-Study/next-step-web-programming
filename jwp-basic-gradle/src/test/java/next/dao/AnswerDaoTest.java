@@ -2,7 +2,6 @@ package next.dao;
 
 import static org.assertj.core.api.Assertions.*;
 
-import core.jdbc.ConnectionManager;
 import java.util.List;
 import next.model.Answer;
 import org.junit.jupiter.api.Assertions;
@@ -10,18 +9,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 class AnswerDaoTest extends DaoTest {
     private static final Logger log = LoggerFactory.getLogger(AnswerDaoTest.class);
 
-    AnswerDao answerDao;
+    JdbcAnswerDao answerDao;
 
     @BeforeEach
     void init() {
-        answerDao = new AnswerDao();
+        answerDao = new JdbcAnswerDao();
     }
 
     @Test

@@ -1,86 +1,22 @@
 package next.dao;
 
-import core.jdbc.JdbcTemplate;
-import java.sql.Timestamp;
 import java.util.List;
 import next.model.Question;
 
-public class QuestionDao {
+public interface QuestionDao {
 
-    private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+    List<Question> findAll();
 
-    public List<Question> findAll() {
-        return jdbcTemplate.query(
-                "SELECT * FROM QUESTIONS",
-                resultSet -> new Question(
-                        resultSet.getLong("questionId"),
-                        resultSet.getString("writer"),
-                        resultSet.getString("title"),
-                        resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate"),
-                        resultSet.getInt("countOfAnswer"))
-        );
-    }
+    Question findById(final long questionId);
 
-    public Question findById(final long questionId) {
-        return jdbcTemplate.queryForObject(
-                "SELECT "
-                        + "questionId, writer, title, contents, createdDate, countOfAnswer "
-                        + "FROM QUESTIONS "
-                        + "where questionId = ?",
-                resultSet -> new Question(
-                        resultSet.getLong("questionId"),
-                        resultSet.getString("writer"),
-                        resultSet.getString("title"),
-                        resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate"),
-                        resultSet.getInt("countOfAnswer")),
-                questionId
-        );
-    }
+    List<Question> findAllOrderByCreatedDate();
 
-    public List<Question> findAllOrderByCreatedDate() {
-        return jdbcTemplate.query(
-                "SELECT * FROM QUESTIONS ORDER BY createdDate desc",
-                resultSet -> new Question(
-                        resultSet.getLong("questionId"),
-                        resultSet.getString("writer"),
-                        resultSet.getString("title"),
-                        resultSet.getString("contents"),
-                        resultSet.getTimestamp("createdDate"),
-                        resultSet.getInt("countOfAnswer"))
-        );
-    }
+    void insertNewQuestion(final Question question);
 
-    public void insertNewQuestion(final Question question) {
-        jdbcTemplate.update(
-                "INSERT INTO"
-                        + " QUESTIONS(writer, title, contents, createdDate, countOfAnswer)"
-                        + " VALUES(?, ?, ?, ?, ?)",
-                question.getWriter(),
-                question.getTitle(),
-                question.getContents(),
-                new Timestamp(question.getTimeFromCreatedDate()),
-                question.getCountOfAnswer());
-    }
+    void updateCountOfAnswerById(final Long questionId, final int countOfAnswer);
 
-    public void updateCountOfAnswerById(final Long questionId, final int countOfAnswer) {
-        jdbcTemplate.update(
-                "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?",
-                countOfAnswer, questionId);
-    }
+    int update(final Question question);
 
-    public int update(final Question question) {
-        return jdbcTemplate.update(
-                "UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?",
-                question.getTitle(), question.getContents(), question.getQuestionId()
-        );
-    }
+    int deleteById(final Long questionId);
 
-    public int deleteById(final Long questionId) {
-        return jdbcTemplate.update(
-                "DELETE FROM QUESTIONS WHERE questionId = ?",
-                questionId
-        );
-    }
 }

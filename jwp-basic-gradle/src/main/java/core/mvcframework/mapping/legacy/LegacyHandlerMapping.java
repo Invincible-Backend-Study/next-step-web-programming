@@ -23,8 +23,8 @@ import next.controller.user.legacy.UpdateUserFormController;
 import next.controller.user.legacy.UserListController;
 import next.controller.user.legacy.auth.LoginController;
 import next.controller.user.legacy.auth.SignUpController;
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
 
     @Override
     public void initialize() {
-        QuestionService questionService = new QuestionService(new QuestionDao(), new AnswerDao());
+        QuestionService questionService = new QuestionService(new JdbcQuestionDao(), new JdbcAnswerDao());
 
         // 로그인 필요없음
         // handlerMapping.put("/", new HomeController());

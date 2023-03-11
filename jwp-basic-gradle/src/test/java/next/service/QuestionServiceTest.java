@@ -1,14 +1,13 @@
 package next.service;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.exception.CannotDeleteQuestionException;
 import next.model.Answer;
 import next.model.Question;
@@ -28,10 +27,10 @@ class QuestionServiceTest {
     QuestionService questionService;
 
     @Mock
-    QuestionDao questionDao;
+    JdbcQuestionDao questionDao;
 
     @Mock
-    AnswerDao answerDao;
+    JdbcAnswerDao answerDao;
 
     @Test
     @DisplayName("존재하지 않는 사용자 질문 삭제시 예외 발생 테스트")

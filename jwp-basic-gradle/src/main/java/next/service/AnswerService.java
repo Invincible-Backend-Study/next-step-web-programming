@@ -1,14 +1,14 @@
 package next.service;
 
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.Answer;
 import next.model.Question;
 
 public class AnswerService {
 
-    private final AnswerDao answerDao = new AnswerDao();
-    private final QuestionDao questionDao = new QuestionDao();
+    private final JdbcAnswerDao answerDao = new JdbcAnswerDao();
+    private final JdbcQuestionDao questionDao = new JdbcQuestionDao();
 
     public Answer insertAnswer(final Answer answer) {
         Answer insertedAnswer = answerDao.insert(answer);
