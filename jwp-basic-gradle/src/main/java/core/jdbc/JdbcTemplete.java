@@ -1,5 +1,7 @@
 package core.jdbc;
 
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import next.exception.DataAcessException;
 
 import java.sql.Connection;
@@ -12,7 +14,8 @@ public class JdbcTemplete {
 
     private static JdbcTemplete instance = null;
 
-    private JdbcTemplete() {}
+    private JdbcTemplete() {
+    }
 
     public static synchronized JdbcTemplete getInstance() {
         if (instance == null) {
@@ -20,25 +23,26 @@ public class JdbcTemplete {
         }
         return instance;
     }
+
     public void excuteSqlUpdate(String sql, Object... parameters) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             setSqlParameters(pstmt, parameters);
             pstmt.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAcessException(e);
         }
     }
 
-    public void excuteSqlUpdate(KeyHolder key, String sql, Object ...parameters){
+    public void excuteSqlUpdate(KeyHolder key, String sql, Object... parameters) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
             setSqlParameters(pstmt, parameters);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
-            if(rs.next()) {
+            if (rs.next()) {
                 key.setId(rs.getInt(1));
             }
             rs.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAcessException(e);
         }
     }
@@ -48,7 +52,7 @@ public class JdbcTemplete {
         try (Connection con = ConnectionManager.getConnection(); Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(
                 sql);) {
             return rm.mapRow(rs);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAcessException(e);
         }
     }
@@ -57,7 +61,7 @@ public class JdbcTemplete {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             setSqlParameters(pstmt, parameters);
             return getResultSet(rm, pstmt);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAcessException(e);
         }
     }
@@ -72,7 +76,7 @@ public class JdbcTemplete {
     private static <T> T getResultSet(RawMapper<T> rm, PreparedStatement pstmt) {
         try (ResultSet rs = pstmt.executeQuery()) {
             return rm.mapRow(rs);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAcessException(e);
         }
     }

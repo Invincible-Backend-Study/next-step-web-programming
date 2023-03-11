@@ -31,7 +31,7 @@ public class UserDaoTest {
     @Test
     public void crud() throws Exception {
         User expected = new User("leejunho", "123", "leejunho", "javajigi@email.com");
-        UserDao userDao = new UserDao();
+        UserDao userDao = UserDao.getInstance();
         userDao.addUser(expected);
         User actual = userDao.findByUserId(expected.getUserId());
         assertEquals(expected, actual);
@@ -41,7 +41,7 @@ public class UserDaoTest {
     public void update_test() throws Exception {
         User user = new User("test", "123", "이준호", "javajigi@email.com");
         User expected = new User("qwe", "2", "123", "test@email.com");
-        UserDao userDao = new UserDao();
+        UserDao userDao = UserDao.getInstance();
         userDao.addUser(user);
         userDao.updateUser(expected, user.getUserId());
         User actual = userDao.findByUserId(expected.getUserId());
@@ -50,7 +50,7 @@ public class UserDaoTest {
 
     @Test
     public void find_all_users() throws Exception {
-        UserDao userDao = new UserDao();
+        UserDao userDao = UserDao.getInstance();
         User user = new User("wnsgh12s", "123", "이준호", "junho1273@gmail.com");
         User admin = new User("admin", "password", "자바지기", "admin@slipp.net");
         userDao.addUser(user);
@@ -61,8 +61,8 @@ public class UserDaoTest {
 
     @Test
     public void test() {
-        AnswerDao dao = new AnswerDao();
-        Answer as = new Answer("이준호","이건데",8);
+        AnswerDao dao = AnswerDao.getInstance();
+        Answer as = new Answer("이준호", "이건데", 8);
     }
 
 

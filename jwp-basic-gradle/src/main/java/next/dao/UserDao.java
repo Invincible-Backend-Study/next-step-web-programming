@@ -12,6 +12,19 @@ public class UserDao {
 
     private final JdbcTemplete templete = JdbcTemplete.getInstance();
 
+    private static UserDao instance = null;
+
+    private UserDao() {
+    }
+
+    public static synchronized UserDao getInstance() {
+        if (instance == null) {
+            instance = new UserDao();
+        }
+        return instance;
+    }
+
+
     //INSERT
     public void addUser(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";

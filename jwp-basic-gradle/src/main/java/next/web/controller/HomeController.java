@@ -8,7 +8,7 @@ import next.mvc.ModelAndView;
 
 public class HomeController extends AbstractController {
 
-    private final QuestionDao dao = new QuestionDao();
+    private final QuestionDao dao = QuestionDao.getInstance();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
