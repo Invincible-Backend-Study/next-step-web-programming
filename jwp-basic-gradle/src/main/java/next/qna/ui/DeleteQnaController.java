@@ -28,9 +28,7 @@ public class DeleteQnaController extends AbstractController {
             return this.jspView("redirect: /");
         } catch (DomainException e) {
             log.error("{}", e.getMessage());
-            request.setAttribute("errorMessage", e.getMessage());
-            return this.jspView("redirect: /qna/show?questionId=" + questionId).addObject("errorMessage", e.getMessage());
+            return this.jspView("redirect: /qna/show?questionId=" + questionId);
         }
-        //return this.jsonView().addObject("result", Result.ok());
     }
 }

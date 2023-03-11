@@ -1,9 +1,12 @@
 package next.user.service;
 
+import core.annotation.Service;
 import next.common.error.DomainExceptionCode;
 import next.user.dao.UserDao;
 import next.user.payload.request.CreateUserDto;
 
+
+@Service
 public class CreateUserService {
 
     private final UserDao userDao = UserDao.getInstance();

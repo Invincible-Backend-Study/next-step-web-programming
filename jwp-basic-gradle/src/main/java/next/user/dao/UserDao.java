@@ -1,20 +1,17 @@
 package next.user.dao;
 
+import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import java.util.List;
 import java.util.Optional;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.user.dao.sql.UserSql;
 import next.user.entity.User;
 
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Repository
 @Slf4j
 public class UserDao {
-
-
     private final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
 
     public static UserDao getInstance() {

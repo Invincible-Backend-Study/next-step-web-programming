@@ -35,17 +35,17 @@ public class ExecutionMapper {
         }
         final var paramterAnnotation = parameter.getAnnotations();
         return Arrays.stream(paramterAnnotation)
-                .filter(annotation -> annotation.annotationType() == RequestBody.class)
-                .map(RequestBody.class::cast)
+                .filter(annotation -> annotation.annotationType() == ModelAttribute.class)
+                .map(ModelAttribute.class::cast)
                 .map(annotation -> createRequestBodyInstance(annotation, request, parameterType))
                 .findAny()
                 .orElse(null);
     }
 
-    private Object createRequestBodyInstance(RequestBody requestBody, HttpServletRequest request, Class<?> parameterType) {
+    private Object createRequestBodyInstance(ModelAttribute modelAttribute, HttpServletRequest request, Class<?> parameterType) {
         try {
             // 클래스 매핑의 경우
-            if (requestBody.value().isEmpty()) {
+            if (modelAttribute.value().isEmpty()) {
                 final var constructor = parameterType.getDeclaredConstructor();
                 final var instance = constructor.newInstance();
                 for (final var field : parameterType.getDeclaredFields()) {
@@ -59,7 +59,7 @@ public class ExecutionMapper {
                 throw new IllegalArgumentException("단일 매핑에서는 String 타입만 선언 가능합니다.");
             }
             // 단일 매핑의 경우
-            return request.getParameter(requestBody.value());
+            return request.getParameter(modelAttribute.value());
 
         } catch (NoSuchMethodException e) {
             log.error("{}의 기본 생성자를 필수로 작성해주세요.", parameterType);

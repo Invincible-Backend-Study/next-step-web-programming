@@ -1,6 +1,7 @@
 package core.di.factory;
 
 import com.google.common.collect.Maps;
+import core.annotation.Controller;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -41,5 +42,16 @@ public class BeanFactory {
         if (retryFlag) {
             initialize();
         }
+    }
+
+    public Map<Class<?>, Object> getControllers() {
+        final Map<Class<?>, Object> controllers = Maps.newHashMap();
+        for (final var clazz : preInstantiateBeans) {
+            final var annotation = clazz.getAnnotation(Controller.class);
+            if (annotation != null) {
+                controllers.put(clazz, beans.get(clazz));
+            }
+        }
+        return controllers;
     }
 }

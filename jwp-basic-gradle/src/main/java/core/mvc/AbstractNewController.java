@@ -1,12 +1,12 @@
 package core.mvc;
 
-public abstract class AbstractController implements Controller {
+public abstract class AbstractNewController {
 
-    protected ModelAndView jspView(String forwardUrl){
+    protected ModelAndView jspView(String forwardUrl) {
         return new ModelAndView(new JspView(forwardUrl));
     }
 
-    protected ModelAndView jsonView(){
+    protected ModelAndView jsonView() {
         return new ModelAndView(new JsonView());
     }
 }

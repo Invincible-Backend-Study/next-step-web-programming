@@ -1,11 +1,13 @@
 package next.user.service;
 
+import core.annotation.Service;
 import lombok.Getter;
 import next.user.dao.UserDao;
 import next.user.entity.User;
 import next.user.payload.request.UpdateUserRequest;
 
 
+@Service
 @Getter
 public class UpdateUserService {
 

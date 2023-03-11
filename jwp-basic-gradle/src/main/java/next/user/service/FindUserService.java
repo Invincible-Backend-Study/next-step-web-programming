@@ -1,9 +1,12 @@
 package next.user.service;
 
+import core.annotation.Service;
 import java.util.List;
 import next.user.dao.UserDao;
 import next.user.entity.User;
 
+
+@Service
 public class FindUserService {
 
     private final UserDao userDao = UserDao.getInstance();
