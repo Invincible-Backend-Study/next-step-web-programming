@@ -1,6 +1,5 @@
 package next.web.controller.question;
 
-import next.dao.QuestionDao;
 import next.model.Question;
 import next.model.User;
 import next.mvc.AbstractController;

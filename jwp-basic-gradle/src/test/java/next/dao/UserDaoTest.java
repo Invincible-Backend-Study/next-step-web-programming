@@ -4,26 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import next.model.Answer;
-import next.model.Question;
 import next.model.User;
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.junit.jupiter.api.Test;
 
 public class UserDaoTest {
@@ -61,7 +46,7 @@ public class UserDaoTest {
 
     @Test
     public void test() {
-        AnswerDao dao = AnswerDao.getInstance();
+        JdbcAnswerDao dao = JdbcAnswerDao.getInstance();
         Answer as = new Answer("이준호", "이건데", 8);
     }
 

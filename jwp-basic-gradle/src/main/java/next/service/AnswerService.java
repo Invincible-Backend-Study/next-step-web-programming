@@ -1,30 +1,30 @@
 package next.service;
 
 import java.util.List;
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.Answer;
 
 public class AnswerService {
 
-    private final AnswerDao answerDao = AnswerDao.getInstance();
-    private final QuestionDao questionDao = QuestionDao.getInstance();
+    private final JdbcAnswerDao jdbcAnswerDao = JdbcAnswerDao.getInstance();
+    private final JdbcQuestionDao jdbcQuestionDao = JdbcQuestionDao.getInstance();
 
     public Answer addAnswer(Answer answer) {
-        Answer returnedAnswer = answerDao.addAnswer(answer);
+        Answer returnedAnswer = jdbcAnswerDao.addAnswer(answer);
         if (returnedAnswer == null) {
             return null;
         }
-        questionDao.increaseAnswerCount(answer.getQuestionId());
+        jdbcQuestionDao.increaseAnswerCount(answer.getQuestionId());
         return returnedAnswer;
     }
 
     public void deleteAnswer(int answerId) {
-        answerDao.deleteAnswer(answerId);
-        questionDao.decreaseAnswer(answerId);
+        jdbcAnswerDao.deleteAnswer(answerId);
+        jdbcQuestionDao.decreaseAnswer(answerId);
     }
 
     public List<Answer> findAllbyQuestionId(int questionId) {
-        return answerDao.findAllByQuestonId(questionId);
+        return jdbcAnswerDao.findAllByQuestonId(questionId);
     }
 }

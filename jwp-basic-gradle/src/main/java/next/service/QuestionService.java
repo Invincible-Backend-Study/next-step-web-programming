@@ -2,8 +2,8 @@ package next.service;
 
 import java.util.List;
 import java.util.Objects;
-import next.dao.AnswerDao;
-import next.dao.QuestionDao;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.Answer;
 import next.model.Form;
 import next.model.Question;
@@ -11,46 +11,46 @@ import next.model.User;
 
 public class QuestionService {
 
-    private final QuestionDao questionDao = QuestionDao.getInstance();
-    private final AnswerDao answerDao = AnswerDao.getInstance();
+    private final JdbcQuestionDao jdbcQuestionDao = JdbcQuestionDao.getInstance();
+    private final JdbcAnswerDao jdbcAnswerDao = JdbcAnswerDao.getInstance();
 
 
 
     public Question findByQuestionId(int questionId) {
-        return questionDao.findByQuestionId(questionId);
+        return jdbcQuestionDao.findByQuestionId(questionId);
     }
 
     public List<Question> findAll() {
-        return questionDao.findAll();
+        return jdbcQuestionDao.findAll();
     }
 
     public void addQuestion(Question question) {
-        questionDao.addQuestion(question);
+        jdbcQuestionDao.addQuestion(question);
     }
 
     public void updateQuestion(Form form, User user) throws Exception {
         validateUpdate(form, user);
-        questionDao.update(form.getContents(), form.getTitle(), form.getId());
+        jdbcQuestionDao.update(form.getContents(), form.getTitle(), form.getId());
     }
 
     private void validateUpdate(Form form, User user) throws Exception {
         if (user == null) {
             throw new Exception("로그인 하지 않았습니다.");
         }
-        Question question = questionDao.findByQuestionId(Integer.parseInt(form.getId()));
+        Question question = jdbcQuestionDao.findByQuestionId(Integer.parseInt(form.getId()));
         if (!Objects.equals(user.getName(), question.getWriter())) {
             throw new Exception("작성자가 아닐시 삭제할 수 없습니다.");
         }
     }
 
     public boolean deleteQuestion(int questionId, User user) throws Exception {
-        Question question = questionDao.findByQuestionId(questionId);
+        Question question = jdbcQuestionDao.findByQuestionId(questionId);
         validateDelete(user, question);
-        List<Answer> answers = answerDao.findAllByQuestonId(question.getQuestionId());
+        List<Answer> answers = jdbcAnswerDao.findAllByQuestonId(question.getQuestionId());
         boolean canDelete = answers.stream().allMatch(answer -> Objects.equals(answer.getWriter(), user.getName()));
         if (canDelete) {
-            questionDao.deleteAnswer(question.getQuestionId());
-            answers.forEach(answer -> answerDao.deleteAnswer(answer.getAnswerId()));
+            jdbcQuestionDao.deleteAnswer(question.getQuestionId());
+            answers.forEach(answer -> jdbcAnswerDao.deleteAnswer(answer.getAnswerId()));
             return true;
         }
         return false;

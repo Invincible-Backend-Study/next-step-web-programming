@@ -2,13 +2,13 @@ package next.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import next.dao.QuestionDao;
+import next.dao.JdbcQuestionDao;
 import next.mvc.AbstractController;
 import next.mvc.ModelAndView;
 
 public class HomeController extends AbstractController {
 
-    private final QuestionDao dao = QuestionDao.getInstance();
+    private final JdbcQuestionDao dao = JdbcQuestionDao.getInstance();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
