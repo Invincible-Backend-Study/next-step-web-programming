@@ -10,8 +10,8 @@ import next.model.User;
 
 public class QuestionService {
 
-    private final QuestionDao questionDao = new QuestionDao();
-    private final AnswerDao answerDao = new AnswerDao();
+    private final QuestionDao questionDao = QuestionDao.getInstance();
+    private final AnswerDao answerDao = AnswerDao.getInstance();
 
     public Question findByQuestionId(int questionId) {
         return questionDao.findByQuestionId(questionId);
@@ -38,6 +38,6 @@ public class QuestionService {
     }
 
     public void updateQuestion(String contents, String title, String id) {
-        questionDao.update(contents, title,id);
+        questionDao.update(contents, title, id);
     }
 }

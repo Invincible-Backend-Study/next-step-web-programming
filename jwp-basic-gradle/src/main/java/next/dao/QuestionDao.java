@@ -10,6 +10,17 @@ import java.util.List;
 public class QuestionDao {
 
     private final JdbcTemplete template = JdbcTemplete.getInstance();
+    private static QuestionDao instance = null;
+
+    private QuestionDao() {
+    }
+
+    public static synchronized QuestionDao getInstance() {
+        if (instance == null) {
+            instance = new QuestionDao();
+        }
+        return instance;
+    }
 
     public void addQuestion(Question question) {
         String sql = "INSERT INTO QUESTIONS ( writer, title, contents, createdDate, countOfAnswer) VALUES (?,?,?,?,?)";
@@ -27,8 +38,8 @@ public class QuestionDao {
 
     public Question findByQuestionId(int questionId) {
         String sql = "SELECT * FROM QUESTIONS WHERE QUESTIONID = ?";
-        return template.excuteFindDynamicData(sql,rs -> {
-            if(rs.next()){
+        return template.excuteFindDynamicData(sql, rs -> {
+            if (rs.next()) {
                 return new Question(
                         rs.getInt("questionId"),
                         rs.getString("writer"),
@@ -40,23 +51,23 @@ public class QuestionDao {
 
             }
             return null;
-        },questionId);
+        }, questionId);
     }
 
     public List<Question> findAll() {
         String sql = "SELECT * FROM QUESTIONS";
-        return template.excuteFindDynamicData(sql,rs -> {
+        return template.excuteFindDynamicData(sql, rs -> {
             List<Question> questions = new ArrayList<>();
-            while (rs.next()){
+            while (rs.next()) {
                 questions.add(
                         new Question(
-                        rs.getInt("questionId"),
-                        rs.getString("writer"),
-                        rs.getString("title"),
-                        rs.getString("contents"),
-                        rs.getTimestamp("createdDate"),
-                        rs.getInt("countOfAnswer")
-                ));
+                                rs.getInt("questionId"),
+                                rs.getString("writer"),
+                                rs.getString("title"),
+                                rs.getString("contents"),
+                                rs.getTimestamp("createdDate"),
+                                rs.getInt("countOfAnswer")
+                        ));
             }
             return questions;
         });
@@ -64,21 +75,21 @@ public class QuestionDao {
 
     public void decreaseAnswer(int questionId) {
         String sql = "UPDATE QUESTIONS SET countOfAnswer = countOfAnswer - 1 WHERE questionId = ?";
-        template.excuteSqlUpdate(sql,questionId);
+        template.excuteSqlUpdate(sql, questionId);
     }
 
     public void increaseAnswerCount(int questionId) {
         String sql = "UPDATE QUESTIONS SET countOfAnswer= countOfAnswer + 1 WHERE questionId = ?";
-        template.excuteSqlUpdate(sql,questionId);
+        template.excuteSqlUpdate(sql, questionId);
     }
 
     public void deleteAnswer(int id) {
         String sql = "DELETE FROM QUESTIONS WHERE questionId = ?";
-        template.excuteSqlUpdate(sql,id);
+        template.excuteSqlUpdate(sql, id);
     }
 
-    public void update(String contents , String title,String id) {
+    public void update(String contents, String title, String id) {
         String sql = "UPDATE QUESTIONS SET CONTENTS = ?,TITLE =? WHERE questionId = ? ";
-        template.excuteSqlUpdate(sql,contents,title,id);
+        template.excuteSqlUpdate(sql, contents, title, id);
     }
 }
