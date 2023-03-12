@@ -3,6 +3,8 @@ package next.web.controller.question;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.User;
 import next.mvc.AbstractController;
 import next.mvc.ModelAndView;
@@ -11,7 +13,7 @@ import next.service.QuestionService;
 public class DeleteQuestion extends AbstractController {
 
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {

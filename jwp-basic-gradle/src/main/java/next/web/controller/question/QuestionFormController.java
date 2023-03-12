@@ -1,5 +1,7 @@
 package next.web.controller.question;
 
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.Question;
 import next.model.User;
 import next.mvc.AbstractController;
@@ -12,7 +14,7 @@ import next.service.QuestionService;
 
 public class QuestionFormController extends AbstractController {
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {

@@ -3,6 +3,8 @@ package next.web.controller.question;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.Answer;
 import next.model.Question;
 import next.mvc.AbstractController;
@@ -13,7 +15,7 @@ import next.service.QuestionService;
 public class QuestionController extends AbstractController {
 
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
     private final AnswerService answerService = new AnswerService();
 
     @Override

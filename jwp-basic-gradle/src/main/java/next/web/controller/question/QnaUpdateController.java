@@ -4,6 +4,8 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
 import next.model.Form;
 import next.model.User;
 import next.mvc.AbstractController;
@@ -30,5 +32,5 @@ public class QnaUpdateController extends AbstractController {
         }
     }
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
 }
