@@ -1,5 +1,6 @@
 package next.api.qna.service;
 
+import core.annotation.Inject;
 import core.annotation.Service;
 import next.api.qna.dao.AnswerDao;
 import next.api.qna.dao.QuestionDao;
@@ -15,6 +16,7 @@ public class QuestionService {
     private final AnswerDao answerDao;
     private final QuestionDao questionDao;
 
+    @Inject
     public QuestionService(QuestionDao questionDao, AnswerDao answerDao) {
         this.answerDao = answerDao;
         this.questionDao = questionDao;

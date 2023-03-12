@@ -1,16 +1,14 @@
 package core.di.factory;
 
-import java.lang.reflect.Constructor;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import core.annotation.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
 import org.springframework.beans.BeanUtils;
+
+import java.lang.reflect.Constructor;
+import java.util.*;
 
 public class BeanFactory {
     private static final Logger logger = LoggerFactory.getLogger(BeanFactory.class);
@@ -28,6 +26,14 @@ public class BeanFactory {
         return (T) beans.get(requiredType);
     }
 
+    public Map<Class<?>, Object> getControllers() {
+        Map<Class<?>, Object> controllers = new HashMap<>();
+        beans.keySet().stream()
+                .filter(clazz -> clazz.isAnnotationPresent(Controller.class))
+                .forEach(clazz -> controllers.put(clazz, beans.get(clazz)));
+        return controllers;
+    }
+
     public void initialize() {
         for (Class<?> clazz : preInstanticateBeans) {
             if (beans.get(clazz) == null) {
@@ -35,6 +41,7 @@ public class BeanFactory {
                 beans.put(clazz, object);
             }
         }
+        logger.debug("BeanFactory beans: {}", beans.toString());
     }
 
     private Object instantiateClass(Class<?> clazz) {
@@ -45,7 +52,7 @@ public class BeanFactory {
 
         Constructor<?> constructor = BeanFactoryUtils.getInjectedConstructor(clazz);
         if (constructor == null) {
-            bean = BeanUtils.instantiate(clazz);
+            bean = BeanUtils.instantiate(clazz);  // 내부적으로 newInstance() 동작
             beans.put(clazz, bean);
             return bean;
         }
@@ -60,8 +67,6 @@ public class BeanFactory {
         Class<?>[] parameterTypes = constructor.getParameterTypes();
         List<Object> args = Lists.newArrayList();
         for (Class<?> clazz : parameterTypes) {
-
-            //
             Class<?> concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, preInstanticateBeans);
             if (!preInstanticateBeans.contains(concreteClazz)) {
                 throw new IllegalStateException(clazz + "는 Bean이 아니다.");

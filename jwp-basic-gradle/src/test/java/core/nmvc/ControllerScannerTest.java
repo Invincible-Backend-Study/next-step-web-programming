@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerScannerTest {
-    // next.api.auth.controller
+    // next.api.auth.controller, 통과할수 없음
 
     @Test
     void init() throws Exception {

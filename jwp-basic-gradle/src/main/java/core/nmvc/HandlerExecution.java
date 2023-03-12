@@ -8,18 +8,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class HandlerExecution {
-    private final Class<?> controller;
+    private final Object instance;
     private final Method method;
 
-    public HandlerExecution(Class<?> controller, Method method) {
-        this.controller = controller;
+    public HandlerExecution(Object instance, Method method) {
+        this.instance = instance;
         this.method = method;
     }
 
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return (ModelAndView) method.invoke(controller.newInstance(), request, response);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            return (ModelAndView) method.invoke(instance, request, response);
+        } catch ( IllegalAccessException | InvocationTargetException e) {
             //
         }
         return null;
