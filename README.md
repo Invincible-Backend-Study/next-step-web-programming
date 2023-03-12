@@ -1,5 +1,23 @@
-1. Tomcat 서버를 시작할 때 웹 애플리케이션이 초기화하는 과정을 설명하라.
- 
-2. Tomcat 서버를 시작한 후 http://localhost:8080으로 접근시 호출 순서 및 흐름을 설명하라.
+# next-step-web-programming
+자바 웹 프로그래밍 Next Step 스터디 저장소
 
-7. next.web.qna package의 ShowController는 멀티 쓰레드 상황에서 문제가 발생하는 이유에 대해 설명하라.
+### jwp-basic-maven
+3장 ~ 6장에서 사용되는 프로젝트(Maven 기반), JUnit5 사용
+
+### jwp-basic-gradle
+3장 ~ 6장에서 사용되는 프로젝트(Gradle 기반), JUnit5 사용
+
+### web-application-server-maven
+6장 ~ 12장에서 사용되는 프로젝트(Maven 기반), JUnit5 사용
+
+### web-application-server-gradle
+6장 ~ 12장에서 사용되는 프로젝트(Gradle 기반), JUnit5 사용
+
+
+---
+
+### 저장소 사용법
+- 각 주차 미션마다 새로운 브랜치를 만들어서 적용
+  - 직전 주차 미션 코드를 그대로 이어서 새로운 브랜치를 만든다.
+  - ex HiiWee-3 ( `${name}-${chapter_number}` )
+- 필요하다면 Gradle로 컨버팅하여 사용
