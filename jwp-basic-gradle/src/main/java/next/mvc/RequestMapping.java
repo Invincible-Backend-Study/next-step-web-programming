@@ -1,16 +1,14 @@
 package next.mvc;
 
-import next.nmvc.HandlerMapping;
 import next.web.controller.ForwardController;
 import next.web.controller.HomeController;
 import next.web.controller.question.*;
 import next.web.controller.user.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 
-public class RequestMapping implements HandlerMapping {
+public class RequestMapping {
     private final HashMap<String, Controller> mappings = new HashMap<>();
 
     void initMapping() {
@@ -31,9 +29,7 @@ public class RequestMapping implements HandlerMapping {
         mappings.put("/qna/updateQuestion", new QnaUpdateController());
     }
 
-
-    @Override
-    public Object getHandler(HttpServletRequest req) {
-        return mappings.get(req.getRequestURI());
+    public Controller getController(String url){
+        return mappings.get(url);
     }
 }

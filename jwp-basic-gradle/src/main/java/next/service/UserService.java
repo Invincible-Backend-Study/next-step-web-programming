@@ -6,7 +6,7 @@ import next.model.User;
 
 public class UserService {
 
-    private final UserDao userDao = UserDao.getInstance();
+    private final UserDao userDao = new UserDao();
     public void addUser(User user) {
         userDao.addUser(user);
     }
