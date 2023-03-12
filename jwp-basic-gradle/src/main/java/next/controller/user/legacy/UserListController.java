@@ -1,6 +1,5 @@
 package next.controller.user.legacy;
 
-import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
 import java.util.List;
@@ -11,7 +10,6 @@ import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Controller
 public class UserListController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(UserListController.class);

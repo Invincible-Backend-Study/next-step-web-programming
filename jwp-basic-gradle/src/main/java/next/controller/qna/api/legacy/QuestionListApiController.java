@@ -1,13 +1,11 @@
 package next.controller.qna.api.legacy;
 
-import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.service.QuestionService;
 
-@Controller
 public class QuestionListApiController extends AbstractController {
 
     private final QuestionService questionService;

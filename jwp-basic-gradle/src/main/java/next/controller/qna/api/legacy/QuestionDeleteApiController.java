@@ -1,6 +1,5 @@
 package next.controller.qna.api.legacy;
 
-import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import next.model.User;
 import next.service.QuestionService;
 import next.utils.SessionUtil;
 
-@Controller
 public class QuestionDeleteApiController extends AbstractController {
 
     private final QuestionService questionService;

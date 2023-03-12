@@ -1,6 +1,5 @@
 package next.controller.qna.legacy;
 
-import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
 import java.util.Map;
@@ -10,7 +9,6 @@ import next.service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Controller
 public class ShowController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);

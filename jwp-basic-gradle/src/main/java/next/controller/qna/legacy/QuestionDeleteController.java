@@ -1,6 +1,5 @@
 package next.controller.qna.legacy;
 
-import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import next.utils.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Controller
 public class QuestionDeleteController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(QuestionDeleteController.class);
