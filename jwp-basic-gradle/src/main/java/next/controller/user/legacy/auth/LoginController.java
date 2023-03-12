@@ -14,7 +14,11 @@ public class LoginController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    public LoginController(final UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {

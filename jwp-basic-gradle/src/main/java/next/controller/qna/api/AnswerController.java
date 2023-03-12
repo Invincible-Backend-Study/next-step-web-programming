@@ -1,6 +1,7 @@
 package next.controller.qna.api;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -20,7 +21,12 @@ public class AnswerController extends AbstractAnnotationController {
 
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
 
-    private final AnswerService answerService = new AnswerService();
+    private final AnswerService answerService;
+
+    @Inject
+    public AnswerController(final AnswerService answerService) {
+        this.answerService = answerService;
+    }
 
     @RequestMapping(value = "/api/answers/add", method = RequestMethod.POST)
     public ModelAndView createAnswer(final HttpServletRequest request, final HttpServletResponse response) {

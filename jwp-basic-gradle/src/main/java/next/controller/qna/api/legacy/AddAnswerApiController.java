@@ -16,7 +16,11 @@ public class AddAnswerApiController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(AddAnswerApiController.class);
 
-    private final AnswerService answerService = new AnswerService();
+    private final AnswerService answerService;
+
+    public AddAnswerApiController(final AnswerService answerService) {
+        this.answerService = answerService;
+    }
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {

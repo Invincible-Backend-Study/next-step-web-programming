@@ -1,12 +1,18 @@
 package next.service;
 
+import core.annotation.Inject;
 import java.util.List;
 import next.dao.JdbcUserDao;
 import next.model.User;
 
 public class UserService {
 
-    private final JdbcUserDao userDao = new JdbcUserDao();
+    private final JdbcUserDao userDao;
+
+    @Inject
+    public UserService(final JdbcUserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public void updateUserInformation(final User updatedUser) {
         userDao.update(updatedUser);

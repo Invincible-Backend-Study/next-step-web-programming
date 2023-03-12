@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -21,7 +22,12 @@ public class UserController extends AbstractAnnotationController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    @Inject
+    public UserController(final UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/users/profile", method = RequestMethod.GET)
     public ModelAndView profile(final HttpServletRequest request, HttpServletResponse response) {

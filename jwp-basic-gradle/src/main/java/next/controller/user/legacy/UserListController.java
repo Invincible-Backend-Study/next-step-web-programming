@@ -14,7 +14,11 @@ public class UserListController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(UserListController.class);
 
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    public UserListController(final UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {

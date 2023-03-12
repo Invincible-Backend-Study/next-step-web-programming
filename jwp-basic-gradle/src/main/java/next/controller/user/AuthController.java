@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -18,7 +19,12 @@ public class AuthController extends AbstractAnnotationController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    @Inject
+    public AuthController(final UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.GET)
     public ModelAndView signUpForm(final HttpServletRequest request, final HttpServletResponse response) {

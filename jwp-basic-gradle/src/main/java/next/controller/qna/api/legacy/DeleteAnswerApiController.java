@@ -13,7 +13,11 @@ public class DeleteAnswerApiController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(DeleteAnswerApiController.class);
 
-    private final AnswerService answerService = new AnswerService();
+    private final AnswerService answerService;
+
+    public DeleteAnswerApiController(final AnswerService answerService) {
+        this.answerService = answerService;
+    }
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {
