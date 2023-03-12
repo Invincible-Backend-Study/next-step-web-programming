@@ -34,10 +34,6 @@ class QuestionServiceTest {
     @Test
     @DisplayName("존재하지 않는 사용자 질문 삭제시 예외 발생 테스트")
     void deleteNotExistQuestion_fail_withException() {
-        // given
-        given(answerDao.findAllByQuestionId(1L)).willReturn(Collections.emptyList());
-        given(questionDao.findById(1L)).willReturn(null);
-
         // then
         Assertions.assertThatThrownBy(
                         () -> questionService.deleteQuestion(1L, new User("test", "1234", "name", "test@test.com")))
