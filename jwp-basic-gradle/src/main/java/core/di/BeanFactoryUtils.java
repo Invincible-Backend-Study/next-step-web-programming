@@ -19,6 +19,9 @@ public class BeanFactoryUtils {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Constructor<?> getInjectedConstructor(Class<?> clazz) {
         Set<Constructor> injectedConstructors = getAllConstructors(clazz, withAnnotation(Inject.class));
+        if (injectedConstructors.size() > 1) {
+            throw new IllegalStateException("@Inject는 클래스당 하나만 사용할 수 있습니다.");
+        }
         if (injectedConstructors.isEmpty()) {
             return null;
         }
