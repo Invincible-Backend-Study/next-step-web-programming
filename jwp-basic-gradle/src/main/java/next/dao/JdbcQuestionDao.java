@@ -1,10 +1,12 @@
 package next.dao;
 
+import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import java.sql.Timestamp;
 import java.util.List;
 import next.model.Question;
 
+@Repository
 public class JdbcQuestionDao implements QuestionDao {
 
     private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();

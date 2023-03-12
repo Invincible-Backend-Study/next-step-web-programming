@@ -1,43 +1,36 @@
-package core.mvcframework.mapping.annotation;
+package core.di;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import core.annotation.Controller;
-import java.util.Map;
+import core.annotation.Repository;
+import core.annotation.Service;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ControllerScanner {
+public class BeanScanner {
 
-    private static final Logger log = LoggerFactory.getLogger(ControllerScanner.class);
+    private static final Logger log = LoggerFactory.getLogger(BeanScanner.class);
 
     private final Reflections reflections;
 
-    public ControllerScanner(final Object... basePackage) {
+    public BeanScanner(final Object... basePackage) {
         reflections = new Reflections(basePackage);
     }
 
-    public Map<Class<?>, Object> getControllers() {
-        Set<Class<?>> annotatedControllers = reflections.getTypesAnnotatedWith(Controller.class);
-        return instantiateControllers(annotatedControllers);
+    public Set<Class<?>> scan() {
+        return getAllTypesAnnotatedWith(Repository.class, Service.class, Controller.class);
     }
 
-    private Map<Class<?>, Object> instantiateControllers(final Set<Class<?>> annotatedControllers) {
-        Map<Class<?>, Object> controllers = Maps.newHashMap();
-        for (Class<?> clazz : annotatedControllers) {
-            controllers.put(clazz, createInstance(clazz));
+    @SuppressWarnings("unchecked")
+    private Set<Class<?>> getAllTypesAnnotatedWith(final Class<? extends Annotation>... annotations) {
+        Set<Class<?>> annotatedClasses = Sets.newHashSet();
+        for (Class<? extends Annotation> annotation : annotations) {
+            annotatedClasses.addAll(reflections.getTypesAnnotatedWith(annotation));
         }
-        return controllers;
-    }
-
-    private Object createInstance(final Class<?> clazz) {
-        try {
-            return clazz.getConstructor().newInstance();
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new RuntimeException(exception);
-        }
+        return annotatedClasses;
     }
 
 }

@@ -4,10 +4,12 @@ import static core.di.BeanFactoryUtils.findConcreteClass;
 import static core.di.BeanFactoryUtils.getInjectedConstructor;
 
 import com.google.common.collect.Maps;
+import core.annotation.Controller;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -68,4 +70,10 @@ public class BeanFactory {
                 .toArray();
     }
 
+    public Map<Class<?>, Object> getControllers() {
+        return preInstantiatedBeans.stream()
+                .filter(preInstantiatedBean -> preInstantiatedBean.isAnnotationPresent(Controller.class))
+                .collect(Collectors.toMap(preInstantiatedBean -> preInstantiatedBean,
+                        preInstantiatedBean -> beans.get(preInstantiatedBean)));
+    }
 }

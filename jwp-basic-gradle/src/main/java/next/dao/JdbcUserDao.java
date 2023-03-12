@@ -1,9 +1,11 @@
 package next.dao;
 
+import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import java.util.List;
 import next.model.User;
 
+@Repository
 public class JdbcUserDao implements UserDao {
 
     private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();

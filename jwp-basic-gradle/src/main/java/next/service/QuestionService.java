@@ -1,5 +1,7 @@
 package next.service;
 
+import core.annotation.Inject;
+import core.annotation.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +15,13 @@ import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 
+@Service
 public class QuestionService {
 
     private final QuestionDao questionDao;
     private final AnswerDao answerDao;
 
+    @Inject
     public QuestionService(final QuestionDao questionDao, final AnswerDao answerDao) {
         this.questionDao = questionDao;
         this.answerDao = answerDao;

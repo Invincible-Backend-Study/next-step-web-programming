@@ -1,6 +1,7 @@
 package next.controller.qna;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -25,6 +26,7 @@ public class QuestionController extends AbstractAnnotationController {
 
     private final QuestionService questionService;
 
+    @Inject
     public QuestionController(final QuestionService questionService) {
         this.questionService = questionService;
     }

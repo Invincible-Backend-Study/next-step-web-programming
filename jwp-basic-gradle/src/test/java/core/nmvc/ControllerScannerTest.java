@@ -2,7 +2,8 @@ package core.nmvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import core.mvcframework.mapping.annotation.ControllerScanner;
+import core.di.BeanFactory;
+import core.di.BeanScanner;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,18 +12,20 @@ import org.junit.jupiter.api.Test;
 
 public class ControllerScannerTest {
 
-    ControllerScanner controllerScanner;
+    BeanScanner beanScanner;
 
     @BeforeEach
     void setup() {
-        controllerScanner = new ControllerScanner("core.nmvc");
+        beanScanner = new BeanScanner("core.nmvc");
     }
 
     @Test
     @DisplayName("MyController 스캔 테스트")
     void getControllers() {
         // when
-        Map<Class<?>, Object> controllers = controllerScanner.getControllers();
+        BeanFactory beanFactory = new BeanFactory(beanScanner.scan());
+        beanFactory.initialize();
+        Map<Class<?>, Object> controllers = beanFactory.getControllers();
 
         // then
         Assertions.assertAll(

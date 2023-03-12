@@ -1,6 +1,7 @@
 package next.controller;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -15,6 +16,7 @@ public class HomeController extends AbstractAnnotationController {
 
     private final QuestionService questionService;
 
+    @Inject
     public HomeController(final QuestionService questionService) {
         this.questionService = questionService;
     }
