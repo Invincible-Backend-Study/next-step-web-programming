@@ -13,17 +13,6 @@ import java.util.Map;
 public class AnswerDao {
 
     private final JdbcTemplete templete = JdbcTemplete.getInstance();
-    private static AnswerDao instance = null;
-
-    private AnswerDao() {
-    }
-
-    public static synchronized AnswerDao getInstance() {
-        if (instance == null) {
-            instance = new AnswerDao();
-        }
-        return instance;
-    }
 
     public Answer addAnswer(Answer answer) {
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?,?,?,?)";
@@ -73,8 +62,8 @@ public class AnswerDao {
         }, questionId);
     }
 
-    public void deleteAnswer(int id) {
+    public void deleteAnswer(int  id) {
         String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
-        templete.excuteSqlUpdate(sql, id);
+        templete.excuteSqlUpdate(sql,id);
     }
 }
