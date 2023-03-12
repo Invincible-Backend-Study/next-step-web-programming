@@ -37,33 +37,40 @@ public class JdbcTemplate {
         return update(query, createPreparedStatementSetter(values));
     }
 
+    public int update(final PreparedStatementCreator preparedStatementCreator, final KeyHolder keyHolder) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = preparedStatementCreator.createPreparedStatement(connection)) {
+            int result = preparedStatement.executeUpdate();
+
+            try (ResultSet keyResultSet = preparedStatement.getGeneratedKeys()) {
+                if (keyResultSet.next()) {
+                    keyHolder.setId(keyResultSet.getLong(1));
+                }
+            }
+            return result;
+        } catch (SQLException exception) {
+            throw new DataAccessException(exception);
+        }
+    }
+
     public <T> List<T> query(
             final String query,
             final RowMapper<T> rowMapper,
             final PreparedStatementSetter preparedStatementSetter) {
 
-        ResultSet resultSet = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatementSetter.setValue(preparedStatement);
-            resultSet = preparedStatement.executeQuery();
-
             List<T> results = new ArrayList<>();
-            while (resultSet.next()) {
-                results.add(rowMapper.mapRow(resultSet));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    results.add(rowMapper.mapRow(resultSet));
+                }
             }
-            resultSet.close();
             return results;
         } catch (SQLException exception) {
             throw new DataAccessException(exception);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
         }
     }
 

@@ -1,6 +1,9 @@
 package next.dao;
 
 import core.jdbc.JdbcTemplate;
+import core.jdbc.KeyHolder;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.List;
 import next.model.Answer;
 
@@ -17,17 +20,25 @@ public class AnswerDao {
                         resultSet.getLong("answerId"),
                         resultSet.getString("writer"),
                         resultSet.getString("contents"),
-                        resultSet.getDate("createdDate"),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getLong("questionId")),
                 questionId
         );
     }
 
-    public int insert(final Answer answer) {
-        return jdbcTemplate.update(
-                "INSERT INTO ANSWERS(writer, contents, createdDate, questionId)"
-                        + "VALUES(?, ?, ?, ?)",
-                answer.getWriter(), answer.getContents(), answer.getCreatedDate(), answer.getQuestionId());
+    public Answer insert(final Answer answer) {
+        KeyHolder keyHolder = new KeyHolder();
+        String sql = "INSERT INTO ANSWERS(writer, contents, createdDate, questionId) VALUES(?, ?, ?, ?)";
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1, answer.getWriter());
+                    preparedStatement.setString(2, answer.getContents());
+                    preparedStatement.setTimestamp(3, new Timestamp(answer.getTimeFromCreatedDate()));
+                    preparedStatement.setLong(4, answer.getQuestionId());
+                    return preparedStatement;
+                }, keyHolder);
+        return findById(keyHolder.getId());
     }
 
     public int deleteById(final long answerId) {
@@ -44,7 +55,7 @@ public class AnswerDao {
                         resultSet.getLong("answerId"),
                         resultSet.getString("writer"),
                         resultSet.getString("contents"),
-                        resultSet.getDate("createdDate"),
+                        resultSet.getTimestamp("createdDate"),
                         resultSet.getLong("questionId")
                 ),
                 answerId
@@ -57,4 +68,5 @@ public class AnswerDao {
                 questionId
         );
     }
+
 }

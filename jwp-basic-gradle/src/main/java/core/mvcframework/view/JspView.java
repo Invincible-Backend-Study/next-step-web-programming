@@ -14,11 +14,17 @@ public class JspView implements View {
     private static final int REDIRECT_URI = 1;
 
     private final String viewName;
-    private String prefixViewPath = "/WEB-INF/views/";
-    private String suffixViewPath = ".jsp";
+    private String prefixViewPath;
+    private String suffixViewPath;
+
+    public JspView(final String viewName, final String prefixViewPath, final String suffixViewPath) {
+        this.viewName = viewName;
+        this.prefixViewPath = prefixViewPath;
+        this.suffixViewPath = suffixViewPath;
+    }
 
     public JspView(final String viewName) {
-        this.viewName = viewName;
+        this(viewName, "", "");
     }
 
     @Override

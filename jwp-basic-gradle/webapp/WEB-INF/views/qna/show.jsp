@@ -48,11 +48,11 @@
                         <ul class="article-util-list">
                             <li>
                                 <a class="link-modify-article"
-                                   href="/qna/updateQuestionForm?questionId=${questionWithAnswers.question.questionId}&writer=${questionWithAnswers.question.writer}">수정</a>
+                                   href="/questions/update?questionId=${questionWithAnswers.question.questionId}&writer=${questionWithAnswers.question.writer}">수정</a>
                             </li>
                             <li>
                                 <form class="form-delete"
-                                      action="/qna/deleteQuestion?questionId=${questionWithAnswers.question.questionId}"
+                                      action="/questions/delete?questionId=${questionWithAnswers.question.questionId}"
                                       method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article-form" type="submit">삭제</button>

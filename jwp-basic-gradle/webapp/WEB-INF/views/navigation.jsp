@@ -54,11 +54,11 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <li><a href="/users/signOut" role="button">로그아웃</a></li>
-                        <li><a href="/users/updateForm?userId=${sessionScope.user.userId}" role="button">개인정보수정</a></li>
+                        <li><a href="/users/update?userId=${sessionScope.user.userId}" role="button">개인정보수정</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/loginForm" role="button">로그인</a></li>
-                        <li><a href="/signUpForm" role="button">회원가입</a></li>
+                        <li><a href="/signIn" role="button">로그인</a></li>
+                        <li><a href="/signUp" role="button">회원가입</a></li>
                     </c:otherwise>
                 </c:choose>
             </ul>
