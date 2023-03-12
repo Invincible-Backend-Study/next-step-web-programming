@@ -4,20 +4,21 @@ import java.util.Objects;
 import lombok.Getter;
 
 @Getter
-public class User {
+public class UserEntity {
     private final String userId;
     private String password;
     private String name;
     private String email;
-    public User(String userId, String password, String name, String email) {
+
+    public UserEntity(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public static User of(String userId, String password, String name, String email) {
-        return new User(userId, password, name, email);
+    public static UserEntity of(String userId, String password, String name, String email) {
+        return new UserEntity(userId, password, name, email);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class User {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        User other = (User) obj;
+        UserEntity other = (UserEntity) obj;
         if (email == null) {
             if (other.email != null) {
                 return false;

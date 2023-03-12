@@ -1,5 +1,6 @@
 package com.jwp.inbound.user.domain;
 
+import com.jwp.outbound.user.entity.UserEntity;
 import java.util.Objects;
 import lombok.Getter;
 
@@ -40,5 +41,9 @@ public class User {
 
     public boolean comparePassword(String password) {
         return Objects.equals(this.password, password);
+    }
+
+    public UserEntity toEntity() {
+        return UserEntity.of(userId, password, name, email);
     }
 }
