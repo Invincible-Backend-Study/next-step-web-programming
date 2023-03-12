@@ -1,7 +1,6 @@
 package next.service;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
 import java.util.Date;
@@ -64,7 +63,8 @@ class QuestionServiceTest {
     @DisplayName("다른 사용자의 질문이 달려있는 질문 삭제시 예외 발생 테스트")
     void deleteQuestionWithOtherUserAnswer_fail_withException() {
         // given
-        given(answerDao.findAllByQuestionId(1L)).willReturn(List.of(new Answer(1L, "differentWriter", "test", new Date(), 1L)));
+        given(answerDao.findAllByQuestionId(1L)).willReturn(
+                List.of(new Answer(1L, "differentWriter", "test", new Date(), 1L)));
         given(questionDao.findById(1L)).willReturn(new Question(1L, "test", "test", "test", new Date(), 0));
 
         // then

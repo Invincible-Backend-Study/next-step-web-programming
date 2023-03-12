@@ -1,16 +1,14 @@
 package core.nmvc;
 
+import core.annotation.Controller;
+import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.view.JspView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import core.annotation.Controller;
-import core.annotation.RequestMapping;
-import core.annotation.RequestMethod;
 
 @Controller
 public class MyController {

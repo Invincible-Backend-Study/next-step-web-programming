@@ -33,7 +33,8 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
         Map<Class<?>, Object> controllers = beanFactory.getControllers();
         for (Class<?> clazz : controllers.keySet()) {
-            Set<Method> methods = ReflectionUtils.getAllMethods(clazz, ReflectionUtils.withAnnotation(RequestMapping.class));
+            Set<Method> methods = ReflectionUtils.getAllMethods(clazz,
+                    ReflectionUtils.withAnnotation(RequestMapping.class));
             putHandlerExecution(controllers.get(clazz), methods);
         }
         log.debug("handlerExecute process done");
