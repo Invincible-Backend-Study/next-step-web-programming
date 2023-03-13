@@ -9,7 +9,7 @@ import next.mvc.ModelAndView;
 
 public class HomeController extends AbstractController {
 
-    private final JdbcQuestionDao dao;
+    private final QuestionDao dao;
 
     public HomeController(QuestionDao questionDao) {
         this.dao = questionDao;

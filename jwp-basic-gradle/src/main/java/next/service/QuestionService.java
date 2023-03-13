@@ -44,7 +44,7 @@ public class QuestionService {
         }
         Question question = questionDao.findByQuestionId(Integer.parseInt(form.getId()));
         if (!Objects.equals(user.getName(), question.getWriter())) {
-            throw new Exception("작성자가 아닐시 삭제할 수 없습니다.");
+            throw new Exception("작성자가 아닐시 수정할 수 없습니다.");
         }
     }
 
