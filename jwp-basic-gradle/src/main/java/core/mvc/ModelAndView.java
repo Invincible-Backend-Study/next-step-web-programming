@@ -14,6 +14,14 @@ public class ModelAndView {
         this.view = view;
     }
 
+    public static ModelAndView renderPage(String url) {
+        return new ModelAndView(new JspView("/WEB-INF" + url));
+    }
+
+    public static ModelAndView redirect(String url) {
+        return new ModelAndView(new JspView("redirect: " + url));
+    }
+
     public ModelAndView addObject(String attributeName, Object attributeValue) {
         model.put(attributeName, attributeValue);
         return this;

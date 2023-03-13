@@ -1,2 +1,5 @@
-package next.user.controller.usecase;public interface SampleUseCase {
+package next.user.controller.usecase;
+
+public interface SampleUseCase {
+    void execute();
 }

@@ -1,11 +1,11 @@
 package com.jwp.inbound.user.application;
 
+import com.jwp.inbound.user.port.driven.UserPort;
 import com.jwp.inbound.user.port.driving.FindMyInformationUseCase;
 import com.jwp.inbound.user.port.driving.dto.EditMyInformation;
 import core.annotation.Inject;
 import core.annotation.Service;
 import next.common.error.DomainExceptionCode;
-import next.user.service.port.UserPort;
 
 @Service
 public class FindMyInformationApplication implements FindMyInformationUseCase {

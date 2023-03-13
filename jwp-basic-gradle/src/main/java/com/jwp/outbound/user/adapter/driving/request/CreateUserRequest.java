@@ -11,7 +11,7 @@ public class CreateUserRequest {
     private String name;
     private String email;
 
-    public User toEntity() {
+    public User toUser() {
         return User.of(userId, password, name, email);
     }
 }

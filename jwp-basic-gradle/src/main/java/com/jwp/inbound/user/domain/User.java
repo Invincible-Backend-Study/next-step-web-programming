@@ -1,10 +1,13 @@
 package com.jwp.inbound.user.domain;
 
+import com.jwp.inbound.user.domain.policy.UserPolicy;
 import com.jwp.outbound.user.entity.UserEntity;
 import java.util.Objects;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 
+@EqualsAndHashCode
 @Getter
 public class User {
     private final String userId;
@@ -17,6 +20,7 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+        UserPolicy.validate(this);
     }
 
     public static User of(String userId, String password, String name, String email) {

@@ -1,12 +1,12 @@
 package com.jwp.inbound.user.application;
 
 
+import com.jwp.inbound.user.port.driven.UserPort;
 import com.jwp.inbound.user.port.driving.SignUpUseCase;
 import com.jwp.outbound.user.adapter.driving.request.CreateUserRequest;
 import core.annotation.Inject;
 import core.annotation.Service;
 import next.common.error.DomainExceptionCode;
-import next.user.service.port.UserPort;
 
 @Service
 public class SignUpApplication implements SignUpUseCase {
@@ -25,6 +25,6 @@ public class SignUpApplication implements SignUpUseCase {
         if (optionalUser.isPresent()) {
             throw DomainExceptionCode.PREVIOUS_SIGN_UP_USER_ID.createError();
         }
-        userPort.create(createUserRequest.toEntity());
+        userPort.create(createUserRequest.toUser());
     }
 }

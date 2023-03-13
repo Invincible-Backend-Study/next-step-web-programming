@@ -32,7 +32,7 @@ public class BeanFactory {
 
     @SneakyThrows
     public void initialize() {
-        preInstantiateBeans.stream().forEach(this::doInitialize);
+        preInstantiateBeans.forEach(this::doInitialize);
     }
 
     private void doInitialize(Class<?> preInstantiateBean) {
@@ -46,6 +46,7 @@ public class BeanFactory {
     @SneakyThrows
     private Object generateInstance(Class<?> preInstantiateBean, Set<Class<?>> basket) {
         if (basket.contains(preInstantiateBean)) {
+            log.error("{} {}", basket, preInstantiateBean);
             throw new IllegalStateException("순환참조가 일어나고 있습니다.");
         }
         basket.add(preInstantiateBean);
@@ -56,7 +57,7 @@ public class BeanFactory {
 
         //생성자가 없는 경우 (inject) 가 존재하지 않는 경우 기본 생성자를 적용함
         if (constructor == null) {
-            return putInstanceToBeans(concreteClass, concreteClass.newInstance());
+            return putInstanceToBeans(concreteClass, concreteClass.getConstructor().newInstance());
         }
         final var parameterTypes = Arrays.stream(constructor.getParameterTypes()).map(parameter -> {
             if (beans.containsKey(parameter)) {

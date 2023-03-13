@@ -2,14 +2,14 @@ package com.jwp.outbound.user.adapter.driven;
 
 
 import com.jwp.inbound.user.domain.User;
+import com.jwp.inbound.user.port.driven.UserPort;
 import com.jwp.outbound.user.entity.UserEntity;
+import com.jwp.outbound.user.infrastructure.UserDao;
 import core.annotation.Inject;
 import core.annotation.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import next.user.repository.dao.UserDao;
-import next.user.service.port.UserPort;
 
 @Repository
 public class UserAdapter implements UserPort {
