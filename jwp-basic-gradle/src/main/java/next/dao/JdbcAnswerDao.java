@@ -10,17 +10,6 @@ import java.util.List;
 public class JdbcAnswerDao implements AnswerDao {
 
     private final JdbcTemplete templete = JdbcTemplete.getInstance();
-    private static JdbcAnswerDao instance = null;
-
-    private JdbcAnswerDao() {
-    }
-
-    public static synchronized JdbcAnswerDao getInstance() {
-        if (instance == null) {
-            instance = new JdbcAnswerDao();
-        }
-        return instance;
-    }
 
     @Override
     public Answer addAnswer(Answer answer) {

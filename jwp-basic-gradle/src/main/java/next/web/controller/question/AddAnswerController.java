@@ -10,7 +10,11 @@ import next.mvc.ModelAndView;
 import next.service.AnswerService;
 
 public class AddAnswerController extends AbstractController {
-    private final AnswerService answerService = new AnswerService();
+    private final AnswerService answerService;
+
+    public AddAnswerController(AnswerService answerService) {
+        this.answerService = answerService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {

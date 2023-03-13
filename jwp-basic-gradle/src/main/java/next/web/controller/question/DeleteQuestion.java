@@ -12,8 +12,11 @@ import next.service.QuestionService;
 
 public class DeleteQuestion extends AbstractController {
 
+    private final QuestionService questionService;
 
-    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
+    public DeleteQuestion(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {

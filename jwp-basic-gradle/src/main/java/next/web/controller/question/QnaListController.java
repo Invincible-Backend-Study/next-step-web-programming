@@ -12,7 +12,11 @@ import next.service.QuestionService;
 
 public class QnaListController extends AbstractController {
 
-    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
+    private final QuestionService questionService;
+
+    public QnaListController(QuestionService questionService){
+        this.questionService = questionService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {

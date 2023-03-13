@@ -10,7 +10,11 @@ import next.service.AnswerService;
 
 public class AnswerDeleteController extends AbstractController {
 
-    private final AnswerService answerService = new AnswerService();
+    private final AnswerService answerService;
+
+    public AnswerDeleteController(AnswerService answerService) {
+        this.answerService = answerService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {

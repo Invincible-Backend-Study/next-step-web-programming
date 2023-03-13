@@ -13,6 +13,11 @@ import next.mvc.ModelAndView;
 import next.service.QuestionService;
 
 public class QnaUpdateController extends AbstractController {
+    private final QuestionService questionService;
+
+    public QnaUpdateController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {
@@ -32,5 +37,4 @@ public class QnaUpdateController extends AbstractController {
         }
     }
 
-    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
 }

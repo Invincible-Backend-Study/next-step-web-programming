@@ -15,8 +15,13 @@ import next.service.QuestionService;
 public class QuestionController extends AbstractController {
 
 
-    private final QuestionService questionService = new QuestionService(JdbcAnswerDao.getInstance(), JdbcQuestionDao.getInstance());
-    private final AnswerService answerService = new AnswerService();
+    private final QuestionService questionService;
+    private final AnswerService answerService;
+
+    public QuestionController(QuestionService questionService, AnswerService answerService) {
+        this.questionService = questionService;
+        this.answerService = answerService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) {

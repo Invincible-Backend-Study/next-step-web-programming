@@ -1,14 +1,21 @@
 package next.service;
 
 import java.util.List;
+import next.dao.AnswerDao;
 import next.dao.JdbcAnswerDao;
 import next.dao.JdbcQuestionDao;
+import next.dao.QuestionDao;
 import next.model.Answer;
 
 public class AnswerService {
 
-    private final JdbcAnswerDao jdbcAnswerDao = JdbcAnswerDao.getInstance();
-    private final JdbcQuestionDao jdbcQuestionDao = JdbcQuestionDao.getInstance();
+    private final AnswerDao jdbcAnswerDao;
+    private final QuestionDao jdbcQuestionDao;
+
+    public AnswerService(AnswerDao answerDao, QuestionDao questionDao) {
+        this.jdbcAnswerDao = answerDao;
+        this.jdbcQuestionDao = questionDao;
+    }
 
     public Answer addAnswer(Answer answer) {
         Answer returnedAnswer = jdbcAnswerDao.addAnswer(answer);

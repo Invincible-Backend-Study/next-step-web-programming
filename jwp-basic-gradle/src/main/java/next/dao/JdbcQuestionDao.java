@@ -10,17 +10,7 @@ import java.util.List;
 public class JdbcQuestionDao implements QuestionDao {
 
     private final JdbcTemplete template = JdbcTemplete.getInstance();
-    private static JdbcQuestionDao instance = null;
 
-    private JdbcQuestionDao() {
-    }
-
-    public static synchronized JdbcQuestionDao getInstance() {
-        if (instance == null) {
-            instance = new JdbcQuestionDao();
-        }
-        return instance;
-    }
 
     @Override
     public void addQuestion(Question question) {
