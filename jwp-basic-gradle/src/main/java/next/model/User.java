@@ -1,5 +1,7 @@
 package next.model;
 
+import java.util.Objects;
+
 public class User {
     private String userId;
     private String password;
@@ -96,5 +98,9 @@ public class User {
         if (userId == null) {
             throw new IllegalStateException("[ERROR] 아이디가 입력되지 않았습니다.");
         }
+    }
+
+    public boolean isSameUser(String writer) {
+        return Objects.equals(name, writer);
     }
 }

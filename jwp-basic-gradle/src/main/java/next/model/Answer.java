@@ -17,10 +17,15 @@ public class Answer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Answer answer = (Answer) o;
-        return answerId == answer.answerId && questionId == answer.questionId && Objects.equals(writer, answer.writer) && Objects.equals(contents, answer.contents) && Objects.equals(createdDate, answer.createdDate);
+        return answerId == answer.answerId && questionId == answer.questionId && Objects.equals(writer, answer.writer)
+                && Objects.equals(contents, answer.contents) && Objects.equals(createdDate, answer.createdDate);
     }
 
     @Override
@@ -65,5 +70,9 @@ public class Answer {
                 ", createdDate=" + createdDate +
                 ", questionId=" + questionId +
                 '}';
+    }
+
+    public boolean candelete(User user) {
+        return user.isSameUser(writer);
     }
 }
