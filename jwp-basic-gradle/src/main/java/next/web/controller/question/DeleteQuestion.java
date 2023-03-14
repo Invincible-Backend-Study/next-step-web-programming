@@ -3,8 +3,6 @@ package next.web.controller.question;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import next.dao.JdbcAnswerDao;
-import next.dao.JdbcQuestionDao;
 import next.model.User;
 import next.mvc.AbstractController;
 import next.mvc.ModelAndView;
@@ -23,12 +21,8 @@ public class DeleteQuestion extends AbstractController {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         try {
-            boolean questionDeleteResult = questionService.deleteQuestion(
-                    Integer.parseInt(req.getParameter("questionId")), user);
-            if (questionDeleteResult) {
-                return jsonView().addObject("success", "삭제 완료");
-            }
-            return jsonView().addObject("fail", "질문에 게시자 외의 답변이 존재합니다.");
+            questionService.deleteQuestion(Integer.parseInt(req.getParameter("questionId")), user);
+            return jsonView().addObject("success", "삭제 완료");
         } catch (Exception e) {
             return jsonView().addObject("fail", e.getMessage());
         }

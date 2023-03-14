@@ -3,8 +3,6 @@ package next.service;
 import java.util.List;
 import java.util.Objects;
 import next.dao.AnswerDao;
-import next.dao.JdbcAnswerDao;
-import next.dao.JdbcQuestionDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
 import next.model.Form;
@@ -48,20 +46,13 @@ public class QuestionService {
         }
     }
 
-    public boolean deleteQuestion(int questionId, User user) throws Exception {
+    public void deleteQuestion(int questionId, User user) throws Exception {
         Question question = questionDao.findByQuestionId(questionId);
-        validateDelete(user, question);
         List<Answer> answers = answerDao.findAllByQuestonId(question.getQuestionId());
-        boolean canDelete = answers.stream().allMatch(answer -> Objects.equals(answer.getWriter(), user.getName()));
-        if (canDelete) {
-            questionDao.deleteAnswer(question.getQuestionId());
-            answers.forEach(answer -> answerDao.deleteAnswer(answer.getAnswerId()));
-            return true;
-        }
-        return false;
+        validateDelete(user, question, answers);
     }
 
-    private void validateDelete(User user, Question question) throws Exception {
+    private void validateDelete(User user, Question question, List<Answer> answers) throws Exception {
         if (question == null) {
             throw new Exception("해당 게시물이 존재하지 않습니다.");
         }
@@ -72,6 +63,12 @@ public class QuestionService {
 
         if (!Objects.equals(user.getName(), question.getWriter())) {
             throw new Exception("작성자가 아닐 시 삭제할 수 없습니다.");
+        }
+        boolean canDelete = answers.stream().allMatch(answer -> Objects.equals(answer.getWriter(), user.getName()));
+        if (canDelete) {
+            questionDao.deleteAnswer(question.getQuestionId());
+            answers.forEach(answer -> answerDao.deleteAnswer(answer.getAnswerId()));
+            throw new Exception("답변이 존재합니다.");
         }
     }
 }
