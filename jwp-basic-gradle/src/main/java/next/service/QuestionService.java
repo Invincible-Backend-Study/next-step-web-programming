@@ -48,8 +48,10 @@ public class QuestionService {
 
     public void deleteQuestion(int questionId, User user) throws Exception {
         Question question = questionDao.findByQuestionId(questionId);
-        List<Answer> answers = answerDao.findAllByQuestonId(question.getQuestionId());
+        List<Answer> answers = answerDao.findAllByQuestonId(questionId);
         validateDelete(user, question, answers);
+        questionDao.deleteAnswer(question.getQuestionId());
+        answers.forEach(answer -> answerDao.deleteAnswer(answer.getAnswerId()));
     }
 
     private void validateDelete(User user, Question question, List<Answer> answers) throws Exception {
@@ -65,9 +67,7 @@ public class QuestionService {
             throw new Exception("작성자가 아닐 시 삭제할 수 없습니다.");
         }
         boolean canDelete = answers.stream().allMatch(answer -> Objects.equals(answer.getWriter(), user.getName()));
-        if (canDelete) {
-            questionDao.deleteAnswer(question.getQuestionId());
-            answers.forEach(answer -> answerDao.deleteAnswer(answer.getAnswerId()));
+        if (!canDelete) {
             throw new Exception("답변이 존재합니다.");
         }
     }
