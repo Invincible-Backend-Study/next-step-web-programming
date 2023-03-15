@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestBody {
+public @interface ModelAttribute {
 
     String value() default "";
 }

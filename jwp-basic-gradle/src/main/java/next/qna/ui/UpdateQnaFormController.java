@@ -12,14 +12,14 @@ public class UpdateQnaFormController extends AbstractController {
     private final QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        final var questionId = Integer.parseInt(request.getParameter("questionId"));
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
 
         // 로그인을 하지 않은 사용자에 대한 접근 차단
         if (!UserUtils.isLoggedIn(request.getSession())) {
             return this.jspView("redirect: /");
         }
 
+        final var questionId = this.convertHttpToDto(request);
         final var optionalQuestion = questionDao.findOptionalById(questionId);
 
         // 존재하지 않는 게시글의 경우 리턴
@@ -35,9 +35,8 @@ public class UpdateQnaFormController extends AbstractController {
             return this.jspView("redirect: /qna/show?questionId=" + questionId);
         }
 
-        request.setAttribute("question", question);
-
-        return this.jspView("/WEB-INF/qna/update.jsp");
+        return this.jspView("/WEB-INF/qna/update.jsp")
+                .addObject("question", question);
     }
 
     public long convertHttpToDto(HttpServletRequest request) {

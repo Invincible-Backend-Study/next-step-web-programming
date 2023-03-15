@@ -4,6 +4,8 @@ package core.rc;
 import com.google.common.collect.Maps;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
+import core.di.factory.BeanFactory;
+import core.di.factory.BeanScanner;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +17,7 @@ import org.reflections.ReflectionUtils;
 
 
 @Slf4j
-public class AnnotationHandlerMapping extends ControllerScanner implements HandlerMapping {
+public class AnnotationHandlerMapping implements HandlerMapping {
 
     private final Object[] basePackage;
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
@@ -29,8 +31,11 @@ public class AnnotationHandlerMapping extends ControllerScanner implements Handl
     }
 
     private void initializeController() {
-        final var controllerScanner = new ControllerScanner(basePackage);
-        final var controllers = controllerScanner.getControllers();
+        final var beanScanner = new BeanScanner(basePackage);
+        final var beanFactory = new BeanFactory(beanScanner.scan());
+        beanFactory.initialize();
+
+        final var controllers = beanFactory.getControllers();
         final var methods = getRequestMappingMethods(controllers.keySet());
 
         this.handlerExecutions = methods.stream()

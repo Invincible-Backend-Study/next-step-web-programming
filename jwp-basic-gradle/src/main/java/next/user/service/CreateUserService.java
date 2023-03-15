@@ -1,9 +1,12 @@
 package next.user.service;
 
+import com.jwp.outbound.user.infrastructure.UserDao;
+import core.annotation.Service;
 import next.common.error.DomainExceptionCode;
-import next.user.dao.UserDao;
 import next.user.payload.request.CreateUserDto;
 
+
+@Service
 public class CreateUserService {
 
     private final UserDao userDao = UserDao.getInstance();
@@ -18,7 +21,7 @@ public class CreateUserService {
             throw DomainExceptionCode.PREVIOUS_SIGN_UP_USER_NAME.createError(createUserDto.getUserId());
         }
 
-        userDao.insert(createUserDto.toEntity());
+        //userDao.insert(createUserDto.toEntity());
     }
 
 }

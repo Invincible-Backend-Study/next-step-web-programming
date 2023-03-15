@@ -1,4 +1,4 @@
-package next.user.dao.sql;
+package com.jwp.outbound.user.infrastructure.sql;
 
 public class UserSql {
 

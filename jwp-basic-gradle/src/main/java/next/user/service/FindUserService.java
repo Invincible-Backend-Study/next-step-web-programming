@@ -1,9 +1,12 @@
 package next.user.service;
 
+import com.jwp.outbound.user.infrastructure.UserDao;
+import core.annotation.Service;
 import java.util.List;
-import next.user.dao.UserDao;
 import next.user.entity.User;
 
+
+@Service
 public class FindUserService {
 
     private final UserDao userDao = UserDao.getInstance();
@@ -13,7 +16,8 @@ public class FindUserService {
     }
 
     public List<User> findAll() {
-        return userDao.findAll();
+        return null;
+        //return userDao.findAll();
     }
 
     private static class FindUserServiceHolder {

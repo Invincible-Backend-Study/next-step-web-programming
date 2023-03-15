@@ -36,12 +36,7 @@ public class DispatchServlet extends HttpServlet {
         log.info("init dispatche servlet");
 
         final var legacyHandlerMapping = new LegacyHandlerMapping();
-        final var annotationHandlerMapping = new AnnotationHandlerMapping(
-                "next.answer.controller",
-                "next.common.controller",
-                "next.qna.ui",
-                "next.user.controller"
-        );
+        final var annotationHandlerMapping = new AnnotationHandlerMapping("next");
 
         annotationHandlerMapping.initialize();
 
