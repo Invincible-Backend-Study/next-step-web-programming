@@ -1,13 +1,12 @@
 package core.di.factory.example;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import core.annotation.Controller;
 import core.annotation.Inject;
 import core.annotation.RequestMapping;
-import core.mvc.ModelAndView;
-import core.nmvc.AbstractNewController;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import next.mvc.AbstractNewController;
+import next.mvc.ModelAndView;
 
 @Controller
 public class QnaController extends AbstractNewController {

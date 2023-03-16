@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-core:8.0.15'
     implementation 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.15'
+    testImplementation 'junit:junit:4.13.1'
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
