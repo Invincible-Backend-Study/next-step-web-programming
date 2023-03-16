@@ -4,16 +4,16 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import next.nmvc.ControllerScanner;
+import core.di.factory.BeanFactory;
+import core.di.factory.BeanScanner;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
 import next.nmvc.HandlerMapping;
 import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
 
 public class AnnoationHandlerMapping implements HandlerMapping {
     private static final Logger logger = LoggerFactory.getLogger(AnnoationHandlerMapping.class);
@@ -23,7 +23,6 @@ public class AnnoationHandlerMapping implements HandlerMapping {
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
 
     public AnnoationHandlerMapping(Object... basePackage) {
-        //패키지 이름을 받아와 ControllerScanner를 이용해 @Controller 어노테이션을 탐색
         this.basePackage = basePackage;
     }
 
@@ -36,14 +35,15 @@ public class AnnoationHandlerMapping implements HandlerMapping {
 
     public void initialize() {
         //컨트롤러 클래스 탐색
-        ControllerScanner controllerScanner = new ControllerScanner(basePackage);
-        //컨트롤러를 Map에 컨트롤러의 키로 클래스를 값으로 인스턴스 생성해 등록한다.
-        Map<Class<?>, Object> controllers = controllerScanner.getController();
-        //모든 컨트롤러 객체에서 RequestMapping 어노테이션이 적용된 메소드를 찾아 저장한다.
+        BeanFactory beanFactory = new BeanFactory(new BeanScanner(basePackage).scan());
+        beanFactory.initialize();
+        Map<Class<?>, Object> controllers = beanFactory.getControllers();
         Set<Method> methods = getRequestMappingMethods(controllers.keySet());
         for (Method method : methods) {
+            System.out.println(method);
             RequestMapping rm = method.getAnnotation(RequestMapping.class);
-            handlerExecutions.put(createHandlerKey(rm), new HandlerExecution(controllers.get(method.getDeclaringClass()), method));
+            handlerExecutions.put(createHandlerKey(rm),
+                    new HandlerExecution(controllers.get(method.getDeclaringClass()), method));
         }
     }
 
@@ -55,7 +55,8 @@ public class AnnoationHandlerMapping implements HandlerMapping {
     private Set<Method> getRequestMappingMethods(Set<Class<?>> controllers) {
         Set<Method> requestMappingMethods = Sets.newHashSet();
         for (Class<?> clazz : controllers) {
-            requestMappingMethods.addAll(ReflectionUtils.getAllMethods(clazz, ReflectionUtils.withAnnotation(RequestMapping.class)));
+            requestMappingMethods.addAll(
+                    ReflectionUtils.getAllMethods(clazz, ReflectionUtils.withAnnotation(RequestMapping.class)));
         }
         return requestMappingMethods;
     }
