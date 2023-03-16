@@ -3,12 +3,10 @@ package core.di.factory;
 import static org.reflections.ReflectionUtils.getAllConstructors;
 import static org.reflections.ReflectionUtils.withAnnotation;
 
+import com.google.common.collect.Sets;
+import core.annotation.Inject;
 import java.lang.reflect.Constructor;
 import java.util.Set;
-
-import com.google.common.collect.Sets;
-
-import core.annotation.Inject;
 
 public class BeanFactoryUtils {
     /**
