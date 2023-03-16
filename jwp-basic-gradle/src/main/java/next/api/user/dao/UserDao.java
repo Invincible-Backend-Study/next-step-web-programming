@@ -1,5 +1,6 @@
 package next.api.user.dao;
 
+import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
 import next.api.user.model.User;
@@ -7,15 +8,14 @@ import next.api.user.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UserDao {
     static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-    private static UserDao userDao = new UserDao();
-
-    private UserDao() {}
-
-    public static UserDao getInstance() {
-        return userDao;
-    }
+//    private static UserDao userDao = new UserDao();
+//    private UserDao() {}
+//    public static UserDao getInstance() {
+//        return userDao;
+//    }
 
     public void insert(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";

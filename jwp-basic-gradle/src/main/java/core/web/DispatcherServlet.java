@@ -29,6 +29,7 @@ public class DispatcherServlet extends HttpServlet {
         logger.debug("DispatcherServlet: {} {}", req.getMethod(), req.getRequestURI());
         try {
             HandlerExecution handlerExecution = annotationHandlerMapping.getHandler(req);
+            logger.debug("dispatcher servlet handler excuteion: {}", handlerExecution.toString());
             ModelAndView modelAndView = handlerExecution.handle(req, resp);
 
             modelAndView.getView().render(modelAndView.getModel(), req, resp);

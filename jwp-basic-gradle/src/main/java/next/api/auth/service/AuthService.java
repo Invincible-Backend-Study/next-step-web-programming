@@ -1,21 +1,21 @@
 package next.api.auth.service;
 
+import core.annotation.Inject;
+import core.annotation.Service;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Service
 public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
-    private static AuthService authService = new AuthService();
+    private final UserDao userDao;
 
-    private AuthService() {}
-
-    public static AuthService getInstance() {
-        return authService;
+    @Inject
+    private AuthService(UserDao userDao) {
+        this.userDao = userDao;
     }
-
-    private final UserDao userDao = UserDao.getInstance();
 
     public User getUser(final String id, final String password) {
         User user;

@@ -1,7 +1,10 @@
 package next.api.qna.model;
 
+import next.api.user.model.User;
+
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 public class Question {
     private long questionId;
@@ -39,6 +42,20 @@ public class Question {
 
     public void decreaseCountOfAnswer() {
         countOfAnswer--;
+    }
+
+    public boolean canDelete(User user, List<Answer> answers) {
+        if (!user.isSameName(getWriter())) {
+            throw new IllegalArgumentException("자신이 작성한 질문만 삭제할 수 있습니다.");
+        }
+
+        if (!answers.isEmpty()) {
+            if (answers.stream().anyMatch(answer -> !answer.canDelete(this))) {
+                throw new IllegalArgumentException("다른사람에 답변이 있으면 제거할 수 없습니다.");
+            }
+        }
+
+        return true;
     }
 
     public long getQuestionId() {

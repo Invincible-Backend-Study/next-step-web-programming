@@ -1,6 +1,7 @@
 package next.api.auth.controller;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.web.ModelAndView;
@@ -17,7 +18,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
-    private final AuthService authService = AuthService.getInstance();
+    private final AuthService authService;
+    @Inject
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     public ModelAndView authSessionLogin(HttpServletRequest request, HttpServletResponse response) {

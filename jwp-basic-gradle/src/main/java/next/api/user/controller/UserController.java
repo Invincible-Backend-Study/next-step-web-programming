@@ -1,6 +1,7 @@
 package next.api.user.controller;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.web.ModelAndView;
@@ -20,7 +21,11 @@ import java.util.List;
 @Controller
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private final UserService userService = UserService.getInstance();
+    private final UserService userService;
+    @Inject
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ModelAndView userSignUp(HttpServletRequest request, HttpServletResponse response) {

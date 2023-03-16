@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class QuestionDaoTest {
-    private final QuestionDao questionDao = QuestionDao.getInstance();
+    private final QuestionDao questionDao = new QuestionDao();
     @BeforeEach
     void beforeEach() throws Exception {
         Question q1 = new Question("john", "helloworld", "this is contents");
