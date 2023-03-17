@@ -8,10 +8,11 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 import org.reflections.Reflections;
 
-public class BeanScanner {
+public class ClasspathBeanDefinitionScanner {
+
     private final Reflections reflections;
 
-    public BeanScanner(Object... basePacakages) {
+    public ClasspathBeanDefinitionScanner(Object... basePacakages) {
         reflections = new Reflections(basePacakages);
     }
 

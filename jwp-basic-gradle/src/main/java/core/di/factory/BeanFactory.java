@@ -1,11 +1,14 @@
 package core.di.factory;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import core.annotation.Controller;
-import java.lang.reflect.Constructor;
+import core.di.injector.ConstructorInjector;
+import core.di.injector.FieldInjector;
+import core.di.injector.Injector;
+import core.di.injector.SetterInjector;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.SneakyThrows;
@@ -20,8 +23,12 @@ public class BeanFactory {
 
     private final Map<Class<?>, Object> beans = Maps.newHashMap();
 
+    private final List<Injector> injectors;
+
     public BeanFactory(Set<Class<?>> preInstantiateBeans) {
         this.preInstantiateBeans = preInstantiateBeans;
+
+        injectors = Arrays.asList(new FieldInjector(this), new SetterInjector(this), new ConstructorInjector(this));
     }
 
     @SuppressWarnings("unchecked")
@@ -32,7 +39,18 @@ public class BeanFactory {
 
     @SneakyThrows
     public void initialize() {
-        preInstantiateBeans.forEach(this::doInitialize);
+
+        preInstantiateBeans.forEach(clazz -> {
+            if (beans.get(clazz) == null) {
+                log.debug("instantiated Class:{}", clazz);
+                inject(clazz);
+            }
+        });
+        //preInstantiateBeans.forEach(this::doInitialize);
+    }
+
+    private void inject(Class<?> clazz) {
+        injectors.forEach(injector -> injector.inject(clazz));
     }
 
     private void doInitialize(Class<?> preInstantiateBean) {
@@ -75,67 +93,6 @@ public class BeanFactory {
         return instance;
     }
 
-    @SneakyThrows
-    private Object generateDefaultConstructor(Constructor<?> constructor) {
-        return constructor.newInstance();
-    }
-
-    /**
-     * 파싱된 빈들을 가지고 인스턴스화 시켜줌
-     */
-    public void initializeA() {
-        boolean retryFlag = false;
-        for (final Class<?> preInstantiateBean : preInstantiateBeans) {
-            final var instance = new BeanGenerator(preInstantiateBean).doGenerate(this);
-            if (instance == null) {
-                retryFlag = true;
-                continue;
-            }
-            Arrays.stream(preInstantiateBean.getInterfaces()).forEach(beanInterface -> beans.put(beanInterface, instance));
-            beans.put(preInstantiateBean, instance);
-        }
-        if (retryFlag) {
-            initialize();
-        }
-        /*for (final var clazz : preInstantiateBeans) {
-            if (beans.get(clazz) == null) {
-                instantiateClass(clazz);
-            }
-        }*/
-    }
-
-    private Object instantiateClass(Class<?> clazz) {
-        final var bean = beans.get(clazz);
-        if (bean != null) {
-            return bean;
-        }
-        final var injectedConstructor = BeanFactoryUtils.getInjectedConstructor(clazz);
-
-        if (injectedConstructor == null) {
-            return beans.put(clazz, BeanUtils.instantiateClass(clazz));
-        }
-        log.debug("Constructor :{}", injectedConstructor);
-        return beans.put(clazz, instantiateConstructor(injectedConstructor));
-    }
-
-
-    private Object instantiateConstructor(Constructor<?> constructor) {
-        final var parameterTypes = constructor.getParameterTypes();
-        final var args = Lists.newArrayList();
-        for (final var clazz : parameterTypes) {
-            final var concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, preInstantiateBeans);
-            if (!preInstantiateBeans.contains(concreteClazz)) {
-                throw new IllegalStateException(clazz + "는 Bean이 아닙니다.");
-            }
-            var bean = beans.get(concreteClazz);
-            if (bean == null) {
-                bean = instantiateClass(concreteClazz);
-            }
-            args.add(bean);
-        }
-        return BeanUtils.instantiateClass(constructor, args.toArray());
-    }
-
     public Map<Class<?>, Object> getControllers() {
         final Map<Class<?>, Object> controllers = Maps.newHashMap();
         for (final var clazz : preInstantiateBeans) {
@@ -145,5 +102,9 @@ public class BeanFactory {
             }
         }
         return controllers;
+    }
+
+    public Class<?> getConcreteClass(Class<?> preInstantiateBean) {
+        return BeanFactoryUtils.findConcreteClass(preInstantiateBean, preInstantiateBeans);
     }
 }

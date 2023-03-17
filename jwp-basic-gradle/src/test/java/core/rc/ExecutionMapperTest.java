@@ -50,7 +50,7 @@ class ExecutionMapperTest {
 }
 
 class Sample {
-    public int execute(@RequestBody ArgumentSample argumentSample) {
+    public int execute(@ModelAttribute ArgumentSample argumentSample) {
         return 0;
     }
 }
