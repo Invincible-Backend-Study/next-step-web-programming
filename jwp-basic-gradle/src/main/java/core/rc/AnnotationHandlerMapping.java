@@ -2,10 +2,10 @@ package core.rc;
 
 
 import com.google.common.collect.Maps;
+import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.di.factory.BeanFactory;
-import core.di.factory.ClasspathBeanDefinitionScanner;
+import core.di.ApplicationContext;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
@@ -31,11 +31,8 @@ public class AnnotationHandlerMapping implements HandlerMapping {
     }
 
     private void initializeController() {
-        final var beanScanner = new ClasspathBeanDefinitionScanner(basePackage);
-        final var beanFactory = new BeanFactory(beanScanner.scan());
-        beanFactory.initialize();
-
-        final var controllers = beanFactory.getControllers();
+        final var applicationContext = new ApplicationContext(basePackage);
+        final var controllers = getControllers(applicationContext);
         final var methods = getRequestMappingMethods(controllers.keySet());
 
         this.handlerExecutions = methods.stream()
@@ -66,5 +63,16 @@ public class AnnotationHandlerMapping implements HandlerMapping {
         String requestUrl = request.getRequestURI();
         RequestMethod requestMapping = RequestMethod.valueOf(request.getMethod().toUpperCase());
         return handlerExecutions.get(new HandlerKey(requestUrl, requestMapping));
+    }
+
+    private Map<Class<?>, Object> getControllers(ApplicationContext applicationContext) {
+        Map<Class<?>, Object> controllers = Maps.newHashMap();
+        for (final var clazz : applicationContext.getBeanClasses()) {
+            final var annotation = clazz.getAnnotation(Controller.class);
+            if (annotation != null) {
+                controllers.put(clazz, applicationContext.getBean(clazz));
+            }
+        }
+        return controllers;
     }
 }

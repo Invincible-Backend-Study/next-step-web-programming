@@ -26,10 +26,7 @@ function onSuccess({answer, countOfComments}, status) {
         this.reset()
     });
     const firstElement = $(".qna-comment-slipp-articles")[0].children[0];
-    console.dir(firstElement);
-    console.dir($(firstElement).find("input[type=submit]"))
-    $(firstElement).find(".answerWrite input[type=submit]").click(app.addAnswer)
-    $(firstElement).find(".lin-delete-article").click(app.deleteAnswer)
+    firstElement.querySelector(".link-delete-article").addEventListener('click', app.deleteAnswer);
 }
 
 function onError(xhr, status) {

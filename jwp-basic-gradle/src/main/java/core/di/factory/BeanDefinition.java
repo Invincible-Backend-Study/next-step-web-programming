@@ -7,6 +7,10 @@ import java.util.Set;
 import lombok.Getter;
 
 
+/**
+ * BeanDefinition은 생성자로 전달되는 클래스에서 @Inject가 어떻게 설정되어 있는지에 따라 InjectType을 결정하도록 구현함.
+ */
+
 @Getter
 public class BeanDefinition {
     private final Class<?> beanClazz;
@@ -59,5 +63,14 @@ public class BeanDefinition {
         return injectFields;
     }
 
-    
+    public InjectType getResolvedInjectMode() {
+        if (injectConstructor != null) {
+            return InjectType.INJECT_CONSTRUCTOR;
+        }
+        if (!injectedFields.isEmpty()) {
+            return InjectType.INJECT_FIELD;
+        }
+        return InjectType.INJECT_NO;
+    }
+
 }

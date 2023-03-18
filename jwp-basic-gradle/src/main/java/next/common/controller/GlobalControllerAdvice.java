@@ -20,10 +20,12 @@ public class GlobalControllerAdvice {
         final var errorException = exception.getClass();
         final var a = exception instanceof DataAccessException ? ((DataAccessException) exception) : null;
 
+        exception.printStackTrace();
+        log.error("{}", exception.getMessage());
+
         if (exception instanceof DataAccessException) {
             return new GlobalControllerAdvice((DataAccessException) exception);
         }
-        log.error("{}", exception.getMessage());
         return null;
     }
 }

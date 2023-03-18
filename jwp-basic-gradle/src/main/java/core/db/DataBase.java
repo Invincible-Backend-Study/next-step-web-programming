@@ -1,18 +1,17 @@
 package core.db;
 
+import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
-
-import next.model.User;
+import next.user.entity.User;
 
 public class DataBase {
-    private static Map<String, User> users = Maps.newHashMap();
+    private static final Map<String, User> users = Maps.newHashMap();
 
     static {
-        addUser(User.of("123","123", "123","123"));
+        addUser(User.of("123", "123", "123", "123"));
     }
+
     public static void addUser(User user) {
         users.put(user.getUserId(), user);
     }

@@ -36,7 +36,7 @@ public class DispatchServlet extends HttpServlet {
         log.info("init dispatche servlet");
 
         final var legacyHandlerMapping = new LegacyHandlerMapping();
-        final var annotationHandlerMapping = new AnnotationHandlerMapping("next");
+        final var annotationHandlerMapping = new AnnotationHandlerMapping("next", "com");
 
         annotationHandlerMapping.initialize();
 
