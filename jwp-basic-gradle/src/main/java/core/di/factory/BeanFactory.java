@@ -3,6 +3,7 @@ package core.di.factory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import core.annotation.Controller;
+import core.di.factory.inject.ConstructorInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +27,10 @@ public class BeanFactory {
         return (T) beans.get(requiredType);
     }
 
+    public void putBean(Class<?> requiredType, Object instance) {
+        beans.put(requiredType, instance);
+    }
+
     public Map<Class<?>, Object> getControllers() {
         Map<Class<?>, Object> controllers = new HashMap<>();
         beans.keySet().stream()
@@ -35,51 +40,11 @@ public class BeanFactory {
     }
 
     public void initialize() {
+        ConstructorInjector constructorInjector = new ConstructorInjector(this, preInstanticateBeans);
+
         for (Class<?> clazz : preInstanticateBeans) {
-            if (beans.get(clazz) == null) {
-                Object object = instantiateClass(clazz);
-                beans.put(clazz, object);
-            }
+            constructorInjector.inject(clazz);
         }
         logger.debug("BeanFactory beans: {}", beans.toString());
-    }
-
-    private Object instantiateClass(Class<?> clazz) {
-        Object bean = beans.get(clazz);
-        if (bean != null) {
-            return bean;
-        }
-
-        Constructor<?> constructor = BeanFactoryUtils.getInjectedConstructor(clazz);
-        if (constructor == null) {
-            bean = BeanUtils.instantiate(clazz);  // 내부적으로 newInstance() 동작
-            beans.put(clazz, bean);
-            return bean;
-        }
-
-        logger.debug("Constructor : {}", constructor);
-        bean = instantiateConstructor(constructor);
-        beans.put(clazz, bean);
-        return bean;
-    }
-
-    private Object instantiateConstructor(Constructor<?> constructor) {
-        Class<?>[] parameterTypes = constructor.getParameterTypes();
-        List<Object> args = Lists.newArrayList();
-        for (Class<?> clazz : parameterTypes) {
-            Class<?> concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, preInstanticateBeans);
-            if (!preInstanticateBeans.contains(concreteClazz)) {
-                throw new IllegalStateException(clazz + "는 Bean이 아니다.");
-            }
-
-            Object bean = beans.get(concreteClazz);
-            if (bean == null) {
-                bean = instantiateClass(concreteClazz);
-            }
-            args.add(bean);
-
-
-        }
-        return BeanUtils.instantiateClass(constructor, args.toArray());
     }
 }
