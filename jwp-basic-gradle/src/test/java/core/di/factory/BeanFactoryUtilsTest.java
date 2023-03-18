@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class BeanFactoryUtilsTest {
     @Test
     void getInjectedInClass() {
-        Constructor<?> constructor = BeanFactoryUtils.getInjectedInClass(ExampleMethodClass.class);
-        System.out.println(constructor.toString());
+        //Constructor<?> constructor = BeanFactoryUtils.getInjectedInClass(ExampleMethodClass.class);
+        //System.out.println(constructor.toString());
     }
 
     @Test

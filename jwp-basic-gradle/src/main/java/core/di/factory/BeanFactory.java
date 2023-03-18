@@ -24,6 +24,10 @@ public class BeanFactory {
         this.preInstanticateBeans = preInstanticateBeans;
     }
 
+    public Set<Class<?>> getPreInstanticateBeans() {
+        return preInstanticateBeans;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> requiredType) {
         return (T) beans.get(requiredType);
@@ -42,11 +46,12 @@ public class BeanFactory {
     }
 
     public void initialize() {
-        ConstructorInjector constructorInjector = new ConstructorInjector(this, preInstanticateBeans);
-        FieldInjector fieldInjector = new FieldInjector(this, preInstanticateBeans);
-        MethodInjector methodInjector = new MethodInjector(this, preInstanticateBeans);
+        ConstructorInjector constructorInjector = new ConstructorInjector(this);
+        FieldInjector fieldInjector = new FieldInjector(this);
+        MethodInjector methodInjector = new MethodInjector(this);
 
         for (Class<?> clazz : preInstanticateBeans) {
+            logger.debug("BeanFactory class turn: {}", clazz.getName());
             fieldInjector.inject(clazz);
             constructorInjector.inject(clazz);
             methodInjector.inject(clazz);
