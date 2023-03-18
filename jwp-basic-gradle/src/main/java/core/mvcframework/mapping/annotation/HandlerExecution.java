@@ -14,17 +14,9 @@ public class HandlerExecution {
     private final Object declaredObject;
     private final Method method;
 
-    public HandlerExecution(final Method method) {
-        this.declaredObject = getDeclaredObject(method);
+    public HandlerExecution(final Object declaredObject, final Method method) {
+        this.declaredObject = declaredObject;
         this.method = method;
-    }
-
-    private static Object getDeclaredObject(final Method method) {
-        try {
-            return method.getDeclaringClass().getConstructor().newInstance();
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
     }
 
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) {

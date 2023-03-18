@@ -3,6 +3,8 @@ package core.mvcframework.mapping.annotation;
 import com.google.common.collect.Maps;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
+import core.di.BeanFactory;
+import core.di.BeanScanner;
 import core.mvcframework.mapping.HandlerMapping;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -25,19 +27,23 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
     @Override
     public void initialize() {
-        ControllerScanner scanner = new ControllerScanner(basePackage);
-        Map<Class<?>, Object> controllers = scanner.getControllers();
+        BeanScanner scanner = new BeanScanner(basePackage);
+        BeanFactory beanFactory = new BeanFactory(scanner.scan());
+        beanFactory.initialize();
+
+        Map<Class<?>, Object> controllers = beanFactory.getControllers();
         for (Class<?> clazz : controllers.keySet()) {
-            Set<Method> methods = ReflectionUtils.getAllMethods(clazz, ReflectionUtils.withAnnotation(RequestMapping.class));
-            putHandlerExecution(methods);
+            Set<Method> methods = ReflectionUtils.getAllMethods(clazz,
+                    ReflectionUtils.withAnnotation(RequestMapping.class));
+            putHandlerExecution(controllers.get(clazz), methods);
         }
-        log.debug("handlerExecutions={}", handlerExecutions);
+        log.debug("handlerExecute process done");
     }
 
-    private void putHandlerExecution(final Set<Method> methods) {
+    private void putHandlerExecution(final Object handler, final Set<Method> methods) {
         for (Method method : methods) {
             HandlerKey handlerKey = createHandlerKey(method.getDeclaredAnnotation(RequestMapping.class));
-            HandlerExecution handlerExecution = new HandlerExecution(method);
+            HandlerExecution handlerExecution = new HandlerExecution(handler, method);
             handlerExecutions.put(handlerKey, handlerExecution);
         }
     }

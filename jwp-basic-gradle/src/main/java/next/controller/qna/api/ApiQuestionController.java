@@ -1,6 +1,7 @@
 package next.controller.qna.api;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -14,9 +15,14 @@ import next.service.QuestionService;
 import next.utils.SessionUtil;
 
 @Controller
-public class QuestionController extends AbstractAnnotationController {
+public class ApiQuestionController extends AbstractAnnotationController {
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService;
+
+    @Inject
+    public ApiQuestionController(final QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping(value = "/api/questions/delete", method = RequestMethod.POST)
     public ModelAndView deleteQuestion(final HttpServletRequest request, HttpServletResponse response) {

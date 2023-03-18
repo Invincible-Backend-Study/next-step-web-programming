@@ -1,5 +1,7 @@
 package next.service;
 
+import core.annotation.Inject;
+import core.annotation.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +13,17 @@ import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 
+@Service
 public class QuestionService {
 
-    private final QuestionDao questionDao = new QuestionDao();
-    private final AnswerDao answerDao = new AnswerDao();
+    private final QuestionDao questionDao;
+    private final AnswerDao answerDao;
+
+    @Inject
+    public QuestionService(final QuestionDao questionDao, final AnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
+    }
 
     public List<Question> findAllOrderByCreatedDate() {
         return questionDao.findAllOrderByCreatedDate();
@@ -57,25 +66,15 @@ public class QuestionService {
      * - 질문자와 답변자가 모두 같은 경우 질문 삭제가 가능
      */
     public void deleteQuestion(final Long questionId, final User user) {
-        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
         Question question = questionDao.findById(questionId);
-        validateDelete(user, answers, question);
-        answerDao.deleteAllByQuestionId(questionId);
-        questionDao.deleteById(questionId);
-    }
-
-    private void validateDelete(final User user, final List<Answer> answers, final Question question) {
-        if (!user.getUserId().equals(question.getWriter())) {
-            throw new CannotDeleteQuestionException("다른 사용자의 글은 삭제할 수 없습니다.");
+        if (question == null) {
+            throw new CannotDeleteQuestionException("존재하지 않는 질문글은 삭제할 수 없습니다.");
         }
-        if (answers.size() > 0 && !isAllSameWriter(question.getWriter(), answers)) {
-            throw new CannotDeleteQuestionException("질문에 다른 사용자의 답변이 달려있으므로 삭제할 수 없습니다.");
+        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
+        if (question.canDelete(user, answers)) {
+            answerDao.deleteAllByQuestionId(questionId);
+            questionDao.deleteById(questionId);
         }
-    }
-
-    private boolean isAllSameWriter(final String questionWriter, final List<Answer> answers) {
-        return answers.stream()
-                .allMatch(answer -> answer.isWriter(questionWriter));
     }
 
 }

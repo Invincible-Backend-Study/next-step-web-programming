@@ -23,6 +23,12 @@ import next.controller.user.legacy.UpdateUserFormController;
 import next.controller.user.legacy.UserListController;
 import next.controller.user.legacy.auth.LoginController;
 import next.controller.user.legacy.auth.SignUpController;
+import next.dao.JdbcAnswerDao;
+import next.dao.JdbcQuestionDao;
+import next.dao.JdbcUserDao;
+import next.service.AnswerService;
+import next.service.QuestionService;
+import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,30 +40,34 @@ public class LegacyHandlerMapping implements HandlerMapping {
 
     @Override
     public void initialize() {
+        QuestionService questionService = new QuestionService(new JdbcQuestionDao(), new JdbcAnswerDao());
+        UserService userService = new UserService(new JdbcUserDao());
+        AnswerService answerService = new AnswerService(new JdbcAnswerDao(), new JdbcQuestionDao());
+
         // 로그인 필요없음
-//        handlerMapping.put("/", new HomeController());
+        // handlerMapping.put("/", new HomeController());
         handlerMapping.put("/signUpForm", new ForwardController("user/form"));
-        handlerMapping.put("/signUp", new SignUpController());
+        handlerMapping.put("/signUp", new SignUpController(userService));
         handlerMapping.put("/loginForm", new ForwardController("user/login"));
-        handlerMapping.put("/login", new LoginController());
+        handlerMapping.put("/login", new LoginController(userService));
         handlerMapping.put("/loginFailed", new ForwardController("user/login_failed"));
 
-//         로그인 필요
-        handlerMapping.put("/users", new UserListController());
+        // 로그인 필요
+        handlerMapping.put("/users", new UserListController(userService));
         handlerMapping.put("/users/signOut", new SignOutController());
         handlerMapping.put("/users/profile", new ProfileController());
         handlerMapping.put("/users/updateForm", new UpdateUserFormController());
-        handlerMapping.put("/users/update", new UpdateUserController());
+        handlerMapping.put("/users/update", new UpdateUserController(userService));
         handlerMapping.put("/qna/questionForm", new QuestionFormController());
-        handlerMapping.put("/qna/createQuestion", new QuestionCreateController());
-        handlerMapping.put("/qna/updateQuestionForm", new QuestionUpdateFormController());
-        handlerMapping.put("/qna/updateQuestion", new QuestionUpdateController());
-        handlerMapping.put("/qna/deleteQuestion", new QuestionDeleteController());
-        handlerMapping.put("/qna/show", new ShowController());
-        handlerMapping.put("/api/qna/deleteQuestion", new QuestionDeleteApiController());
-        handlerMapping.put("/api/qna/addAnswer", new AddAnswerApiController());
-        handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerApiController());
-        handlerMapping.put("/api/qna/list", new QuestionListApiController());
+        handlerMapping.put("/qna/createQuestion", new QuestionCreateController(questionService));
+        handlerMapping.put("/qna/updateQuestionForm", new QuestionUpdateFormController(questionService));
+        handlerMapping.put("/qna/updateQuestion", new QuestionUpdateController(questionService));
+        handlerMapping.put("/qna/deleteQuestion", new QuestionDeleteController(questionService));
+        handlerMapping.put("/qna/show", new ShowController(questionService));
+        handlerMapping.put("/api/qna/deleteQuestion", new QuestionDeleteApiController(questionService));
+        handlerMapping.put("/api/qna/addAnswer", new AddAnswerApiController(answerService));
+        handlerMapping.put("/api/qna/deleteAnswer", new DeleteAnswerApiController(answerService));
+        handlerMapping.put("/api/qna/list", new QuestionListApiController(questionService));
     }
 
     @Override

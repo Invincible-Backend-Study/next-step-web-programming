@@ -1,6 +1,5 @@
 package next.controller.user.legacy.auth;
 
-import core.annotation.Controller;
 import core.mvcframework.ModelAndView;
 import core.mvcframework.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +10,15 @@ import next.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Controller
 public class LoginController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    public LoginController(final UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) {

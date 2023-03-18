@@ -1,6 +1,7 @@
 package next.controller.qna;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvcframework.ModelAndView;
@@ -23,7 +24,12 @@ public class QuestionController extends AbstractAnnotationController {
 
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
 
-    private final QuestionService questionService = new QuestionService();
+    private final QuestionService questionService;
+
+    @Inject
+    public QuestionController(final QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @RequestMapping(value = "/questions/show", method = RequestMethod.GET)
     public ModelAndView questionList(final HttpServletRequest request, final HttpServletResponse response) {
