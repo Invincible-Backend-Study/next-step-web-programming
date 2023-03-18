@@ -2,6 +2,8 @@ package core.di.factory;
 
 import static org.junit.Assert.assertNotNull;
 
+import core.di.factory.example.ExampleController;
+import core.di.factory.example.ExampleService;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -40,6 +42,19 @@ public class BeanFactoryTest {
         MyQnaService qnaService = qnaController.getQnaService();
         assertNotNull(qnaService.getUserRepository());
         assertNotNull(qnaService.getQuestionRepository());
+    }
+
+    @Test
+    public void diExample() throws Exception {
+        ExampleController exampleController = beanFactory.getBean(ExampleController.class);
+        assertNotNull(exampleController);
+        assertNotNull(exampleController.getExampleService());
+
+        ExampleService exampleService = exampleController.getExampleService();
+        assertNotNull(exampleService.getExampleRepository());
+
+        assertNotNull(exampleController.findExample());
+        System.out.println(exampleController.findExample());
     }
 
     @SuppressWarnings("unchecked")

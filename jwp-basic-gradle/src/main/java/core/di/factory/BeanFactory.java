@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import core.annotation.Controller;
 import core.di.factory.inject.ConstructorInjector;
+import core.di.factory.inject.FieldInjector;
+import core.di.factory.inject.MethodInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -41,9 +43,13 @@ public class BeanFactory {
 
     public void initialize() {
         ConstructorInjector constructorInjector = new ConstructorInjector(this, preInstanticateBeans);
+        FieldInjector fieldInjector = new FieldInjector(this, preInstanticateBeans);
+        MethodInjector methodInjector = new MethodInjector(this, preInstanticateBeans);
 
         for (Class<?> clazz : preInstanticateBeans) {
+            fieldInjector.inject(clazz);
             constructorInjector.inject(clazz);
+            methodInjector.inject(clazz);
         }
         logger.debug("BeanFactory beans: {}", beans.toString());
     }
