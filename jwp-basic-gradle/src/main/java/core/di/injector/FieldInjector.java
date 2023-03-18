@@ -4,22 +4,46 @@ import static core.di.BeanFactoryUtils.findConcreteClass;
 import static core.di.BeanFactoryUtils.getInjectedConstructor;
 
 import core.di.BeanFactory;
+import core.di.BeanFactoryUtils;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-public class ConstructorInjector implements Injector {
+public class FieldInjector implements Injector {
+
+    private static final Logger log = LoggerFactory.getLogger(FieldInjector.class);
 
     private final BeanFactory beanFactory;
 
-    public ConstructorInjector(final BeanFactory beanFactory) {
+    public FieldInjector(final BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 
     @Override
     public void inject(final Class<?> clazz) {
-        if (beanFactory.getBean(clazz) == null) {
-            instantiateClass(findConcreteClass(clazz, beanFactory.getPreInstantiatedBeans()));
+        Class<?> concreteClass = findConcreteClass(clazz, beanFactory.getPreInstantiatedBeans());
+        if (beanFactory.getBean(concreteClass) == null) {
+            instantiateClass(concreteClass);
+        }
+        Set<Field> injectedFields = BeanFactoryUtils.getInjectedFields(clazz);
+        for (Field injectedField : injectedFields) {
+            Class<?> fieldConcreteClass = findConcreteClass(injectedField.getType(), beanFactory.getPreInstantiatedBeans());
+            Object bean = beanFactory.getBean(fieldConcreteClass);
+
+            if (bean == null) {
+                bean = instantiateClass(fieldConcreteClass);
+            }
+            injectedField.setAccessible(true);
+            try {
+                injectedField.set(beanFactory.getBean(injectedField.getDeclaringClass()), bean);
+            } catch (IllegalAccessException e) {
+                log.error(e.getMessage());
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -56,6 +80,5 @@ public class ConstructorInjector implements Injector {
                 .map(beanFactory::getBean)
                 .toArray();
     }
-
 
 }

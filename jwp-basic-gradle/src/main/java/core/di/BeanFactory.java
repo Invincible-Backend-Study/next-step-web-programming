@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import core.annotation.Controller;
 import core.di.injector.ConstructorInjector;
+import core.di.injector.FieldInjector;
 import core.di.injector.Injector;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,9 @@ public class BeanFactory {
 
     public BeanFactory(Set<Class<?>> preInstantiatedBeans) {
         this.preInstantiatedBeans = preInstantiatedBeans;
+        System.out.println(preInstantiatedBeans);
         injectors.add(new ConstructorInjector(this));
+        injectors.add(new FieldInjector(this));
     }
 
     @SuppressWarnings("unchecked")
@@ -46,9 +49,9 @@ public class BeanFactory {
     public void inject(final Class<?> clazz) {
         for (Injector injector : injectors) {
             injector.inject(clazz);
-            if (beans.containsKey(clazz)) {
-                break;
-            }
+//            if (beans.containsKey(clazz)) {
+//                break;
+//            }
         }
     }
 

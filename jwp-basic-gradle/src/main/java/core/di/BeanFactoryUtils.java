@@ -1,11 +1,13 @@
 package core.di;
 
 import static org.reflections.ReflectionUtils.getAllConstructors;
+import static org.reflections.ReflectionUtils.getAllFields;
 import static org.reflections.ReflectionUtils.withAnnotation;
 
 import com.google.common.collect.Sets;
 import core.annotation.Inject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Set;
 
 public class BeanFactoryUtils {
@@ -20,12 +22,22 @@ public class BeanFactoryUtils {
     public static Constructor<?> getInjectedConstructor(Class<?> clazz) {
         Set<Constructor> injectedConstructors = getAllConstructors(clazz, withAnnotation(Inject.class));
         if (injectedConstructors.size() > 1) {
-            throw new IllegalStateException("@Inject는 클래스당 하나만 사용할 수 있습니다.");
+            throw new IllegalStateException("@Inject는 하나의 생성자에서만 사용할 수 있습니다.");
         }
         if (injectedConstructors.isEmpty()) {
             return null;
         }
         return injectedConstructors.iterator().next();
+    }
+
+    /**
+     * 인자로 전달하는 클래스의 필드 중에서 @Inject 애노테이션이 설정되어 있는 필드를 반환
+     * @param clazz
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static Set<Field> getInjectedFields(final Class<?> clazz) {
+        return getAllFields(clazz, withAnnotation(Inject.class));
     }
 
     /**

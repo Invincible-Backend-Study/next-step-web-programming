@@ -13,7 +13,9 @@ import core.annotation.Repository;
 import core.annotation.Service;
 import core.di.BeanFactory;
 import core.di.BeanScanner;
+import core.di.factory.example.MyNewQnaService;
 import core.di.factory.example.MyQnaService;
+import core.di.factory.example.NewQnaController;
 import core.di.factory.example.QnaController;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -43,11 +45,20 @@ public class BeanFactoryTest {
     @Test
     public void di() throws Exception {
         QnaController qnaController = beanFactory.getBean(QnaController.class);
+        NewQnaController newQnaController = beanFactory.getBean(NewQnaController.class);
+
+        assertNotNull(newQnaController);
+        assertNotNull(newQnaController.getMyNewQnaService());
 
         assertNotNull(qnaController);
         assertNotNull(qnaController.getQnaService());
 
         MyQnaService qnaService = qnaController.getQnaService();
+        MyNewQnaService myNewQnaService = newQnaController.getMyNewQnaService();
+
+        assertNotNull(myNewQnaService.getUserRepository());
+        assertNotNull(myNewQnaService.getQuestionRepository());
+
         assertNotNull(qnaService.getUserRepository());
         assertNotNull(qnaService.getQuestionRepository());
     }
@@ -61,101 +72,57 @@ public class BeanFactoryTest {
         return beans;
     }
 
-    @Service
-    static class DummyWithField {
-
-        @Inject
-        private String name;
-
-        public DummyWithField(final String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "DummyWithField{" +
-                    "name='" + name + '\'' +
-                    '}';
-        }
-
-    }
-
-    @Service
-    static class DummyWithSetter {
-
-        private String name;
-
-        public DummyWithSetter() {
-        }
-
-        @Inject
-        public void setName(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "DummyWithSetter{" +
-                    "name='" + name + '\'' +
-                    '}';
-        }
-
-    }
-
-
-    @Test
-    @DisplayName("Field injection test")
-    void injectField() throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        BeanScanner beanScanner = new BeanScanner("core.di.factory");
-        Object instance = null;
-        Set<Class<?>> scan = beanScanner.scan();
-        for (Class<?> clazz : scan) {
-            Set<Field> fields = getAllFields(clazz, withAnnotation(Inject.class));
-            Constructor<?>[] constructors = clazz.getConstructors();
-            for (Constructor<?> constructor : constructors) {
-                if (constructor.getName().endsWith("DummyWithField")) {
-                    System.out.println(constructor);
-                    instance = BeanUtils.instantiateClass(constructor, new String());
-                }
-            }
-            for (Field field : fields) {
-                System.out.println(field);
-                field.setAccessible(true);
-                field.set(instance, "hi this is field inject");
-            }
-        }
-
-        System.out.println(instance);
-    }
-
-    @Test
-    @DisplayName("Setter injection test")
-    void injectSetter()
-            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        BeanScanner beanScanner = new BeanScanner("core.di.factory");
-        Object instance = null;
-        Set<Class<?>> scan = beanScanner.scan();
-
-        for (Class<?> clazz : scan) {
-            if (clazz.getName().endsWith("DummyWithSetter")) {
-                Set<Method> methods = getAllMethods(clazz, withAnnotation(Inject.class));
-                Constructor<?> constructor = clazz.getConstructor();
-                instance = constructor.newInstance();
-                for (Method method : methods) {
-                    if (method != null) {
-                        method.invoke(instance, "hi this is setter inject");
-                    }
-                }
-            }
-        }
-        System.out.println(instance);
-    }
+//    @Test
+//    @DisplayName("Field injection test")
+//    void injectField() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+//        BeanScanner beanScanner = new BeanScanner("core.di.factory.example2");
+//        Object instance = null;
+//        Set<Class<?>> scan = beanScanner.scan();
+//        for (Class<?> clazz : scan) {
+//            Set<Field> fields = getAllFields(clazz, withAnnotation(Inject.class));
+//            Constructor<?>[] constructors = clazz.getConstructors();
+//            for (Constructor<?> constructor : constructors) {
+//                if (constructor.getName().endsWith("DummyWithField")) {
+//                    System.out.println(constructor);
+//                    instance = BeanUtils.instantiate(clazz);
+//                }
+//            }
+//            for (Field field : fields) {
+//                System.out.println(field);
+//                field.setAccessible(true);
+//                field.set(instance, "hi this is field inject");
+//            }
+//        }
+//
+//        System.out.println(instance);
+//    }
+//
+//    @Test
+//    @DisplayName("Setter injection test")
+//    void injectSetter()
+//            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+//        BeanScanner beanScanner = new BeanScanner("core.di.factory");
+//        Object instance = null;
+//        Set<Class<?>> scan = beanScanner.scan();
+//
+//        for (Class<?> clazz : scan) {
+//            if (clazz.getName().endsWith("DummyWithSetter")) {
+//                Set<Method> methods = getAllMethods(clazz, withAnnotation(Inject.class));
+//                Constructor<?> constructor = clazz.getDeclaredConstructor();
+//                instance = constructor.newInstance();
+//                for (Method method : methods) {
+//                    if (method != null) {
+//                        method.invoke(instance, "hi this is setter inject");
+//                    }
+//                }
+//            }
+//        }
+//        System.out.println(instance);
+//
+//        Class<?> aClass = instance.getClass();
+//        Constructor<?>[] declaredConstructors = aClass.getDeclaredConstructors();
+//        for (Constructor<?> declaredConstructor : declaredConstructors) {
+//            System.out.println(declaredConstructor);
+//        }
+//    }
 }
