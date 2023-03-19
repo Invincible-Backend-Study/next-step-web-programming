@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class BeanFactory implements BeanDefinitionRegistry {
@@ -33,9 +34,34 @@ public class BeanFactory implements BeanDefinitionRegistry {
 
         Class<?> concreteClass = findConcreteClass(clazz);
         BeanDefinition beanDefinition = beanDefinitions.get(concreteClass);
+        if (beanDefinition != null && beanDefinition instanceof AnnotatedBeanDefinition) {
+            bean = createAnnotatedBean(beanDefinition);
+            beans.put(clazz, bean);
+            return (T) bean;
+        }
+
         bean = inject(beanDefinition);
         beans.put(concreteClass, bean);
         return (T) bean;
+    }
+
+    private Optional<Object> createAnnotatedBean(BeanDefinition beanDefinition) {
+        AnnotatedBeanDefinition abd = (AnnotatedBeanDefinition) beanDefinition;
+        Method method = abd.getMethod();
+        Object[] args = populateArguments(method.getParameterTypes());
+        return BeanFactoryUtils.invokeMethod(method, getBean(method.getDeclaringClass()), args);
+    }
+
+    private Object[] populateArguments(Class<?>[] paramTypes) {
+        List<Object> args = Lists.newArrayList();
+        for (Class<?> param : paramTypes) {
+            Object bean = getBean(param);
+            if (bean == null) {
+                throw new NullPointerException(param + "에 해당하는 Bean이 존재하지 않습니다.");
+            }
+            args.add(getBean(param));
+        }
+        return args.toArray();
     }
 
     private Class<?> findConcreteClass(Class<?> clazz) {

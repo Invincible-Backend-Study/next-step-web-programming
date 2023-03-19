@@ -4,9 +4,7 @@ import com.google.common.collect.Maps;
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.di.factory.ApplicationContext;
-import core.di.factory.BeanFactory;
-import core.di.factory.ClasspathBeanDefinitionScanner;
+import core.di.factory.AnnotationConfigApplicationContext;
 import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +26,14 @@ public class AnnotationHandlerMapping implements HandlerMapping {
     }
 
     public void initialize() {
-        ApplicationContext ac = new ApplicationContext(basePackage);
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(basePackage);
         Map<Class<?>, Object> controllers = getControllers(ac);
         controllers.keySet().forEach(clazz -> addHandlerExecutions(clazz, controllers.get(clazz)));
 
         logger.debug("HandlerExecutions: {}", handlerExecutions.toString());
     }
 
-    private Map<Class<?>, Object> getControllers(ApplicationContext ac) {
+    private Map<Class<?>, Object> getControllers(AnnotationConfigApplicationContext ac) {
         Map<Class<?>, Object> controllers = Maps.newHashMap();
         for (Class<?> clazz : ac.getBeanClasses()) {
             Annotation annotation = clazz.getAnnotation(Controller.class);

@@ -3,6 +3,7 @@ package core.jdbc;
 import core.annotation.Component;
 import core.annotation.Inject;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,13 @@ import java.sql.SQLException;
 
 @Component
 public class JdbcTemplate {
+    private DataSource dataSource;
+
+    public JdbcTemplate(DataSource dataSource) {
+        super();
+        this.dataSource = dataSource;
+    }
+
     public long insert(String sql, PreparedStatementParameters ps) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             ps.setParameters(pstmt);

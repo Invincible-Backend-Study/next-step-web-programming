@@ -1,7 +1,9 @@
 package core.nmvc;
 
 
+import core.di.factory.AnnotationConfigApplicationContext;
 import core.web.DispatcherServlet;
+import next.common.config.MyConfiguration;
 
 import javax.servlet.ServletRegistration;
 import javax.servlet.ServletContainerInitializer;
@@ -16,6 +18,7 @@ import java.util.Set;
 public class MyWebApplicationInitializer implements ServletContainerInitializer {
     @Override
     public void onStartup(Set<Class<?>> webAppInitializerClasses, ServletContext servletContext) throws ServletException {
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(MyConfiguration.class);
         AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("core", "next");
         ahm.initialize();
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(ahm));
