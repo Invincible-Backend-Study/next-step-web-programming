@@ -1,17 +1,15 @@
 package core.jdbc;
 
+import core.annotation.Component;
+import core.annotation.Inject;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class JdbcTemplate {
-    private static JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private JdbcTemplate() {};
-    public static JdbcTemplate getInstance() {
-        return jdbcTemplate;
-    }
-
     public long insert(String sql, PreparedStatementParameters ps) {
         try (Connection con = ConnectionManager.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql);) {
             ps.setParameters(pstmt);

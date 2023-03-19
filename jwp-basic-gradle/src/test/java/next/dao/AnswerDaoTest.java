@@ -2,6 +2,7 @@ package next.dao;
 
 import java.util.List;
 
+import core.jdbc.JdbcTemplate;
 import next.api.qna.dao.AnswerDao;
 import next.api.qna.dao.QuestionDao;
 import next.api.qna.model.Answer;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AnswerDaoTest {
-    private final AnswerDao answerDao= new AnswerDao();
+    private final AnswerDao answerDao= new AnswerDao(new JdbcTemplate());
 
     @BeforeEach
     void beforeEach() throws Exception {

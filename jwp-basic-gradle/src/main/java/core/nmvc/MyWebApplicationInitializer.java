@@ -16,7 +16,7 @@ import java.util.Set;
 public class MyWebApplicationInitializer implements ServletContainerInitializer {
     @Override
     public void onStartup(Set<Class<?>> webAppInitializerClasses, ServletContext servletContext) throws ServletException {
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("next");
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("core", "next");
         ahm.initialize();
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(ahm));
 

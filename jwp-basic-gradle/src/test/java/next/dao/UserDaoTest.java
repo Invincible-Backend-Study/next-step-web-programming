@@ -1,5 +1,6 @@
 package next.dao;
 
+import core.jdbc.JdbcTemplate;
 import next.api.user.dao.UserDao;
 import next.api.user.model.User;
 import org.junit.After;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDaoTest {
-    UserDao userDao = new UserDao();
+    UserDao userDao = new UserDao(new JdbcTemplate());
 
     @After
     public void afterEach() throws Exception {
