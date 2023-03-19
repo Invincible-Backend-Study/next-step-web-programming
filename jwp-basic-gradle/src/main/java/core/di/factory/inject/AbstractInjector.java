@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
+@Deprecated
 public abstract class AbstractInjector implements Injector {
     private static final Logger logger = LoggerFactory.getLogger(AbstractInjector.class);
     protected final BeanFactory beanFactory;
@@ -40,7 +41,8 @@ public abstract class AbstractInjector implements Injector {
     abstract void inject(Object injectedBean, Object bean, BeanFactory beanFactory) throws InvocationTargetException, IllegalAccessException;
 
     private Object instantiateClass(Class<?> clazz) {
-        Class<?> concreteClass = findBeanClass(clazz, beanFactory.getPreInstanticateBeans());
+        // Class<?> concreteClass = findBeanClass(clazz, beanFactory.getPreInstanticateBeans());
+        Class<?> concreteClass = null;
         Object bean = beanFactory.getBean(concreteClass);
         if (bean != null) {
             return bean;
@@ -63,7 +65,8 @@ public abstract class AbstractInjector implements Injector {
         Class<?>[] pTypes = constructor.getParameterTypes();
         List<Object> args = Lists.newArrayList();
         for (Class<?> clazz : pTypes) {
-            Class<?> concreteClazz = findBeanClass(clazz, beanFactory.getPreInstanticateBeans());
+            // Class<?> concreteClazz = findBeanClass(clazz, beanFactory.getPreInstanticateBeans());
+            Class<?> concreteClazz = null;
             Object bean = beanFactory.getBean(concreteClazz);
             if (bean == null) {
                 bean = instantiateClass(concreteClazz);

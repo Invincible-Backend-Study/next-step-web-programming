@@ -3,34 +3,85 @@ package core.di.factory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import core.annotation.Controller;
-import core.di.factory.inject.ConstructorInjector;
-import core.di.factory.inject.FieldInjector;
-import core.di.factory.inject.MethodInjector;
+import core.di.factory.inject.InjectType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.*;
 
-public class BeanFactory {
+public class BeanFactory implements BeanDefinitionRegistry {
     private static final Logger logger = LoggerFactory.getLogger(BeanFactory.class);
 
-    private Set<Class<?>> preInstanticateBeans;
-
     private Map<Class<?>, Object> beans = Maps.newHashMap();
+    private Map<Class<?>, BeanDefinition> beanDefinitions = Maps.newHashMap();
 
-    public BeanFactory(Set<Class<?>> preInstanticateBeans) {
-        this.preInstanticateBeans = preInstanticateBeans;
-    }
-
-    public Set<Class<?>> getPreInstanticateBeans() {
-        return preInstanticateBeans;
+    @Override
+    public void registerBeanDefinition(Class<?> clazz, BeanDefinition beanDefinition) {
+        beanDefinitions.put(clazz, beanDefinition);
+        logger.debug("BeanFactory put: {} {}", clazz.getName(), beanDefinition.toString());
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getBean(Class<T> requiredType) {
-        return (T) beans.get(requiredType);
+    public <T> T getBean(Class<T> clazz) {
+        Object bean = beans.get(clazz);
+        if (bean != null) {
+            return (T) bean;
+        }
+
+        Class<?> concreteClass = findConcreteClass(clazz);
+        BeanDefinition beanDefinition = beanDefinitions.get(concreteClass);
+        bean = inject(beanDefinition);
+        beans.put(concreteClass, bean);
+        return (T) bean;
+    }
+
+    private Class<?> findConcreteClass(Class<?> clazz) {
+        Set<Class<?>> beanClasses = getBeanClasses();
+        Class<?> concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, beanClasses);
+        if (!beanClasses.contains(concreteClazz)) {
+            throw new IllegalStateException(clazz + "는 bean이 아니다.");
+        }
+        return concreteClazz;
+    }
+
+    private Object inject(BeanDefinition beanDefinition) {
+        if (beanDefinition.getResolvedInjectMode() == InjectType.INJECT_NO) {
+            return BeanUtils.instantiate(beanDefinition.getInjectClass());
+        } else if (beanDefinition.getResolvedInjectMode() == InjectType.INJECT_FIELD) {
+            return injectFields(beanDefinition);
+        } else {
+            return injectConstructor(beanDefinition);
+        }
+    }
+
+    private Object injectConstructor(BeanDefinition beanDefinition) {
+        Constructor<?> constructor = beanDefinition.getInjectConstructor();
+        List<Object> args = Lists.newArrayList();
+        for (Class<?> clazz : constructor.getParameterTypes()) {
+            args.add(getBean(clazz));
+        }
+        return BeanUtils.instantiateClass(constructor, args.toArray());
+    }
+
+    private Object injectFields(BeanDefinition beanDefinition) {
+        Object bean = BeanUtils.instantiate(beanDefinition.getInjectClass());
+        Set<Field> injectFields = beanDefinition.getInjectFields();
+        for (Field field : injectFields) {
+            injectField(bean, field);
+        }
+        return bean;
+    }
+
+    private void injectField(Object bean, Field field) {
+        try {
+            field.setAccessible(true);
+            field.set(bean, getBean(field.getType()));
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            //
+        }
     }
 
     public void putBean(Class<?> requiredType, Object instance) {
@@ -46,16 +97,12 @@ public class BeanFactory {
     }
 
     public void initialize() {
-        ConstructorInjector constructorInjector = new ConstructorInjector(this);
-        FieldInjector fieldInjector = new FieldInjector(this);
-        MethodInjector methodInjector = new MethodInjector(this);
-
-        for (Class<?> clazz : preInstanticateBeans) {
-            logger.debug("BeanFactory class turn: {}", clazz.getName());
-            fieldInjector.inject(clazz);
-            constructorInjector.inject(clazz);
-            methodInjector.inject(clazz);
+        for (Class<?> clazz : getBeanClasses()) {
+            getBean(clazz);
         }
-        logger.debug("BeanFactory beans: {}", beans.toString());
+    }
+
+    public Set<Class<?>> getBeanClasses() {
+        return beanDefinitions.keySet();
     }
 }

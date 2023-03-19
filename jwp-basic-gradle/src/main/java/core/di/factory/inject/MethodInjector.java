@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
+@Deprecated
 public class MethodInjector extends AbstractInjector {
     public MethodInjector(BeanFactory beanFactory) {
         super(beanFactory);
