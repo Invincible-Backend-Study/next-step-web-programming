@@ -51,9 +51,6 @@ public class BeanFactory {
     public void inject(final Class<?> clazz) {
         for (Injector injector : injectors) {
             injector.inject(clazz);
-//            if (beans.containsKey(clazz)) {
-//                break;
-//            }
         }
     }
 
