@@ -6,6 +6,7 @@ import core.annotation.Controller;
 import core.di.injector.ConstructorInjector;
 import core.di.injector.FieldInjector;
 import core.di.injector.Injector;
+import core.di.injector.SetterInjector;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,7 @@ public class BeanFactory {
         System.out.println(preInstantiatedBeans);
         injectors.add(new ConstructorInjector(this));
         injectors.add(new FieldInjector(this));
+        injectors.add(new SetterInjector(this));
     }
 
     @SuppressWarnings("unchecked")

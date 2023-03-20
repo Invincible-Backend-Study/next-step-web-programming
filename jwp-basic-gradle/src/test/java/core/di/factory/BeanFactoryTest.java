@@ -2,32 +2,23 @@ package core.di.factory;
 
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.reflections.ReflectionUtils.getAllFields;
-import static org.reflections.ReflectionUtils.getAllMethods;
-import static org.reflections.ReflectionUtils.withAnnotation;
 
 import com.google.common.collect.Sets;
 import core.annotation.Controller;
-import core.annotation.Inject;
 import core.annotation.Repository;
 import core.annotation.Service;
 import core.di.BeanFactory;
-import core.di.BeanScanner;
-import core.di.factory.example.MyNewQnaService;
+import core.di.factory.example.MyFieldQnaService;
 import core.di.factory.example.MyQnaService;
-import core.di.factory.example.NewQnaController;
+import core.di.factory.example.MySetterQnaService;
 import core.di.factory.example.QnaController;
+import core.di.factory.example.QnaFieldController;
+import core.di.factory.example.QnaSetterController;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
-import org.springframework.beans.BeanUtils;
 
 public class BeanFactoryTest {
     private Reflections reflections;
@@ -45,20 +36,34 @@ public class BeanFactoryTest {
     @Test
     public void di() throws Exception {
         QnaController qnaController = beanFactory.getBean(QnaController.class);
-        NewQnaController newQnaController = beanFactory.getBean(NewQnaController.class);
+        QnaFieldController qnaFieldController = beanFactory.getBean(QnaFieldController.class);
+        QnaSetterController qnaSetterController = beanFactory.getBean(QnaSetterController.class);
 
-        assertNotNull(newQnaController);
-        assertNotNull(newQnaController.getMyNewQnaService());
+        // setter inject
+        assertNotNull(qnaSetterController);
+        assertNotNull(qnaSetterController.getMySetterQnaService());
 
+        // field inject
+        assertNotNull(qnaFieldController);
+        assertNotNull(qnaFieldController.getMyNewQnaService());
+
+        // constructor inject
         assertNotNull(qnaController);
         assertNotNull(qnaController.getQnaService());
 
         MyQnaService qnaService = qnaController.getQnaService();
-        MyNewQnaService myNewQnaService = newQnaController.getMyNewQnaService();
+        MyFieldQnaService myFieldQnaService = qnaFieldController.getMyNewQnaService();
+        MySetterQnaService mySetterQnaService = qnaSetterController.getMySetterQnaService();
 
-        assertNotNull(myNewQnaService.getUserRepository());
-        assertNotNull(myNewQnaService.getQuestionRepository());
+        // setter inject
+        assertNotNull(myFieldQnaService.getUserRepository());
+        assertNotNull(myFieldQnaService.getQuestionRepository());
 
+        // field inject
+        assertNotNull(myFieldQnaService.getUserRepository());
+        assertNotNull(myFieldQnaService.getQuestionRepository());
+
+        // constructor inject
         assertNotNull(qnaService.getUserRepository());
         assertNotNull(qnaService.getQuestionRepository());
     }

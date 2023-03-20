@@ -8,7 +8,9 @@ import com.google.common.collect.Sets;
 import core.annotation.Inject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Set;
+import org.reflections.ReflectionUtils;
 
 public class BeanFactoryUtils {
     /**
@@ -38,6 +40,11 @@ public class BeanFactoryUtils {
     @SuppressWarnings("unchecked")
     public static Set<Field> getInjectedFields(final Class<?> clazz) {
         return getAllFields(clazz, withAnnotation(Inject.class));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<Method> getInjectedMethods(final Class<?> clazz) {
+        return ReflectionUtils.getAllMethods(clazz, withAnnotation(Inject.class));
     }
 
     /**

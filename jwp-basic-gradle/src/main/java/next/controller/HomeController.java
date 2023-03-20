@@ -13,7 +13,6 @@ import next.service.QuestionService;
 @Controller
 public class HomeController extends AbstractAnnotationController {
 
-
     private final QuestionService questionService;
 
     @Inject

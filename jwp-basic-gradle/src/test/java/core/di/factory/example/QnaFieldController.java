@@ -4,15 +4,15 @@ import core.annotation.Controller;
 import core.annotation.Inject;
 
 @Controller
-public class NewQnaController {
+public class QnaFieldController {
 
     @Inject
-    private MyNewQnaService myNewQnaService;
+    private MyFieldQnaService myNewQnaService;
 
-    public NewQnaController() {
+    public QnaFieldController() {
     }
 
-    public MyNewQnaService getMyNewQnaService() {
+    public MyFieldQnaService getMyNewQnaService() {
         return myNewQnaService;
     }
 
