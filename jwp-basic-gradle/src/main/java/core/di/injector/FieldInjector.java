@@ -1,7 +1,5 @@
 package core.di.injector;
 
-import static core.di.BeanFactoryUtils.findConcreteClass;
-
 import core.di.BeanFactory;
 import core.di.BeanFactoryUtils;
 import java.lang.reflect.Field;
@@ -18,26 +16,25 @@ public class FieldInjector extends AbstractInjector {
     }
 
     @Override
-    public void inject(final Class<?> clazz) {
-        Class<?> concreteClass = findConcreteClass(clazz, getPreInstantiatedBeans());
-        if (getBean(concreteClass) == null) {
-            instantiateClass(concreteClass);
-        }
-        Set<Field> injectedFields = BeanFactoryUtils.getInjectedFields(clazz);
-        for (Field injectedField : injectedFields) {
-            Class<?> fieldConcreteClass = findConcreteClass(injectedField.getType(), getPreInstantiatedBeans());
-            Object bean = getBean(fieldConcreteClass);
+    protected Set<?> getInjectedBeans(final Class<?> clazz) {
+        return BeanFactoryUtils.getInjectedFields(clazz);
+    }
 
-            if (bean == null) {
-                bean = instantiateClass(fieldConcreteClass);
-            }
-            injectedField.setAccessible(true);
-            try {
-                injectedField.set(getBean(injectedField.getDeclaringClass()), bean);
-            } catch (IllegalAccessException e) {
-                log.error(e.getMessage());
-                throw new RuntimeException(e);
-            }
+    @Override
+    protected Class<?> getBeanClass(final Object injectedBean) {
+        Field injectedField = (Field) injectedBean;
+        return injectedField.getType();
+    }
+
+    @Override
+    protected void inject(final Object injectedBean, final Object bean, final BeanFactory beanFactory) {
+        Field injectedField = (Field) injectedBean;
+        injectedField.setAccessible(true);
+        try {
+            injectedField.set(beanFactory.getBean(injectedField.getDeclaringClass()), bean);
+        } catch (IllegalAccessException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 

@@ -1,6 +1,5 @@
 package core.di;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import core.annotation.Controller;
 import core.di.injector.ConstructorInjector;
@@ -22,14 +21,15 @@ public class BeanFactory {
 
     private Map<Class<?>, Object> beans = Maps.newHashMap();
 
-    private List<Injector> injectors = Lists.newArrayList();
+    private List<Injector> injectors;
 
     public BeanFactory(Set<Class<?>> preInstantiatedBeans) {
         this.preInstantiatedBeans = preInstantiatedBeans;
-        System.out.println(preInstantiatedBeans);
-        injectors.add(new ConstructorInjector(this));
-        injectors.add(new FieldInjector(this));
-        injectors.add(new SetterInjector(this));
+        injectors = List.of(
+                new ConstructorInjector(this),
+                new FieldInjector(this),
+                new SetterInjector(this)
+        );
     }
 
     @SuppressWarnings("unchecked")

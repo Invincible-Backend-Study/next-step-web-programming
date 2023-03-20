@@ -1,8 +1,8 @@
 package core.di.injector;
 
-import static core.di.BeanFactoryUtils.findConcreteClass;
-
+import com.google.common.collect.Sets;
 import core.di.BeanFactory;
+import java.util.Set;
 
 public class ConstructorInjector extends AbstractInjector {
 
@@ -11,10 +11,19 @@ public class ConstructorInjector extends AbstractInjector {
     }
 
     @Override
-    public void inject(final Class<?> clazz) {
-        if (getBean(clazz) == null) {
-            instantiateClass(findConcreteClass(clazz, getPreInstantiatedBeans()));
-        }
+    public void inject(final Class<?> clazz) {}
+
+    @Override
+    protected Set<?> getInjectedBeans(final Class<?> clazz) {
+        return Sets.newHashSet();
     }
+
+    @Override
+    protected Class<?> getBeanClass(final Object injectedBean) {
+        return null;
+    }
+
+    @Override
+    protected void inject(final Object injectedBean, final Object bean, final BeanFactory beanFactory) {}
 
 }

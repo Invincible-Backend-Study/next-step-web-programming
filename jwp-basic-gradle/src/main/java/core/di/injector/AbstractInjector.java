@@ -6,6 +6,7 @@ import static core.di.BeanFactoryUtils.getInjectedConstructor;
 import core.di.BeanFactory;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.BeanUtils;
 
@@ -17,15 +18,31 @@ public abstract class AbstractInjector implements Injector {
         this.beanFactory = beanFactory;
     }
 
-    public Object getBean(final Class<?> clazz) {
-        return beanFactory.getBean(clazz);
+    @Override
+    public void inject(final Class<?> clazz) {
+        Class<?> concreteClass = findConcreteClass(clazz, beanFactory.getPreInstantiatedBeans());
+        if (Objects.isNull(beanFactory.getBean(concreteClass))) {
+            instantiateClass(concreteClass);
+        }
+        Set<?> injectedBeans = getInjectedBeans(concreteClass);
+        for (Object injectedBean : injectedBeans) {
+            Class<?> beanClazz = getBeanClass(injectedBean);
+            Class<?> concreteBeanClazz = findConcreteClass(beanClazz, beanFactory.getPreInstantiatedBeans());
+            Object bean = beanFactory.getBean(concreteBeanClazz);
+            if (bean == null) {
+                bean = instantiateClass(concreteBeanClazz);
+            }
+            inject(injectedBean, bean, beanFactory);
+        }
     }
 
-    public Set<Class<?>> getPreInstantiatedBeans() {
-        return beanFactory.getPreInstantiatedBeans();
-    }
+    protected abstract Set<?> getInjectedBeans(final Class<?> clazz);
 
-    public Object instantiateClass(final Class<?> preInstantiatedBean) {
+    protected abstract Class<?> getBeanClass(final Object injectedBean);
+
+    protected abstract void inject(final Object injectedBean, final Object bean, final BeanFactory beanFactory);
+
+    protected Object instantiateClass(final Class<?> preInstantiatedBean) {
         Constructor<?> injectedConstructor = getInjectedConstructor(preInstantiatedBean);
         if (injectedConstructor == null) {
             Object bean = BeanUtils.instantiateClass(preInstantiatedBean);
