@@ -1,14 +1,16 @@
 package core.mvcframework.mapping.annotation;
 
 import com.google.common.collect.Maps;
+import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.di.BeanFactory;
-import core.di.BeanScanner;
+import core.di.ApplicationContext;
 import core.mvcframework.mapping.HandlerMapping;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.reflections.ReflectionUtils;
 import org.slf4j.Logger;
@@ -27,17 +29,22 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
     @Override
     public void initialize() {
-        BeanScanner scanner = new BeanScanner(basePackage);
-        BeanFactory beanFactory = new BeanFactory(scanner.scan());
-        beanFactory.initialize();
+        ApplicationContext applicationContext = new ApplicationContext(basePackage);
 
-        Map<Class<?>, Object> controllers = beanFactory.getControllers();
+        Map<Class<?>, Object> controllers = getControllers(applicationContext);
         for (Class<?> clazz : controllers.keySet()) {
             Set<Method> methods = ReflectionUtils.getAllMethods(clazz,
                     ReflectionUtils.withAnnotation(RequestMapping.class));
             putHandlerExecution(controllers.get(clazz), methods);
         }
         log.debug("handlerExecute process done");
+    }
+
+    private Map<Class<?>, Object> getControllers(final ApplicationContext applicationContext) {
+        return applicationContext.getBeanClasses()
+                .stream()
+                .filter(beanClass -> beanClass.isAnnotationPresent(Controller.class))
+                .collect(Collectors.toMap(beanClass -> beanClass, applicationContext::getBean));
     }
 
     private void putHandlerExecution(final Object handler, final Set<Method> methods) {

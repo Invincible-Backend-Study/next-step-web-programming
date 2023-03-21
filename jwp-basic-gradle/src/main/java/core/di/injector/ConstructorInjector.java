@@ -11,7 +11,8 @@ public class ConstructorInjector extends AbstractInjector {
     }
 
     @Override
-    public void inject(final Class<?> clazz) {}
+    public void inject(final Class<?> clazz) {
+    }
 
     @Override
     protected Set<?> getInjectedBeans(final Class<?> clazz) {
@@ -24,6 +25,7 @@ public class ConstructorInjector extends AbstractInjector {
     }
 
     @Override
-    protected void inject(final Object injectedBean, final Object bean, final BeanFactory beanFactory) {}
+    protected void inject(final Object injectedBean, final Object bean, final BeanFactory beanFactory) {
+    }
 
 }

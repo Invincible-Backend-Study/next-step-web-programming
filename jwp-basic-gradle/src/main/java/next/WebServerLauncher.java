@@ -16,7 +16,7 @@ public class WebServerLauncher {
     public static void main(String[] args) throws Exception {
         String webappDirLocation = "webapp/";
         Tomcat tomcat = new Tomcat();
-        addShutdouwnHook(tomcat);
+        addShutDownHook(tomcat);
         tomcat.setPort(8080);
 
         StandardContext context = (StandardContext) tomcat.addWebapp("/",
@@ -34,14 +34,14 @@ public class WebServerLauncher {
         tomcat.getServer().await();
     }
 
-    private static void addShutdouwnHook(final Tomcat tomcat) {
+    private static void addShutDownHook(final Tomcat tomcat) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 tomcat.stop();
             } catch (LifecycleException e) {
                 e.printStackTrace();
             }
-        }));
+        }) );
     }
 
 }

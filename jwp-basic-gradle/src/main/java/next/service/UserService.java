@@ -1,10 +1,12 @@
 package next.service;
 
 import core.annotation.Inject;
+import core.annotation.Service;
 import java.util.List;
 import next.dao.JdbcUserDao;
 import next.model.User;
 
+@Service
 public class UserService {
 
     private final JdbcUserDao userDao;
