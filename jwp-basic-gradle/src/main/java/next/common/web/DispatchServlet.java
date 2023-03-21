@@ -4,7 +4,6 @@ package next.common.web;
 import com.google.common.collect.Lists;
 import core.mvc.JspView;
 import core.mvc.ModelAndView;
-import core.rc.AnnotationHandlerMapping;
 import core.rc.ControllerHandlerAdapter;
 import core.rc.HandlerAdapter;
 import core.rc.HandlerExecutionHandlerAdapter;
@@ -15,38 +14,43 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import next.common.error.DomainException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
+@NoArgsConstructor
+@Slf4j
 public class DispatchServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(DispatchServlet.class);
     private final List<HandlerMapping> mappings = Lists.newArrayList();
     private final List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
+    private Object[] basePackages;
+    private HandlerMapping handlerMapping;
+
+    public DispatchServlet(Object... basePackages) {
+        this.basePackages = basePackages;
+    }
+
+    // 나중에 전체 리팩터링할때 수정할 예정
+    public DispatchServlet(HandlerMapping handlerMapping) {
+        this.handlerMapping = handlerMapping;
+    }
 
     @Override
-    public void init() throws ServletException {
-        log.info("init dispatche servlet");
+    public void init() {
 
         final var legacyHandlerMapping = new LegacyHandlerMapping();
-        final var annotationHandlerMapping = new AnnotationHandlerMapping("next", "com");
-
-        annotationHandlerMapping.initialize();
-
-        mappings.add(annotationHandlerMapping);
+        mappings.add(handlerMapping);
         mappings.add(legacyHandlerMapping);
 
         handlerAdapters.add(new ControllerHandlerAdapter());
         handlerAdapters.add(new HandlerExecutionHandlerAdapter());
 
-        ExecutionRunner.getInstance().initialize("next");
+        ExecutionRunner.getInstance().initialize(basePackages);
         log.info("initialize method execution setup");
 
     }

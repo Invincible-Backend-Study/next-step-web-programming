@@ -8,11 +8,16 @@ import static org.reflections.ReflectionUtils.withReturnType;
 
 import com.google.common.collect.Sets;
 import core.annotation.Inject;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BeanFactoryUtils {
     @SuppressWarnings({"unchecked"})
     public static Set<Method> getInjectedMethods(Class<?> clazz) {
@@ -52,18 +57,34 @@ public class BeanFactoryUtils {
      * @param preInstanticateBeans
      * @return
      */
-    public static Class<?> findConcreteClass(Class<?> injectedClazz, Set<Class<?>> preInstanticateBeans) {
+    public static Optional<Class<?>> findConcreteClass(Class<?> injectedClazz, Set<Class<?>> preInstanticateBeans) {
         if (!injectedClazz.isInterface()) {
-            return injectedClazz;
+            return Optional.of(injectedClazz);
         }
 
         for (Class<?> clazz : preInstanticateBeans) {
             Set<Class<?>> interfaces = Sets.newHashSet(clazz.getInterfaces());
             if (interfaces.contains(injectedClazz)) {
-                return clazz;
+                return Optional.of(clazz);
             }
         }
 
-        throw new IllegalStateException(injectedClazz + "인터페이스를 구현하는 Bean이 존재하지 않는다.");
+        return Optional.empty();
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public static Set<Method> getBeanMethods(Class<?> clazz, Class<? extends Annotation> annotation) {
+        return getAllMethods(clazz, withAnnotation(annotation));
+    }
+
+    public static Optional<Object> invokeMethod(Method method, Object bean, Object[] args) {
+        try {
+            return Optional.ofNullable(method.invoke(bean, args));
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            log.error(e.getMessage());
+            return Optional.empty();
+        }
     }
 }

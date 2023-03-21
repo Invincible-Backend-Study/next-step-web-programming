@@ -1,26 +1,29 @@
 package core.jdbc;
 
-import static core.jdbc.ConnectionManager.getConnection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
+import javax.sql.DataSource;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Slf4j
 public class JdbcTemplate {
+
+    private DataSource dataSource;
 
     public static JdbcTemplate getInstance() {
         return JdbcTemplateHolder.JDBC_TEMPLATE;
     }
 
     public int update(String sql, PreparedStatementSetter preparedStatementSetter) {
-        try (final var connection = ConnectionManager.getConnection(); final var preparedStatement = connection.prepareStatement(sql)) {
+        try (final var connection = dataSource.getConnection(); final var preparedStatement = connection.prepareStatement(sql)) {
             log.info("{}", sql);
 
             preparedStatementSetter.setValues(preparedStatement);
@@ -31,7 +34,7 @@ public class JdbcTemplate {
     }
 
     public void update(PreparedStatementCreator psc, KeyHolder holder) {
-        try (final var conn = ConnectionManager.getConnection()) {
+        try (final var conn = dataSource.getConnection()) {
             PreparedStatement ps = psc.createPreparedStatement(conn);
             ps.executeUpdate();
 
@@ -57,7 +60,7 @@ public class JdbcTemplate {
     }
 
     public <T> List<T> query(String sql, PreparedStatementSetter preparedStatementSetter, RowMapper<T> rowMapper) throws DataAccessException {
-        try (final var connection = getConnection();
+        try (final var connection = dataSource.getConnection();
              final var preparedStatement = connection.prepareStatement(sql)) {
 
             log.info("{}", sql);

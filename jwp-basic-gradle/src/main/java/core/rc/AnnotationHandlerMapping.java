@@ -5,33 +5,31 @@ import com.google.common.collect.Maps;
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.di.ApplicationContext;
+import core.di.factory.ApplicationContext;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.ReflectionUtils;
 
 
+@RequiredArgsConstructor
 @Slf4j
 public class AnnotationHandlerMapping implements HandlerMapping {
 
-    private final Object[] basePackage;
+    private final ApplicationContext applicationContext;
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
-
-    public AnnotationHandlerMapping(Object... args) {
-        this.basePackage = args;
-    }
 
     public void initialize() {
         initializeController();
     }
 
     private void initializeController() {
-        final var applicationContext = new ApplicationContext(basePackage);
+
         final var controllers = getControllers(applicationContext);
         final var methods = getRequestMappingMethods(controllers.keySet());
 

@@ -1,10 +1,14 @@
 package core.di.factory;
 
 import com.google.common.collect.Maps;
+import core.di.AnnotatedBeanDefinition;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import javax.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,15 +24,57 @@ public class BeanFactory implements BeanDefinitionRegistry {
     @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> requiredType) {
         log.info("{}", requiredType);
-        final var bean = beans.get(requiredType);
+        var bean = beans.get(requiredType);
         if (bean != null) {
             return (T) bean;
         }
-        final var concreteClass = findConcreteClass(requiredType);
-        final var beanDefinition = beanDefinitions.get(concreteClass);
-        final var injectedBean = inject(beanDefinition);
-        beans.put(concreteClass, injectedBean);
-        return (T) injectedBean;
+        var beanDefinition = beanDefinitions.get(requiredType);
+
+        if (beanDefinition instanceof AnnotatedBeanDefinition) {
+            final var optionalBean = createAnnotatedBean(beanDefinition);
+            optionalBean.ifPresent(b -> beans.put(requiredType, b));
+            initialize(bean, requiredType);
+            return (T) optionalBean.orElse(null);
+        }
+
+        Optional<Class<?>> concreteClazz = BeanFactoryUtils.findConcreteClass(requiredType, getBeanClasses());
+        if (concreteClazz.isEmpty()) {
+            return null;
+        }
+
+        beanDefinition = beanDefinitions.get(concreteClazz.get());
+        bean = inject(beanDefinition);
+        beans.put(concreteClazz.get(), bean);
+        initialize(bean, concreteClazz.get());
+        return (T) bean;
+    }
+
+    private Optional<Object> createAnnotatedBean(BeanDefinition beanDefinition) {
+        final var annotatedBeanDefinition = (AnnotatedBeanDefinition) beanDefinition;
+        final var method = annotatedBeanDefinition.getMethod();
+        return BeanFactoryUtils.invokeMethod(method, getBean(method.getDeclaringClass()), populateArguments(method.getParameterTypes()));
+    }
+
+    private Object[] populateArguments(Class<?>[] parameterTypes) {
+        return Arrays.stream(parameterTypes).map(parameterType -> {
+            final var bean = getBean(parameterType);
+            if (bean == null) {
+                throw new NullPointerException(parameterTypes + "bean 이 존재하지 않습니다.");
+            }
+            return bean;
+        }).toArray();
+    }
+
+    private void initialize(Object bean, Class<?> concreteClass) {
+        Set<Method> initializeMethods = BeanFactoryUtils.getBeanMethods(concreteClass, PostConstruct.class);
+        if (initializeMethods.isEmpty()) {
+            return;
+        }
+        for (Method initializeMethod : initializeMethods) {
+            log.debug("@PostConstruct Initialize Method : {}", initializeMethod);
+            BeanFactoryUtils.invokeMethod(initializeMethod, bean,
+                    populateArguments(initializeMethod.getParameterTypes()));
+        }
     }
 
     private Object inject(BeanDefinition beanDefinition) {
@@ -64,15 +110,6 @@ public class BeanFactory implements BeanDefinitionRegistry {
         field.set(bean, getBean(field.getType()));
     }
 
-    private Class<?> findConcreteClass(Class<?> requiredType) {
-        final var beanClasses = getBeanClasses();
-        final var concreteClazz = BeanFactoryUtils.findConcreteClass(requiredType, beanClasses);
-
-        if (!beanClasses.contains(concreteClazz)) {
-            throw new IllegalStateException(requiredType + "는 Bean이 아닙니다.");
-        }
-        return concreteClazz;
-    }
 
     @SneakyThrows
     public void initialize() {
