@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @ExtendWith({MockitoExtension.class})
-class UserEntityPresentationTest {
+class UserPresentationTest {
 
     @InjectMocks
     private UserPresentation userPresentation;

@@ -4,8 +4,6 @@
 <%@include file="../layout/header.jsp" %>
 <%@include file="../layout/nav.jsp" %>
 
-<!DOCTYPE html>
-<html lang="kr">
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default">

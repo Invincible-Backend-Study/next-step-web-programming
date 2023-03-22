@@ -12,7 +12,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
-class CreateUserServiceTest extends DataTest { //database와 연결되어 있음
+class CreateUserServiceTestEntity extends DataTest { //database와 연결되어 있음
     private static volatile Throwable exceptionThread = null;
 
     private final CreateUserService createUserService = new CreateUserService();
