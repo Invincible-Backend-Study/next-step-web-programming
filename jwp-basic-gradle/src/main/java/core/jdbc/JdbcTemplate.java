@@ -1,5 +1,6 @@
 package core.jdbc;
 
+import core.annotation.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,19 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
 
+@Component
 public class JdbcTemplate {
-
-    private static JdbcTemplate instance;
-
-    private JdbcTemplate() {
-    }
-
-    public static JdbcTemplate getInstance() {
-        if (instance == null) {
-            instance = new JdbcTemplate();
-        }
-        return instance;
-    }
 
     public int update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();

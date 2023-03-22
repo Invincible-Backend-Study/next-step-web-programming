@@ -16,7 +16,7 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
-        HandlerMapping handlerMapping = new AnnotationHandlerMapping("next");
+        HandlerMapping handlerMapping = new AnnotationHandlerMapping("next", "core");
         handlerMapping.initialize();
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(handlerMapping));
         dispatcher.setLoadOnStartup(1);

@@ -2,10 +2,10 @@ package next.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import core.jdbc.JdbcTemplate;
 import java.util.List;
 import next.model.Answer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +13,7 @@ import org.slf4j.LoggerFactory;
 class AnswerDaoTest extends DaoTest {
     private static final Logger log = LoggerFactory.getLogger(AnswerDaoTest.class);
 
-    JdbcAnswerDao answerDao;
-
-    @BeforeEach
-    void init() {
-        answerDao = new JdbcAnswerDao();
-    }
+    JdbcAnswerDao answerDao = new JdbcAnswerDao(new JdbcTemplate());
 
     @Test
     void findAllByQuestionId() {

@@ -1,6 +1,7 @@
 package core.di;
 
 import com.google.common.collect.Sets;
+import core.annotation.Component;
 import core.annotation.Controller;
 import core.annotation.Repository;
 import core.annotation.Service;
@@ -20,7 +21,7 @@ public class ClasspathBeanDefinitionScanner {
     public void doScan(final Object... basePackages) {
         Reflections reflections = new Reflections(basePackages);
         Set<Class<?>> beanClasses = getTypesAnnotatedWith(reflections, Repository.class, Service.class,
-                Controller.class);
+                Controller.class, Component.class);
         for (Class<?> beanClass : beanClasses) {
             beanDefinitionRegistry.registerBeanDefinition(beanClass, new BeanDefinition(beanClass));
         }

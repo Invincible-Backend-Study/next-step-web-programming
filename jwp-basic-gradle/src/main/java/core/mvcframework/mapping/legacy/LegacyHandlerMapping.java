@@ -1,5 +1,6 @@
 package core.mvcframework.mapping.legacy;
 
+import core.jdbc.JdbcTemplate;
 import core.mvcframework.controller.Controller;
 import core.mvcframework.controller.ForwardController;
 import core.mvcframework.mapping.HandlerMapping;
@@ -40,9 +41,10 @@ public class LegacyHandlerMapping implements HandlerMapping {
 
     @Override
     public void initialize() {
-        QuestionService questionService = new QuestionService(new JdbcQuestionDao(), new JdbcAnswerDao());
-        UserService userService = new UserService(new JdbcUserDao());
-        AnswerService answerService = new AnswerService(new JdbcAnswerDao(), new JdbcQuestionDao());
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        QuestionService questionService = new QuestionService(new JdbcQuestionDao(jdbcTemplate), new JdbcAnswerDao(jdbcTemplate));
+        UserService userService = new UserService(new JdbcUserDao(jdbcTemplate));
+        AnswerService answerService = new AnswerService(new JdbcAnswerDao(jdbcTemplate), new JdbcQuestionDao(jdbcTemplate));
 
         // 로그인 필요없음
         // handlerMapping.put("/", new HomeController());

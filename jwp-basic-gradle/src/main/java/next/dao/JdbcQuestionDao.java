@@ -1,5 +1,6 @@
 package next.dao;
 
+import core.annotation.Inject;
 import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import java.sql.Timestamp;
@@ -9,7 +10,12 @@ import next.model.Question;
 @Repository
 public class JdbcQuestionDao implements QuestionDao {
 
-    private static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+    private final JdbcTemplate jdbcTemplate;
+
+    @Inject
+    public JdbcQuestionDao(final JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<Question> findAll() {
         return jdbcTemplate.query(
