@@ -5,45 +5,38 @@ import core.mvcframework.adapter.ControllerHandlerAdapter;
 import core.mvcframework.adapter.HandlerAdapter;
 import core.mvcframework.adapter.HandlerExecutionHandlerAdapter;
 import core.mvcframework.mapping.HandlerMapping;
-import core.mvcframework.mapping.annotation.AnnotationHandlerMapping;
-import core.mvcframework.mapping.legacy.LegacyHandlerMapping;
 import core.mvcframework.view.View;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private final List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
     private final List<HandlerMapping> handlerMappings = Lists.newArrayList();
+    private HandlerMapping handlerMapping;
+
+    public DispatcherServlet(final HandlerMapping handlerMapping) {
+        this.handlerMapping = handlerMapping;
+    }
 
     @Override
     public void init() {
         initializeHandlerAdapters();
-        initializeHandlerMappings();
+        handlerMappings.add(handlerMapping);
     }
 
     private void initializeHandlerAdapters() {
         handlerAdapters.add(new ControllerHandlerAdapter());
         handlerAdapters.add(new HandlerExecutionHandlerAdapter());
-    }
-
-    private void initializeHandlerMappings() {
-        handlerMappings.add(new AnnotationHandlerMapping("next"));
-        handlerMappings.add(new LegacyHandlerMapping());
-        for (HandlerMapping handlerMapping : handlerMappings) {
-            handlerMapping.initialize();
-        }
     }
 
     @Override
