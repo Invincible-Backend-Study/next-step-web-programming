@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,16 +36,40 @@ public class BeanFactory implements BeanDefinitionRegistry {
 
     @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> clazz) {
-        Object bean = beans.get(findConcreteClass(clazz));
+        Object bean = beans.get(clazz);
         if (bean != null) {
             return (T) bean;
         }
         // 인젝트 작업
+        BeanDefinition beanDefinition = beanDefinitions.get(clazz);
+        if (beanDefinition != null && beanDefinition instanceof AnnotatedBeanDefinition) {
+            bean = createAnnotatedBean(beanDefinition);
+            beans.put(clazz, bean);
+            return (T) bean;
+        }
         Class<?> concreteClass = findConcreteClass(clazz);
-        BeanDefinition beanDefinition = beanDefinitions.get(concreteClass);
         bean = inject(beanDefinition);
         beans.put(concreteClass, bean);
         return (T) bean;
+    }
+
+    private Object createAnnotatedBean(final BeanDefinition beanDefinition) {
+        AnnotatedBeanDefinition abd = (AnnotatedBeanDefinition) beanDefinition;
+        Method method = abd.getMethod();
+        Object[] args = populateArguments(method.getParameterTypes());
+        return BeanFactoryUtils.invokeMethod(method, getBean(method.getDeclaringClass()), args);
+    }
+
+    private Object[] populateArguments(final Class<?>[] parameterTypes) {
+        List<Object> args = Lists.newArrayList();
+        for (Class<?> param : parameterTypes) {
+            Object bean = getBean(param);
+            if (bean == null) {
+                throw new NullPointerException(param + "에 해당하는 Bean이 존재하지 않습니다.");
+            }
+            args.add(getBean(param));
+        }
+        return args.toArray();
     }
 
     private <T> Class<?> findConcreteClass(final Class<T> clazz) {
@@ -83,7 +108,7 @@ public class BeanFactory implements BeanDefinitionRegistry {
         log.debug("Inject Bean = {}, Field = {}", bean, field);
         field.setAccessible(true);
         try {
-            field.set(bean, getBean(field.getType()));
+            field.set(bean, getBean(findConcreteClass(field.getType())));
         } catch (IllegalAccessException e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
@@ -94,7 +119,7 @@ public class BeanFactory implements BeanDefinitionRegistry {
         Constructor<?> constructor = beanDefinition.getInjectConstructor();
         List<Object> arguments = Lists.newArrayList();
         for (Class<?> parameterType : constructor.getParameterTypes()) {
-            arguments.add(getBean(parameterType));
+            arguments.add(getBean(findConcreteClass(parameterType)));
         }
         return BeanUtils.instantiateClass(constructor, arguments.toArray());
     }

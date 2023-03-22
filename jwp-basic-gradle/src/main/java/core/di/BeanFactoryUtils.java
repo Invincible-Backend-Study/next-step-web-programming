@@ -6,13 +6,21 @@ import static org.reflections.ReflectionUtils.withAnnotation;
 
 import com.google.common.collect.Sets;
 import core.annotation.Inject;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.Set;
 import org.reflections.ReflectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BeanFactoryUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(BeanFactoryUtils.class);
+
     /**
      * 인자로 전달하는 클래스의 생성자 중 @Inject 애노테이션이 설정되어 있는 생성자를 반환
      *
@@ -68,6 +76,21 @@ public class BeanFactoryUtils {
             }
         }
 
-        throw new IllegalStateException(injectedClazz + "인터페이스를 구현하는 Bean이 존재하지 않는다.");
+        throw new IllegalStateException(injectedClazz + " 인터페이스를 구현하는 Bean이 존재하지 않는다.");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<Method> getBeanMethods(final Class<?> annotatedClass,
+                                             final Class<? extends Annotation> beanClass) {
+        return ReflectionUtils.getAllMethods(annotatedClass, withAnnotation(beanClass));
+    }
+
+    public static Object invokeMethod(final Method method, final Object bean, final Object[] args) {
+        try {
+            return Optional.ofNullable(method.invoke(bean, args));
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            log.error(e.getMessage());
+            return Optional.empty();
+        }
     }
 }
