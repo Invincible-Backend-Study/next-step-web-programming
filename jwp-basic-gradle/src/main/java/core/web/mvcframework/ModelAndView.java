@@ -1,6 +1,6 @@
-package core.mvcframework;
+package core.web.mvcframework;
 
-import core.mvcframework.view.View;
+import core.web.mvcframework.view.View;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

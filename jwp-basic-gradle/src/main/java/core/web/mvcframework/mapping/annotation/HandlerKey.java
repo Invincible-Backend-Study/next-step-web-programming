@@ -1,4 +1,4 @@
-package core.mvcframework.mapping.annotation;
+package core.web.mvcframework.mapping.annotation;
 
 import core.annotation.RequestMethod;
 

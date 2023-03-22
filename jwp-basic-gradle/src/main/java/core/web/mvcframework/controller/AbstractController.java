@@ -1,10 +1,10 @@
-package core.mvcframework.controller;
+package core.web.mvcframework.controller;
 
-import core.mvcframework.ModelAndView;
-import core.mvcframework.view.JsonView;
-import core.mvcframework.view.JspView;
+import core.web.mvcframework.ModelAndView;
+import core.web.mvcframework.view.JsonView;
+import core.web.mvcframework.view.JspView;
 
-public class AbstractAnnotationController {
+public abstract class AbstractController implements Controller {
 
     protected ModelAndView jspView(String forwardUri) {
         return new ModelAndView(new JspView(forwardUri, "/WEB-INF/views/", ".jsp"));

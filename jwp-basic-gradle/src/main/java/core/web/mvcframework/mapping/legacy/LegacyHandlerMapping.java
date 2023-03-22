@@ -1,9 +1,9 @@
-package core.mvcframework.mapping.legacy;
+package core.web.mvcframework.mapping.legacy;
 
 import core.jdbc.JdbcTemplate;
-import core.mvcframework.controller.Controller;
-import core.mvcframework.controller.ForwardController;
-import core.mvcframework.mapping.HandlerMapping;
+import core.web.mvcframework.controller.Controller;
+import core.web.mvcframework.controller.ForwardController;
+import core.web.mvcframework.mapping.HandlerMapping;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;

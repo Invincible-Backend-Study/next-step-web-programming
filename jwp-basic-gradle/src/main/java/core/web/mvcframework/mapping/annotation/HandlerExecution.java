@@ -1,6 +1,6 @@
-package core.mvcframework.mapping.annotation;
+package core.web.mvcframework.mapping.annotation;
 
-import core.mvcframework.ModelAndView;
+import core.web.mvcframework.ModelAndView;
 import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

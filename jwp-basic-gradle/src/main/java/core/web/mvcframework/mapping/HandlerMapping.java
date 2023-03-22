@@ -1,4 +1,4 @@
-package core.mvcframework.mapping;
+package core.web.mvcframework.mapping;
 
 import javax.servlet.http.HttpServletRequest;
 

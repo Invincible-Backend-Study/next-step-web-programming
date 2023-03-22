@@ -1,4 +1,4 @@
-package core.mvcframework.view;
+package core.web.mvcframework.view;
 
 import java.io.IOException;
 import java.util.Map;

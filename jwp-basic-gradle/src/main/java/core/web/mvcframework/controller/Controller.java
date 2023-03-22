@@ -1,6 +1,6 @@
-package core.mvcframework.controller;
+package core.web.mvcframework.controller;
 
-import core.mvcframework.ModelAndView;
+import core.web.mvcframework.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

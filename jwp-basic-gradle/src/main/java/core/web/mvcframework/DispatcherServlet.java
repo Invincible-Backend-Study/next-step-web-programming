@@ -1,11 +1,11 @@
-package core.mvcframework;
+package core.web.mvcframework;
 
 import com.google.common.collect.Lists;
-import core.mvcframework.adapter.ControllerHandlerAdapter;
-import core.mvcframework.adapter.HandlerAdapter;
-import core.mvcframework.adapter.HandlerExecutionHandlerAdapter;
-import core.mvcframework.mapping.HandlerMapping;
-import core.mvcframework.view.View;
+import core.web.mvcframework.adapter.ControllerHandlerAdapter;
+import core.web.mvcframework.adapter.HandlerAdapter;
+import core.web.mvcframework.adapter.HandlerExecutionHandlerAdapter;
+import core.web.mvcframework.mapping.HandlerMapping;
+import core.web.mvcframework.view.View;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;

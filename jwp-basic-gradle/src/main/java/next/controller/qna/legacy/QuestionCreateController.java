@@ -1,7 +1,7 @@
 package next.controller.qna.legacy;
 
-import core.mvcframework.ModelAndView;
-import core.mvcframework.controller.AbstractController;
+import core.web.mvcframework.ModelAndView;
+import core.web.mvcframework.controller.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import next.controller.qna.dto.QuestionCreateDto;

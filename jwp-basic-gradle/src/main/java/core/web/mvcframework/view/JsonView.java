@@ -1,4 +1,4 @@
-package core.mvcframework.view;
+package core.web.mvcframework.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

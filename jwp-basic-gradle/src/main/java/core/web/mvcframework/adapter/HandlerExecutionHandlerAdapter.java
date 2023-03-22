@@ -1,7 +1,7 @@
-package core.mvcframework.adapter;
+package core.web.mvcframework.adapter;
 
-import core.mvcframework.ModelAndView;
-import core.mvcframework.mapping.annotation.HandlerExecution;
+import core.web.mvcframework.ModelAndView;
+import core.web.mvcframework.mapping.annotation.HandlerExecution;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
