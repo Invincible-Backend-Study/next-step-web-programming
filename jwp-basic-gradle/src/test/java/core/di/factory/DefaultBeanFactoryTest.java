@@ -3,7 +3,7 @@ package core.di.factory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import core.di.beans.factory.support.BeanFactory;
+import core.di.beans.factory.support.DefaultBeanFactory;
 import core.di.context.annotation.ClasspathBeanDefinitionScanner;
 import core.di.factory.example.MyFieldQnaService;
 import core.di.factory.example.MyQnaService;
@@ -14,22 +14,22 @@ import core.di.factory.example.QnaSetterController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BeanFactoryTest {
-    private BeanFactory beanFactory;
+public class DefaultBeanFactoryTest {
+    private DefaultBeanFactory defaultBeanFactory;
 
     @BeforeEach
     @SuppressWarnings("unchecked")
     public void setup() {
-        beanFactory = new BeanFactory();
-        ClasspathBeanDefinitionScanner scanner = new ClasspathBeanDefinitionScanner(beanFactory);
+        defaultBeanFactory = new DefaultBeanFactory();
+        ClasspathBeanDefinitionScanner scanner = new ClasspathBeanDefinitionScanner(defaultBeanFactory);
         scanner.doScan("core.di.factory");
     }
 
     @Test
     public void di() {
-        QnaController qnaController = beanFactory.getBean(QnaController.class);
-        QnaFieldController qnaFieldController = beanFactory.getBean(QnaFieldController.class);
-        QnaSetterController qnaSetterController = beanFactory.getBean(QnaSetterController.class);
+        QnaController qnaController = defaultBeanFactory.getBean(QnaController.class);
+        QnaFieldController qnaFieldController = defaultBeanFactory.getBean(QnaFieldController.class);
+        QnaSetterController qnaSetterController = defaultBeanFactory.getBean(QnaSetterController.class);
 
         // setter inject
         assertNotNull(qnaSetterController);

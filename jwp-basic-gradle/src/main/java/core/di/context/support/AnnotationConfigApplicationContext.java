@@ -3,7 +3,7 @@ package core.di.context.support;
 import com.google.common.collect.Lists;
 import core.annotation.ComponentScan;
 import core.di.context.ApplicationContext;
-import core.di.beans.factory.support.BeanFactory;
+import core.di.beans.factory.support.DefaultBeanFactory;
 import core.di.context.annotation.AnnotatedBeanDefinitionReader;
 import core.di.context.annotation.ClasspathBeanDefinitionScanner;
 import java.util.Arrays;
@@ -16,19 +16,19 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
 
     private static final Logger log = LoggerFactory.getLogger(AnnotationConfigApplicationContext.class);
 
-    private final BeanFactory beanFactory;
+    private final DefaultBeanFactory defaultBeanFactory;
 
     public AnnotationConfigApplicationContext(final Class<?>... configurationClasses) {
         Object[] basePackages = findBasePackages(configurationClasses);
-        beanFactory = new BeanFactory();
-        AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(beanFactory);
+        defaultBeanFactory = new DefaultBeanFactory();
+        AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(defaultBeanFactory);
         reader.loadBeanDefinitions(configurationClasses);
 
         if (basePackages.length > 0) {
-            ClasspathBeanDefinitionScanner scanner = new ClasspathBeanDefinitionScanner(beanFactory);
+            ClasspathBeanDefinitionScanner scanner = new ClasspathBeanDefinitionScanner(defaultBeanFactory);
             scanner.doScan(basePackages);
         }
-        beanFactory.initialize();
+        defaultBeanFactory.preInstantiateSingletons();
     }
 
     private Object[] findBasePackages(final Class<?>[] annotatedClasses) {
@@ -50,11 +50,11 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
 
     @Override
     public Set<Class<?>> getBeanClasses() {
-        return beanFactory.getBeanClasses();
+        return defaultBeanFactory.getBeanClasses();
     }
 
     @Override
     public <T> T getBean(final Class<T> beanClass) {
-        return beanFactory.getBean(beanClass);
+        return defaultBeanFactory.getBean(beanClass);
     }
 }

@@ -3,6 +3,7 @@ package core.di.beans.factory.support;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import core.annotation.PostConstruct;
+import core.di.beans.factory.ConfigurableListableBeanFactory;
 import core.di.context.annotation.AnnotatedBeanDefinition;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -16,15 +17,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-public class BeanFactory implements BeanDefinitionRegistry {
+public class DefaultBeanFactory implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(BeanFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultBeanFactory.class);
 
     private Map<Class<?>, Object> beans = Maps.newHashMap();
 
     private final Map<Class<?>, DefaultBeanDefinition> beanDefinitions = Maps.newHashMap();
 
-    public void initialize() {
+    @Override
+    public void preInstantiateSingletons() {
         for (Class<?> clazz : getBeanClasses()) {
             getBean(clazz);
         }
@@ -32,11 +34,11 @@ public class BeanFactory implements BeanDefinitionRegistry {
     }
 
     @Override
-    public void registerBeanDefinition(final Class<?> clazz, final DefaultBeanDefinition defaultBeanDefinition) {
-        log.debug("register bean = {}", clazz);
-        beanDefinitions.put(clazz, defaultBeanDefinition);
+    public Set<Class<?>> getBeanClasses() {
+        return Collections.unmodifiableSet(beanDefinitions.keySet());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> clazz) {
         Object bean = beans.get(clazz);
@@ -57,11 +59,11 @@ public class BeanFactory implements BeanDefinitionRegistry {
         defaultBeanDefinition = beanDefinitions.get(concreteClazz.get());
         bean = inject(defaultBeanDefinition);
         beans.put(concreteClazz.get(), bean);
-        initialize(bean, concreteClazz.get());
+        preInstantiateSingletons(bean, concreteClazz.get());
         return (T) bean;
     }
 
-    private void initialize(final Object bean, final Class<?> beanClass) {
+    private void preInstantiateSingletons(final Object bean, final Class<?> beanClass) {
         Set<Method> initializeMethods = BeanFactoryUtils.getBeanMethods(beanClass, PostConstruct.class);
         if (initializeMethods.isEmpty()) {
             return;
@@ -91,10 +93,6 @@ public class BeanFactory implements BeanDefinitionRegistry {
         return args.toArray();
     }
 
-    public Set<Class<?>> getBeanClasses() {
-        return Collections.unmodifiableSet(beanDefinitions.keySet());
-    }
-
     public Object inject(final DefaultBeanDefinition defaultBeanDefinition) {
         if (defaultBeanDefinition.getResolvedInjectMode() == InjectType.INJECT_NO) {
             return BeanUtils.instantiate(defaultBeanDefinition.getBeanClass());
@@ -103,6 +101,15 @@ public class BeanFactory implements BeanDefinitionRegistry {
             return injectFields(defaultBeanDefinition);
         }
         return injectConstructor(defaultBeanDefinition);
+    }
+
+    private Object injectConstructor(final DefaultBeanDefinition defaultBeanDefinition) {
+        Constructor<?> constructor = defaultBeanDefinition.getInjectConstructor();
+        List<Object> arguments = Lists.newArrayList();
+        for (Class<?> parameterType : constructor.getParameterTypes()) {
+            arguments.add(getBean(parameterType));
+        }
+        return BeanUtils.instantiateClass(constructor, arguments.toArray());
     }
 
     private Object injectFields(final DefaultBeanDefinition defaultBeanDefinition) {
@@ -125,17 +132,16 @@ public class BeanFactory implements BeanDefinitionRegistry {
         }
     }
 
-    private Object injectConstructor(final DefaultBeanDefinition defaultBeanDefinition) {
-        Constructor<?> constructor = defaultBeanDefinition.getInjectConstructor();
-        List<Object> arguments = Lists.newArrayList();
-        for (Class<?> parameterType : constructor.getParameterTypes()) {
-            arguments.add(getBean(parameterType));
-        }
-        return BeanUtils.instantiateClass(constructor, arguments.toArray());
+    @Override
+    public void clear() {
+        beanDefinitions.clear();
+        beans.clear();
     }
 
-    public void registerBean(final Class<?> preInstantiatedBean, final Object bean) {
-        beans.put(preInstantiatedBean, bean);
+    @Override
+    public void registerBeanDefinition(final Class<?> clazz, final DefaultBeanDefinition defaultBeanDefinition) {
+        log.debug("register bean = {}", clazz);
+        beanDefinitions.put(clazz, defaultBeanDefinition);
     }
 
 }

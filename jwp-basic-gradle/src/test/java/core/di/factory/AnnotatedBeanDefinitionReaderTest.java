@@ -2,7 +2,7 @@ package core.di.factory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import core.di.beans.factory.support.BeanFactory;
+import core.di.beans.factory.support.DefaultBeanFactory;
 import core.di.context.annotation.ClasspathBeanDefinitionScanner;
 import core.di.factory.example.ExampleConfig;
 import core.di.factory.example.IntegrationConfig;
@@ -16,31 +16,31 @@ public class AnnotatedBeanDefinitionReaderTest {
 
     @Test
     void register_simple() {
-        BeanFactory beanFactory = new BeanFactory();
-        AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(beanFactory);
+        DefaultBeanFactory defaultBeanFactory = new DefaultBeanFactory();
+        AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(defaultBeanFactory);
         reader.loadBeanDefinitions(ExampleConfig.class);
-        beanFactory.initialize();
-        assertNotNull(beanFactory.getBean(DataSource.class));
+        defaultBeanFactory.preInstantiateSingletons();
+        assertNotNull(defaultBeanFactory.getBean(DataSource.class));
     }
 
     @Test
     public void register_ClasspathBeanDefinitionScanner_통합() {
-        BeanFactory beanFactory = new BeanFactory();
-        AnnotatedBeanDefinitionReader abdr = new AnnotatedBeanDefinitionReader(beanFactory);
+        DefaultBeanFactory defaultBeanFactory = new DefaultBeanFactory();
+        AnnotatedBeanDefinitionReader abdr = new AnnotatedBeanDefinitionReader(defaultBeanFactory);
         abdr.loadBeanDefinitions(IntegrationConfig.class);
 
-        ClasspathBeanDefinitionScanner cbds = new ClasspathBeanDefinitionScanner(beanFactory);
+        ClasspathBeanDefinitionScanner cbds = new ClasspathBeanDefinitionScanner(defaultBeanFactory);
         cbds.doScan("core.di.factory.example");
 
-        beanFactory.initialize();
+        defaultBeanFactory.preInstantiateSingletons();
 
-        assertNotNull(beanFactory.getBean(DataSource.class));
+        assertNotNull(defaultBeanFactory.getBean(DataSource.class));
 
-        JdbcUserRepository userRepository = beanFactory.getBean(JdbcUserRepository.class);
+        JdbcUserRepository userRepository = defaultBeanFactory.getBean(JdbcUserRepository.class);
         assertNotNull(userRepository);
         assertNotNull(userRepository.getDataSource());
 
-        MyJdbcTemplate jdbcTemplate = beanFactory.getBean(MyJdbcTemplate.class);
+        MyJdbcTemplate jdbcTemplate = defaultBeanFactory.getBean(MyJdbcTemplate.class);
         assertNotNull(jdbcTemplate);
         assertNotNull(jdbcTemplate.getDataSource());
     }
