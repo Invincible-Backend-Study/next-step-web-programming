@@ -2,9 +2,11 @@ package core.nmvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import core.di.AnnotationConfigApplicationContext;
 import core.web.mvcframework.ModelAndView;
 import core.web.mvcframework.mapping.annotation.AnnotationHandlerMapping;
 import core.web.mvcframework.mapping.annotation.HandlerExecution;
+import next.config.MyConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -16,7 +18,8 @@ public class AnnotationHandlerMappingTest {
 
     @BeforeEach
     public void setup() {
-        handlerMapping = new AnnotationHandlerMapping("core.nmvc");
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(MyConfiguration.class);
+        handlerMapping = new AnnotationHandlerMapping(ac);
         handlerMapping.initialize();
 
         response = new MockHttpServletResponse();

@@ -7,6 +7,7 @@ import core.di.BeanFactory;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.BeanUtils;
 
@@ -20,14 +21,14 @@ public abstract class AbstractInjector implements Injector {
 
     @Override
     public void inject(final Class<?> clazz) {
-        Class<?> concreteClass = findConcreteClass(clazz, beanFactory.getBeanClasses());
+        Class<?> concreteClass = findConcreteClass(clazz, beanFactory.getBeanClasses()).get();
         if (Objects.isNull(beanFactory.getBean(concreteClass))) {
             instantiateClass(concreteClass);
         }
         Set<?> injectedBeans = getInjectedBeans(concreteClass);
         for (Object injectedBean : injectedBeans) {
             Class<?> beanClazz = getBeanClass(injectedBean);
-            Class<?> concreteBeanClazz = findConcreteClass(beanClazz, beanFactory.getBeanClasses());
+            Class<?> concreteBeanClazz = findConcreteClass(beanClazz, beanFactory.getBeanClasses()).get();
             Object bean = beanFactory.getBean(concreteBeanClazz);
             if (bean == null) {
                 bean = instantiateClass(concreteBeanClazz);
@@ -62,7 +63,7 @@ public abstract class AbstractInjector implements Injector {
 
     private void instantiateParameter(final Class<?>[] parameterTypes) {
         for (Class<?> parameterType : parameterTypes) {
-            Class<?> concreteClass = findConcreteClass(parameterType, beanFactory.getBeanClasses());
+            Class<?> concreteClass = findConcreteClass(parameterType, beanFactory.getBeanClasses()).get();
             if (beanFactory.getBean(concreteClass) == null) {
                 instantiateClass(concreteClass);
             }
@@ -72,6 +73,8 @@ public abstract class AbstractInjector implements Injector {
     private Object[] findBeans(final Class<?>[] parameterTypes) {
         return Arrays.stream(parameterTypes)
                 .map(type -> findConcreteClass(type, beanFactory.getBeanClasses()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .map(beanFactory::getBean)
                 .toArray();
     }

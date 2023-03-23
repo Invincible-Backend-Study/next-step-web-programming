@@ -1,8 +1,8 @@
 package next.dao;
 
-import core.jdbc.JdbcTemplate;
 import java.util.List;
 import next.model.Question;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,14 @@ import org.slf4j.LoggerFactory;
 class QuestionDaoTest extends DaoTest {
     private static final Logger log = LoggerFactory.getLogger(QuestionDaoTest.class);
 
-    JdbcQuestionDao questionDao = new JdbcQuestionDao(new JdbcTemplate());
+    QuestionDao questionDao;
+
+    @Override
+    @BeforeEach
+    void setUp() {
+        super.setUp();
+        questionDao = applicationContext.getBean(QuestionDao.class);
+    }
 
     @Test
     void findAll() {

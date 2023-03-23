@@ -41,7 +41,7 @@ public class WebServerLauncher {
             } catch (LifecycleException e) {
                 e.printStackTrace();
             }
-        }) );
+        }));
     }
 
 }

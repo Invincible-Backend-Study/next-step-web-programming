@@ -30,6 +30,7 @@ import next.dao.JdbcUserDao;
 import next.service.AnswerService;
 import next.service.QuestionService;
 import next.service.UserService;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +42,12 @@ public class LegacyHandlerMapping implements HandlerMapping {
 
     @Override
     public void initialize() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        QuestionService questionService = new QuestionService(new JdbcQuestionDao(jdbcTemplate), new JdbcAnswerDao(jdbcTemplate));
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(new BasicDataSource());
+        QuestionService questionService = new QuestionService(new JdbcQuestionDao(jdbcTemplate),
+                new JdbcAnswerDao(jdbcTemplate));
         UserService userService = new UserService(new JdbcUserDao(jdbcTemplate));
-        AnswerService answerService = new AnswerService(new JdbcAnswerDao(jdbcTemplate), new JdbcQuestionDao(jdbcTemplate));
+        AnswerService answerService = new AnswerService(new JdbcAnswerDao(jdbcTemplate),
+                new JdbcQuestionDao(jdbcTemplate));
 
         // 로그인 필요없음
         // handlerMapping.put("/", new HomeController());

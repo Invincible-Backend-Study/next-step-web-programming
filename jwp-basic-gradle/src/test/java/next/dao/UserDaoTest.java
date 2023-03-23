@@ -3,22 +3,29 @@ package next.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import core.jdbc.JdbcTemplate;
 import java.util.List;
 import next.model.User;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class UserDaoTest extends DaoTest {
 
-    JdbcUserDao jdbcUserDao = new JdbcUserDao(new JdbcTemplate());
+    UserDao userDao;
+
+    @Override
+    @BeforeEach
+    void setUp() {
+        super.setUp();
+        userDao = applicationContext.getBean(UserDao.class);
+    }
 
     @Test
     public void crud() {
         User expected = new User("userId", "password", "name", "javajigi@email.com");
-        jdbcUserDao.insert(expected);
+        userDao.insert(expected);
 
-        User actual = jdbcUserDao.findById(expected.getUserId());
+        User actual = userDao.findById(expected.getUserId());
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -28,8 +35,8 @@ public class UserDaoTest extends DaoTest {
         User expected = new User("userId", "password", "name", "test@email.com");
 
         // when
-        jdbcUserDao.insert(expected);
-        List<User> users = jdbcUserDao.findAll();
+        userDao.insert(expected);
+        List<User> users = userDao.findAll();
 
         // then
         Assertions.assertAll(() -> {

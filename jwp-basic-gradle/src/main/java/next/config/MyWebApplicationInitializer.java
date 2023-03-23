@@ -1,9 +1,11 @@
 package next.config;
 
+import core.di.AnnotationConfigApplicationContext;
+import core.di.ApplicationContext;
+import core.web.WebApplicationInitializer;
 import core.web.mvcframework.DispatcherServlet;
 import core.web.mvcframework.mapping.HandlerMapping;
 import core.web.mvcframework.mapping.annotation.AnnotationHandlerMapping;
-import core.web.WebApplicationInitializer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -16,7 +18,8 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
-        HandlerMapping handlerMapping = new AnnotationHandlerMapping("next", "core");
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfiguration.class);
+        HandlerMapping handlerMapping = new AnnotationHandlerMapping(applicationContext);
         handlerMapping.initialize();
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher",
                 new DispatcherServlet(handlerMapping));

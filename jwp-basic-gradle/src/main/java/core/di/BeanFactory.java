@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.swing.text.html.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,17 +41,20 @@ public class BeanFactory implements BeanDefinitionRegistry {
         if (bean != null) {
             return (T) bean;
         }
-        // 인젝트 작업
         BeanDefinition beanDefinition = beanDefinitions.get(clazz);
         if (beanDefinition != null && beanDefinition instanceof AnnotatedBeanDefinition) {
             Optional<Object> optionalBean = createAnnotatedBean(beanDefinition);
             optionalBean.ifPresent(b -> beans.put(clazz, b));
             return (T) optionalBean.orElse(null);
         }
-        Class<?> concreteClass = BeanFactoryUtils.findConcreteClass(clazz, getBeanClasses());
-        beanDefinition = beanDefinitions.get(concreteClass);
+        Optional<Class<?>> concreteClazz = BeanFactoryUtils.findConcreteClass(clazz, getBeanClasses());
+        if (concreteClazz.isEmpty()) {
+            return null;
+        }
+
+        beanDefinition = beanDefinitions.get(concreteClazz.get());
         bean = inject(beanDefinition);
-        beans.put(concreteClass, bean);
+        beans.put(concreteClazz.get(), bean);
         return (T) bean;
     }
 

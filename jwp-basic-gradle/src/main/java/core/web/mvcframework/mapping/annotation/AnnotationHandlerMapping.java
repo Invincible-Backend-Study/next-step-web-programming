@@ -5,7 +5,6 @@ import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.di.ApplicationContext;
-import core.di.BeanFactoryUtils;
 import core.web.mvcframework.mapping.HandlerMapping;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -20,17 +19,15 @@ public class AnnotationHandlerMapping implements HandlerMapping {
 
     private static final Logger log = LoggerFactory.getLogger(AnnotationHandlerMapping.class);
 
-    private Object[] basePackage;
+    private ApplicationContext applicationContext;
     private Map<HandlerKey, HandlerExecution> handlerExecutions = Maps.newHashMap();
 
-    public AnnotationHandlerMapping(Object... basePackage) {
-        this.basePackage = basePackage;
+    public AnnotationHandlerMapping(final ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     @Override
     public void initialize() {
-        ApplicationContext applicationContext = new ApplicationContext(basePackage);
-
         Map<Class<?>, Object> controllers = getControllers(applicationContext);
         for (Class<?> clazz : controllers.keySet()) {
             Set<Method> methods = ReflectionUtils.getAllMethods(clazz,

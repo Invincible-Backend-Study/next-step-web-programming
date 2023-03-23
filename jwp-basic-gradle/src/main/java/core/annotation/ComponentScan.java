@@ -9,5 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ComponentScan {
     String[] value() default {};
+
     String[] basePackages() default {};
 }
