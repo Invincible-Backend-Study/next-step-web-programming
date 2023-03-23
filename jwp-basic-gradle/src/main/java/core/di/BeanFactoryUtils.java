@@ -85,7 +85,7 @@ public class BeanFactoryUtils {
         return ReflectionUtils.getAllMethods(annotatedClass, withAnnotation(beanClass));
     }
 
-    public static Object invokeMethod(final Method method, final Object bean, final Object[] args) {
+    public static Optional<Object> invokeMethod(final Method method, final Object bean, final Object[] args) {
         try {
             return Optional.ofNullable(method.invoke(bean, args));
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

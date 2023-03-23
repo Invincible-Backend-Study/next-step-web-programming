@@ -8,7 +8,9 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import javax.swing.text.html.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -43,17 +45,18 @@ public class BeanFactory implements BeanDefinitionRegistry {
         // 인젝트 작업
         BeanDefinition beanDefinition = beanDefinitions.get(clazz);
         if (beanDefinition != null && beanDefinition instanceof AnnotatedBeanDefinition) {
-            bean = createAnnotatedBean(beanDefinition);
-            beans.put(clazz, bean);
-            return (T) bean;
+            Optional<Object> optionalBean = createAnnotatedBean(beanDefinition);
+            optionalBean.ifPresent(b -> beans.put(clazz, b));
+            return (T) optionalBean.orElse(null);
         }
-        Class<?> concreteClass = findConcreteClass(clazz);
+        Class<?> concreteClass = BeanFactoryUtils.findConcreteClass(clazz, getBeanClasses());
+        beanDefinition = beanDefinitions.get(concreteClass);
         bean = inject(beanDefinition);
         beans.put(concreteClass, bean);
         return (T) bean;
     }
 
-    private Object createAnnotatedBean(final BeanDefinition beanDefinition) {
+    private Optional<Object> createAnnotatedBean(final BeanDefinition beanDefinition) {
         AnnotatedBeanDefinition abd = (AnnotatedBeanDefinition) beanDefinition;
         Method method = abd.getMethod();
         Object[] args = populateArguments(method.getParameterTypes());
@@ -70,15 +73,6 @@ public class BeanFactory implements BeanDefinitionRegistry {
             args.add(getBean(param));
         }
         return args.toArray();
-    }
-
-    private <T> Class<?> findConcreteClass(final Class<T> clazz) {
-        Set<Class<?>> beanClasses = getBeanClasses();
-        Class<?> concreteClass = BeanFactoryUtils.findConcreteClass(clazz, beanClasses);
-        if (!beanClasses.contains(concreteClass)) {
-            throw new IllegalStateException(clazz + "는 Bean이 아닙니다.");
-        }
-        return concreteClass;
     }
 
     public Set<Class<?>> getBeanClasses() {
@@ -108,7 +102,7 @@ public class BeanFactory implements BeanDefinitionRegistry {
         log.debug("Inject Bean = {}, Field = {}", bean, field);
         field.setAccessible(true);
         try {
-            field.set(bean, getBean(findConcreteClass(field.getType())));
+            field.set(bean, getBean(field.getType()));
         } catch (IllegalAccessException e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
@@ -119,7 +113,7 @@ public class BeanFactory implements BeanDefinitionRegistry {
         Constructor<?> constructor = beanDefinition.getInjectConstructor();
         List<Object> arguments = Lists.newArrayList();
         for (Class<?> parameterType : constructor.getParameterTypes()) {
-            arguments.add(getBean(findConcreteClass(parameterType)));
+            arguments.add(getBean(parameterType));
         }
         return BeanUtils.instantiateClass(constructor, arguments.toArray());
     }

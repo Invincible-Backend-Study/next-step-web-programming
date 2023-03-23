@@ -1,4 +1,4 @@
-package core.config;
+package core.di.factory.example;
 
 import core.annotation.Bean;
 import core.annotation.Configuration;
