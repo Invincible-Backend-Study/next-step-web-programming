@@ -2,6 +2,7 @@ package core.di;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import core.annotation.PostConstruct;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -55,7 +56,19 @@ public class BeanFactory implements BeanDefinitionRegistry {
         beanDefinition = beanDefinitions.get(concreteClazz.get());
         bean = inject(beanDefinition);
         beans.put(concreteClazz.get(), bean);
+        initialize(bean, concreteClazz.get());
         return (T) bean;
+    }
+
+    private void initialize(final Object bean, final Class<?> beanClass) {
+        Set<Method> initializeMethods = BeanFactoryUtils.getBeanMethods(beanClass, PostConstruct.class);
+        if (initializeMethods.isEmpty()) {
+            return;
+        }
+        for (Method initializeMethod : initializeMethods) {
+            log.debug("@PostConstruct Initialize Method : {}", initializeMethod);
+            BeanFactoryUtils.invokeMethod(initializeMethod, bean, populateArguments(initializeMethod.getParameterTypes()));
+        }
     }
 
     private Optional<Object> createAnnotatedBean(final BeanDefinition beanDefinition) {
