@@ -6,6 +6,7 @@ import core.di.factory.example.ExampleConfig;
 import core.di.factory.example.IntegrationConfig;
 import core.di.factory.example.JdbcUserRepository;
 import core.di.factory.example.MyJdbcTemplate;
+import core.di.factory.support.AnnotatedBeanDefinitionReader;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ public class AnnotatedBeanDefinitionReaderTest {
     void register_simple() {
         BeanFactory beanFactory = new BeanFactory();
         AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(beanFactory);
-        reader.register(ExampleConfig.class);
+        reader.loadBeanDefinitions(ExampleConfig.class);
         beanFactory.initialize();
         assertNotNull(beanFactory.getBean(DataSource.class));
     }
@@ -24,7 +25,7 @@ public class AnnotatedBeanDefinitionReaderTest {
     public void register_ClasspathBeanDefinitionScanner_통합() {
         BeanFactory beanFactory = new BeanFactory();
         AnnotatedBeanDefinitionReader abdr = new AnnotatedBeanDefinitionReader(beanFactory);
-        abdr.register(IntegrationConfig.class);
+        abdr.loadBeanDefinitions(IntegrationConfig.class);
 
         ClasspathBeanDefinitionScanner cbds = new ClasspathBeanDefinitionScanner(beanFactory);
         cbds.doScan("core.di.factory.example");

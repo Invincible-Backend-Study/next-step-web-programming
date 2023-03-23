@@ -31,7 +31,7 @@ public class AnnotationHandlerMappingTest {
         HandlerExecution execution = (HandlerExecution) handlerMapping.getHandler(request);
         ModelAndView mav = execution.handle(request, response);
         mav.getView().render(mav.getModel(), request, response);
-        assertThat(response.getForwardedUrl()).isEqualTo("user/list.jsp");
+        assertThat(response.getForwardedUrl()).isEqualTo("/WEB-INF/views/user/list.jsp");
     }
 
     @Test

@@ -2,6 +2,7 @@ package core.di.factory;
 
 import com.google.common.collect.Lists;
 import core.annotation.ComponentScan;
+import core.di.factory.support.AnnotatedBeanDefinitionReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +19,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
         Object[] basePackages = findBasePackages(configurationClasses);
         beanFactory = new BeanFactory();
         AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(beanFactory);
-        reader.register(configurationClasses);
+        reader.loadBeanDefinitions(configurationClasses);
 
         if (basePackages.length > 0) {
             ClasspathBeanDefinitionScanner scanner = new ClasspathBeanDefinitionScanner(beanFactory);

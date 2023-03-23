@@ -1,12 +1,16 @@
-package core.di.factory;
+package core.di.factory.support;
 
 import core.annotation.Bean;
+import core.di.factory.AnnotatedBeanDefinition;
+import core.di.factory.BeanDefinitionRegistry;
+import core.di.factory.BeanFactoryUtils;
+import core.di.factory.DefaultBeanDefinition;
 import java.lang.reflect.Method;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnnotatedBeanDefinitionReader {
+public class AnnotatedBeanDefinitionReader implements BeanDefinitionReader {
 
     private static final Logger log = LoggerFactory.getLogger(AnnotatedBeanDefinitionReader.class);
 
@@ -16,7 +20,8 @@ public class AnnotatedBeanDefinitionReader {
         this.beanDefinitionRegistry = beanDefinitionRegistry;
     }
 
-    public void register(final Class<?>... annotatedClasses) {
+    @Override
+    public void loadBeanDefinitions(final Class<?>... annotatedClasses) {
         for (Class<?> annotatedClass : annotatedClasses) {
             registerBean(annotatedClass);
         }
