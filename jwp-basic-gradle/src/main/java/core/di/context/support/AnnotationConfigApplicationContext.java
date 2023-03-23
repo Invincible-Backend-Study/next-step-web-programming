@@ -2,8 +2,8 @@ package core.di.context.support;
 
 import com.google.common.collect.Lists;
 import core.annotation.ComponentScan;
-import core.di.context.ApplicationContext;
 import core.di.beans.factory.support.DefaultBeanFactory;
+import core.di.context.ApplicationContext;
 import core.di.context.annotation.AnnotatedBeanDefinitionReader;
 import core.di.context.annotation.ClasspathBeanDefinitionScanner;
 import java.util.Arrays;
