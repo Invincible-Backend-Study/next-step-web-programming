@@ -2,7 +2,7 @@ package core.di.factory;
 
 import java.lang.reflect.Method;
 
-public class AnnotatedBeanDefinition extends BeanDefinition {
+public class AnnotatedBeanDefinition extends DefaultBeanDefinition {
 
     private Method method;
 

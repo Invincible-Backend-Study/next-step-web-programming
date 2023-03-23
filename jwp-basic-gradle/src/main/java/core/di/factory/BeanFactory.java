@@ -21,7 +21,7 @@ public class BeanFactory implements BeanDefinitionRegistry {
 
     private Map<Class<?>, Object> beans = Maps.newHashMap();
 
-    private final Map<Class<?>, BeanDefinition> beanDefinitions = Maps.newHashMap();
+    private final Map<Class<?>, DefaultBeanDefinition> beanDefinitions = Maps.newHashMap();
 
     public void initialize() {
         for (Class<?> clazz : getBeanClasses()) {
@@ -31,9 +31,9 @@ public class BeanFactory implements BeanDefinitionRegistry {
     }
 
     @Override
-    public void registerBeanDefinition(final Class<?> clazz, final BeanDefinition beanDefinition) {
+    public void registerBeanDefinition(final Class<?> clazz, final DefaultBeanDefinition defaultBeanDefinition) {
         log.debug("register bean = {}", clazz);
-        beanDefinitions.put(clazz, beanDefinition);
+        beanDefinitions.put(clazz, defaultBeanDefinition);
     }
 
     @SuppressWarnings("unchecked")
@@ -42,9 +42,9 @@ public class BeanFactory implements BeanDefinitionRegistry {
         if (bean != null) {
             return (T) bean;
         }
-        BeanDefinition beanDefinition = beanDefinitions.get(clazz);
-        if (beanDefinition != null && beanDefinition instanceof AnnotatedBeanDefinition) {
-            Optional<Object> optionalBean = createAnnotatedBean(beanDefinition);
+        DefaultBeanDefinition defaultBeanDefinition = beanDefinitions.get(clazz);
+        if (defaultBeanDefinition != null && defaultBeanDefinition instanceof AnnotatedBeanDefinition) {
+            Optional<Object> optionalBean = createAnnotatedBean(defaultBeanDefinition);
             optionalBean.ifPresent(b -> beans.put(clazz, b));
             return (T) optionalBean.orElse(null);
         }
@@ -53,8 +53,8 @@ public class BeanFactory implements BeanDefinitionRegistry {
             return null;
         }
 
-        beanDefinition = beanDefinitions.get(concreteClazz.get());
-        bean = inject(beanDefinition);
+        defaultBeanDefinition = beanDefinitions.get(concreteClazz.get());
+        bean = inject(defaultBeanDefinition);
         beans.put(concreteClazz.get(), bean);
         initialize(bean, concreteClazz.get());
         return (T) bean;
@@ -71,8 +71,8 @@ public class BeanFactory implements BeanDefinitionRegistry {
         }
     }
 
-    private Optional<Object> createAnnotatedBean(final BeanDefinition beanDefinition) {
-        AnnotatedBeanDefinition abd = (AnnotatedBeanDefinition) beanDefinition;
+    private Optional<Object> createAnnotatedBean(final DefaultBeanDefinition defaultBeanDefinition) {
+        AnnotatedBeanDefinition abd = (AnnotatedBeanDefinition) defaultBeanDefinition;
         Method method = abd.getMethod();
         Object[] args = populateArguments(method.getParameterTypes());
         return BeanFactoryUtils.invokeMethod(method, getBean(method.getDeclaringClass()), args);
@@ -94,19 +94,19 @@ public class BeanFactory implements BeanDefinitionRegistry {
         return Collections.unmodifiableSet(beanDefinitions.keySet());
     }
 
-    public Object inject(final BeanDefinition beanDefinition) {
-        if (beanDefinition.getResolvedInjectMode() == InjectType.INJECT_NO) {
-            return BeanUtils.instantiate(beanDefinition.getBeanClass());
+    public Object inject(final DefaultBeanDefinition defaultBeanDefinition) {
+        if (defaultBeanDefinition.getResolvedInjectMode() == InjectType.INJECT_NO) {
+            return BeanUtils.instantiate(defaultBeanDefinition.getBeanClass());
         }
-        if (beanDefinition.getResolvedInjectMode() == InjectType.INJECT_FIELD) {
-            return injectFields(beanDefinition);
+        if (defaultBeanDefinition.getResolvedInjectMode() == InjectType.INJECT_FIELD) {
+            return injectFields(defaultBeanDefinition);
         }
-        return injectConstructor(beanDefinition);
+        return injectConstructor(defaultBeanDefinition);
     }
 
-    private Object injectFields(final BeanDefinition beanDefinition) {
-        Object bean = BeanUtils.instantiate(beanDefinition.getBeanClass());
-        Set<Field> fields = beanDefinition.getInjectFields();
+    private Object injectFields(final DefaultBeanDefinition defaultBeanDefinition) {
+        Object bean = BeanUtils.instantiate(defaultBeanDefinition.getBeanClass());
+        Set<Field> fields = defaultBeanDefinition.getInjectFields();
         for (Field field : fields) {
             injectField(bean, field);
         }
@@ -124,8 +124,8 @@ public class BeanFactory implements BeanDefinitionRegistry {
         }
     }
 
-    private Object injectConstructor(final BeanDefinition beanDefinition) {
-        Constructor<?> constructor = beanDefinition.getInjectConstructor();
+    private Object injectConstructor(final DefaultBeanDefinition defaultBeanDefinition) {
+        Constructor<?> constructor = defaultBeanDefinition.getInjectConstructor();
         List<Object> arguments = Lists.newArrayList();
         for (Class<?> parameterType : constructor.getParameterTypes()) {
             arguments.add(getBean(parameterType));

@@ -23,7 +23,7 @@ public class AnnotatedBeanDefinitionReader {
     }
 
     public void registerBean(final Class<?> annotatedClass) {
-        beanDefinitionRegistry.registerBeanDefinition(annotatedClass, new BeanDefinition(annotatedClass));
+        beanDefinitionRegistry.registerBeanDefinition(annotatedClass, new DefaultBeanDefinition(annotatedClass));
         Set<Method> beanMethods = BeanFactoryUtils.getBeanMethods(annotatedClass, Bean.class);
         for (Method beanMethod : beanMethods) {
             log.debug("@Bean method : {}", beanMethod);

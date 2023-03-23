@@ -23,7 +23,7 @@ public class ClasspathBeanDefinitionScanner {
         Set<Class<?>> beanClasses = getTypesAnnotatedWith(reflections, Repository.class, Service.class,
                 Controller.class, Component.class);
         for (Class<?> beanClass : beanClasses) {
-            beanDefinitionRegistry.registerBeanDefinition(beanClass, new BeanDefinition(beanClass));
+            beanDefinitionRegistry.registerBeanDefinition(beanClass, new DefaultBeanDefinition(beanClass));
         }
     }
 
