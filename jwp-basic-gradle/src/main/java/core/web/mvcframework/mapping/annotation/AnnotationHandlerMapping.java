@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.di.ApplicationContext;
+import core.di.factory.ApplicationContext;
 import core.web.mvcframework.mapping.HandlerMapping;
 import java.lang.reflect.Method;
 import java.util.Map;

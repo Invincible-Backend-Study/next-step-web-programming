@@ -1,4 +1,4 @@
-package core.di;
+package core.di.factory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

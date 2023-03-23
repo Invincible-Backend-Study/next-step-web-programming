@@ -3,8 +3,6 @@ package core.di.factory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import core.di.BeanFactory;
-import core.di.ClasspathBeanDefinitionScanner;
 import core.di.factory.example.MyFieldQnaService;
 import core.di.factory.example.MyQnaService;
 import core.di.factory.example.MySetterQnaService;

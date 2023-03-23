@@ -1,4 +1,4 @@
-package core.di;
+package core.di.factory;
 
 public interface BeanDefinitionRegistry {
 

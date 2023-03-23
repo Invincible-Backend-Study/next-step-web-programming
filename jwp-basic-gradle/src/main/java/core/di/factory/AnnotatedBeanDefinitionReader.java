@@ -1,4 +1,4 @@
-package core.di;
+package core.di.factory;
 
 import core.annotation.Bean;
 import java.lang.reflect.Method;

@@ -2,8 +2,8 @@
 //
 //import static org.assertj.core.api.Assertions.assertThat;
 //
-//import core.di.BeanFactory;
-//import core.di.ClasspathBeanDefinitionScanner;
+//import core.di.factory.BeanFactory;
+//import core.di.factory.ClasspathBeanDefinitionScanner;
 //import java.util.Map;
 //import org.junit.jupiter.api.Assertions;
 //import org.junit.jupiter.api.BeforeEach;

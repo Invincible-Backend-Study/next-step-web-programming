@@ -1,4 +1,4 @@
-package core.di;
+package core.di.factory;
 
 import static org.reflections.ReflectionUtils.getAllConstructors;
 import static org.reflections.ReflectionUtils.getAllFields;

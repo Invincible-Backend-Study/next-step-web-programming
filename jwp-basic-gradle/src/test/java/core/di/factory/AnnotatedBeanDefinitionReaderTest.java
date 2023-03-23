@@ -2,9 +2,6 @@ package core.di.factory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import core.di.AnnotatedBeanDefinitionReader;
-import core.di.BeanFactory;
-import core.di.ClasspathBeanDefinitionScanner;
 import core.di.factory.example.ExampleConfig;
 import core.di.factory.example.IntegrationConfig;
 import core.di.factory.example.JdbcUserRepository;

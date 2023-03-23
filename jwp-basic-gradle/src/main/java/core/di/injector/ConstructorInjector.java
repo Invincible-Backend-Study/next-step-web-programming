@@ -1,7 +1,7 @@
 package core.di.injector;
 
 import com.google.common.collect.Sets;
-import core.di.BeanFactory;
+import core.di.factory.BeanFactory;
 import java.util.Set;
 
 public class ConstructorInjector extends AbstractInjector {

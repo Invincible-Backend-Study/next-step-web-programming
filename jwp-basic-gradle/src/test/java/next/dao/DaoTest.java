@@ -1,7 +1,7 @@
 package next.dao;
 
-import core.di.AnnotationConfigApplicationContext;
-import core.di.ApplicationContext;
+import core.di.factory.AnnotationConfigApplicationContext;
+import core.di.factory.ApplicationContext;
 import javax.sql.DataSource;
 import next.config.MyConfiguration;
 import org.junit.jupiter.api.BeforeEach;
