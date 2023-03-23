@@ -1,10 +1,12 @@
-package core.di.factory;
+package core.di.context.annotation;
 
 import com.google.common.collect.Sets;
 import core.annotation.Component;
 import core.annotation.Controller;
 import core.annotation.Repository;
 import core.annotation.Service;
+import core.di.beans.factory.support.BeanDefinitionRegistry;
+import core.di.beans.factory.support.DefaultBeanDefinition;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 import org.reflections.Reflections;

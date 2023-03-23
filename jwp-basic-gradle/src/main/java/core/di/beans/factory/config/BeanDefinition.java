@@ -1,6 +1,6 @@
-package core.di.factory.config;
+package core.di.beans.factory.config;
 
-import core.di.factory.InjectType;
+import core.di.beans.factory.support.InjectType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Set;

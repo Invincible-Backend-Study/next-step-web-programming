@@ -2,11 +2,13 @@ package core.di.factory;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import core.di.beans.factory.support.BeanFactory;
+import core.di.context.annotation.ClasspathBeanDefinitionScanner;
 import core.di.factory.example.ExampleConfig;
 import core.di.factory.example.IntegrationConfig;
 import core.di.factory.example.JdbcUserRepository;
 import core.di.factory.example.MyJdbcTemplate;
-import core.di.factory.support.AnnotatedBeanDefinitionReader;
+import core.di.context.annotation.AnnotatedBeanDefinitionReader;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 

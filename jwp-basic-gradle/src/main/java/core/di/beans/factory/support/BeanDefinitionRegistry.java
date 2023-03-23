@@ -1,4 +1,6 @@
-package core.di.factory;
+package core.di.beans.factory.support;
+
+import core.di.beans.factory.support.DefaultBeanDefinition;
 
 public interface BeanDefinitionRegistry {
 

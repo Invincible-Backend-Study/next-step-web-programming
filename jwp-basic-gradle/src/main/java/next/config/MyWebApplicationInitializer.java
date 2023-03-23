@@ -1,7 +1,7 @@
 package next.config;
 
-import core.di.factory.AnnotationConfigApplicationContext;
-import core.di.factory.ApplicationContext;
+import core.di.context.support.AnnotationConfigApplicationContext;
+import core.di.context.ApplicationContext;
 import core.web.WebApplicationInitializer;
 import core.web.mvcframework.DispatcherServlet;
 import core.web.mvcframework.mapping.HandlerMapping;

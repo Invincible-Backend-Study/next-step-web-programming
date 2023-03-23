@@ -1,9 +1,9 @@
 package core.di.injector;
 
-import static core.di.factory.BeanFactoryUtils.findConcreteClass;
-import static core.di.factory.BeanFactoryUtils.getInjectedConstructor;
+import static core.di.beans.factory.support.BeanFactoryUtils.findConcreteClass;
+import static core.di.beans.factory.support.BeanFactoryUtils.getInjectedConstructor;
 
-import core.di.factory.BeanFactory;
+import core.di.beans.factory.support.BeanFactory;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Objects;

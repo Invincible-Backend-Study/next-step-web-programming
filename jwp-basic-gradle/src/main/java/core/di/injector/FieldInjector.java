@@ -1,7 +1,7 @@
 package core.di.injector;
 
-import core.di.factory.BeanFactory;
-import core.di.factory.BeanFactoryUtils;
+import core.di.beans.factory.support.BeanFactory;
+import core.di.beans.factory.support.BeanFactoryUtils;
 import java.lang.reflect.Field;
 import java.util.Set;
 import org.slf4j.Logger;

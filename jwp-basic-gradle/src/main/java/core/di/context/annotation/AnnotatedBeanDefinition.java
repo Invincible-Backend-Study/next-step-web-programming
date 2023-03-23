@@ -1,5 +1,6 @@
-package core.di.factory;
+package core.di.context.annotation;
 
+import core.di.beans.factory.support.DefaultBeanDefinition;
 import java.lang.reflect.Method;
 
 public class AnnotatedBeanDefinition extends DefaultBeanDefinition {

@@ -1,10 +1,10 @@
-package core.di.factory.support;
+package core.di.context.annotation;
 
 import core.annotation.Bean;
-import core.di.factory.AnnotatedBeanDefinition;
-import core.di.factory.BeanDefinitionRegistry;
-import core.di.factory.BeanFactoryUtils;
-import core.di.factory.DefaultBeanDefinition;
+import core.di.beans.factory.support.BeanDefinitionRegistry;
+import core.di.beans.factory.support.BeanFactoryUtils;
+import core.di.beans.factory.support.DefaultBeanDefinition;
+import core.di.beans.factory.support.BeanDefinitionReader;
 import java.lang.reflect.Method;
 import java.util.Set;
 import org.slf4j.Logger;

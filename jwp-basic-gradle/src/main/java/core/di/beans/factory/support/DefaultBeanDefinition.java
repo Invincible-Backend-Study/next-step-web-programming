@@ -1,13 +1,14 @@
-package core.di.factory;
+package core.di.beans.factory.support;
 
 import com.google.common.collect.Sets;
+import core.di.beans.factory.config.BeanDefinition;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Set;
 
-public class DefaultBeanDefinition implements core.di.factory.config.BeanDefinition {
+public class DefaultBeanDefinition implements BeanDefinition {
 
     private final Class<?> beanClazz;
     private Constructor<?> injectConstructor;

@@ -1,4 +1,4 @@
-package core.di.factory.support;
+package core.di.beans.factory.support;
 
 public interface BeanDefinitionReader {
 
