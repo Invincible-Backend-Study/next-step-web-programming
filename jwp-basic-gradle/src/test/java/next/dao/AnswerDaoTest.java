@@ -13,11 +13,13 @@ import org.slf4j.LoggerFactory;
 class AnswerDaoTest extends DaoTest {
     private static final Logger log = LoggerFactory.getLogger(AnswerDaoTest.class);
 
-    JdbcAnswerDao answerDao;
+    AnswerDao answerDao;
 
+    @Override
     @BeforeEach
-    void init() {
-        answerDao = new JdbcAnswerDao();
+    void setUp() {
+        super.setUp();
+        answerDao = applicationContext.getBean(AnswerDao.class);
     }
 
     @Test

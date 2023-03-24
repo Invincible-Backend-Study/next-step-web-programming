@@ -3,8 +3,8 @@ package core.di.factory.example;
 import core.annotation.Controller;
 import core.annotation.Inject;
 import core.annotation.RequestMapping;
-import core.mvcframework.ModelAndView;
-import core.mvcframework.controller.AbstractAnnotationController;
+import core.web.mvcframework.ModelAndView;
+import core.web.mvcframework.controller.AbstractAnnotationController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

@@ -1,11 +1,13 @@
 package next.service;
 
 import core.annotation.Inject;
+import core.annotation.Service;
 import next.dao.JdbcAnswerDao;
 import next.dao.JdbcQuestionDao;
 import next.model.Answer;
 import next.model.Question;
 
+@Service
 public class AnswerService {
 
     private final JdbcAnswerDao answerDao;

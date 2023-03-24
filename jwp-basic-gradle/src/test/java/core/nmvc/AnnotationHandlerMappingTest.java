@@ -2,9 +2,11 @@ package core.nmvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import core.mvcframework.ModelAndView;
-import core.mvcframework.mapping.annotation.AnnotationHandlerMapping;
-import core.mvcframework.mapping.annotation.HandlerExecution;
+import core.di.context.support.AnnotationConfigApplicationContext;
+import core.web.mvcframework.ModelAndView;
+import core.web.mvcframework.mapping.annotation.AnnotationHandlerMapping;
+import core.web.mvcframework.mapping.annotation.HandlerExecution;
+import next.config.MyConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -16,7 +18,8 @@ public class AnnotationHandlerMappingTest {
 
     @BeforeEach
     public void setup() {
-        handlerMapping = new AnnotationHandlerMapping("core.nmvc");
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(MyConfiguration.class);
+        handlerMapping = new AnnotationHandlerMapping(ac);
         handlerMapping.initialize();
 
         response = new MockHttpServletResponse();
@@ -28,7 +31,7 @@ public class AnnotationHandlerMappingTest {
         HandlerExecution execution = (HandlerExecution) handlerMapping.getHandler(request);
         ModelAndView mav = execution.handle(request, response);
         mav.getView().render(mav.getModel(), request, response);
-        assertThat(response.getForwardedUrl()).isEqualTo("user/list.jsp");
+        assertThat(response.getForwardedUrl()).isEqualTo("/WEB-INF/views/user/list.jsp");
     }
 
     @Test

@@ -6,24 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 import next.exception.DataAccessException;
 
 public class JdbcTemplate {
 
-    private static JdbcTemplate instance;
+    private final DataSource dataSource;
 
-    private JdbcTemplate() {
-    }
-
-    public static JdbcTemplate getInstance() {
-        if (instance == null) {
-            instance = new JdbcTemplate();
-        }
-        return instance;
+    public JdbcTemplate(final DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public int update(final String query, final PreparedStatementSetter preparedStatementSetter) {
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatementSetter.setValue(preparedStatement);
@@ -38,7 +33,7 @@ public class JdbcTemplate {
     }
 
     public int update(final PreparedStatementCreator preparedStatementCreator, final KeyHolder keyHolder) {
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = preparedStatementCreator.createPreparedStatement(connection)) {
             int result = preparedStatement.executeUpdate();
 
@@ -58,7 +53,7 @@ public class JdbcTemplate {
             final RowMapper<T> rowMapper,
             final PreparedStatementSetter preparedStatementSetter) {
 
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatementSetter.setValue(preparedStatement);
             List<T> results = new ArrayList<>();
