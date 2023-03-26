@@ -29,3 +29,6 @@
 
 - @Service, @Repository 어노테이션이 붙은 클래스는 빈(Bean)으로 등록한다.
 - @Inject가 붙은 매개인자 생성자의 매개인자로 알맞은 빈을 주입해야 한다.(DI)
+
+
+test
