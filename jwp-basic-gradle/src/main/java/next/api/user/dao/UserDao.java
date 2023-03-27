@@ -1,5 +1,6 @@
 package next.api.user.dao;
 
+import core.annotation.Inject;
 import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
@@ -10,12 +11,11 @@ import java.util.List;
 
 @Repository
 public class UserDao {
-    static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-//    private static UserDao userDao = new UserDao();
-//    private UserDao() {}
-//    public static UserDao getInstance() {
-//        return userDao;
-//    }
+    private JdbcTemplate jdbcTemplate;
+    @Inject
+    public UserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void insert(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";

@@ -2,6 +2,8 @@ package core.di.factory;
 
 import static org.junit.Assert.assertNotNull;
 
+import core.di.factory.example.ExampleController;
+import core.di.factory.example.ExampleService;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -11,22 +13,17 @@ import org.reflections.Reflections;
 
 import com.google.common.collect.Sets;
 
-import core.annotation.Controller;
-import core.annotation.Repository;
-import core.annotation.Service;
 import core.di.factory.example.MyQnaService;
 import core.di.factory.example.QnaController;
 
 public class BeanFactoryTest {
-    private Reflections reflections;
     private BeanFactory beanFactory;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setup() {
-        BeanScanner beanScanner = new BeanScanner();
-        Set<Class<?>> preInstanticateClazz = beanScanner.getBeans("core.di.factory.example");
-        beanFactory = new BeanFactory(preInstanticateClazz);
+        beanFactory = new BeanFactory();
+        ClasspathBeanDefinitionScanner beanScanner = new ClasspathBeanDefinitionScanner(beanFactory);
+        beanScanner.doScan("core.di.factory.example");
         beanFactory.initialize();
     }
 
@@ -42,12 +39,16 @@ public class BeanFactoryTest {
         assertNotNull(qnaService.getQuestionRepository());
     }
 
-    @SuppressWarnings("unchecked")
-    private Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation>... annotations) {
-        Set<Class<?>> beans = Sets.newHashSet();
-        for (Class<? extends Annotation> annotation : annotations) {
-            beans.addAll(reflections.getTypesAnnotatedWith(annotation));
-        }
-        return beans;
+    @Test
+    public void diExample() throws Exception {
+        ExampleController exampleController = beanFactory.getBean(ExampleController.class);
+        assertNotNull(exampleController);
+        assertNotNull(exampleController.getExampleService());
+
+        ExampleService exampleService = exampleController.getExampleService();
+        assertNotNull(exampleService.getExampleRepository());
+
+        assertNotNull(exampleController.findExample());
+        System.out.println(exampleController.findExample());
     }
 }

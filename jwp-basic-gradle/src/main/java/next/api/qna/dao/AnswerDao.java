@@ -1,5 +1,6 @@
 package next.api.qna.dao;
 
+import core.annotation.Inject;
 import core.annotation.Repository;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.ResultSetMapper;
@@ -10,12 +11,11 @@ import java.util.List;
 
 @Repository
 public class AnswerDao {
-    static final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-//    private static AnswerDao answerDao = new AnswerDao();
-//    private AnswerDao() {}
-//    public static AnswerDao getInstance() {
-//        return answerDao;
-//    }
+    private JdbcTemplate jdbcTemplate;
+    @Inject
+    public AnswerDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public Answer insert(Answer answer) {
         String sql = "INSERT INTO ANSWERS(writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";

@@ -2,6 +2,7 @@ package core.web;
 
 import core.nmvc.AnnotationHandlerMapping;
 import core.nmvc.HandlerExecution;
+import core.nmvc.HandlerMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,11 @@ import java.io.IOException;
 public class DispatcherServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
     private static final String API_PATH_PREFIX = "next.api";
-    AnnotationHandlerMapping annotationHandlerMapping;
+    HandlerMapping annotationHandlerMapping;
+
+    public DispatcherServlet(HandlerMapping hm) {
+        annotationHandlerMapping = hm;
+    }
 
     @Override
     public void init() {
@@ -28,7 +33,7 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
         logger.debug("DispatcherServlet: {} {}", req.getMethod(), req.getRequestURI());
         try {
-            HandlerExecution handlerExecution = annotationHandlerMapping.getHandler(req);
+            HandlerExecution handlerExecution = (HandlerExecution) annotationHandlerMapping.getHandler(req);
             logger.debug("dispatcher servlet handler excuteion: {}", handlerExecution.toString());
             ModelAndView modelAndView = handlerExecution.handle(req, resp);
 

@@ -12,13 +12,14 @@ repositories {
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
+    mavenCentral()
 }
 
 dependencies {
-    api 'com.google.guava:guava:18.0'
-    api 'ch.qos.logback:logback-classic:1.1.2'
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    api 'com.google.guava:guava:31.1-jre'
+    api 'ch.qos.logback:logback-classic:1.4.6'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
 

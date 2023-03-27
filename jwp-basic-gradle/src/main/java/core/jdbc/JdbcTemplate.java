@@ -1,15 +1,21 @@
 package core.jdbc;
 
+import core.annotation.Component;
+import core.annotation.Inject;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class JdbcTemplate {
-    private static JdbcTemplate jdbcTemplate = new JdbcTemplate();
-    private JdbcTemplate() {};
-    public static JdbcTemplate getInstance() {
-        return jdbcTemplate;
+    private DataSource dataSource;
+
+    public JdbcTemplate(DataSource dataSource) {
+        super();
+        this.dataSource = dataSource;
     }
 
     public long insert(String sql, PreparedStatementParameters ps) {
